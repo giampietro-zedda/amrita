@@ -34,7 +34,7 @@ import utilities.ReflectionManager;
 public abstract class _DAOAbstract2<T> implements IDAO<T> {
 
 	Class<T> typeClass = null;                 // To get instance using T generics
-    
+    /* test */
 	Connection conn = null;                    // Connection from Factory
 	boolean isConnToRelease = true;            // Connection closed after operation
 	boolean isAutocommit = true;               // Autocommit enabled for the connection 	
