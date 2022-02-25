@@ -18,7 +18,7 @@ import exception.ExceptionAmrita;
  * Copy 
  * </h1>
  *  <p>
- * Questa classe  modella tutti gli aspetti di un generico copy e/o Sql include, modellando
+ * MOD Questa classe  modella tutti gli aspetti di un generico copy e/o Sql include, modellando
  * le caratteristiche comuni a tutti i linguaggi. Un modulo copy è composto da insiemi di oggetti
  * {@link Instruction}, specifici per il linguaggio, come {@link InstructionCobolDataItem} etc.<br>
  * Dal momento che i copy vengono attualizzati, come insiemi di normali istruzioni, nell'analisi del programma sorgente, <br>
