@@ -33,7 +33,7 @@ import utilities.ReflectionManager;
  */
 public abstract class _DAOAbstract2<T> implements IDAO<T> {
 
-	Class<T> typeClass = null ;                 // To get instance using T generics
+	Class<T> typeClass = null;                 // To get instance using T generics
     
 	Connection conn = null;                    // Connection from Factory
 	boolean isConnToRelease = true;            // Connection closed after operation
