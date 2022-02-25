@@ -1,0 +1,265 @@
+@charset "ISO-8859-1";
+
+html, body {
+  height:100%;
+  width:100%;  
+  margin:0;
+  padding:0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main table of the SPA Impact application */
+#mainTable {
+  width: 100%;
+  height: 100%;
+  border: 1px,solid, black;
+  border-collapse:collapse;
+  margin-top: 0;
+}
+#mainTableRowHeader {
+  vertical-align: top;  
+  width: 100%;
+  height: 30px;
+}
+#headerSystem {
+  height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 150%;
+}	
+#headerCellTh {
+  border: 1px solid black;  
+  font-size: xx-large;
+  height: 30px;
+}
+
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  border: 1px solid black;
+} 
+
+#containerTbluserLink{
+  border-collapse:collapse;	
+  margin: 0;
+  padding:0;
+}  
+
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+#headerRightTh{
+} 
+
+/* Application row */
+#trMainTableBody {
+  margin-top:0;
+  vertical-align: top;  
+  width: 100%;
+}
+	#tdWhatIf {width: 60%; } 
+	   #divWhatIf {width: 100%; height: 25%;border: 1px solid black; } 
+		  #tbWhatIf {width: 100%; border-collapse: collapse; background-color: #7d0068}	  		  
+		     #tdHeaderWhatIf {height: 20px;border: 1px solid black; background-color: gray; color: white; font-weight: bold; font-size: small;}
+		     #tdSelIdImpactPlan {width: 27%; }
+		       #selIdImpactPlan {width: 100%; font-weight: bold;}
+		     #tdSubSysCur {width: 10px;  height: 10px; font-weight: bold; font-size:small; border: 1px solid black; background-color: white;}
+		     #tdSubSys {width: 48%;}
+		       #selSubSys {width: 100%; font-weight: bold;}
+		     #trTypeObjectOrigin {width: 100%; }
+		       #tdSelTypeObjectOrigin {width: 27%; }
+		         #selTypeObjectOrigin {width: 100%; font-weight: bold;}
+		       #tdSelIdObjectOrigin {width: 25%; }
+		         #selIdObjectOrigin {width: 100%; font-weight: bold;}
+		       #tdselTypImpactChange {width: 48%; }
+		         #selTypImpactChange {width: 100%; font-weight: bold;}
+		     #selTypImpactChange {width: 100%; }
+          #divSpecificInfo {width: 100%; height: 70px; overflow-Y: auto; }   								                 /* Update height con javaScript */
+	         #tbParmWhatIf {border-collapse: collapse; font-size: small; margin-top: 10px; margin-left: 10px;}
+	           .parmHeader {width: 105px; border: 1px solid white; font-weight: bold; color: white}
+	           .parmHeaderTo {width: auto; border: 1px solid white; font-weight: bold;}
+	           .parmValue {width: 10px; border: 1px solid white;}
+	           .parmValueFrom {width: 40px; border: 1px solid white; font-weight: bold; color: red;}
+	           .parmValueTo {width: 40px; border: 1px solid white; font-weight: bold; color: red;}
+	           .parmValueFiller {width: auto; border: 0;}
+	           .parmNumValueFrom {padding: 0; margin: 0; width: 50px; height: 100%; color: red; font-weight: bold;}
+	           .parmNumValueTo {padding: 0; margin: 0; width: 50px; height: 100%; color: green; font-weight: bold;}
+	           .parmDefaultValue {padding: 0; margin: 0; width: 100%; height: 100%; color: green;  font-weight: bold;}
+	           .parmFormatFromValue {padding: 0; margin: 0; width: 60px; height: 100%; color: red;  font-weight: bold;}
+	           .parmFormatToValue {padding: 0; margin: 0; width: 60px; color: green;  font-weight: bold; }
+	           #parmPlus {background-color: #fceff1; color: #3c003c; font-size: 250%; font-weight: bold;  text-align: center; border: 3px solid black;}
+	   #divWhatIfSelection {max-width:816px;  height: calc(75% - 4px); overflow: auto; border: 1px solid black; } 	               /* Update max-width con javaScript */
+		 table.tbFieldColumn th{border: 1px solid black; border-left: 0; border-top: 0; background-color: #e0e0e0;}  
+		 table.tbFieldColumn td{border: 1px solid black; border-right: 0; }  
+		 .tbFieldColumn {width: 100%; border-collapse: collapse; font-size: x-small; vertical-align: top; }
+	   #divIframeMap {max-width:816px;  height: calc(75% - 4px);} 	                      /* Update max-width con javaScript */
+	
+    #tdImpact {} 
+        .headerImpact {height: 20px; border: 1px solid black; background-color: gray; color: white; font-size:small; font-weight: bold; padding-bottom: 0; padding-left: 3px;}
+		#divImpact1 {height: 30%; border: 1px solid black; overflow-Y: auto;} 
+		  #tbOp {width: 100%; border-collapse: collapse; font-size: x-small; }
+		  table.tbOp th{border: 1px solid black; border-left: 0; background-color: #e0e0e0;}  
+		    .tbOp {border: 1px solid black;}
+		    .tdOp {border: 1px solid black;}
+	        .tdOpNum {width: 20px; background-color: black; color: white; border: 1px solid white; font-weight: bold; text-align:center;}
+	        .tdOpDesc {width: 500px; }
+	        .tdOpFieldCol{width: 400px; font-weight: bold;}
+	        .tdOpMinus {width: 20px;}
+	        .btnOpDel {width: 10px; height: 10px; font-size: xx-small; }
+	        .btnOpDel:hover {background-color: red;}
+		
+		#divImpact2 {height: 30%; border: 1px solid black;} 
+		  #tbImpact2 {}
+		    #tdImpact21 {width: 50%; vertical-align: top; padding: 0;  margin: 0;} 
+		      #headerImpact21 {height: 20px; border: 1px solid black; background-color: gray; color: white; font-size:small; font-weight: bold; padding:0; padding-left: 3px;}
+		      #divImpact21 {width: 100%; height:132px; overflow-Y: auto; border: 1px solid black;}      						/* Update height con javaScript */
+				#tbObj {width: 100%; border-collapse: collapse; font-size: x-small; vertical-align: top;}
+				table.tbObj th{border: 1px solid black; border-left: 0; background-color: #e0e0e0;}  
+				  .tdObj {border: 1px solid black; font-size: x-small;}
+				  .tdObj {border-left: 0px;}
+			      .tdObjType {width: 350px; font-size: x-small;}
+			      .tdObjPgm {width: 100px; font-size: x-small; font-weight: bold;}
+			      .tdObjOp {width: 20px; font-size: x-small; background-color: black; color: white; border: 1px solid white;  font-weight: bold; text-align:center;}
+			      .tdObjLightDeep {width: 15px; font-size: x-small}
+			      .tdObjProcessed {width: 15px; font-size: x-small;}
+			      .tdObjToProcess {width: 15px; font-size: x-small; }
+			      .cbxObjToProcess {width: 15px; height: 15x; padding: 0; margin:0;}
+		    #tdImpact22 {width: 25%; vertical-align: top; padding: 0;  margin: 0;} 
+		      #headerImpact22 {height: 20px; border: 1px solid black; background-color: gray; color: white; font-size:small; font-weight: bold; padding:0; padding-left: 3px;}
+		      #divImpact22 {width: 100%; height:132px; overflow-Y: auto; border: 1px solid black;}      						/* Update height con javaScript */
+				#tbNumRow {width: 100%; border-collapse: collapse; font-size: x-small; vertical-align: top; }
+				table.tbNumRow th{border: 1px solid black; border-left: 0; background-color: #e0e0e0;}  
+				  .tdNumRowStart {border: 1px solid black;width: 50px;}
+				  .tdNumRowStart {border-left: 0;}
+				  .tdNumRowEnd {border: 1px solid black;width: 50px;}
+			      .tdNumInstr {border: 1px solid black;width: 50px;}
+			      .tdNumInstr {border-right: 0; font-weight: bold;background-color: #8080802e}
+		    #tdImpact23 {width: 25%; vertical-align: top; padding: 0;  margin: 0;} 
+		      #headerImpact23 {height: 20px; border: 1px solid black; background-color: gray; color: white; font-size: small; font-weight: bold; padding:0; padding-left: 3px;}
+		      #divImpact23 {width: 100%; height:132px; overflow-Y: auto; border: 1px solid black;}      						/* Update height con javaScript */
+				#tbPgmsToRecompile {width: 100%; border-collapse: collapse; font-size: x-small; vertical-align: top; }
+				table.tbPgmsToRecompile th {border: 1px solid black; border-left: 0; background-color: #e0e0e0;}  
+				table.tbPgmsToRecompile td {border: 1px solid black;width: 50px;font-size: x-small; font-weight: bold; border-left: 0; }
+	    
+		:
+		#divImpact3 {height: calc(40% - 28px); border: 1px solid black;} 
+		  #tbImpact3 {}
+		    #tdImpact31 {width: 40%; } 
+		      #headerImpact31 {height: 20px;border: 1px solid black; background-color: gray; color: white; font-size:small; font-weight: bold; padding:0; padding-left: 3px;}
+		      #divImpact31 {width: 100%; height:180px; overflow-Y: auto; border: 1px solid black; border-right: 0;}      		/* Update height con javaScript */
+				#tbTime {width: 100%; border-collapse: collapse; font-size: small; }
+				table.tbTime td{border: 1px solid black; border-left: 0; padding: 3px;} 
+				  .tbTime {border: 1px solid black; font-size: small;}
+				  .tbTime {border-left: 0px;}
+			      .tdTimeTotal {width: 350px; font-size: small; font-weight: bold; text-align: center;}
+			      .tdTimeTotalObjects {width: 100px; font-size: small; font-weight: bold;}
+			      .tdTimeTotalReferences {width: 350px; font-size: small; font-weight: bold; text-align: center;}
+			      .tdTimeTotalActivity {width: 350px; font-size: small; font-weight: bold; text-align: center;}
+			      .tdTimeTotalValue {width: 100px; font-size: small; font-weight: bold;}
+			      .tdTimeLeft {width: 350px; font-size: small; color:black; background-color: #f3f3f3;}
+			      .tdTimeRightValue {width: 100px; font-size: small; font-weight: bold;}			      		      
+		    #tdImpact32 {width: 60%; vertical-align: top; padding: 0;  margin: 0;} 
+		      #headerImpact32 {height: 20px; border: 1px solid black; background-color: gray; color: white; font-size:small; font-weight: bold; padding:0; padding-left: 3px;}
+		      #divImpact32 {width: 100%; height:182px; overflow-Y: auto; border: 1px solid black;}      						/* Update height con javaScript */
+				#tbExec {width: 100%; border-collapse: collapse; font-size: small; vertical-align: top;}
+				  #trExecSave {}
+				    #tdBtnSave {}
+				      .btnSave {padding:0; width: 55px;}
+				    #btnSaveAs {}
+				    #tdPlan {}
+				      #idImpactPlan {width: 100%;}
+				    #tdBtnDel {}
+				  #trExecProcessImpactPlanLight {}
+				    #tdExecBtnProcessImpactPlanLight {}
+				      #btnProcessImpactPlanLight {}
+				  #trProcessImpactPlanDeep {}
+				    #tdProcessImpactPlanDeep {}
+				      .btnExec {padding:0; width: 100%; height: 20px;}
+				    #tdExecStatus {font-size: 120%; font-weight: bold; padding-left: 5px; color: red; text-align: center;	 }				 				 
+ 				  #trMsgSave {}
+				    #tdMsgSave  {width: 100%; height: 9px; font-size: small; color: green; font-weight: bold; padding:0; margin: 0;}
+                  #trExecProgress {}
+                    #tdExecProgress {}
+                      #tbExecProgress {border-collapse: collapse;}
+                        #tdExecObjCur {font-size: large; font-weight: bold; color: black;}                     
+                        .tdExecCount {font-size: large; font-weight: bold; color: black; padding-left: 10px;}
+                        #tdExecSlash {text-align: center; }                                      
+                  #trExecProgBar {}
+                    #tdExecProgBar {}
+                      #divExecProgrBar {background-color: #ddd; height: 100%; width: 99%;}
+                        #execProgrBar {height: 100%; background-color: #4CAF50; text-align: center;  line-height: 22px; color: white; border: 1px solid black;}                   
+          .divExecLine {width: 100%; height: 1px; margin-top: 2px; margin-bottom: 2px;background-color: black;}
+
+.btnDeepImpact {
+  height: 35px;
+  width: 100%;
+  margin-top:0px;
+  margin-bottom:0px; 
+  margin-top:0px;
+  font-size: 110%;
+  font-weight: bold; 
+  font-family: Arial, Helvetica, sans-serif;}
+
+#logout:hover {
+  opacity: 0.8;
+  color: red;
+}
+
+#btnLightExec:hover {
+  opacity: 0.8;
+  background-color: green;
+  color:white;
+  font-size: medium;
+}
+#parmPlus:hover {
+  color: green;
+}
+
+#btnFullExec:hover {
+  opacity: 0.8;
+  background-color: green;
+  color: white;
+  font-size: medium;
+}
+
+
+.countTable {
+  border-left: 1px solid black; 
+  border-right: 1px solid black; 
+  width: 100%;
+}	
+.lblCountObjects {
+  width: 20px;
+  font-size: small; 
+  padding: 0;
+}
+
+.countObjects {
+ color: green;
+ font-size: small; 
+ padding: 0;
+}
+
+.sysSelected {  
+  background-color: #9f9f9f;
+  border: 1px solid #f46e64;
+  color: fuchsia;
+  font-weight: bold;
+  width: 200px;
+  height : 70px;  
+}
+.selected {  
+  background-color: yellow;
+}

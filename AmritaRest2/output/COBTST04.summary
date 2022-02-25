@@ -1,0 +1,1020 @@
+*** e-Amrita (Automatic Maintenance Re-enginering Integrated Tecnology Application) 3.0.10 13/03/2010 ***
+*** Copyright (c) 2009-2011 e-Amrita - Ing. Giampietro Zedda  Turin (ITALY)     ***
+
+*** PROGRAM SUMMARY  07-07-2011 05:04:03 ***
+
+
+*** SEZIONI ATTIVE ***
+
+(01) *** INFO SORGENTE ***
+(02) *** OPZIONI DI PROGRAMMA ***
+(03) *** RELAZIONI E LORO ORIGINE ***
+(04) *** MATRICE C/R/U/D ***
+(05) *** I-O FILE SYSTEM ***
+(06) *** ISTRUZIONI DINAMICHE ***
+(07) *** SORGENTE CODIFICATO ***
+(08) *** XREF LABELS ***
+(09) *** XREF SECTION E PARAGRAFI ***
+(10) *** XREF SIMBOLI ***
+(11) *** CODICE MORTO (NON REFERENZIATO O NON RAGGIUNGIBILE) ***
+(12) *** GRAFO DI PROGRAMMA ***
+(13) *** METRICHE DI PROGRAMMA ***
+
+
+(01) *** INFO SORGENTE ***
+Programma     : OBJECT_PGM_COBOL 
+Libreria      :  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+Path file     : E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\COBTST04 
+Nome file     : COBTST04  
+Stato         : OBJECT_ANALYZED_WITH_NO_ERRORS  
+Prima analisi : 20110206 03204200
+Ultima analisi: 20110707 04062300
+
+
+
+(02) *** OPZIONI DI PROGRAMMA ***
+
++-Opzione------------------------------------------+
+|PGM_CICS                                          |
+|PGM_ONLINE                                        |
+
+
+(03) *** RELAZIONI E LORO ORIGINE ***
+
++-Relazione--------------------+-Con------+-Tipo oggetto-------+-Tipo relazione-----+- Processo ---------+-Istr-+-Pgm Area--+-Precompilatore ---------+-Istruzione Precompiler -+
+|PGM_CALLED_PGM                |COBTST03  |OBJECT_PGM_COBOL    |RELATION_DIRECT     |SOURCE_STATIC_LOCAL |25    |PROCEDURE  |NOT_ASSIGNED             |NOT_ASSIGNED             |
+|                              |          |                    |RELATION_DIRECT     |SOURCE_STATIC_LOCAL |37    |PROCEDURE  |NOT_ASSIGNED             |NOT_ASSIGNED             |
+|                              |          |                    |RELATION_DIRECT     |SOURCE_STATIC_LOCAL |50    |PROCEDURE  |NOT_ASSIGNED             |NOT_ASSIGNED             |
+|                              |          |                    |RELATION_DIRECT     |SOURCE_STATIC_LOCAL |63    |PROCEDURE  |NOT_ASSIGNED             |NOT_ASSIGNED             |
+|PGM_CICS_LINK_PGM             |COBTST03  |OBJECT_PGM_COBOL    |RELATION_DIRECT     |SOURCE_STATIC_LOCAL |75    |PROCEDURE  |NOT_ASSIGNED             |NOT_ASSIGNED             |
+
+
+(04) *** MATRICE C/R/U/D ***
+
++-Nome Sql/Dl1/Vsam-----------------+-Tipo---------------+-C-+-R-+-U-+-D-+
+
+
+(05) *** I-O FILE SYSTEM ***
+
++-Nome interno File -+-Tipo---------------+-C-+-R-+-U-+-D-+-DD Name+-File fisico----------------------------+-jcl----+-Step---+-Proc---+-Libreria-+-Path-----------------------------------+
+
+
+(06) *** ISTRUZIONI DINAMICHE ***
+
++Num--+Tipo Istruzione---------------+Stato--------------------+Campo---------------------------+Def--+Istr Precompilatore-+Operando-------+Valori---------+ 
+
+(07) *** SORGENTE CODIFICATO ***
+
+*** LEGENDA ***
+
+N   = Numero istruzione                                 Rel = Numero istruzione collegata   Copy= copy entro cui è definita l'istruzione                
+Rpl = Source sostituito da copy replacing by            Dyn = Istruzione dinamica           Dsv = Istruzione risolta con valori validi  
+Dsf = Istruzione risolta con tutti i possibili valori   Dsp = Istruzione spreaded           Dwd = Istruzione in attesa di dati esterni
+
++--N--+-Rel-+-Copy-----+Rpl+Dyn+Dsv+Dsf+Dsp+Dwd+------+-A--+-B--------------------------------------------------------+------+          
+|00000|     |          |No |No |   |   |   |   |       IDENTIFICATION DIVISION.         
+|00000|     |          |No |No |   |   |   |   |       PROGRAM-ID.     COBTST04.         
+|00000|     |          |No |No |   |   |   |   |       AUTHOR.         ing. Giampietro Zedda.         
+|     |     |          |   |   |   |   |   |   |      *==============================================================         
+|     |     |          |   |   |   |   |   |   |      *  Descrizione	: programma per Unit test esaustivo logiche spreaded.         
+|     |     |          |   |   |   |   |   |   |      *                 : Lo scopo è di testare l'ultimo luvello         
+|     |     |          |   |   |   |   |   |   |      *                 : di programmi chiamanti con logiche spreaded.         
+|     |     |          |   |   |   |   |   |   |      *                 :           
+|     |     |          |   |   |   |   |   |   |      *  Scritto il    	: 08-04-2011         
+|     |     |          |   |   |   |   |   |   |      *           
+|     |     |          |   |   |   |   |   |   |      *  Modificato il 	:           
+|     |     |          |   |   |   |   |   |   |      *  Motivo        	:         
+|     |     |          |   |   |   |   |   |   |      *==============================================================                
+|     |     |          |   |   |   |   |   |   |                
+|00000|     |          |No |No |   |   |   |   |       ENVIRONMENT DIVISION.         
+|00001|     |          |No |No |   |   |   |   |       CONFIGURATION SECTION.         
+|00002|     |          |No |No |   |   |   |   |       SPECIAL-NAMES.         
+|00002|     |          |No |No |   |   |   |   |           DECIMAL-POINT IS COMMA.         
+|     |     |          |   |   |   |   |   |   |         
+|00003|     |          |No |No |   |   |   |   |       INPUT-OUTPUT SECTION.         
+|00004|     |          |No |No |   |   |   |   |       FILE-CONTROL.         
+|     |     |          |   |   |   |   |   |   |          
+|00000|     |          |No |No |   |   |   |   |       DATA DIVISION.         
+|00001|     |          |No |No |   |   |   |   |       FILE SECTION.         
+|00002|     |          |No |No |   |   |   |   |       WORKING-STORAGE SECTION.         
+|     |     |          |   |   |   |   |   |   |                
+|00003|     |          |No |No |   |   |   |   |       01 FILLER.         
+|     |     |          |   |   |   |   |   |   |      * Nome programma, file ...         
+|00004|     |          |No |No |   |   |   |   |          05 TXXX-COBTST02                PIC X(8) VALUE 'COBTST02'.         
+|00005|     |          |No |No |   |   |   |   |          05 TXXX-FLD-SINGLE              PIC X(8) VALUE SPACE.         
+|00006|     |          |No |No |   |   |   |   |          05 T036-FLD-SINGLE              PIC X(8) VALUE SPACE.         
+|00007|     |          |No |No |   |   |   |   |          05 T037-FLD-SINGLE              PIC X(8) VALUE SPACE.         
+|00008|     |          |No |No |   |   |   |   |          05 T038-FLD-SINGLE              PIC X(8) VALUE SPACE.         
+|00009|     |          |No |No |   |   |   |   |          05 T042-FLD-SINGLE              PIC X(8) VALUE SPACE.         
+|00010|     |          |No |No |   |   |   |   |          05 T040-FLD-SINGLE              PIC X(8) VALUE SPACE.         
+|     |     |          |   |   |   |   |   |   |           
+|     |     |          |   |   |   |   |   |   |      * Campi di servizio e trasformazione specifici per test         
+|00011|     |          |No |No |   |   |   |   |          05 T040-FLDX8                   PIC X(8).         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * Campi per test T037         
+|00012|     |          |No |No |   |   |   |   |          05 T037-DYNAMIC-SPREADED.         
+|00013|     |          |No |No |   |   |   |   |             07 T037-FILE-NAME           PIC X(08).         
+|00014|     |          |No |No |   |   |   |   |             07 T037-PGM-NAME            PIC X(8).         
+|00015|     |          |No |No |   |   |   |   |             07 T037-PGM-NAME2           PIC X(8).         
+|     |     |          |   |   |   |   |   |   |                            
+|     |     |          |   |   |   |   |   |   |      * Campi per test T038         
+|00016|     |          |No |No |   |   |   |   |          05 T038-DYNAMIC-SPREADED.         
+|00017|     |          |No |No |   |   |   |   |             07 T038-FILE-NAME           PIC X(08).         
+|00018|     |          |No |No |   |   |   |   |             07 T038-PGM-NAME            PIC X(8).         
+|00019|     |          |No |No |   |   |   |   |             07 T038-PGM-NAME2           PIC X(8).         
+|     |     |          |   |   |   |   |   |   |                            
+|     |     |          |   |   |   |   |   |   |      * Campi per test passasggio da numerico ad alfanumerico e redefines         
+|00020|     |          |No |No |   |   |   |   |          05 TXXX-X8.         
+|00021|     |          |No |No |   |   |   |   |             07 TXXX-98                    PIC 9(8).         
+|00022|     |          |No |No |   |   |   |   |             07 TXXX-98X REDEFINES TXXX-98 PIC X(8).         
+|00023|     |          |No |No |   |   |   |   |          05 TXXX-X2.         
+|00024|     |          |No |No |   |   |   |   |             07 FILLER                     PIC XX.         
+|00025|     |          |No |No |   |   |   |   |          05 TXXX-X9 REDEFINES TXXX-X2     PIC 99.         
+|00026|     |          |No |No |   |   |   |   |          05 TXXX-X2-RED REDEFINES TXXX-X2 PIC XX.         
+|     |     |          |   |   |   |   |   |   |                   
+|     |     |          |   |   |   |   |   |   |      * Campi di servizio vari e trasformazione generici         
+|00027|     |          |No |No |   |   |   |   |          05 T002-FLD01                   PIC X(8) VALUE 'TEST'.         
+|00028|     |          |No |No |   |   |   |   |          05 TXXX-KEY                     PIC X(10).         
+|00029|     |          |No |No |   |   |   |   |          05 TXXX-IOAREA                  PIC X(100).         
+|00030|     |          |No |No |   |   |   |   |          05 TXXX-FLDX1                   PIC X.         
+|00031|     |          |No |No |   |   |   |   |          05 TXXX-FLDX2                   PIC X(2).         
+|00032|     |          |No |No |   |   |   |   |          05 TXXX-FLDX3                   PIC X(3).         
+|00033|     |          |No |No |   |   |   |   |          05 TXXX-FLDX4                   PIC X(4).         
+|00034|     |          |No |No |   |   |   |   |          05 TXXX-FLDX5                   PIC X(5).         
+|00035|     |          |No |No |   |   |   |   |          05 TXXX-FLDX6                   PIC X(6).         
+|00036|     |          |No |No |   |   |   |   |          05 TXXX-FLDX7                   PIC X(7).         
+|00037|     |          |No |No |   |   |   |   |          05 TXXX-FLDX8                   PIC X(8).         
+|00038|     |          |No |No |   |   |   |   |          05 TXXX-FLDX82                  PIC X(8).         
+|00039|     |          |No |No |   |   |   |   |          05 TXXX-FLDN1                   PIC 9(3).         
+|00040|     |          |No |No |   |   |   |   |          05 TXXX-FLDN2                   PIC 9(7)  COMP-3.         
+|00041|     |          |No |No |   |   |   |   |          05 TXXX-FLDN3                   COMP.         
+|00042|     |          |No |No |   |   |   |   |          05 TXXX-SPACE                   PIC X(4) VALUE SPACE.         
+|00043|     |          |No |No |   |   |   |   |          05 TXXX-ZERO                    PIC X(2) VALUE ZEROES.         
+|00044|     |          |No |No |   |   |   |   |          05 TXXX-A                       PIC X    VALUE 'A'.         
+|00045|     |          |No |No |   |   |   |   |          05 TXXX-ZZ                      PIC XX   VALUE 'ZZ'.         
+|00046|     |          |No |No |   |   |   |   |          05 TXXX-88                      PIC X    VALUE SPACE.         
+|00047|     |          |No |No |   |   |   |   |	          88 TXXX-88-A VALUE 'A'.          
+|00048|     |          |No |No |   |   |   |   |	          88 TXXX-88-B VALUE 'B'.          
+|00049|     |          |No |No |   |   |   |   |	          88 TXXX-88-C VALUE 'C'.          
+|00050|     |          |No |No |   |   |   |   |	          88 TXXX-88-D VALUE 'D'.          
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |                   
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T029-T030-T031         
+|     |     |          |   |   |   |   |   |   |      * Ioarea lng=100         
+|00051|     |          |No |No |   |   |   |   |       01 T0XX-IOAREA.         
+|00052|     |          |No |No |   |   |   |   |	         05 T0XX-TIPO-REC                PIC X.              
+|00053|     |          |No |No |   |   |   |   |	         05 T0XX-FLD01                   PIC X(8).              
+|00054|     |          |No |No |   |   |   |   |	         05 T0XX-FLD02                   PIC 9(5).              
+|00055|     |          |No |No |   |   |   |   |	         05 T0XX-FILE-NAME               PIC X(8).              
+|00056|     |          |No |No |   |   |   |   |	         05 T0XX-PGM-NAME                PIC X(8).              
+|00057|     |          |No |No |   |   |   |   |	         05 T0XX-TS-NAME                 PIC X(8).              
+|00058|     |          |No |No |   |   |   |   |	         05 T0XX-PREFIX                  PIC XX.              
+|00059|     |          |No |No |   |   |   |   |	         05 T0XX-DATI                    PIC X(60).              
+|     |     |          |   |   |   |   |   |   |                   
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T041         
+|00060|     |          |No |No |   |   |   |   |       01 T041-WS-CSA.         
+|00061|     |          |No |No |   |   |   |   |          07 T041-WS-CSA-COD                 PIC X.         
+|00062|     |          |No |No |   |   |   |   |          07 T041-WS-CSA-FILE-NAME           PIC X(8).         
+|00063|     |          |No |No |   |   |   |   |          07 T041-WS-CSA-FILE-NAME2          PIC X(8).         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T042         
+|00064|     |          |No |No |   |   |   |   |       01 T042-DFHCOMMAREA.         
+|00065|     |          |No |No |   |   |   |   |           05 T042-FILE-NAME                PIC X(8).         
+|00066|     |          |No |No |   |   |   |   |           05 T042-FILE-NAME2               PIC X(8).         
+|00067|     |          |No |No |   |   |   |   |           05 T042-TS-NAME                  PIC X(8).         
+|00068|     |          |No |No |   |   |   |   |           05 T042-PGM-NAME                 PIC X(8).         
+|00069|     |          |No |No |   |   |   |   |           05 T042-PGM-NAME2                PIC X(8).         
+|00070|     |          |No |No |   |   |   |   |           05 T042-MAP                      PIC X(8).         
+|00071|     |          |No |No |   |   |   |   |           05 T042-MAPSET                   PIC X(8).         
+|00072|     |          |No |No |   |   |   |   |           05 T042-TRANSID                  PIC X(4).         
+|     |     |          |   |   |   |   |   |   |                   
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T040         
+|     |     |          |   |   |   |   |   |   |      * Ioarea lng=100         
+|00073|     |          |No |No |   |   |   |   |        01 T040-IOAREA.         
+|00074|     |          |No |No |   |   |   |   |	       05 T040-TIPO-REC                 PIC X.              
+|00075|     |          |No |No |   |   |   |   |	       05 T040-FLD01                    PIC X(8).              
+|00076|     |          |No |No |   |   |   |   |	       05 T040-FLD02                    PIC 9(5).              
+|00077|     |          |No |No |   |   |   |   |	       05 T040-FILE-NAME                PIC X(8).              
+|00078|     |          |No |No |   |   |   |   |	       05 T040-PGM-NAME                 PIC X(8).              
+|00079|     |          |No |No |   |   |   |   |	       05 T040-TS-NAME                  PIC X(8).              
+|00080|     |          |No |No |   |   |   |   |	       05 T040-PREFIX                   PIC XX.              
+|00081|     |          |No |No |   |   |   |   |	       05 T040-DATI                     PIC X(60).             
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * Info generiche di linkage (param 1)         
+|00082|     |          |No |No |   |   |   |   |       01 WS-PARM.         
+|00083|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PARM-LUNG           PIC S9(04) COMP.         
+|00084|     |          |No |No |   |   |   |   |          05 WS-SPREADED-TIPO-ELAB           PIC X(03).         
+|00085|     |          |No |No |   |   |   |   |          05 WS-SPREADED-DATA-ELAB-MENO1     PIC X(06).         
+|00086|     |          |No |No |   |   |   |   |          05 WS-SPREADED-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.         
+|     |     |          |   |   |   |   |   |   |      * Pos=16 Dsp=15         
+|00087|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-SUFFIX-O        PIC X.         
+|     |     |          |   |   |   |   |   |   |                   
+|     |     |          |   |   |   |   |   |   |      * Info per logiche spreaded in pgm chiamanti (param 2)         
+|00088|     |          |No |No |   |   |   |   |       01 WS-DYNAMIC-SPREADED.         
+|00089|     |          |No |No |   |   |   |   |          05 WS-SPREADED-FILE-NAME           PIC X(8).         
+|00090|     |          |No |No |   |   |   |   |          05 WS-SPREADED-FILE-NAME2          PIC X(8).         
+|00091|     |          |No |No |   |   |   |   |          05 WS-SPREADED-TS-NAME             PIC X(8).          
+|00092|     |          |No |No |   |   |   |   |          05 WS-SPREADED-TS-NAME2            PIC X(8).          
+|00093|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-NAME            PIC X(8).         
+|     |     |          |   |   |   |   |   |   |      * Pos=41 Dsp=40         
+|00094|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-PREFIX          PIC X(4).         
+|     |     |          |   |   |   |   |   |   |      * Pos=45 Dsp=44         
+|00095|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-ID              PIC X(3).         
+|     |     |          |   |   |   |   |   |   |      * Pos=48         
+|00096|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-SUFFIX          PIC X.         
+|00097|     |          |No |No |   |   |   |   |          05 WS-SPREADED-MAP                 PIC X(8).         
+|00098|     |          |No |No |   |   |   |   |          05 WS-SPREADED-MAPSET              PIC X(8).         
+|00099|     |          |No |No |   |   |   |   |          05 WS-SPREADED-TRANSID             PIC X(4).         
+|     |     |          |   |   |   |   |   |   |      * Pos=69         
+|00100|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-PREFIX-T044     PIC X(4).         
+|     |     |          |   |   |   |   |   |   |      * Pos=73         
+|00101|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-ID-T044         PIC X(3).         
+|     |     |          |   |   |   |   |   |   |      * Pos=76         
+|00102|     |          |No |No |   |   |   |   |          05 WS-SPREADED-PGM-SUFFIX-T044     PIC X.         
+|     |     |          |   |   |   |   |   |   |	                
+|     |     |          |   |   |   |   |   |   |	                  
+|00103|     |          |No |No |   |   |   |   |        01 WS-DFHCOMMAREA                   PIC X(4096).           
+|00104|     |          |No |No |   |   |   |   |        01 WS-TWA                           PIC X(2000).         
+|00105|     |          |No |No |   |   |   |   |        01 WS-CSA                           PIC X(2000).         
+|     |     |          |   |   |   |   |   |   |                 
+|     |     |          |   |   |   |   |   |   |      * Per test T047 T048 T049                   
+|00106|     |          |No |No |   |   |   |   |        01 POINTER-TWA USAGE POINTER.                  
+|00107|     |          |No |No |   |   |   |   |        01 POINTER-CSA USAGE POINTER.                  
+|     |     |          |   |   |   |   |   |   |              
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |          
+|00108|     |          |No |No |   |   |   |   |       LINKAGE SECTION.         
+|     |     |          |   |   |   |   |   |   |      * Info generiche di linkage (param 1)         
+|00109|     |          |No |No |   |   |   |   |       01 LK-PARM.         
+|00110|     |          |No |No |   |   |   |   |          05 LK-PARM-LUNG                PIC S9(04) COMP.         
+|00111|     |          |No |No |   |   |   |   |          05 LK-TIPO-ELAB                PIC X(03).         
+|00112|     |          |No |No |   |   |   |   |          05 LK-DATA-ELAB-MENO1          PIC X(06).         
+|00113|     |          |No |No |   |   |   |   |          05 LK-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.         
+|00114|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-SUFFIX-0    PIC X.         
+|     |     |          |   |   |   |   |   |   |                   
+|     |     |          |   |   |   |   |   |   |      * Info per logiche spreaded in pgm chiamanti (param 2)         
+|00115|     |          |No |No |   |   |   |   |       01 LK-DYNAMIC-SPREADED.         
+|00116|     |          |No |No |   |   |   |   |          05 LK-SPREADED-FILE-NAME           PIC X(8).         
+|00117|     |          |No |No |   |   |   |   |          05 LK-SPREADED-FILE-NAME2          PIC X(8).         
+|00118|     |          |No |No |   |   |   |   |          05 LK-SPREADED-TS-NAME             PIC X(8).          
+|00119|     |          |No |No |   |   |   |   |          05 LK-SPREADED-TS-NAME2            PIC X(8).          
+|00120|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-NAME            PIC X(8).         
+|00121|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-PREFIX          PIC X(4).         
+|00122|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-ID              PIC X(3).         
+|00123|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-SUFFIX          PIC X.         
+|00124|     |          |No |No |   |   |   |   |          05 LK-SPREADED-MAP                 PIC X(8).         
+|00125|     |          |No |No |   |   |   |   |          05 LK-SPREADED-MAPSET              PIC X(8).         
+|00126|     |          |No |No |   |   |   |   |          05 LK-SPREADED-TRANSID             PIC X(4).         
+|     |     |          |   |   |   |   |   |   |      * Pos=69         
+|00127|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-PREFIX-T044     PIC X(4).         
+|     |     |          |   |   |   |   |   |   |      * Pos=73         
+|00128|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-ID-T044         PIC X(3).         
+|     |     |          |   |   |   |   |   |   |      * Pos=76         
+|00129|     |          |No |No |   |   |   |   |          05 LK-SPREADED-PGM-SUFFIX-T044     PIC X.         
+|     |     |          |   |   |   |   |   |   |      *         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * Info per logiche spreaded in pgm chiamanti (param 3)         
+|00130|     |          |No |No |   |   |   |   |       01 LK-DYNAMIC-BY-SET-ADDRESS.         
+|00131|     |          |No |No |   |   |   |   |          05 LK-BY-SET-FILE-NAME         PIC X(8).         
+|00132|     |          |No |No |   |   |   |   |          05 LK-BY-SET-FILE-NAME2        PIC X(8).         
+|00133|     |          |No |No |   |   |   |   |          05 LK-BY-SET-TS-NAME           PIC X(8).         
+|00134|     |          |No |No |   |   |   |   |          05 LK-BY-SET-PGM-NAME          PIC X(8).         
+|00135|     |          |No |No |   |   |   |   |          05 LK-BY-SET-PGM-PREFIX        PIC X(4).         
+|00136|     |          |No |No |   |   |   |   |          05 LK-BY-SET-PGM-ID            PIC X(3).         
+|00137|     |          |No |No |   |   |   |   |          05 LK-BY-SET-PGM-SUFFIX        PIC X.         
+|00138|     |          |No |No |   |   |   |   |          05 LK-BY-SET-MAP               PIC X(8).         
+|00139|     |          |No |No |   |   |   |   |          05 LK-BY-SET-MAPSET            PIC X(8).         
+|00140|     |          |No |No |   |   |   |   |          05 LK-BY-SET-TRANSID           PIC X(4).         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * Dfhcommarea Cics         
+|00141|     |          |No |No |   |   |   |   |       01 DFHCOMMAREA                   PIC X(4096).         
+|     |     |          |   |   |   |   |   |   |          
+|00142|     |          |No |No |   |   |   |   |       01 POINTER-TWA USAGE POINTER.         
+|00143|     |          |No |No |   |   |   |   |       01 POINTER-CSA USAGE POINTER.         
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |      * TWA Cics         
+|00144|     |          |No |No |   |   |   |   |       01 TWA-AREA.         
+|     |     |          |   |   |   |   |   |   |                
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T039         
+|00145|     |          |No |No |   |   |   |   |          05 T039-TWA.         
+|00146|     |          |No |No |   |   |   |   |             07 FILLER                   PIC X(20).         
+|00147|     |          |No |No |   |   |   |   |             07 T049-TWA-PGM-NAME        PIC X(8).         
+|     |     |          |   |   |   |   |   |   |                
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T040         
+|00148|     |          |No |No |   |   |   |   |          05 T040-TWA.         
+|00149|     |          |No |No |   |   |   |   |             07 T040-TWA-FILE-NAME       PIC X(8).         
+|00150|     |          |No |No |   |   |   |   |             07 T040-TWA-PGM-NAME        PIC X(8).         
+|     |     |          |   |   |   |   |   |   |                      
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T049         
+|00151|     |          |No |No |   |   |   |   |          05 T049-TWA.         
+|00152|     |          |No |No |   |   |   |   |             07 T049-TWA-FILE-NAME            PIC X(8).         
+|00153|     |          |No |No |   |   |   |   |             07 T049-TWA-FILE-NAME2           PIC X(8).         
+|00154|     |          |No |No |   |   |   |   |             07 T049-TWA-POINTER    USAGE POINTER.         
+|00155|     |          |No |No |   |   |   |   |             07 FILLER                        PIC X(8).         
+|00156|     |          |No |No |   |   |   |   |             07 T049-TWA-SUBFLD1              PIC X.         
+|00157|     |          |No |No |   |   |   |   |             07 T049-TWA-SUBFLD2              PIC X(3).         
+|00158|     |          |No |No |   |   |   |   |             07 T049-TWA-SUBFLD3              PIC X(2).         
+|00159|     |          |No |No |   |   |   |   |             07 T049-TWA-SUBFLD4              PIC X(2).         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * CSA Cics         
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T049         
+|00160|     |          |No |No |   |   |   |   |       01 CSA-AREA.         
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T041         
+|00161|     |          |No |No |   |   |   |   |          05 T041-CSA.         
+|00162|     |          |No |No |   |   |   |   |             07 T041-CSA-COD                  PIC X.         
+|00163|     |          |No |No |   |   |   |   |             07 T041-CSA-FILE-NAME            PIC X(8).         
+|00164|     |          |No |No |   |   |   |   |             07 T041-CSA-FILE-NAME2           PIC X(8).         
+|     |     |          |   |   |   |   |   |   |                       
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T048         
+|00165|     |          |No |No |   |   |   |   |          05 T048-CSA.         
+|00166|     |          |No |No |   |   |   |   |             07 T048-CSA-FILE-NAME            PIC X(8).         
+|00167|     |          |No |No |   |   |   |   |             07 T048-CSA-FILE-NAME2           PIC X(8).         
+|00168|     |          |No |No |   |   |   |   |             07 T048-CSA-POINTER    USAGE POINTER.         
+|     |     |          |   |   |   |   |   |   |                      
+|     |     |          |   |   |   |   |   |   |      * Campi per gestione test T049         
+|00169|     |          |No |No |   |   |   |   |          05 T049-CSA.         
+|00170|     |          |No |No |   |   |   |   |             07 FILLER                        PIC X(8).         
+|00171|     |          |No |No |   |   |   |   |             07 T049-CSA-SUBFLD1              PIC X.         
+|00172|     |          |No |No |   |   |   |   |             07 T049-CSA-SUBFLD2              PIC X(3).         
+|00173|     |          |No |No |   |   |   |   |             07 T049-CSA-SUBFLD3              PIC X(2).         
+|00174|     |          |No |No |   |   |   |   |             07 T049-CSA-SUBFLD4              PIC X(2).         
+|     |     |          |   |   |   |   |   |   |                
+|     |     |          |   |   |   |   |   |   |                 
+|00000|     |          |No |No |   |   |   |   |       PROCEDURE DIVISION USING LK-PARM, LK-DYNAMIC-SPREADED.         
+|     |     |          |   |   |   |   |   |   |               
+|     |     |          |   |   |   |   |   |   |      *--------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * Test su singolo campo dinamico con risultati individuati nel pgm          
+|     |     |          |   |   |   |   |   |   |      * attraverso assegnazioni dirette e/o indirette e/o parziali         
+|     |     |          |   |   |   |   |   |   |      *--------------------------------------------------------------------          
+|     |     |          |   |   |   |   |   |   |               
+|     |     |          |   |   |   |   |   |   |      * TXXX Assegnazioni iniziali campi e sottocampi per i vari test         
+|00001|     |          |No |No |   |   |   |   |           PERFORM TXXX-INITIAL-ASSIGN         
+|     |     |          |   |   |   |   |   |   |               
+|     |     |          |   |   |   |   |   |   |      *------------------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * Test su singolo campo dinamico con risultati da individuare fuori dal pgm          
+|     |     |          |   |   |   |   |   |   |      * in programmi chiamanti a fronte di Linkage/DFHCOMMAREA/TWA/CSA o Using Parm         
+|     |     |          |   |   |   |   |   |   |      * I valori effettivi saranno individuati in programmi diversi con         
+|     |     |          |   |   |   |   |   |   |      * la funzione LOGIC_SPREADED, da eseguire a valle di questa elaborazione.         
+|     |     |          |   |   |   |   |   |   |      *------------------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |                    
+|     |     |          |   |   |   |   |   |   |      * T038 OK   Campo singolo con Move da Linkage in Using         
+|00002|     |          |No |No |   |   |   |   |           PERFORM T038-SINGLE-MOVE-FROM-USING-PASSTHRU         
+|     |     |          |   |   |   |   |   |   |                    
+|     |     |          |   |   |   |   |   |   |      * T040 OK   Campo singolo con Move da Cics TWA          
+|00003|     |          |No |No |   |   |   |   |           PERFORM T040-SPREADED-MOVE-FROM-CICS-TWA         
+|     |     |          |   |   |   |   |   |   |                    
+|     |     |          |   |   |   |   |   |   |      * T041 OK   Campo singolo con Move da Cics CSA          
+|00004|     |          |No |No |   |   |   |   |           PERFORM T041-SPREADED-MOVE-FROM-CICS-CSA         
+|     |     |          |   |   |   |   |   |   |                    
+|     |     |          |   |   |   |   |   |   |      * T044 OK  Campo singolo con sottocampi con Move da Linkage in Using         
+|00005|     |          |No |No |   |   |   |   |           PERFORM T044-SINGLE-MOVE-FROM-USING         
+|     |     |          |   |   |   |   |   |   |                     
+|     |     |          |   |   |   |   |   |   |      * T049 OK  Sottocampo passato a chiamato in CSA e utilizzato in COBTST02         
+|00006|00007|          |No |No |   |   |   |   |            PERFORM T049-SPREADED-GROUP-MIXED         
+|     |     |          |   |   |   |   |   |   |          
+|00007|     |          |No |No |   |   |   |   |           STOP RUN.         
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |      *------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * Inizializzazione iniziale campi valida per tutti i test e path         
+|     |     |          |   |   |   |   |   |   |      *------------------------------------------------------------------         
+|00008|     |          |No |No |   |   |   |   |       TXXX-INITIAL-ASSIGN.         
+|     |     |          |   |   |   |   |   |   |                
+|     |     |          |   |   |   |   |   |   |      * Test T002 - Assegnazione campo con value programma         
+|00009|     |          |No |No |   |   |   |   |           MOVE T002-FLD01 TO TXXX-FLD-SINGLE.         
+|     |     |          |   |   |   |   |   |   |                 
+|00010|     |          |No |No |   |   |   |   |       TXXX-EX. EXIT.         
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |         
+|     |     |          |   |   |   |   |   |   |      *-----------------------------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * T038 Valorizzazione sottocampo WS-SPREADED-PGM-SUFFIX necessario a pgm due livelli          
+|     |     |          |   |   |   |   |   |   |      *      + annidato (COBTST02) passato da programma passthru (COBTST03) ultimo nel primo          
+|     |     |          |   |   |   |   |   |   |      *      parametro         
+|     |     |          |   |   |   |   |   |   |      *         con la seguente sequenza di richiamo:         
+|     |     |          |   |   |   |   |   |   |      *          COBTST04         
+|     |     |          |   |   |   |   |   |   |      *            COBTST03          
+|     |     |          |   |   |   |   |   |   |      *              COBTST02         
+|     |     |          |   |   |   |   |   |   |      * Valori attesi: A, B, C, D         
+|     |     |          |   |   |   |   |   |   |      *-----------------------------------------------------------------------------------------         
+|00012|     |          |No |No |   |   |   |   |       T038-SINGLE-MOVE-FROM-USING-PASSTHRU.         
+|     |     |          |   |   |   |   |   |   |                    
+|00013|00015|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 1         
+|00014|     |          |No |No |   |   |   |   |              MOVE 'A' TO WS-SPREADED-PGM-SUFFIX-O         
+|00015|00013|          |No |No |   |   |   |   |           END-IF           
+|     |     |          |   |   |   |   |   |   |                     
+|00016|00018|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 2         
+|00017|     |          |No |No |   |   |   |   |              MOVE 'B' TO WS-SPREADED-PGM-SUFFIX-O         
+|00018|00016|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |                    
+|00019|00021|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 3         
+|00020|     |          |No |No |   |   |   |   |              MOVE 'C' TO WS-SPREADED-PGM-SUFFIX-O         
+|00021|00019|          |No |No |   |   |   |   |           END-IF           
+|     |     |          |   |   |   |   |   |   |                     
+|00022|00024|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 4         
+|00023|     |          |No |No |   |   |   |   |              MOVE 'D' TO WS-SPREADED-PGM-SUFFIX-O         
+|00024|00022|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |           
+|00025|     |          |No |No |   |   |   |   |           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.         
+|     |     |          |   |   |   |   |   |   |                    
+|00026|     |          |No |No |   |   |   |   |       T038-EX. EXIT.         
+|     |     |          |   |   |   |   |   |   |            
+|     |     |          |   |   |   |   |   |   |      *---------------------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * T040 Valorizzazione sottocampo in Cics TWA         
+|     |     |          |   |   |   |   |   |   |      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA          
+|     |     |          |   |   |   |   |   |   |      *        Il campo di TWA viene passato ai programmi chiamati (COBTST03/COBTST02)         
+|     |     |          |   |   |   |   |   |   |      *      Si testa il corretto indirizzamento della TWA con individuazione          
+|     |     |          |   |   |   |   |   |   |      *      Si testa che non venga inserito nessun valore di default         
+|     |     |          |   |   |   |   |   |   |      *      Si utilizza la seguente sequenza di richiamo:         
+|     |     |          |   |   |   |   |   |   |      *          COBTST04         
+|     |     |          |   |   |   |   |   |   |      *            COBTST03          
+|     |     |          |   |   |   |   |   |   |      *              COBTST02          
+|     |     |          |   |   |   |   |   |   |      *         
+|     |     |          |   |   |   |   |   |   |      * Valori attesi: T0400001, T0400002         
+|     |     |          |   |   |   |   |   |   |      *----------------------------------------------------------------------------------          
+|00028|     |          |No |No |   |   |   |   |       T040-SPREADED-MOVE-FROM-CICS-TWA.         
+|     |     |          |   |   |   |   |   |   |                    
+|     |     |          |   |   |   |   |   |   |      * Recupero indirizzo TWA da Cics         
+|     |     |          |   |   |   |   |   |   |      * Indirizzamento TWA con Api Cics         
+|00029|     |          |No |No |   |   |   |   |           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.         
+|00030|     |          |No |No |   |   |   |   |           EXEC CICS ADDRESS          
+|00030|     |          |No |No |   |   |   |   |                SET(ADDRESS OF TWA-AREA)          
+|00030|     |          |No |No |   |   |   |   |                USING(POINTER-TWA)         
+|00030|     |          |No |No |   |   |   |   |           END-EXEC         
+|     |     |          |   |   |   |   |   |   |               
+|00031|00033|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 1         
+|00032|     |          |No |No |   |   |   |   |              MOVE 'T0400001' TO T040-TWA-FILE-NAME         
+|00033|00031|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |                    
+|00034|00036|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 2         
+|00035|     |          |No |No |   |   |   |   |              MOVE 'T0400002' TO T040-TWA-FILE-NAME         
+|00036|00034|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |                    
+|00037|     |          |No |No |   |   |   |   |           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.         
+|     |     |          |   |   |   |   |   |   |                    
+|00038|     |          |No |No |   |   |   |   |       T040-EX. EXIT.         
+|     |     |          |   |   |   |   |   |   |            
+|     |     |          |   |   |   |   |   |   |      *---------------------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * T041 Valorizzazione sottocampo in Cics TWA         
+|     |     |          |   |   |   |   |   |   |      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA          
+|     |     |          |   |   |   |   |   |   |      *        Il campo di TWA viene passato ai programmi chiamati (COBTST03/COBTST02)         
+|     |     |          |   |   |   |   |   |   |      *      Si testa il corretto indirizzamento della TWA con individuazione          
+|     |     |          |   |   |   |   |   |   |      *      Si testa che non venga inserito nessun valore di default         
+|     |     |          |   |   |   |   |   |   |      *      Si utilizza la seguente sequenza di richiamo:         
+|     |     |          |   |   |   |   |   |   |      *          COBTST04         
+|     |     |          |   |   |   |   |   |   |      *            COBTST03          
+|     |     |          |   |   |   |   |   |   |      *              COBTST02          
+|     |     |          |   |   |   |   |   |   |      *         
+|     |     |          |   |   |   |   |   |   |      * Valori attesi: T0400001, T0400002         
+|     |     |          |   |   |   |   |   |   |      *----------------------------------------------------------------------------------          
+|00040|     |          |No |No |   |   |   |   |       T041-SPREADED-MOVE-FROM-CICS-CSA.         
+|     |     |          |   |   |   |   |   |   |                    
+|     |     |          |   |   |   |   |   |   |      * Recupero indirizzo CSA da Cics         
+|     |     |          |   |   |   |   |   |   |      * Indirizzamento CSA con Api Cics         
+|00041|     |          |No |No |   |   |   |   |           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.         
+|00042|     |          |No |No |   |   |   |   |           EXEC CICS ADDRESS          
+|00042|     |          |No |No |   |   |   |   |                SET(ADDRESS OF CSA-AREA)          
+|00042|     |          |No |No |   |   |   |   |                USING(POINTER-CSA)         
+|00042|     |          |No |No |   |   |   |   |           END-EXEC         
+|     |     |          |   |   |   |   |   |   |               
+|00043|00045|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 1         
+|00044|     |          |No |No |   |   |   |   |              MOVE 'T0410001' TO T041-WS-CSA-FILE-NAME         
+|00045|00043|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |                    
+|00046|00048|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 2         
+|00047|     |          |No |No |   |   |   |   |              MOVE 'T0410002' TO T041-WS-CSA-FILE-NAME         
+|00048|00046|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |                    
+|00049|     |          |No |No |   |   |   |   |           MOVE T041-WS-CSA  TO  T041-CSA.         
+|     |     |          |   |   |   |   |   |   |                    
+|00050|     |          |No |No |   |   |   |   |           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.         
+|     |     |          |   |   |   |   |   |   |                    
+|00051|     |          |No |No |   |   |   |   |       T041-EX. EXIT.         
+|     |     |          |   |   |   |   |   |   |            
+|     |     |          |   |   |   |   |   |   |            
+|     |     |          |   |   |   |   |   |   |      *-----------------------------------------------------------------------------------------         
+|     |     |          |   |   |   |   |   |   |      * T044 Valorizzazione sottocampo WS-SPREADED-PGM-SUFFIX-T044 necessario a pgm due livelli          
+|     |     |          |   |   |   |   |   |   |      *      + annidato (COBTST02) passato da programma passthru (COBTST03) ultimo nel primo          
+|     |     |          |   |   |   |   |   |   |      *      parametro         
+|     |     |          |   |   |   |   |   |   |      *         con la seguente sequenza di richiamo:         
+|     |     |          |   |   |   |   |   |   |      *          COBTST04         
+|     |     |          |   |   |   |   |   |   |      *            COBTST03          
+|     |     |          |   |   |   |   |   |   |      *              COBTST02         
+|     |     |          |   |   |   |   |   |   |      * Valori attesi: A, B, C         
+|     |     |          |   |   |   |   |   |   |      *-----------------------------------------------------------------------------------------         
+|00053|     |          |No |No |   |   |   |   |       T044-SINGLE-MOVE-FROM-USING.         
+|     |     |          |   |   |   |   |   |   |                    
+|00054|00056|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 1         
+|00055|     |          |No |No |   |   |   |   |              MOVE 'A' TO WS-SPREADED-PGM-SUFFIX-T044         
+|00056|00054|          |No |No |   |   |   |   |           END-IF           
+|     |     |          |   |   |   |   |   |   |                     
+|00057|00059|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 2         
+|00058|     |          |No |No |   |   |   |   |              MOVE 'B' TO WS-SPREADED-PGM-SUFFIX-T044         
+|00059|00057|          |No |No |   |   |   |   |           END-IF            
+|     |     |          |   |   |   |   |   |   |                    
+|00060|00062|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 3         
+|00061|     |          |No |No |   |   |   |   |              MOVE 'C' TO WS-SPREADED-PGM-SUFFIX-T044         
+|00062|00060|          |No |No |   |   |   |   |           END-IF           
+|     |     |          |   |   |   |   |   |   |                       
+|00063|     |          |No |No |   |   |   |   |           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.         
+|     |     |          |   |   |   |   |   |   |                    
+|00064|     |          |No |No |   |   |   |   |       T044-EX. EXIT.         
+|     |     |          |   |   |   |   |   |   |            
+|     |     |          |   |   |   |   |   |   |      *--------------------------------------------------------------------          
+|     |     |          |   |   |   |   |   |   |      * T049 Sottocampo valorizzato e passato ai chiamati in CSA         
+|     |     |          |   |   |   |   |   |   |      *      Si testa il caso di logiche spreaded relative a + sottocampi.         
+|     |     |          |   |   |   |   |   |   |      *      Si testa il passaggio al chiamante di un sottocampo in CSA         
+|     |     |          |   |   |   |   |   |   |      *      Si testa che il chiamante non esegua operazioni e lo passi         
+|     |     |          |   |   |   |   |   |   |      *        sempre in CSA, al pgm chiamato utilizzatore, COBTST02         
+|     |     |          |   |   |   |   |   |   |      *      Qui viene impostato solo il campo in Cics Csa.         
+|     |     |          |   |   |   |   |   |   |      *         
+|     |     |          |   |   |   |   |   |   |      * Valori composti in pgm chiamato:T0493141,T0493142,T0493141,T0493142         
+|     |     |          |   |   |   |   |   |   |      *---------------------------------------------------------------------          
+|00066|     |          |No |No |   |   |   |   |       T049-SPREADED-GROUP-MIXED.         
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |      * Indirizzamento Cics CSA         
+|00067|     |          |No |No |   |   |   |   |           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.         
+|00068|     |          |No |No |   |   |   |   |           EXEC CICS ADDRESS          
+|00068|     |          |No |No |   |   |   |   |                 SET(ADDRESS OF CSA-AREA)         
+|00068|     |          |No |No |   |   |   |   |                 USING(POINTER-CSA)          
+|00068|     |          |No |No |   |   |   |   |           END-EXEC.         
+|     |     |          |   |   |   |   |   |   |          
+|     |     |          |   |   |   |   |   |   |      * In Cics CSA, passata al chiamato COBTST02         
+|00069|00071|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 1         
+|00070|     |          |No |No |   |   |   |   |              MOVE '41'  TO          T049-CSA-SUBFLD4          
+|00071|00069|          |No |No |   |   |   |   |           END-IF         
+|     |     |          |   |   |   |   |   |   |                    
+|00072|00074|          |No |No |   |   |   |   |           IF TXXX-FLDN1 = 2         
+|00073|     |          |No |No |   |   |   |   |              MOVE '42'  TO          T049-CSA-SUBFLD4          
+|00074|00072|          |No |No |   |   |   |   |           END-IF         
+|     |     |          |   |   |   |   |   |   |                     
+|00075|     |          |No |No |   |   |   |   |            EXEC CICS LINK          
+|00075|     |          |No |No |   |   |   |   |                PROGRAM('COBTST03')          
+|00075|     |          |No |No |   |   |   |   |                COMMAREA(WS-DFHCOMMAREA)          
+|00075|     |          |No |No |   |   |   |   |           END-EXEC.         
+|00076|     |          |No |No |   |   |   |   |       T049-EX. EXIT.         
+
+
+(08) *** XREF LABELS ***
+
++-Label--------------------------+-Def.+-Riferimenti------------------------------------------------------------------------------+
+|T038-EX                         |26   |                                                                                          |
+|T040-EX                         |38   |                                                                                          |
+|T041-EX                         |51   |                                                                                          |
+|T044-EX                         |64   |                                                                                          |
+|T049-EX                         |76   |                                                                                          |
+|TXXX-EX                         |10   |                                                                                          |
+
+
+(09) *** XREF SECTION E PARAGRAFI ***
+
++-Section------------------------+-Def.+-Riferimenti------------------------------------------------------------------------------+
+|T038-SINGLE-MOVE-FROM-USING-PASS|12   |2                                                                                         |
+|T040-SPREADED-MOVE-FROM-CICS-TWA|28   |3                                                                                         |
+|T041-SPREADED-MOVE-FROM-CICS-CSA|40   |4                                                                                         |
+|T044-SINGLE-MOVE-FROM-USING     |53   |5                                                                                         |
+|T049-SPREADED-GROUP-MIXED       |66   |6                                                                                         |
+|TXXX-INITIAL-ASSIGN             |8    |1                                                                                         |
+
+
+(10) *** XREF SIMBOLI ***
+*** LEGENDA ***
+nDD = Definito in Data Division       nDE = Definito in Environment Division   nDP = Definito in Procedure Division 
+nIE = Input  in Environment Division  nID = Input    in Data Division          nIP = Input    in Procedure Division   nOP = Output in Procedure Division
+
++-Simbolo------------------------+-Tipo---------------+-Sezione-------+-Riferimenti------------------------------------------------------------------------------+
+|'41'                            |LITERAL_ALPHA       |               |70DP 70IP                                                                                 |
+|'42'                            |LITERAL_ALPHA       |               |73DP 73IP                                                                                 |
+|'A'                             |LITERAL_ALPHA       |WORKING-STORAGE|44DD 47DD 14DP 55DP 14IP 55IP                                                             |
+|'B'                             |LITERAL_ALPHA       |WORKING-STORAGE|48DD 17DP 58DP 17IP 58IP                                                                  |
+|'C'                             |LITERAL_ALPHA       |WORKING-STORAGE|49DD 20DP 61DP 20IP 61IP                                                                  |
+|'COBTST02'                      |LITERAL_ALPHA       |WORKING-STORAGE|4DD                                                                                       |
+|'COBTST03'                      |LITERAL_ALPHA       |               |25DP 37DP 50DP 63DP 75DP 25IP 37IP 50IP 63IP 75IP                                         |
+|'D'                             |LITERAL_ALPHA       |WORKING-STORAGE|50DD 23DP 23IP                                                                            |
+|'T0400001'                      |LITERAL_ALPHA       |               |32DP 32IP                                                                                 |
+|'T0400002'                      |LITERAL_ALPHA       |               |35DP 35IP                                                                                 |
+|'T0410001'                      |LITERAL_ALPHA       |               |44DP 44IP                                                                                 |
+|'T0410002'                      |LITERAL_ALPHA       |               |47DP 47IP                                                                                 |
+|'TEST'                          |LITERAL_ALPHA       |WORKING-STORAGE|27DD                                                                                      |
+|'ZZ'                            |LITERAL_ALPHA       |WORKING-STORAGE|45DD                                                                                      |
+|1                               |LITERAL_NUM         |               |13DP 31DP 43DP 54DP 69DP 13IP 31IP 43IP 54IP 69IP                                         |
+|2                               |LITERAL_NUM         |               |16DP 34DP 46DP 57DP 72DP 16IP 34IP 46IP 57IP 72IP                                         |
+|3                               |LITERAL_NUM         |               |19DP 60DP 19IP 60IP                                                                       |
+|4                               |LITERAL_NUM         |               |22DP 22IP                                                                                 |
+|CSA-AREA                        |DATA_ITEM           |LINKAGE SECTION|160DD 42IP 68IP                                                                           |
+|DFHCOMMAREA                     |DATA_ITEM           |LINKAGE SECTION|141DD                                                                                     |
+|FILLER                          |DATA_ITEM           |WORKING-STORAGE|3DD 24DD 146DD 155DD 170DD                                                                |
+|LK-ADDRESS-DYN-AREA-POINTER     |DATA_ITEM           |LINKAGE SECTION|113DD 0IP                                                                                 |
+|LK-BY-SET-FILE-NAME             |DATA_ITEM           |LINKAGE SECTION|131DD                                                                                     |
+|LK-BY-SET-FILE-NAME2            |DATA_ITEM           |LINKAGE SECTION|132DD                                                                                     |
+|LK-BY-SET-MAP                   |DATA_ITEM           |LINKAGE SECTION|138DD                                                                                     |
+|LK-BY-SET-MAPSET                |DATA_ITEM           |LINKAGE SECTION|139DD                                                                                     |
+|LK-BY-SET-PGM-ID                |DATA_ITEM           |LINKAGE SECTION|136DD                                                                                     |
+|LK-BY-SET-PGM-NAME              |DATA_ITEM           |LINKAGE SECTION|134DD                                                                                     |
+|LK-BY-SET-PGM-PREFIX            |DATA_ITEM           |LINKAGE SECTION|135DD                                                                                     |
+|LK-BY-SET-PGM-SUFFIX            |DATA_ITEM           |LINKAGE SECTION|137DD                                                                                     |
+|LK-BY-SET-TRANSID               |DATA_ITEM           |LINKAGE SECTION|140DD                                                                                     |
+|LK-BY-SET-TS-NAME               |DATA_ITEM           |LINKAGE SECTION|133DD                                                                                     |
+|LK-DATA-ELAB-MENO1              |DATA_ITEM           |LINKAGE SECTION|112DD 0IP                                                                                 |
+|LK-DYNAMIC-BY-SET-ADDRESS       |DATA_ITEM           |LINKAGE SECTION|130DD                                                                                     |
+|LK-DYNAMIC-SPREADED             |DATA_ITEM           |LINKAGE SECTION|115DD 0IP                                                                                 |
+|LK-PARM                         |DATA_ITEM           |LINKAGE SECTION|109DD 0IP                                                                                 |
+|LK-PARM-LUNG                    |DATA_ITEM           |LINKAGE SECTION|110DD 0IP                                                                                 |
+|LK-SPREADED-FILE-NAME           |DATA_ITEM           |LINKAGE SECTION|116DD 0IP                                                                                 |
+|LK-SPREADED-FILE-NAME2          |DATA_ITEM           |LINKAGE SECTION|117DD 0IP                                                                                 |
+|LK-SPREADED-MAP                 |DATA_ITEM           |LINKAGE SECTION|124DD 0IP                                                                                 |
+|LK-SPREADED-MAPSET              |DATA_ITEM           |LINKAGE SECTION|125DD 0IP                                                                                 |
+|LK-SPREADED-PGM-ID              |DATA_ITEM           |LINKAGE SECTION|122DD 0IP                                                                                 |
+|LK-SPREADED-PGM-ID-T044         |DATA_ITEM           |LINKAGE SECTION|128DD 0IP                                                                                 |
+|LK-SPREADED-PGM-NAME            |DATA_ITEM           |LINKAGE SECTION|120DD 0IP                                                                                 |
+|LK-SPREADED-PGM-PREFIX          |DATA_ITEM           |LINKAGE SECTION|121DD 0IP                                                                                 |
+|LK-SPREADED-PGM-PREFIX-T044     |DATA_ITEM           |LINKAGE SECTION|127DD 0IP                                                                                 |
+|LK-SPREADED-PGM-SUFFIX          |DATA_ITEM           |LINKAGE SECTION|123DD 0IP                                                                                 |
+|LK-SPREADED-PGM-SUFFIX-0        |DATA_ITEM           |LINKAGE SECTION|114DD 0IP                                                                                 |
+|LK-SPREADED-PGM-SUFFIX-T044     |DATA_ITEM           |LINKAGE SECTION|129DD 0IP                                                                                 |
+|LK-SPREADED-TRANSID             |DATA_ITEM           |LINKAGE SECTION|126DD 0IP                                                                                 |
+|LK-SPREADED-TS-NAME             |DATA_ITEM           |LINKAGE SECTION|118DD 0IP                                                                                 |
+|LK-SPREADED-TS-NAME2            |DATA_ITEM           |LINKAGE SECTION|119DD 0IP                                                                                 |
+|LK-TIPO-ELAB                    |DATA_ITEM           |LINKAGE SECTION|111DD 0IP                                                                                 |
+|POINTER-CSA                     |DATA_ITEM           |WORKING-STORAGE|107DD 143DD 41IP 42IP 67IP 68IP                                                           |
+|POINTER-TWA                     |DATA_ITEM           |WORKING-STORAGE|106DD 142DD 29IP 30IP                                                                     |
+|T002-FLD01                      |DATA_ITEM           |WORKING-STORAGE|27DD 9IP                                                                                  |
+|T036-FLD-SINGLE                 |DATA_ITEM           |WORKING-STORAGE|6DD                                                                                       |
+|T037-DYNAMIC-SPREADED           |DATA_ITEM           |WORKING-STORAGE|12DD                                                                                      |
+|T037-FILE-NAME                  |DATA_ITEM           |WORKING-STORAGE|13DD                                                                                      |
+|T037-FLD-SINGLE                 |DATA_ITEM           |WORKING-STORAGE|7DD                                                                                       |
+|T037-PGM-NAME                   |DATA_ITEM           |WORKING-STORAGE|14DD                                                                                      |
+|T037-PGM-NAME2                  |DATA_ITEM           |WORKING-STORAGE|15DD                                                                                      |
+|T038-DYNAMIC-SPREADED           |DATA_ITEM           |WORKING-STORAGE|16DD                                                                                      |
+|T038-FILE-NAME                  |DATA_ITEM           |WORKING-STORAGE|17DD                                                                                      |
+|T038-FLD-SINGLE                 |DATA_ITEM           |WORKING-STORAGE|8DD                                                                                       |
+|T038-PGM-NAME                   |DATA_ITEM           |WORKING-STORAGE|18DD                                                                                      |
+|T038-PGM-NAME2                  |DATA_ITEM           |WORKING-STORAGE|19DD                                                                                      |
+|T039-TWA                        |DATA_ITEM           |LINKAGE SECTION|145DD 30IP                                                                                |
+|T040-DATI                       |DATA_ITEM           |WORKING-STORAGE|81DD                                                                                      |
+|T040-FILE-NAME                  |DATA_ITEM           |WORKING-STORAGE|77DD                                                                                      |
+|T040-FLD-SINGLE                 |DATA_ITEM           |WORKING-STORAGE|10DD                                                                                      |
+|T040-FLD01                      |DATA_ITEM           |WORKING-STORAGE|75DD                                                                                      |
+|T040-FLD02                      |DATA_ITEM           |WORKING-STORAGE|76DD                                                                                      |
+|T040-FLDX8                      |DATA_ITEM           |WORKING-STORAGE|11DD                                                                                      |
+|T040-IOAREA                     |DATA_ITEM           |WORKING-STORAGE|73DD                                                                                      |
+|T040-PGM-NAME                   |DATA_ITEM           |WORKING-STORAGE|78DD                                                                                      |
+|T040-PREFIX                     |DATA_ITEM           |WORKING-STORAGE|80DD                                                                                      |
+|T040-TIPO-REC                   |DATA_ITEM           |WORKING-STORAGE|74DD                                                                                      |
+|T040-TS-NAME                    |DATA_ITEM           |WORKING-STORAGE|79DD                                                                                      |
+|T040-TWA                        |DATA_ITEM           |LINKAGE SECTION|148DD 30IP                                                                                |
+|T040-TWA-FILE-NAME              |DATA_ITEM           |LINKAGE SECTION|149DD 30IP 32OP 35OP                                                                      |
+|T040-TWA-PGM-NAME               |DATA_ITEM           |LINKAGE SECTION|150DD 30IP                                                                                |
+|T041-CSA                        |DATA_ITEM           |LINKAGE SECTION|161DD 42IP 68IP 49OP                                                                      |
+|T041-CSA-COD                    |DATA_ITEM           |LINKAGE SECTION|162DD 42IP 68IP                                                                           |
+|T041-CSA-FILE-NAME              |DATA_ITEM           |LINKAGE SECTION|163DD 42IP 68IP                                                                           |
+|T041-CSA-FILE-NAME2             |DATA_ITEM           |LINKAGE SECTION|164DD 42IP 68IP                                                                           |
+|T041-WS-CSA                     |DATA_ITEM           |WORKING-STORAGE|60DD 49IP                                                                                 |
+|T041-WS-CSA-COD                 |DATA_ITEM           |WORKING-STORAGE|61DD                                                                                      |
+|T041-WS-CSA-FILE-NAME           |DATA_ITEM           |WORKING-STORAGE|62DD 44OP 47OP                                                                            |
+|T041-WS-CSA-FILE-NAME2          |DATA_ITEM           |WORKING-STORAGE|63DD                                                                                      |
+|T042-DFHCOMMAREA                |DATA_ITEM           |WORKING-STORAGE|64DD                                                                                      |
+|T042-FILE-NAME                  |DATA_ITEM           |WORKING-STORAGE|65DD                                                                                      |
+|T042-FILE-NAME2                 |DATA_ITEM           |WORKING-STORAGE|66DD                                                                                      |
+|T042-FLD-SINGLE                 |DATA_ITEM           |WORKING-STORAGE|9DD                                                                                       |
+|T042-MAP                        |DATA_ITEM           |WORKING-STORAGE|70DD                                                                                      |
+|T042-MAPSET                     |DATA_ITEM           |WORKING-STORAGE|71DD                                                                                      |
+|T042-PGM-NAME                   |DATA_ITEM           |WORKING-STORAGE|68DD                                                                                      |
+|T042-PGM-NAME2                  |DATA_ITEM           |WORKING-STORAGE|69DD                                                                                      |
+|T042-TRANSID                    |DATA_ITEM           |WORKING-STORAGE|72DD                                                                                      |
+|T042-TS-NAME                    |DATA_ITEM           |WORKING-STORAGE|67DD                                                                                      |
+|T048-CSA                        |DATA_ITEM           |LINKAGE SECTION|165DD 42IP 68IP                                                                           |
+|T048-CSA-FILE-NAME              |DATA_ITEM           |LINKAGE SECTION|166DD 42IP 68IP                                                                           |
+|T048-CSA-FILE-NAME2             |DATA_ITEM           |LINKAGE SECTION|167DD 42IP 68IP                                                                           |
+|T048-CSA-POINTER                |DATA_ITEM           |LINKAGE SECTION|168DD 42IP 68IP                                                                           |
+|T049-CSA                        |DATA_ITEM           |LINKAGE SECTION|169DD 42IP 68IP                                                                           |
+|T049-CSA-SUBFLD1                |DATA_ITEM           |LINKAGE SECTION|171DD 42IP 68IP                                                                           |
+|T049-CSA-SUBFLD2                |DATA_ITEM           |LINKAGE SECTION|172DD 42IP 68IP                                                                           |
+|T049-CSA-SUBFLD3                |DATA_ITEM           |LINKAGE SECTION|173DD 42IP 68IP                                                                           |
+|T049-CSA-SUBFLD4                |DATA_ITEM           |LINKAGE SECTION|174DD 42IP 68IP 70OP 73OP                                                                 |
+|T049-TWA                        |DATA_ITEM           |LINKAGE SECTION|151DD 30IP                                                                                |
+|T049-TWA-FILE-NAME              |DATA_ITEM           |LINKAGE SECTION|152DD 30IP                                                                                |
+|T049-TWA-FILE-NAME2             |DATA_ITEM           |LINKAGE SECTION|153DD 30IP                                                                                |
+|T049-TWA-PGM-NAME               |DATA_ITEM           |LINKAGE SECTION|147DD 30IP                                                                                |
+|T049-TWA-POINTER                |DATA_ITEM           |LINKAGE SECTION|154DD 30IP                                                                                |
+|T049-TWA-SUBFLD1                |DATA_ITEM           |LINKAGE SECTION|156DD 30IP                                                                                |
+|T049-TWA-SUBFLD2                |DATA_ITEM           |LINKAGE SECTION|157DD 30IP                                                                                |
+|T049-TWA-SUBFLD3                |DATA_ITEM           |LINKAGE SECTION|158DD 30IP                                                                                |
+|T049-TWA-SUBFLD4                |DATA_ITEM           |LINKAGE SECTION|159DD 30IP                                                                                |
+|T0XX-DATI                       |DATA_ITEM           |WORKING-STORAGE|59DD                                                                                      |
+|T0XX-FILE-NAME                  |DATA_ITEM           |WORKING-STORAGE|55DD                                                                                      |
+|T0XX-FLD01                      |DATA_ITEM           |WORKING-STORAGE|53DD                                                                                      |
+|T0XX-FLD02                      |DATA_ITEM           |WORKING-STORAGE|54DD                                                                                      |
+|T0XX-IOAREA                     |DATA_ITEM           |WORKING-STORAGE|51DD                                                                                      |
+|T0XX-PGM-NAME                   |DATA_ITEM           |WORKING-STORAGE|56DD                                                                                      |
+|T0XX-PREFIX                     |DATA_ITEM           |WORKING-STORAGE|58DD                                                                                      |
+|T0XX-TIPO-REC                   |DATA_ITEM           |WORKING-STORAGE|52DD                                                                                      |
+|T0XX-TS-NAME                    |DATA_ITEM           |WORKING-STORAGE|57DD                                                                                      |
+|TWA-AREA                        |DATA_ITEM           |LINKAGE SECTION|144DD 30IP                                                                                |
+|TXXX-88                         |DATA_ITEM           |WORKING-STORAGE|46DD                                                                                      |
+|TXXX-88-A                       |DATA_ITEM           |WORKING-STORAGE|47DD                                                                                      |
+|TXXX-88-B                       |DATA_ITEM           |WORKING-STORAGE|48DD                                                                                      |
+|TXXX-88-C                       |DATA_ITEM           |WORKING-STORAGE|49DD                                                                                      |
+|TXXX-88-D                       |DATA_ITEM           |WORKING-STORAGE|50DD                                                                                      |
+|TXXX-98                         |DATA_ITEM           |WORKING-STORAGE|21DD                                                                                      |
+|TXXX-98X                        |DATA_ITEM           |WORKING-STORAGE|22DD                                                                                      |
+|TXXX-A                          |DATA_ITEM           |WORKING-STORAGE|44DD                                                                                      |
+|TXXX-COBTST02                   |DATA_ITEM           |WORKING-STORAGE|4DD                                                                                       |
+|TXXX-FLD-SINGLE                 |DATA_ITEM           |WORKING-STORAGE|5DD 9OP                                                                                   |
+|TXXX-FLDN1                      |DATA_ITEM           |WORKING-STORAGE|39DD 13IP 16IP 19IP 22IP 31IP 34IP 43IP 46IP 54IP 57IP 60IP 69IP 72IP                     |
+|TXXX-FLDN2                      |DATA_ITEM           |WORKING-STORAGE|40DD                                                                                      |
+|TXXX-FLDN3                      |DATA_ITEM           |WORKING-STORAGE|41DD                                                                                      |
+|TXXX-FLDX1                      |DATA_ITEM           |WORKING-STORAGE|30DD                                                                                      |
+|TXXX-FLDX2                      |DATA_ITEM           |WORKING-STORAGE|31DD                                                                                      |
+|TXXX-FLDX3                      |DATA_ITEM           |WORKING-STORAGE|32DD                                                                                      |
+|TXXX-FLDX4                      |DATA_ITEM           |WORKING-STORAGE|33DD                                                                                      |
+|TXXX-FLDX5                      |DATA_ITEM           |WORKING-STORAGE|34DD                                                                                      |
+|TXXX-FLDX6                      |DATA_ITEM           |WORKING-STORAGE|35DD                                                                                      |
+|TXXX-FLDX7                      |DATA_ITEM           |WORKING-STORAGE|36DD                                                                                      |
+|TXXX-FLDX8                      |DATA_ITEM           |WORKING-STORAGE|37DD                                                                                      |
+|TXXX-FLDX82                     |DATA_ITEM           |WORKING-STORAGE|38DD                                                                                      |
+|TXXX-IOAREA                     |DATA_ITEM           |WORKING-STORAGE|29DD                                                                                      |
+|TXXX-KEY                        |DATA_ITEM           |WORKING-STORAGE|28DD                                                                                      |
+|TXXX-SPACE                      |DATA_ITEM           |WORKING-STORAGE|42DD                                                                                      |
+|TXXX-X2                         |DATA_ITEM           |WORKING-STORAGE|23DD                                                                                      |
+|TXXX-X2-RED                     |DATA_ITEM           |WORKING-STORAGE|26DD                                                                                      |
+|TXXX-X8                         |DATA_ITEM           |WORKING-STORAGE|20DD                                                                                      |
+|TXXX-X9                         |DATA_ITEM           |WORKING-STORAGE|25DD                                                                                      |
+|TXXX-ZERO                       |DATA_ITEM           |WORKING-STORAGE|43DD                                                                                      |
+|TXXX-ZZ                         |DATA_ITEM           |WORKING-STORAGE|45DD                                                                                      |
+|WS-CSA                          |DATA_ITEM           |WORKING-STORAGE|105DD                                                                                     |
+|WS-DFHCOMMAREA                  |DATA_ITEM           |WORKING-STORAGE|103DD 75IP                                                                                |
+|WS-DYNAMIC-SPREADED             |DATA_ITEM           |WORKING-STORAGE|88DD 25IP 37IP 50IP 63IP                                                                  |
+|WS-PARM                         |DATA_ITEM           |WORKING-STORAGE|82DD 25IP 37IP 50IP 63IP                                                                  |
+|WS-SPREADED-ADDRESS-DYN-AREA-POI|DATA_ITEM           |WORKING-STORAGE|86DD                                                                                      |
+|WS-SPREADED-DATA-ELAB-MENO1     |DATA_ITEM           |WORKING-STORAGE|85DD                                                                                      |
+|WS-SPREADED-FILE-NAME           |DATA_ITEM           |WORKING-STORAGE|89DD                                                                                      |
+|WS-SPREADED-FILE-NAME2          |DATA_ITEM           |WORKING-STORAGE|90DD                                                                                      |
+|WS-SPREADED-MAP                 |DATA_ITEM           |WORKING-STORAGE|97DD                                                                                      |
+|WS-SPREADED-MAPSET              |DATA_ITEM           |WORKING-STORAGE|98DD                                                                                      |
+|WS-SPREADED-PARM-LUNG           |DATA_ITEM           |WORKING-STORAGE|83DD                                                                                      |
+|WS-SPREADED-PGM-ID              |DATA_ITEM           |WORKING-STORAGE|95DD                                                                                      |
+|WS-SPREADED-PGM-ID-T044         |DATA_ITEM           |WORKING-STORAGE|101DD                                                                                     |
+|WS-SPREADED-PGM-NAME            |DATA_ITEM           |WORKING-STORAGE|93DD                                                                                      |
+|WS-SPREADED-PGM-PREFIX          |DATA_ITEM           |WORKING-STORAGE|94DD                                                                                      |
+|WS-SPREADED-PGM-PREFIX-T044     |DATA_ITEM           |WORKING-STORAGE|100DD                                                                                     |
+|WS-SPREADED-PGM-SUFFIX          |DATA_ITEM           |WORKING-STORAGE|96DD                                                                                      |
+|WS-SPREADED-PGM-SUFFIX-O        |DATA_ITEM           |WORKING-STORAGE|87DD 14OP 17OP 20OP 23OP                                                                  |
+|WS-SPREADED-PGM-SUFFIX-T044     |DATA_ITEM           |WORKING-STORAGE|102DD 55OP 58OP 61OP                                                                      |
+|WS-SPREADED-TIPO-ELAB           |DATA_ITEM           |WORKING-STORAGE|84DD                                                                                      |
+|WS-SPREADED-TRANSID             |DATA_ITEM           |WORKING-STORAGE|99DD                                                                                      |
+|WS-SPREADED-TS-NAME             |DATA_ITEM           |WORKING-STORAGE|91DD                                                                                      |
+|WS-SPREADED-TS-NAME2            |DATA_ITEM           |WORKING-STORAGE|92DD                                                                                      |
+|WS-TWA                          |DATA_ITEM           |WORKING-STORAGE|104DD                                                                                     |
+
+
+(11) *** CODICE MORTO (NON REFERENZIATO O NON RAGGIUNGIBILE) ***
+
++-Campi definiti e non utilizzati------------------------------------------------------------------------------+ 
+|DFHCOMMAREA LK-BY-SET-FILE-NAME LK-BY-SET-FILE-NAME2 LK-BY-SET-MAP LK-BY-SET-MAPSET LK-BY-SET-PGM-ID          |
+|LK-BY-SET-PGM-NAME LK-BY-SET-PGM-PREFIX LK-BY-SET-PGM-SUFFIX LK-BY-SET-TRANSID LK-BY-SET-TS-NAME              |
+|LK-DYNAMIC-BY-SET-ADDRESS T036-FLD-SINGLE T037-DYNAMIC-SPREADED T037-FILE-NAME T037-FLD-SINGLE T037-PGM-NAME  |
+|T037-PGM-NAME2 T038-DYNAMIC-SPREADED T038-FILE-NAME T038-FLD-SINGLE T038-PGM-NAME T038-PGM-NAME2 T040-DATI    |
+|T040-FILE-NAME T040-FLD-SINGLE T040-FLD01 T040-FLD02 T040-FLDX8 T040-IOAREA T040-PGM-NAME T040-PREFIX         |
+|T040-TIPO-REC T040-TS-NAME T041-WS-CSA-COD T041-WS-CSA-FILE-NAME2 T042-DFHCOMMAREA T042-FILE-NAME             |
+|T042-FILE-NAME2 T042-FLD-SINGLE T042-MAP T042-MAPSET T042-PGM-NAME T042-PGM-NAME2 T042-TRANSID T042-TS-NAME   |
+|T0XX-DATI T0XX-FILE-NAME T0XX-FLD01 T0XX-FLD02 T0XX-IOAREA T0XX-PGM-NAME T0XX-PREFIX T0XX-TIPO-REC            |
+|T0XX-TS-NAME TXXX-88 TXXX-88-A TXXX-88-B TXXX-88-C TXXX-88-D TXXX-98 TXXX-98X TXXX-A TXXX-COBTST02 TXXX-FLDN2 |
+|TXXX-FLDN3 TXXX-FLDX1 TXXX-FLDX2 TXXX-FLDX3 TXXX-FLDX4 TXXX-FLDX5 TXXX-FLDX6 TXXX-FLDX7 TXXX-FLDX8 TXXX-FLDX82|
+|TXXX-IOAREA TXXX-KEY TXXX-SPACE TXXX-X2 TXXX-X2-RED TXXX-X8 TXXX-X9 TXXX-ZERO TXXX-ZZ WS-CSA                  |
+|WS-SPREADED-ADDRESS-DYN-AREA-POINTER WS-SPREADED-DATA-ELAB-MENO1 WS-SPREADED-FILE-NAME WS-SPREADED-FILE-NAME2 |
+|WS-SPREADED-MAP WS-SPREADED-MAPSET WS-SPREADED-PARM-LUNG WS-SPREADED-PGM-ID WS-SPREADED-PGM-ID-T044           |
+|WS-SPREADED-PGM-NAME WS-SPREADED-PGM-PREFIX WS-SPREADED-PGM-PREFIX-T044 WS-SPREADED-PGM-SUFFIX                |
+|WS-SPREADED-TIPO-ELAB WS-SPREADED-TRANSID WS-SPREADED-TS-NAME WS-SPREADED-TS-NAME2 WS-TWA                     |
+
++-Istruzioni non raggiungibili---------------------------------------------------------------------------------+ 
+|Codice morto non rilevato                                                                                     | 
+
++-Section definite e non richiamate----------------------------------------------------------------------------+ 
+|Codice morto non rilevato                                                                                     | 
+
++-Label definite e non utilizzate------------------------------------------------------------------------------+ 
+|T038-EX T040-EX T041-EX T044-EX T049-EX TXXX-EX                                                               | 
+
++-Copy Data Divison definiti e non utilizzati------------------------------------------------------------------+ 
+|Codice morto non rilevato                                                                                     | 
+
++-Copy Procedure Divison definiti e non utilizzati-------------------------------------------------------------+ 
+|Codice morto non rilevato                                                                                     | 
+
+
+(12) *** GRAFO DI PROGRAMMA ***
+
+
+
+*** NODI ***
+
++Grafo+-Origine---------------------------+Nodo-+-Tipo Nodo---------------+Istr.+-Tipo Istruzione--------------+-Source (troncato)------------------------------------------+
+|Main |                                   |0    |NODE_ROOT                |0    |PROCEDURE DIVISION            |PROCEDURE DIVISION USING LK-PARM, LK-DYNAMIC-SPREADED       |
+|Main |                                   |1    |NODE_CALL_INTERNAL       |1    |PERFORM                       |PERFORM TXXX-INITIAL-ASSIGN                                 |
+|Main |                                   |2    |NODE_CALL_INTERNAL       |2    |PERFORM                       |PERFORM T038-SINGLE-MOVE-FROM-USING-PASSTHRU                |
+|Main |                                   |3    |NODE_CALL_INTERNAL       |3    |PERFORM                       |PERFORM T040-SPREADED-MOVE-FROM-CICS-TWA                    |
+|Main |                                   |4    |NODE_CALL_INTERNAL       |4    |PERFORM                       |PERFORM T041-SPREADED-MOVE-FROM-CICS-CSA                    |
+|Main |                                   |5    |NODE_CALL_INTERNAL       |5    |PERFORM                       |PERFORM T044-SINGLE-MOVE-FROM-USING                         |
+|Main |                                   |6    |NODE_CALL_INTERNAL       |6    |PERFORM                       |PERFORM T049-SPREADED-GROUP-MIXED                           |
+|Main |                                   |7    |NODE_STOP                |7    |STOP RUN|                     |STOP RUN                                                    |
+|Main |                                   |8    |NODE_END                 |     |                              |                                                            |
+
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|45   |NODE_ROOT                |12   |LABEL                         |T038-SINGLE-MOVE-FROM-USING-PASSTHRU                        |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|46   |NODE_IF_THEN             |13   |IF                            |IF TXXX-FLDN1 = 1                                           |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|47   |NODE_IF_END              |15   |END-IF                        |END-IF                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|48   |NODE_IF_THEN             |16   |IF                            |IF TXXX-FLDN1 = 2                                           |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|49   |NODE_IF_END              |18   |END-IF                        |END-IF                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|50   |NODE_IF_THEN             |19   |IF                            |IF TXXX-FLDN1 = 3                                           |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|51   |NODE_IF_END              |21   |END-IF                        |END-IF                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|52   |NODE_IF_THEN             |22   |IF                            |IF TXXX-FLDN1 = 4                                           |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|53   |NODE_IF_END              |24   |END-IF                        |END-IF                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|54   |NODE_CALL_EXTERNAL       |25   |CALL                          |CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED          |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|55   |NODE_JOIN                |26   |LABEL                         |T038-EX                                                     |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|56   |NODE_END                 |     |                              |                                                            |
+
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |9    |NODE_ROOT                |28   |LABEL                         |T040-SPREADED-MOVE-FROM-CICS-TWA                            |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |10   |NODE_IF_THEN             |31   |IF                            |IF TXXX-FLDN1 = 1                                           |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |11   |NODE_IF_END              |33   |END-IF                        |END-IF                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |12   |NODE_IF_THEN             |34   |IF                            |IF TXXX-FLDN1 = 2                                           |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |13   |NODE_IF_END              |36   |END-IF                        |END-IF                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |14   |NODE_CALL_EXTERNAL       |37   |CALL                          |CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED          |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |15   |NODE_JOIN                |38   |LABEL                         |T040-EX                                                     |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |16   |NODE_END                 |     |                              |                                                            |
+
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |17   |NODE_ROOT                |40   |LABEL                         |T041-SPREADED-MOVE-FROM-CICS-CSA                            |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |18   |NODE_IF_THEN             |43   |IF                            |IF TXXX-FLDN1 = 1                                           |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |19   |NODE_IF_END              |45   |END-IF                        |END-IF                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |20   |NODE_IF_THEN             |46   |IF                            |IF TXXX-FLDN1 = 2                                           |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |21   |NODE_IF_END              |48   |END-IF                        |END-IF                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |22   |NODE_CALL_EXTERNAL       |50   |CALL                          |CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED          |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |23   |NODE_JOIN                |51   |LABEL                         |T041-EX                                                     |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |24   |NODE_END                 |     |                              |                                                            |
+
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |32   |NODE_ROOT                |53   |LABEL                         |T044-SINGLE-MOVE-FROM-USING                                 |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |33   |NODE_IF_THEN             |54   |IF                            |IF TXXX-FLDN1 = 1                                           |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |34   |NODE_IF_END              |56   |END-IF                        |END-IF                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |35   |NODE_IF_THEN             |57   |IF                            |IF TXXX-FLDN1 = 2                                           |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |36   |NODE_IF_END              |59   |END-IF                        |END-IF                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |37   |NODE_IF_THEN             |60   |IF                            |IF TXXX-FLDN1 = 3                                           |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |38   |NODE_IF_END              |62   |END-IF                        |END-IF                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |39   |NODE_CALL_EXTERNAL       |63   |CALL                          |CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED          |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |40   |NODE_JOIN                |64   |LABEL                         |T044-EX                                                     |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |41   |NODE_END                 |     |                              |                                                            |
+
+|Sub  |T049-SPREADED-GROUP-MIXED:         |25   |NODE_ROOT                |66   |LABEL                         |T049-SPREADED-GROUP-MIXED                                   |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |26   |NODE_IF_THEN             |69   |IF                            |IF TXXX-FLDN1 = 1                                           |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |27   |NODE_IF_END              |71   |END-IF                        |END-IF                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |28   |NODE_IF_THEN             |72   |IF                            |IF TXXX-FLDN1 = 2                                           |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |29   |NODE_IF_END              |74   |END-IF                        |END-IF                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |30   |NODE_JOIN                |76   |LABEL                         |T049-EX                                                     |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |31   |NODE_END                 |     |                              |                                                            |
+
+|Sub  |TXXX-INITIAL-ASSIGN:               |42   |NODE_ROOT                |8    |LABEL                         |TXXX-INITIAL-ASSIGN                                         |
+|Sub  |TXXX-INITIAL-ASSIGN:               |43   |NODE_JOIN                |10   |LABEL                         |TXXX-EX                                                     |
+|Sub  |TXXX-INITIAL-ASSIGN:               |44   |NODE_END                 |     |                              |                                                            |
+
+
+
+*** ARCHI ***
+
++Grafo+-Sottografo------------------------+-Id--+-Ids-+-Da nodo-------------------+-A nodo--------------------+-Tipo Arco --------------+-Istruzioni nell'arco ------------------------------------------------+
+|Main |                                   |1    |1    |0 NODE_ROOT                |1 NODE_CALL_INTERNAL       |ARC_NORMAL               |                                                                      |
+|Main |                                   |3    |3    |1 NODE_CALL_INTERNAL       |2 NODE_CALL_INTERNAL       |ARC_NORMAL               |                                                                      |
+|Main |                                   |5    |5    |2 NODE_CALL_INTERNAL       |3 NODE_CALL_INTERNAL       |ARC_NORMAL               |                                                                      |
+|Main |                                   |7    |7    |3 NODE_CALL_INTERNAL       |4 NODE_CALL_INTERNAL       |ARC_NORMAL               |                                                                      |
+|Main |                                   |9    |9    |4 NODE_CALL_INTERNAL       |5 NODE_CALL_INTERNAL       |ARC_NORMAL               |                                                                      |
+|Main |                                   |11   |11   |5 NODE_CALL_INTERNAL       |6 NODE_CALL_INTERNAL       |ARC_NORMAL               |                                                                      |
+|Main |                                   |13   |13   |6 NODE_CALL_INTERNAL       |7 NODE_STOP                |ARC_NORMAL               |                                                                      |
+|Main |                                   |15   |15   |7 NODE_STOP                |8 NODE_END                 |NOT_ASSIGNED             |                                                                      |
+
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|57   |1    |45 NODE_ROOT               |46 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|58   |3    |46 NODE_IF_THEN            |47 NODE_IF_END             |ARC_TRUE                 |14                                                                    |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|59   |5    |46 NODE_IF_THEN            |47 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|60   |7    |47 NODE_IF_END             |48 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|61   |9    |48 NODE_IF_THEN            |49 NODE_IF_END             |ARC_TRUE                 |17                                                                    |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|62   |11   |48 NODE_IF_THEN            |49 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|63   |13   |49 NODE_IF_END             |50 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|64   |15   |50 NODE_IF_THEN            |51 NODE_IF_END             |ARC_TRUE                 |20                                                                    |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|65   |17   |50 NODE_IF_THEN            |51 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|66   |19   |51 NODE_IF_END             |52 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|67   |21   |52 NODE_IF_THEN            |53 NODE_IF_END             |ARC_TRUE                 |23                                                                    |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|68   |23   |52 NODE_IF_THEN            |53 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|69   |25   |53 NODE_IF_END             |54 NODE_CALL_EXTERNAL      |ARC_NORMAL               |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|70   |27   |54 NODE_CALL_EXTERNAL      |55 NODE_JOIN               |ARC_NORMAL               |                                                                      |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|71   |29   |55 NODE_JOIN               |56 NODE_END                |NOT_ASSIGNED             |                                                                      |
+
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |17   |1    |9 NODE_ROOT                |10 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |18   |3    |10 NODE_IF_THEN            |11 NODE_IF_END             |ARC_TRUE                 |32                                                                    |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |19   |5    |10 NODE_IF_THEN            |11 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |20   |7    |11 NODE_IF_END             |12 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |21   |9    |12 NODE_IF_THEN            |13 NODE_IF_END             |ARC_TRUE                 |35                                                                    |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |22   |11   |12 NODE_IF_THEN            |13 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |23   |13   |13 NODE_IF_END             |14 NODE_CALL_EXTERNAL      |ARC_NORMAL               |                                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |24   |15   |14 NODE_CALL_EXTERNAL      |15 NODE_JOIN               |ARC_NORMAL               |                                                                      |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |25   |17   |15 NODE_JOIN               |16 NODE_END                |NOT_ASSIGNED             |                                                                      |
+
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |26   |1    |17 NODE_ROOT               |18 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |27   |3    |18 NODE_IF_THEN            |19 NODE_IF_END             |ARC_TRUE                 |44                                                                    |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |28   |5    |18 NODE_IF_THEN            |19 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |29   |7    |19 NODE_IF_END             |20 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |30   |9    |20 NODE_IF_THEN            |21 NODE_IF_END             |ARC_TRUE                 |47                                                                    |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |31   |11   |20 NODE_IF_THEN            |21 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |32   |13   |21 NODE_IF_END             |22 NODE_CALL_EXTERNAL      |ARC_NORMAL               |49                                                                    |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |33   |15   |22 NODE_CALL_EXTERNAL      |23 NODE_JOIN               |ARC_NORMAL               |                                                                      |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |34   |17   |23 NODE_JOIN               |24 NODE_END                |NOT_ASSIGNED             |                                                                      |
+
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |43   |1    |32 NODE_ROOT               |33 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |44   |3    |33 NODE_IF_THEN            |34 NODE_IF_END             |ARC_TRUE                 |55                                                                    |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |45   |5    |33 NODE_IF_THEN            |34 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |46   |7    |34 NODE_IF_END             |35 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |47   |9    |35 NODE_IF_THEN            |36 NODE_IF_END             |ARC_TRUE                 |58                                                                    |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |48   |11   |35 NODE_IF_THEN            |36 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |49   |13   |36 NODE_IF_END             |37 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |50   |15   |37 NODE_IF_THEN            |38 NODE_IF_END             |ARC_TRUE                 |61                                                                    |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |51   |17   |37 NODE_IF_THEN            |38 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |52   |19   |38 NODE_IF_END             |39 NODE_CALL_EXTERNAL      |ARC_NORMAL               |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |53   |21   |39 NODE_CALL_EXTERNAL      |40 NODE_JOIN               |ARC_NORMAL               |                                                                      |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |54   |23   |40 NODE_JOIN               |41 NODE_END                |NOT_ASSIGNED             |                                                                      |
+
+|Sub  |T049-SPREADED-GROUP-MIXED:         |35   |1    |25 NODE_ROOT               |26 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |36   |3    |26 NODE_IF_THEN            |27 NODE_IF_END             |ARC_TRUE                 |70                                                                    |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |37   |5    |26 NODE_IF_THEN            |27 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |38   |7    |27 NODE_IF_END             |28 NODE_IF_THEN            |ARC_NORMAL               |                                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |39   |9    |28 NODE_IF_THEN            |29 NODE_IF_END             |ARC_TRUE                 |73                                                                    |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |40   |11   |28 NODE_IF_THEN            |29 NODE_IF_END             |ARC_FALSE                |                                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |41   |13   |29 NODE_IF_END             |30 NODE_JOIN               |ARC_NORMAL               |                                                                      |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |42   |15   |30 NODE_JOIN               |31 NODE_END                |NOT_ASSIGNED             |                                                                      |
+
+|Sub  |TXXX-INITIAL-ASSIGN:               |55   |1    |42 NODE_ROOT               |43 NODE_JOIN               |ARC_NORMAL               |9                                                                     |
+|Sub  |TXXX-INITIAL-ASSIGN:               |56   |3    |43 NODE_JOIN               |44 NODE_END                |NOT_ASSIGNED             |                                                                      |
+
+
+
+*** MATRICE ADIACENZE ***
+
++Grafo+-Sottografo------------------------+Nodo-+Istr.+-Nodi adiacenti ----------------------------------+
+|Main |                                   |0    |0    |1                                                 |
+|Main |                                   |1    |1    |2                                                 |
+|Main |                                   |2    |2    |3                                                 |
+|Main |                                   |3    |3    |4                                                 |
+|Main |                                   |4    |4    |5                                                 |
+|Main |                                   |5    |5    |6                                                 |
+|Main |                                   |6    |6    |7                                                 |
+|Main |                                   |7    |7    |8                                                 |
+|Main |                                   |8    |     |                                                  |
+
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|45   |12   |46                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|46   |13   |47 47                                             |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|47   |15   |48                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|48   |16   |49 49                                             |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|49   |18   |50                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|50   |19   |51 51                                             |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|51   |21   |52                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|52   |22   |53 53                                             |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|53   |24   |54                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|54   |25   |55                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|55   |26   |56                                                |
+|Sub  |T038-SINGLE-MOVE-FROM-USING-PASSTHR|56   |     |                                                  |
+
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |9    |28   |10                                                |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |10   |31   |11 11                                             |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |11   |33   |12                                                |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |12   |34   |13 13                                             |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |13   |36   |14                                                |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |14   |37   |15                                                |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |15   |38   |16                                                |
+|Sub  |T040-SPREADED-MOVE-FROM-CICS-TWA:  |16   |     |                                                  |
+
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |17   |40   |18                                                |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |18   |43   |19 19                                             |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |19   |45   |20                                                |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |20   |46   |21 21                                             |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |21   |48   |22                                                |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |22   |50   |23                                                |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |23   |51   |24                                                |
+|Sub  |T041-SPREADED-MOVE-FROM-CICS-CSA:  |24   |     |                                                  |
+
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |32   |53   |33                                                |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |33   |54   |34 34                                             |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |34   |56   |35                                                |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |35   |57   |36 36                                             |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |36   |59   |37                                                |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |37   |60   |38 38                                             |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |38   |62   |39                                                |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |39   |63   |40                                                |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |40   |64   |41                                                |
+|Sub  |T044-SINGLE-MOVE-FROM-USING:       |41   |     |                                                  |
+
+|Sub  |T049-SPREADED-GROUP-MIXED:         |25   |66   |26                                                |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |26   |69   |27 27                                             |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |27   |71   |28                                                |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |28   |72   |29 29                                             |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |29   |74   |30                                                |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |30   |76   |31                                                |
+|Sub  |T049-SPREADED-GROUP-MIXED:         |31   |     |                                                  |
+
+|Sub  |TXXX-INITIAL-ASSIGN:               |42   |8    |43                                                |
+|Sub  |TXXX-INITIAL-ASSIGN:               |43   |10   |44                                                |
+|Sub  |TXXX-INITIAL-ASSIGN:               |44   |     |                                                  |

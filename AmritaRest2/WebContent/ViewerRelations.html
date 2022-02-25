@@ -1,0 +1,560 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerRelations.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div  id="divRelationTable">   	
+      <table class='header'><tr>
+                 <td>Relationships</td> 
+                 <td class='counter' id='countRelation'>0</td>     
+             </tr>  
+      </table> 
+      <div id="relationTable"></div> 
+</div>
+
+<div id="divRelationOriginTable">  
+      <table class='header'><tr>
+                 <td>Relation Origin</td> 
+                 <td class='counter' id='countRelationOrigin'>0</td>     
+             </tr>  
+      </table> 
+   <div id="relationOriginTable"></div> 
+</div>
+	
+<iframe id='iframeSourceForRelations' name='iframeSourceForRelations' title="description"></iframe> 
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+const OBJECT_PGM_COBOL="1";	  			        // 01 Sorgenti Cobol
+const OBJECT_COPY_COBOL_PROC="9";	  			// 09 Sorgenti Copy Cobol Procedure Division
+const OBJECT_COPY_COBOL_DATA="10";		        // 10 Sorgenti Copy Cobol Data Division
+
+var userInp="amrita";        // Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlRelationGET = 'relation'
+var urlRelationOriginGET = 'relationOrigin'
+
+var winOpenViewer=null;      // Viewer reference
+var winOpenInspector=null;   // Inspector reference
+var objConfig=null;          // Configuration object from Viewer
+var objSelRow=null;          // Object row selected in viewer
+var jsonArray = null;        // Contains relations
+var objects=[];              // JsonArray   
+
+//To manage relation list
+var arRelationRow = [];      		// Rows objects    
+var objRelSelRow=null;        		// Info relation selected row  
+var iSelRelation=0;
+var iSelRelationOld=0;
+
+//To manage relationOrigin list
+var arRelationOriginRow = [];       // Rows objects    
+var objRelOriginSelRow=null;        // Info relationOriginselected row  
+var iSelRelationOrigin=0;
+var iSelRelationOriginOld=0;           // Info relationOriginselected row  
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+	 userInp = localStorage.getItem("user");		
+	 hostName = localStorage.getItem("hostName");		
+	 baseUrl = localStorage.getItem("baseUrl");		
+    
+	 winOpenViewer=window.opener;          // Viewer
+	 if (winOpenViewer != null) {
+	 	  objSelRow=winOpenViewer.getObjSelRow();
+	 	  objConfig=winOpenViewer.getConfig();
+	  loadRelation();
+	 }   
+ }
+ 
+function loadRelation() {
+  getJsonResponseRelation1GET(); 
+}
+
+function loadReleationOrigin() {
+  getJsonResponseRelationOriginGET();  
+}
+
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+/* Direct relationships */
+function getJsonResponseRelation1GET() {
+	var xmlhttp;
+	var sysCur = localStorage.getItem("filterObjSys");
+	var subSysCur = localStorage.getItem("filterRelSubSys");
+	var idObjectA = localStorage.getItem("filterRelIdObjectA");
+	var typeObjectA = localStorage.getItem("filterRelTypeObjectA");
+	var relation = localStorage.getItem("filterRelRelation");
+	var idObjectB = localStorage.getItem("filterRelIdObjectB");
+	var typeObjectB = localStorage.getItem("filterRelTypeObjectB");	
+	
+	var url = objConfig.baseUrl + "/" + urlRelationGET + "/" + userInp + "/" + sysCur + "/" + subSysCur + "/" + idObjectA  + "/" +  typeObjectA + "/*/" + relation + "/" + idObjectB + "/" + typeObjectB + "/*";
+
+	xmlhttp=createRequest();
+	document.getElementById("countRelation").innerHTML = "Database fetching ...";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};		                                         
+		jsonArray=JSON.parse(xmlhttp.responseText);
+		getJsonResponseRelation2GET(jsonArray)
+	   };
+}
+
+function getJsonResponseRelation2GET(jsonArray) {
+	var xmlhttp;
+	
+	var sysCur = localStorage.getItem("filterObjSys");
+	var subSysCur = localStorage.getItem("filterRelSubSys");
+	var idObjectA = localStorage.getItem("filterRelIdObjectA");
+	var typeObjectA = localStorage.getItem("filterRelTypeObjectA");
+	var relation = localStorage.getItem("filterRelRelation");
+	var idObjectB = localStorage.getItem("filterRelIdObjectB");
+	var typeObjectB = localStorage.getItem("filterRelTypeObjectB");
+	
+	var url = objConfig.baseUrl + "/" + urlRelationGET + "/" + userInp + "/" + sysCur + "/" + subSysCur + "/" + idObjectB  + "/" +  typeObjectB + "/*/" + relation + "/" + idObjectA + "/" + typeObjectA + "/*";
+
+	xmlhttp=createRequest();
+	document.getElementById("countRelation").innerHTML = "Database fetching ...";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelation2(xmlhttp, jsonArray);};
+
+}
+
+function handleJsonResponseRelation2(xmlhttp, jsonArray) {
+	 var filterRelShowReverse = localStorage.getItem("filterRelShowReverse");
+	 var filterRelShowExternal = localStorage.getItem("filterRelShowExternal");
+     var cntTot = 0;
+     var cntDiscarded = 0;
+     
+	 if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+
+     objects=JSON.parse(xmlhttp.responseText);
+     
+     // Enqueue reverse relations
+     if (filterRelShowReverse == "true") {
+         objects=jsonArray.concat(objects);
+	 } else {
+		 objects = jsonArray;
+	 }
+
+     arRelationRow = new Array(RelationRow);
+     
+     var tbltop = "<table class='clsListEntity' id='listRelations'>"
+  	          +    "<tr>"
+                +      "<th>subSys</th>"
+                +      "<th>idObjectA</th>"
+                +      "<th>typeObjectA</th>"
+                +      "<th>Relation</th>"
+                +      "<th>idObjectB</th>"
+                +      "<th>typeObjectB</th>"
+                +    "</tr>"
+     var main = "";                    
+     for (var i=0; i < objects.length; i++) {
+    	 
+           if (filterRelShowExternal == "false" && objects[i].subSystem != objects[i].subSysOwner) {
+        	   cntDiscarded++;
+               continue;
+		   }
+    	 
+ 	       main  += "<tr>"
+   	         +    "<td id='subSysRel_"         + i + "' onclick='onclick_relRow(this.id);'>" + objects[i].subSystem       + "</td>" 
+   	         +    "<td id='idObjectA_"         + i + "' onclick='onclick_relRow(this.id);'>" + objects[i].idObjectA       + "</td>" 
+   	         +    "<td id='typeObjectA_"       + i + "' onclick='onclick_relRow(this.id);'>" + objects[i].typeObjectA     + "</td>" 
+   	         +    "<td id='relation_"          + i + "' onclick='onclick_relRow(this.id);'>" + objects[i].relation        + "</td>" 
+   	         +    "<td id='idObjectB_"         + i + "' onclick='onclick_relRow(this.id);'>" + objects[i].idObjectB       + "</td>" 
+   	         +    "<td id='typeObjectB_"       + i + "' onclick='onclick_relRow(this.id);'>" + objects[i].typeObjectB     + "</td>" 
+
+   	         +  "</tr>"
+   	         
+    	   var objRelationRow = new RelationRow(
+                        objects[i].sys	 
+                       ,objects[i].subSystem	     			                           
+                       ,objects[i].idObjectA
+                       ,objects[i].typeObjectA
+                       ,objects[i].relation
+                       ,objects[i].idObjectB
+                       ,objects[i].typeObjectB
+                       ,""
+                       ,0
+                       ,0
+                       ,0
+                       ,0
+                       ,objects[i].typeObjectAOrdinal
+                       ,objects[i].relationOrdinal
+                       ,objects[i].typeObjectBOrdinal
+                       ,0
+                       ,""
+                       ,0
+                       ,0
+                     );
+               arRelationRow.push(objRelationRow);                                        
+     }         
+     var tblBottom = '</table>'
+     var tbl = tbltop + main + tblBottom;
+ 
+     document.getElementById('relationTable').innerHTML = tbl;
+     cntTot = objects.length - cntDiscarded;
+     document.getElementById("countRelation").innerHTML = cntTot;
+
+}
+
+function getJsonResponseRelationOriginGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlRelationOriginGET + "/" + objConfig.user + "/" + objRelSelRow.sys + "/" + objRelSelRow.subSys + "/" + objRelSelRow.idObjectA +  "/" + objRelSelRow.typeObjectAN + "/*/" + objRelSelRow.relationN + "/" + objRelSelRow.idObjectB + "/" + objRelSelRow.typeObjectBN + "/*" ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelationOrigin(xmlhttp);};
+	document.getElementById("countRelationOrigin").innerHTML = "Database fetching ...";	
+}  
+
+function handleJsonResponseRelationOrigin(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+	       arRelationOriginRow = new Array(RelationRow);
+		   
+	       var tbltop = "<table class='clsListEntity' id='listRelationsOrigin'>"
+	    	          +    "<tr>"
+	                  +      "<th>Id</th>"
+	                  +      "<th>Type</th>"
+	                  +      "<th>#Instr</th>"
+	                  +      "<th>#RowStart</th>"
+	                  +      "<th>#RowEnd</th>"
+	                  +      "<th>Pgm Area</th>"
+	                  +      "<th>Category</th>"
+	                  +      "<th>Source</th>"
+	                  +      "<th>Precompiler</th>"
+	                  +      "<th>In Copy</th>"
+	                  +      "<th>#RowStart</th>"
+	                  +      "<th>#RowEnd</th>"
+	                  +    "</tr>"
+		   var main = "";                 
+	       for (var i=0; i < objects.length; i++) {
+   	           
+	    	   main  += "<tr>"
+	     	         +    "<td id='idObjectOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].idObjectOrigin       + "</td>" 
+	     	         +    "<td id='typeObjectOrigin_"      + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].typeObjectOrigin     + "</td>" 
+	     	         +    "<td id='numInstrOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].numInstrOrigin       + "</td>" 
+	     	         +    "<td id='rowStartOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowStartOrigin       + "</td>" 
+	     	         +    "<td id='rowEndOrigin_"          + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowEndOrigin         + "</td>" 
+	     	         +    "<td id='instrProgramArea_"      + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].instrProgramArea     + "</td>" 
+	     	         +    "<td id='instrCategory_"         + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].instrCategory        + "</td>" 
+	     	         +    "<td id='relationSource_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].relationSource       + "</td>" 
+	     	         +    "<td id='instrTypePrecompiler_"  + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].instrTypePrecompiler + "</td>" 
+	     	         +    "<td id='copyOrigin_"  		   + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].copyOrigin           + "</td>" 
+	     	         +    "<td id='rowStartInCopy_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowStartInCopy       + "</td>" 
+	     	         +    "<td id='rowEndInCopy_"          + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowEndInCopy         + "</td>" 
+	     	         +  "</tr>"
+	     	         
+		  	     	   var objRelationOriginRow = new RelationRow(
+	                             objects[i].sys	 
+	                            ,objects[i].subSystem	
+	                            ,objects[i].idObjectA
+	                            ,objects[i].typeObjectA
+	                            ,objects[i].relation
+	                            ,objects[i].idObjectB
+	                            ,objects[i].typeObjectB
+	                            ,objects[i].idObjectOrigin	                            
+	                            ,objects[i].typeObjectOrigin
+	                            ,objects[i].numInstrOrigin
+	                            ,objects[i].rowStartOrigin
+	                            ,objects[i].rowEndOrigin	                            
+	                            ,objects[i].typeObjectAOrdinal
+	                            ,objects[i].relationOrdinal
+	                            ,objects[i].typeObjectBOrdinal
+	                            ,objects[i].typeObjectOriginOrdinal
+	                            ,objects[i].copyOrigin
+	                            ,objects[i].rowStartInCopy
+	                            ,objects[i].rowEndInCopy
+	                          );
+	                    arRelationOriginRow.push(objRelationOriginRow);                                        
+
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('relationOriginTable').innerHTML = tbl;	
+		   document.getElementById("countRelationOrigin").innerHTML = objects.length;
+    }	
+}
+
+function onclick_relRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelRelation = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelRelation != iSelRelationOld && iSelRelationOld >= 0) {
+		document.getElementById("subSysRel_"+iSelRelationOld).classList.remove("selected"); 
+		document.getElementById("idObjectA_"+iSelRelationOld).classList.remove("selected"); 
+		document.getElementById("typeObjectA_"+iSelRelationOld).classList.remove("selected"); 
+		document.getElementById("relation_"+iSelRelationOld).classList.remove("selected"); 
+		document.getElementById("idObjectB_"+iSelRelationOld).classList.remove("selected"); 
+		document.getElementById("typeObjectB_"+iSelRelationOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+	   	document.getElementById("subSysRel_"+iSelRelation).classList.add("selected"); 
+		document.getElementById("idObjectA_"+iSelRelation).classList.add("selected"); 
+		document.getElementById("typeObjectA_"+iSelRelation).classList.add("selected"); 
+		document.getElementById("relation_"+iSelRelation).classList.add("selected"); 
+		document.getElementById("idObjectB_"+iSelRelation).classList.add("selected"); 
+		document.getElementById("typeObjectB_"+iSelRelation).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelRelationOld=iSelRelation;
+    
+    // Database access and loading
+    objRelSelRow =arRelationRow[iSelRelation+1];	// Element 0 contains var names
+	loadReleationOrigin();
+
+} 
+
+function onclick_relOriginRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    var id = "";
+    var relOriginArea = "";
+     
+    iSelRelationOrigin = parseInt(clicked_id.substr(i+1));
+    id = clicked_id.substr(0, i);
+
+    // Unselect selected row
+    if (iSelRelationOrigin != iSelRelationOriginOld && iSelRelationOriginOld >= 0) {
+		document.getElementById("idObjectOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("typeObjectOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("numInstrOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrProgramArea_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrCategory_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("relationSource_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrTypePrecompiler_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("copyOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelRelationOriginOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("idObjectOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("typeObjectOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("numInstrOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowStartOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowEndOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrProgramArea_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrCategory_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("relationSource_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrTypePrecompiler_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("copyOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelRelationOrigin).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelRelationOriginOld=iSelRelationOrigin;
+    
+    // Database access and loading
+    objRelOriginSelRow = arRelationOriginRow[iSelRelationOrigin+1];				// Element 0 contains var names
+    objSelRow.rowStartOrigin = objRelOriginSelRow.rowStartOrigin;                                      
+    objSelRow.rowEndOrigin = objRelOriginSelRow.rowEndOrigin;                      
+
+    objSelRow.copyOrigin = 0;                      
+    objSelRow.rowStartInCopy = 0;                      
+    objSelRow.rowEndInCopy = "";  
+
+    relOriginArea = document.getElementById("instrProgramArea_"+iSelRelationOrigin).innerHTML;
+    relOriginArea = relOriginArea.substr(0,1);
+    
+    // Standard parameters for source
+    localStorage.setItem("sourceCaller", "ViewerRelations");
+    localStorage.setItem("sourceSubSys", objRelOriginSelRow.subSys);
+ 	localStorage.setItem("sourceIdObject", objRelOriginSelRow.idObjectOrigin);
+   	localStorage.setItem("sourceTypeObject", objRelOriginSelRow.typeObjectOrigin); 
+   	localStorage.setItem("sourceTypeObjectN", objRelOriginSelRow.typeObjectOriginN);  
+   	
+    localStorage.setItem("sourceNumInstr", document.getElementById("numInstrOrigin_"+iSelRelationOrigin).innerHTML);
+    localStorage.setItem("sourceRowStart", document.getElementById("rowStartOrigin_"+iSelRelationOrigin).innerHTML);
+    localStorage.setItem("sourceRowEnd",   document.getElementById("rowEndOrigin_"  +iSelRelationOrigin).innerHTML);    
+    localStorage.setItem("sourceUnderCopy", document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML);
+    localStorage.setItem("sourceUnderCopyRowStart", document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML);
+    localStorage.setItem("sourceUnderCopyRowEnd", document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML);
+    localStorage.setItem("sourceOriginArea", relOriginArea);
+
+    // Inspector activation
+    if (id == "numInstrOrigin") { 
+    	// Specific inspector parameters
+    	localStorage.setItem("sourceSubSys_" + objRelOriginSelRow.idObjectA, objRelOriginSelRow.subSys);
+       	localStorage.setItem("sourceIdObject_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.idObjectOrigin);
+       	localStorage.setItem("sourceTypeObject_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.typeObjectOrigin);  
+       	localStorage.setItem("sourceTypeObjectN_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.typeObjectOriginN);  
+       	
+       	localStorage.setItem("sourceNumInstr_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("numInstrOrigin_"+iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceRowStart_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("rowStartOrigin_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd_" + objRelOriginSelRow.idObjectOrigin,   document.getElementById("rowEndOrigin_"  +iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceUnderCopy_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceUnderCopyRowStart_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceUnderCopyRowEnd_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceOriginArea_" + objRelOriginSelRow.idObjectOrigin, relOriginArea);
+        // Load inspector in a new page
+    	winOpenInspector = window.open("Inspector.html", "_blank");
+    	winOpenInspector.name=objRelOriginSelRow.idObjectOrigin;
+     	return;
+	}
+    
+    // Show copy
+    if ((id == "copyOrigin" || id == "rowStartInCopy" || id == "rowEndInCopy" ) 
+    &&  (document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML != "")) {
+     	localStorage.setItem("sourceIdObject", document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML);
+        // Relazione PGM-related-XXX
+        if (objRelOriginSelRow.typeObjectAN == OBJECT_PGM_COBOL ) {
+          	localStorage.setItem("sourceTypeObject", "OBJECT_COPY_COBOL_PROC");
+           	localStorage.setItem("sourceTypeObjectN", OBJECT_COPY_COBOL_PROC); 
+        }
+        // Puo' essere solo COPY-CALL-COPY
+        else {
+          	localStorage.setItem("sourceTypeObject", "OBJECT_COPY_COBOL_DATA");
+           	localStorage.setItem("sourceTypeObjectN", OBJECT_COPY_COBOL_PROC);   
+        } 
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceIsShowPgm", "false");
+        localStorage.setItem("sourceIsIdxFileToGet", "false");
+     // Show programma
+	} else {
+    	// Impostazione parametri
+    	localStorage.setItem("sourceIdObject", objRelOriginSelRow.idObjectOrigin);
+       	localStorage.setItem("sourceTypeObject", objRelOriginSelRow.typeObjectOrigin); 
+       	localStorage.setItem("sourceTypeObjectN", objRelOriginSelRow.typeObjectOriginN);       	       	
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStartOrigin_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEndOrigin_"+iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceIsShowPgm", "true");
+        localStorage.setItem("sourceIsIdxFileToGet", "true");
+	}
+
+    // Hide sections 
+	document.getElementById("divRelationTable").style.display="none";
+	document.getElementById("divRelationOriginTable").style.display="none";
+	
+	// Show only source
+    document.getElementById("iframeSourceForRelations").style.display="block";
+	document.getElementById("iframeSourceForRelations").style.height = "100%";
+	document.getElementById("iframeSourceForRelations").style.width = "99%";
+	
+	window.open('ViewerSourceViewer.html', 'iframeSourceForRelations'); 
+
+} 
+
+function hideSource(){
+
+	// Hide
+	document.getElementById("iframeSourceForRelations").style.display="none";
+
+	// Show
+	document.getElementById("divRelationTable").style.display="block";
+	document.getElementById("divRelationOriginTable").style.display="block";
+}
+function getWinViewer() {
+	return winOpenViewer;
+}
+
+//Define relation/origin identification list information
+function RelationRow(		
+		  sys 
+		, subSys 
+		, idObjectA 
+		, typeObjectA 
+		, relation
+		, idObjectB 
+		, typeObjectB		
+		, idObjectOrigin 		
+		, typeObjectOrigin 
+		, numInstrOrigin 
+		, rowStartOrigin 
+		, rowEndOrigin 
+		, typeObjectAN
+		, relationN
+		, typeObjectBN
+		, typeObjectOriginN
+		, copyOrigin
+		, rowStartInCopy 
+		, rowEndInCopy 
+)  {
+   this.sys = sys;  
+   this.subSys = subSys;    
+   this.idObjectA = idObjectA;
+   this.typeObjectA = typeObjectA;
+   this.relation = relation;
+   this.idObjectB = idObjectB;
+   this.typeObjectB = typeObjectB;
+   this.idObjectOrigin = idObjectOrigin;
+   this.typeObjectOrigin = typeObjectOrigin;
+   this.numInstrOrigin = numInstrOrigin;
+   this.rowStartOrigin = rowStartOrigin;
+   this.rowEndOrigin = rowEndOrigin;
+   this.typeObjectAN = typeObjectAN;
+   this.relationN = relationN;
+   this.typeObjectBN = typeObjectBN;
+   this.typeObjectOriginN = typeObjectOriginN;
+   this.copyOrigin = copyOrigin;
+   this.rowStartInCopy = rowStartInCopy;
+   this.rowEndInCopy = rowEndInCopy;
+}
+</script>
+
+</html>

@@ -1,0 +1,121 @@
+#--------------------------------------------------------------------
+# Pilot sources procedura ASSEGNI Intesa San Paolo 
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+DETECT_SOURCE_TYPE_ENABLED
+UPDATE_DB_ON_SOURCE_DETECTED_ENABLED
+LIMIT_MAX_SOURCES_DISABLED
+LIMIT_MAX_SOURCES_INPUT 0
+LIMIT_MAX_SOURCES_TO_PROCESS 0
+
+#--------------------------------------------------------------------------
+#--------------------------------------------------------------------------
+# Estrazione Copy Cobol
+#--------------------------------------------------------------------------
+#--------------------------------------------------------------------------
+
+# G/GA
+SYSTEM_VALUE G
+SUB_SYSTEM_VALUE GA
+FILTER_ON_SOURCE_NAME 1 GA
+SOURCE_TYPE_COPY_COBOL_PROC 
+SOURCE_TYPE_COPY_COBOL_DATA 
+LIBRARY COPYCOB F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# G/HG
+SUB_SYSTEM_VALUE HG
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 HG
+LIBRARY COPYCOB G:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# G/GY
+SUB_SYSTEM_VALUE GY
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 GY
+LIBRARY COPYCOB G:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# G/NA
+SUB_SYSTEM_VALUE NA
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 NA
+LIBRARY COPYCOB G:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# I/P7
+SYSTEM_VALUE I
+SUB_SYSTEM_VALUE P7
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 P7
+LIBRARY COPYCOB G:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# A/VI
+SYSTEM_VALUE A
+SUB_SYSTEM_VALUE VI
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 VI
+LIBRARY COPYCOB G:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+
+
+
+#--------------------------------------------------------------------------
+#--------------------------------------------------------------------------
+# Estrazione programmi
+#--------------------------------------------------------------------------
+#--------------------------------------------------------------------------
+
+# G/GA
+SYSTEM_VALUE G
+SUB_SYSTEM_VALUE GA
+FILTER_ON_SOURCE_NAME 1 GA
+SOURCE_TYPE_EXCLUDE_ALL 
+SOURCE_TYPE_INCLUDE_ALL 
+LIBRARY SOURCE G:\SPaolo\Sources\LTM0G.SAE.SOURCE\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# G/HG
+SUB_SYSTEM_VALUE HG
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 HG
+LIBRARY SOURCE G:\SPaolo\Sources\LTM0G.SAE.SOURCE\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# G/GY
+SUB_SYSTEM_VALUE GY
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 GY
+LIBRARY SOURCE G:\SPaolo\Sources\LTM0G.SAE.SOURCE\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# G/NA
+SUB_SYSTEM_VALUE NA
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 NA
+LIBRARY SOURCE G:\SPaolo\Sources\LTM0G.SAE.SOURCE\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# I/P7
+SYSTEM_VALUE I
+SUB_SYSTEM_VALUE P7
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 P7
+LIBRARY SOURCE G:\SPaolo\Sources\LTM0I.SAE.SOURCE\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+# A/VI
+SYSTEM_VALUE A
+SUB_SYSTEM_VALUE VI
+FILTER_CLEAR
+FILTER_ON_SOURCE_NAME 1 VI
+LIBRARY SOURCE G:\SPaolo\Sources\LTM0A.SAE.SOURCE\
+END_OBJECTS_IDENTIFICATION_UNIT

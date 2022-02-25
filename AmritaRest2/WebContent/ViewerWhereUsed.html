@@ -1,0 +1,557 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerWhereUsed.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>  
+
+<div  id="divFieldsColsTable">   	
+      <table class='header'><tr>
+                 <td id='FieldsCols'>Copy Fields/Table Columns</td> 
+                 <td class='counter' id='CountCopyFieldsCols'>0</td>     
+             </tr>  
+      </table> 
+      <div id="copyFieldsColsTable"></div> 
+</div>
+
+<div id="divWhereUsedTable">  
+      <table class='header'><tr>
+                 <td>Where Used</td> 
+                 <td class='counter' id='CountWhereUsed'>0</td>     
+             </tr>  
+      </table> 
+   <div id="relationOriginTable"></div> 
+</div>
+
+<div id="divSource">   	
+    <iframe id='iframeSourceForWhereUsed' name='iframeSourceForWhereUsed' title="description"></iframe> 
+</div>
+   	
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+var userInp="amrita";        // Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlCopyEntityGET = 'copyEntityDefinition'
+var urlWhereUsedGET = 'whereUsed'
+
+var winOpenViewer=null;      // Viewer reference
+var objConfig=null;          // Configuration object from Viewer
+var objSelRow=null;          // Object row selected in viewer
+var jsonArray = null;        // Contains relations
+var objects=[];              // JsonArray   
+
+//To manage relation list
+var arFieldsColsRow = [];      		// Rows objects    
+var objFieldsColsSelRow=null;        		// Info relation selected row  
+var iSelFieldsCols=0;
+var iSelFieldsColsOld=0;
+
+//To manage relationOrigin list
+var arWhereUsedOriginRow = [];       // Rows objects    
+var objWhereUsedOriginSelRow=null;      // Info relationOriginselected row  
+var iSelWhereUsedOrigin=0;
+var iSelWhereUsedOriginOld=0;           // Info relationOriginselected row  
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+
+  userInp = localStorage.getItem("user");		
+  hostName = localStorage.getItem("hostName");		
+  baseUrl = localStorage.getItem("baseUrl");		
+
+  winOpenViewer=window.opener;          // Viewer
+  if (winOpenViewer != null) {
+  	  objConfig=winOpenViewer.getConfig();
+  	  objSelRow=winOpenViewer.getObjSelRow();
+  }   
+
+  winOpenViewer=window.opener;
+  if (winOpenViewer != null) {
+	  if (objSelRow.typeObjectN == 10) {
+		  document.getElementById("FieldsCols").innerHTML = "Copy Fields";
+	  } else if (objSelRow.typeObjectN == 15) {
+		  document.getElementById("FieldsCols").innerHTML = "Sql Table Columns";
+	  } else {
+		  document.getElementById("FieldsCols").innerHTML = "Not defined";
+	  }
+	  loadCopyEntityFields();
+  }    
+}
+
+function getWinViewer() {
+	  return winOpenViewer;
+}
+
+function loadCopyEntityFields() {
+  getJsonResponseCopyEntityFieldsGET(); 
+}
+
+function loadWhereUsedOrigin() {
+  getJsonResponseWhereUsedOriginGET();  
+}
+
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+/* Fields */
+function getJsonResponseCopyEntityFieldsGET() {
+	var xmlhttp;
+	
+	var curSys = localStorage.getItem("filterObjSys");
+	var curSubSys = localStorage.getItem("filterWusdSubSys");
+	var curIdObject = localStorage.getItem("filterWusdIdObject");
+	var curTypeObject = localStorage.getItem("filterWusdTypeObject");
+	var url = objConfig.baseUrl + "/" + urlCopyEntityGET + "/"+ userInp + "/" + curSys + "/" + curSubSys + "/" + curIdObject +  "/" + curTypeObject  ;
+
+	xmlhttp=createRequest();
+	document.getElementById("CountCopyFieldsCols").innerHTML = "Database fetching ...";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseCopyEntityFields(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseCopyEntityFields(xmlhttp, jsonArray) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+	       arFieldsColsRow = new Array(FieldsColsRow);
+	       
+	       var tbltop = "<table class='clsListEntity' id='listCopyFieldsCols'>"
+ 	          +    "<tr>"
+              +      "<th>Copy</th>"
+              +      "<th>#</th>"
+              +      "<th>Field</th>"
+              +      "<th>Lvl</th>"
+              +      "<th>Occ</th>"
+              +      "<th>Lng</th>"
+              +      "<th>Pos</th>"
+              +      "<th>Int</th>"
+              +      "<th>Dec</th>"
+              +      "<th>Sign</th>"
+              +      "<th>Grp</th>"
+              +      "<th>ItemLng</th>"
+              +      "<th>ItemType</th>"
+              +      "<th>Digit</th>"
+              +      "<th>Scale</th>"
+              +      "<th>NotNull</th>"
+              +      "<th>WithDflt</th>"
+              +      "<th>Dflt</th>"
+              +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+    	       main  += "<tr>"
+	     	         +    "<td id='idObject_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].idObject     + "</td>"
+	     	         +    "<td id='numSeq_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numSeq       + "</td>" 
+	     	         +    "<td id='idField_"       + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].idField      + "</td>" 
+	     	         +    "<td id='level_"         + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].level        + "</td>" 
+	     	         +    "<td id='occurs_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].occurs       + "</td>" 
+	     	         +    "<td id='lngBytes_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].lngBytes     + "</td>" 
+	     	         +    "<td id='pos_"           + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].lngBytes     + "</td>" 
+	     	         +    "<td id='numInt_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numInt       + "</td>" 
+	     	         +    "<td id='numDec_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numDec       + "</td>" 
+	     	         +    "<td id='signed_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].signed       + "</td>" 
+	     	         +    "<td id='groupField_"    + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].groupField   + "</td>" 
+	     	         +    "<td id='itemLang_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].itemLang     + "</td>" 
+	     	         +    "<td id='itemType_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].itemType     + "</td>" 
+	     	         +    "<td id='numDigit_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numDigit     + "</td>" 
+	     	         +    "<td id='scale_"         + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].scale        + "</td>" 
+	     	         +    "<td id='notNull_"       + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].notNull      + "</td>" 
+	     	         +    "<td id='withDefault_"   + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].withDefault  + "</td>" 
+	     	         +    "<td id='defaultValue_"  + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].defaultValue + "</td>" 
+	     	         +  "</tr>"
+	     	         
+	  	     	   var objFieldsColsRow = new FieldsColsRow(
+                             objects[i].sys	 
+                            ,objects[i].subSystem	     			                           
+                            ,objects[i].idObject                           
+                            ,objects[i].typeObject                           
+                            ,objects[i].idField    
+                            ,objects[i].numSeq   
+                            ," "     // idObjectRefer
+                            ,0       // typeObjectRefer
+                            ,0       // numInstrRefer
+                            ,0       // rowStart
+                            ,0       // rowEnd
+                            ," "     // idObjectCopy
+                            ,0       // rowStartInCopy
+                            ,0       // rowEndInCopy
+                            ,objects[i].typeObjectOrdinal  
+                            ,0       // typeObjectReferN
+                                                 );
+                    arFieldsColsRow.push(objFieldsColsRow);                                        
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		  
+	       document.getElementById('copyFieldsColsTable').innerHTML = tbl;
+		   document.getElementById("CountCopyFieldsCols").innerHTML = objects.length;
+    }	
+}
+
+function getJsonResponseWhereUsedOriginGET() {
+	var xmlhttp;
+	var idObjectRefer = "*";                  // Programma                  
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlWhereUsedGET + "/" + userInp + "/" + objFieldsColsSelRow.sys + "/" + "*" + "/" + objFieldsColsSelRow.idObject + "/" + objFieldsColsSelRow.typeObjectN + "/" + objFieldsColsSelRow.idField + "/" +idObjectRefer ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseWhereUsedOrigin(xmlhttp);};
+	document.getElementById("CountWhereUsed").innerHTML = "Database fetching ...";	
+}  
+
+function handleJsonResponseWhereUsedOrigin(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+	       arWhereUsedOriginRow = new Array();
+		   
+	       var tbltop = "<table class='clsListEntity' id='listWhereUsedOrigin'>"
+	    	          +    "<tr>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>Pgm</th>"
+	                  +      "<th>#Inst</th>"
+	                  +      "<th>#RowStart</th>"
+	                  +      "<th>#RowEnd</th>"
+	                  +      "<th>typeWhereUsed</th>"
+	                  +      "<th>typeAlias</th>"
+	                  +      "<th>InCopy</th>"
+	                  +      "<th>#RowStart</th>"
+	                  +      "<th>#RowEnd</th>"
+	                  +      "<th>Local</th>"
+	                  +      "<th>Ioarea</th>"
+	                  +      "<th>Pos</th>"
+	                  +      "<th>usedBytes</th>"
+	                  +      "<th>Int</th>"
+	                  +      "<th>Dec</th>"
+	                  +      "<th>signed</th>"
+	                  +      "<th>instrType</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           
+	    	   main  += "<tr>"
+	     	         +    "<td id='subSys_"           + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].subSystem     + "</td>" 
+	     	         +    "<td id='idObjectRefer_"    + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].idObjectRefer + "</td>" 
+	     	         +    "<td id='numInstrRefer_"    + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].numInstrRefer + "</td>" 
+	     	         +    "<td id='rowStart_"         + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowStart      + "</td>" 
+	     	         +    "<td id='rowEnd_"           + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowEnd        + "</td>" 
+	     	         +    "<td id='typeWhereUsed_"    + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].typeWhereUsed + "</td>" 
+	     	         +    "<td id='typeAlias_"        + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].typeAlias     + "</td>" 
+	     	         +    "<td id='idObjectCopy_"     + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].idObjectCopy  + "</td>" 
+	     	         +    "<td id='rowStartInCopy_"   + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowStartInCopy+ "</td>" 
+	     	         +    "<td id='rowEndInCopy_"     + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowEndInCopy  + "</td>"      	         
+	     	         +    "<td id='idAliasLocal_"     + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].idAliasLocal  + "</td>" 
+	     	         +    "<td id='idIoarea_"         + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].idIoarea      + "</td>" 
+	     	         +    "<td id='posInIoarea_"      + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].posInIoarea   + "</td>" 
+	     	         +    "<td id='usedBytes_"        + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].usedBytes     + "</td>" 
+	     	         +    "<td id='numIntWhsd_"       + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].numInt        + "</td>" 
+	     	         +    "<td id='numDecWhsd_"       + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].numDec        + "</td>" 
+	     	         +    "<td id='signedWhsd_"       + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].signed        + "</td>" 
+	     	         +    "<td id='instrType_"        + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].instrType     + "</td>" 
+	     	         +  "</tr>"
+	     	         
+		  	     	   var objRelationOriginRow = new FieldsColsRow(
+	                              objects[i].sys	 
+	                             ,objects[i].subSystem	     			                           
+	                             ,objects[i].idObject                           
+	                             ,objects[i].typeObject                           
+	                             ,objects[i].idField    
+	                             ,objects[i].numSeq   
+	                             ,objects[i].idObjectRefer
+	                             ,objects[i].typeObjectRefer
+	                             ,objects[i].numInstrRefer
+	                             ,objects[i].rowStart
+	                             ,objects[i].rowEnd
+	                             ,objects[i].idObjectCopy
+	                             ,objects[i].rowStartInCopy
+	                             ,objects[i].rowEndInCopy
+	                             ,objects[i].typeObjectOrdinal 
+	                             ,objects[i].typeObjectReferOrdinal
+	                                       );
+	                    arWhereUsedOriginRow.push(objRelationOriginRow);                                        
+
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('relationOriginTable').innerHTML = tbl;	
+		   document.getElementById("CountWhereUsed").innerHTML = objects.length;
+    }	
+}
+
+function onclick_fldColumnRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelFieldsCols = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelFieldsCols != iSelFieldsColsOld && iSelFieldsColsOld >= 0) {
+		document.getElementById("idObject_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numSeq_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("idField_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("level_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("occurs_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("lngBytes_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("pos_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numInt_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numDec_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("signed_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("groupField_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("itemLang_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("itemType_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numDigit_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("scale_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("notNull_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("withDefault_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("defaultValue_"+iSelFieldsColsOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("idObject_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numSeq_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("idField_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("level_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("occurs_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("lngBytes_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("pos_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numInt_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numDec_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("signed_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("groupField_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("itemLang_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("itemType_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numDigit_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("scale_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("notNull_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("withDefault_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("defaultValue_"+iSelFieldsCols).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelFieldsColsOld=iSelFieldsCols;
+    
+    // Database access and loading
+    objFieldsColsSelRow =arFieldsColsRow[iSelFieldsCols+1];	// Element 0 contains var names
+	loadWhereUsedOrigin();
+
+} 
+
+function onclick_whereUsedOriginRow(clicked_id) {
+	var winOpenInspector = null;
+	var idFieldSel = "";
+    var idProgram = "";
+    var i = clicked_id.indexOf("_");
+    var isCopyToShow = false;
+    
+    iSelWhereUsedOrigin = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelWhereUsedOrigin != iSelWhereUsedOriginOld && iSelWhereUsedOriginOld >= 0) {
+		document.getElementById("subSys_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("idObjectRefer_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("numInstrRefer_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStart_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEnd_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("idObjectCopy_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("idAliasLocal_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("idIoarea_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("typeWhereUsed_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("typeAlias_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("posInIoarea_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("usedBytes_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("numIntWhsd_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("numDecWhsd_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("signedWhsd_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("instrType_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("subSys_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("numInstrRefer_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowStart_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowEnd_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("idObjectCopy_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("idAliasLocal_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("idIoarea_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("typeWhereUsed_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("typeAlias_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("posInIoarea_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("usedBytes_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("numIntWhsd_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("numDecWhsd_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("signedWhsd_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("instrType_"+iSelWhereUsedOrigin).classList.add("selected"); 		
+    }
+	
+    // Info origin
+    objWhereUsedOriginSelRow =arWhereUsedOriginRow[iSelWhereUsedOrigin];	 
+    idFieldSel = clicked_id.substr(0, i);
+    idProgram = document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).innerHTML;
+	
+    // Click on instruction, Inspector activation
+    if (idFieldSel == "numInstrRefer") {
+    	// Impostazione parametri
+    	localStorage.setItem("sourceCaller", "ViewerWhereUsed");
+        localStorage.setItem("sourceIdObject_" + idProgram, document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceSubSys_" + idProgram, objWhereUsedOriginSelRow.subSys);
+        localStorage.setItem("sourceTypeObject_" + idProgram, objWhereUsedOriginSelRow.typeObjectRefer);
+        localStorage.setItem("sourceTypeObjectN_" + idProgram, objWhereUsedOriginSelRow.typeObjectReferN);
+        localStorage.setItem("sourceNumInstr_" + idProgram, document.getElementById("numInstrRefer_"+iSelWhereUsedOrigin).innerHTML);       
+        localStorage.setItem("sourceRowStart_" + idProgram, document.getElementById("rowStart_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd_" + idProgram, document.getElementById("rowEnd_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceUnderCopy_" + idProgram, objWhereUsedOriginSelRow.underCopy);
+        localStorage.setItem("sourceUnderCopyRowStart_" + idProgram, objWhereUsedOriginSelRow.underCopyRowStart);
+        localStorage.setItem("sourceUnderCopyRowEnd_" + idProgram, objWhereUsedOriginSelRow.underCopyRowEnd);
+    	winOpenInspector = window.open("Inspector.html", "_blank");
+    	winOpenInspector.name=idProgram;
+    	return;
+	}
+    
+    // Show source parameters  
+    localStorage.setItem("sourceCaller", "ViewerWhereUsed");
+    localStorage.setItem("sourceNumInstr", document.getElementById("numInstrRefer_"+iSelWhereUsedOrigin).innerHTML);
+    localStorage.setItem("sourceSubSys", objWhereUsedOriginSelRow.subSys);
+
+    // Show copy 
+    if ((clicked_id == "idObjectCopy_"+iSelWhereUsedOrigin && document.getElementById("idObjectCopy_"+iSelWhereUsedOrigin).innerHTML != "")
+	||  (clicked_id == "rowStartInCopy_"+iSelWhereUsedOrigin && document.getElementById("rowStartInCopy_"+iSelWhereUsedOrigin).innerHTML != "")
+	||  (clicked_id == "rowEndInCopy_"+iSelWhereUsedOrigin && document.getElementById("rowEndInCopy_"+iSelWhereUsedOrigin).innerHTML != "")
+        ) {
+    	localStorage.setItem("sourceIdObject", document.getElementById("idObjectCopy_"+iSelWhereUsedOrigin).innerHTML);
+       	localStorage.setItem("sourceTypeObject", objWhereUsedOriginSelRow.typeObjectRefer);
+       	localStorage.setItem("sourceTypeObjectN", objWhereUsedOriginSelRow.typeObjectReferN);
+        localStorage.setItem("sourceIsShowPgm", "false");
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStartInCopy_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEndInCopy_"+iSelWhereUsedOrigin).innerHTML);    
+    //Show programma
+	} else {
+        localStorage.setItem("sourceIdObject", document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceTypeObject", objWhereUsedOriginSelRow.typeObjectRefer);
+        localStorage.setItem("sourceTypeObjectN", objWhereUsedOriginSelRow.typeObjectReferN);
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStart_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEnd_"+iSelWhereUsedOrigin).innerHTML);
+		localStorage.setItem("sourceIsShowPgm", "true");
+	}
+	localStorage.setItem("sourceIsIdxFileToGet", "true");
+	
+    // For next selection
+    iSelWhereUsedOriginOld=iSelWhereUsedOrigin;
+     
+    // Hide sections 
+	document.getElementById("divFieldsColsTable").style.display="none";
+	document.getElementById("divWhereUsedTable").style.display="none";
+	
+ 	// Show only source
+ 	document.getElementById("iframeSourceForWhereUsed").style.display="block";
+	document.getElementById("iframeSourceForWhereUsed").style.height = "100%";
+	document.getElementById("iframeSourceForWhereUsed").style.width = "99%";
+	
+	window.open('ViewerSourceViewer.html', 'iframeSourceForWhereUsed'); 
+} 
+
+function hideSource(){
+
+	// Hide
+	document.getElementById("iframeSourceForWhereUsed").style.display="none";
+
+	// Show
+	document.getElementById("divFieldsColsTable").style.display="block";
+	document.getElementById("divWhereUsedTable").style.display="block";
+}
+
+
+
+
+// Custom objects for fields/columns+whereUsed row
+function FieldsColsRow(		
+		  sys 
+		, subSys 
+		, idObject 
+		, typeObject
+        , idField
+		, numSeq            // Where Used
+		, idObjectRefer     // Where Used
+		, typeObjectRefer   // Where Used
+		, numInstrRefer     // Where Used
+		, rowStart          // Where Used
+		, rowEnd            // Where Used
+		, idObjectCopy      // Where Used
+		, rowStartInCopy    // Where Used
+		, rowEndInCopy      // Where Used
+		, typeObjectN
+		, typeObjectReferN
+)  {
+   this.sys = sys;  
+   this.subSys = subSys;    
+   this.idObject = idObject;
+   this.typeObject = typeObject;
+   this.idField = idField;
+   this.numSeq = numSeq;
+   this.idObjectRefer = idObjectRefer;
+   this.typeObjectRefer = typeObjectRefer;
+   this.numInstrRefer = numInstrRefer;
+   this.rowStart = rowStart;
+   this.rowEnd = rowEnd;
+   this.idObjectCopy = idObjectCopy;
+   this.rowStartInCopy = rowStartInCopy;
+   this.rowEndInCopy = rowEndInCopy;
+   this.typeObjectN = typeObjectN;
+   this.typeObjectReferN = typeObjectReferN;
+}
+
+
+</script>
+
+</html>

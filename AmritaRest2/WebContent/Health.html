@@ -1,0 +1,364 @@
+<html>
+<head>
+<title>AmritaMap</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="Health.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<table  id='mainTable'>
+
+    <!-- Prima riga con testata -->
+    <tr id='mainTableRowHeader'>
+       <td colspan="3"> 
+          <div>
+			  <table id='headerLineTable'>
+				  <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Health</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id=logout>logout</td>
+					             <td id='linkMain'  align="right"><a href="AmritaSite/pages/index.html">Info</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+				  </tr>
+			  </table>          
+          </div>
+       </td>
+    </tr>
+    
+    <!-- Seconda riga con grafico a sinistra pilot in centro e lista oggetti a destra  --> 
+    <tr id='mainTableRowBody'>
+    
+       <!-- Sezione sinistra selezione a sinistra -->
+       <td id='tdKpi'>
+          <div class='divHeader'>KPI Selection</div>
+          <select  id='selKpi' name="selKpi" onChange="onChangeSelKpi()"></select><br>
+          <select  id='selSubSys' name="selSubSys" onChange="onChangeSelSubSys()"></select><br>
+          <select  id='selPgm' name="selPgm" onChange="onChangeSelPgm()"></select>
+          <input   id='btnProcess' name="btnProcess" type="button" onClick="onClickBtnProcess()" value='Graph Generation'></input>                   
+          <input   id='btnConfig' name="btnConfig" type="button" onClick="onClickBtnConfig()" value='Quality Configurator'></input>                   
+       </td>
+       
+       <!-- Sezione centrale grafica -->
+       <td id='tdGraph'>          
+          <div id='divGraph'> 
+              <div
+				id="myChart" style="width:100%; max-width:600px; height:500px;">
+			  </div>
+          
+          </div>     
+       </td> 
+       
+       <!-- Sezione a destra programmi  -->
+       <td id='tdPgm'>          
+           <div id='divPgm'> 
+          </div>     
+       </td> 
+       
+    </tr>
+     
+</table>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+"use strict";
+
+// Inizio
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+var data = google.visualization.arrayToDataTable([
+  ['Contry', 'Mhl'],
+  ['OK',54.8],
+  ['Minor',48.6],
+  ['Major',44.4],
+  ['Critical',23.9],
+  ['Blocking',14.5]
+]);
+
+var options = {
+  'legend' :'center',
+  title:'Quality ',
+  is3D:true,
+  'width':600,
+  'height':500
+};
+
+var chart = new google.visualization.PieChart(document.getElementById('myChart'));
+  chart.draw(data, options);
+}
+// Fine
+const OBJECT_PGM_COBOL = "1";  	        					// 01 Sorgenti Cobol  
+
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlUserGET = 'user';
+var urlEnumGET = 'enum';
+var urlSubSysGET = 'subsys';                                // Sottosistemi definiti nel sistema
+var urlPgmsOwnedGET  = 'objectsOwned';                      // Programmi posseduti dal sottosistema selezionato
+var userInp="";
+var sys = "";
+var subSys = "";
+var company = "";
+var typeObjectShared = "";
+
+var arSubSys = [];                	// Sottosistemi applicativi
+var arPgmSubSys = [];               // Programmi owned da sottosistema
+var curSys = "";
+var curSubSys = "";
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    afterLoaded();
+	}
+}
+
+
+function afterLoaded() {
+// 	adjustLayout();
+	userInp = localStorage.getItem("user");		
+	curSys = localStorage.getItem("sys");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");	
+	company = localStorage.getItem("company");	
+    
+	loadComboSubSys();
+	loadComboKpi();
+} 
+
+/*
+ * Caricamento combo sottosistema
+ */
+function loadComboSubSys() {
+	var objects = [] ;
+	var xmlhttp;
+	var url;
+    var main = ""; 
+    var subSysDesc = "";
+    var i = 0;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlSubSysGET + "/"+ userInp 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+		objects=JSON.parse(xmlhttp.responseText);
+		arSubSys = objects;
+		
+		selSubSys.disable=true;
+		while (selSubSys.length != 0) {
+			selSubSys.remove(0);		
+		}
+	
+	     // Scan rows from server
+	     for (var i=0; i < objects.length; i++) {
+	    	 
+	    	 if (objects[i].idObject == "") {continue;}
+	    	 
+	         subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+	         if (subSysDesc != "") {
+	        	subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+	     	 }
+	         
+	         selSubSys.add(new Option(subSysDesc, subSysDesc));
+	     } 
+	     selSubSys.disable=false;
+	};
+} 
+
+/*
+ * Caricamento combo KPI indicators
+ */
+ function loadComboKpi() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+  	var url = baseUrl + "/" + urlEnumGET + "/" + userInp + "/" + "EnumMetricsQualityKpi";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		var enums=JSON.parse(xmlhttp.responseText);
+		selKpi.disable=true;
+		while (selKpi.length != 0) {
+			selKpi.remove(0);		
+		}
+	    for (var i=0; i < enums.length; i++) {
+	 	    var value = enums[i].ordinal + " " + enums[i].value;
+	 	    if (value.indexOf("FREE") > 0) {continue;}
+	 	    
+	 	    selKpi.add(new Option(value, value));
+	    }
+	    selKpi.disable=false;			
+	}
+}
+
+ /*
+  * Caricamento programmi del sottosistema in combo
+  */
+ function onChangeSelSubSys() { 
+ 	var objects = null;
+    var subSysFull = "";
+    var ar = [];
+    
+ 	// Estrae subsys
+ 	subSysFull = selSubSys.value;
+ 	ar = subSysFull.split(" ");
+ 	curSubSys = ar[0];
+ 	
+ 	// Load programs
+ 	var xmlhttp;
+ 	var url;
+ 	
+ 	xmlhttp=createRequest();
+     url = baseUrl + "/" + urlPgmsOwnedGET + "/"+ userInp + "/" + curSys + "/"+ curSubSys + "/" + OBJECT_PGM_COBOL; 
+ 	
+ 	xmlhttp.open("GET", url, true);
+     xmlhttp.onprogress = function () {
+     	if (xmlhttp.status!=200){
+     	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+     	}   
+     };
+ 	xmlhttp.send(null);
+ 	xmlhttp.onreadystatechange = function() {		
+ 		
+ 	    var i = 0;
+ 	    
+ 		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+ 		objects=JSON.parse(xmlhttp.responseText);
+ 		arPgmSubSys = objects;
+
+ 		selPgm.disable=true;
+ 		while (selPgm.length != 0) {
+ 			selPgm.remove(0);		
+ 		}
+
+ 		selPgm.add(new Option("", ""));
+ 		
+ 	    // Scan rows from server
+ 	    for (var i=0; i < objects.length; i++) {
+  	    	 selPgm.add(new Option(objects[i].idObject, objects[i].idObject));
+ 	    }   
+ 	    selPgm.disable=false;
+ 	    
+ 	    // Attivazione contesto primo programma in combo
+ 	    if (objects.length > 0) {
+ 	    	onChangeSelPgm();
+ 		}
+ 	};
+}
+
+
+function onChangeSelPgm() {
+	
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function onClickBtnConfig() {
+  window.open("ViolationConfig.html","_blank");
+}
+
+
+/* set properties not working just with CSS */
+function adjustLayout() {
+	var maxHeight = "";
+	var maxHeightN = "";
+	var div1 = "";
+	var div1Height = "";
+	var div1HeightN = 0;
+	var div2 = "";
+	var div2Height = "";
+	var div2HeightN = 0;
+	var div3 = "";
+	var div3Height = "";
+	var div3HeightN = 0;
+	var div4 = "";
+	var div4Height = "";
+	var div4HeightN = 0;
+	var div5 = "";
+	var div5Height = "";
+	var div5HeightN = 0;
+	
+	var newHeightN = "";
+	var newHeightT = "";
+	var x = 0;
+	var y = 0;
+
+	maxHeight = document.getElementById("mainTable").clientHeight;
+	maxHeightN = parseInt(maxHeight);
+	
+	// Pgm structure box
+	div1 = document.getElementById("mainTableRowHeader");
+	div1Height = div1.clientHeight;
+	div1HeightN = parseInt(div1Height)
+	div2 = document.getElementById("headerSystem");
+	div2Height = div2.offsetHeight;
+	div2HeightN = parseInt(div2Height)
+	div3 = document.getElementById("divLeftTop");
+	div3Height = div3.offsetHeight;
+	div3HeightN = parseInt(div3Height)
+	div4 = document.getElementById("divMenu");
+	div4Height = div4.offsetHeight;
+	div4HeightN = parseInt(div4Height)
+	div5 = document.getElementById("countObjectsShared");
+	div5Height = div5.offsetHeight;
+	div5HeightN = parseInt(div5Height)
+	
+	newHeightN = maxHeightN - div1HeightN - div2HeightN
+	newHeightT = newHeightN.toString() + "px";
+	
+ 	document.getElementById ( "divLeftTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divCenterTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divRightTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdLeftArrow" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdRightArrow" ).style.maxHeight = newHeightT;	
+
+	newHeightN = maxHeightN - div1HeightN - div2HeightN - div4HeightN - div5HeightN;
+	newHeightT = newHeightN.toString() + "px";
+	
+	document.getElementById ( "divObjList" ).style.maxHeight = newHeightT;	
+
+}
+
+
+</script>
+</body>
+</html>

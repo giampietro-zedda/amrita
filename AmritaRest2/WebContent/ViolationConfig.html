@@ -1,0 +1,654 @@
+<html>
+<head>
+<title>AmritaMap</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="ViolationConfig.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<table  id='mainTable'>
+
+    <!-- Prima riga con testata -->
+    <tr id='mainTableRowHeader'>
+       <td colspan="2"> 
+          <div>
+			  <table id='headerLineTable'>
+				  <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Quality Configurator</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id=logout>logout</td>
+					             <td id='linkMain'  align="right"><a href="AmritaSite/pages/index.html">Info</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+				  </tr>
+			  </table>          
+          </div>
+       </td>
+    </tr>
+    
+    <!-- Seconda riga con grafico a sinistra pilot in centro e lista oggetti a destra  --> 
+    <tr id='mainTableRowBody'>
+    
+       <!-- Sezione sinistra con violazioni -->
+       <td id='tdViolations'>
+          <div class='divHeader'>Selection</div>
+          
+          <table id='tbViolationsSel'>
+            <tr>
+              <td class='tdHeaderLeft'>Subsys</td>
+              <td><select  id='selSubSys' name="selSubSys" onChange="onChangeSelSubSys()"></select></td>
+            </tr>
+            <tr>
+              <td class='tdHeaderLeft'>Configuration</td>
+              <td><select  id='selIdConfig' 	  name="selIdConfig" 	   onChange="onChangeIdConfig()"></select></td>
+            </tr>
+            <tr>
+              <td class='tdHeaderLeft'>Quality Factor</td>
+              <td><select  id='selQualityFactor'  name="selQualityFactor"  onChange="onChangeQualityFactor()"></select></td>
+            </tr>
+            <tr>
+              <td class='tdHeaderLeft'>Quality Characteristic</td>
+              <td><select  id='selQualityCharacteristic' name="selQualityCharacteristic" onChange="onChangeCharacteristic()"></select></td>
+            </tr>
+          </table>
+          <div class='divHeader'>Violations</div>
+          <div id='divTbViolationRule'>
+          </div>
+        </td>
+       
+       <!-- Sezione destra dettaglio qualità -->
+       <td id='tdDetail'> 
+          <div class='divHeader'>Detail</div>         
+          <div id='divDetail'>
+            <table id='tbDetail'>
+               <tr id='trDetailQuality'>
+                  <td id='tdDetailQualityFactor'>
+                    <div class=divHeaderLight>Quality Factor</div>
+		            <div id='divDetailQualityFactor'>
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_1"></input>Portability</pre> 
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_2"></input>Maintenability</pre> 
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_3"></input>Security</pre> 
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_4"></input>Efficiency</pre> 
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_5"></input>Changeability</pre> 
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_6"></input>Reliability</pre> 
+		              <pre class='preQuality'><input type="checkbox" class='classChkbx' id="qual_7"></input>Testability</pre> 
+		            </div> 
+                  </td>
+                  <td id='tdDetailQualityCharacteristic'>
+                    <div class=divHeaderLight>Quality Characteristic</div>
+                    <div id='divDetailQualityCharacteristic'>
+                       <table>
+                          <tr>
+                             <td>
+                             	<input type="checkbox" class='classChkbx' id="char_8"></input>Compiler<br>
+                            	<input type="checkbox" class='classChkbx' id="char_9"></input>Hardware<br>
+                            	<input type="checkbox" class='classChkbx' id="char_10"></input>Software<br>
+                            	<input type="checkbox" class='classChkbx' id="char_11"></input>Language<br>
+                            	<input type="checkbox" class='classChkbx' id="char_12"></input>Operating System<br>
+                            	<input type="checkbox" class='classChkbx' id="char_13"></input>Time Zone<br>
+                            	<input type="checkbox" class='classChkbx' id="char_14"></input>Readability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_15"></input>Understandability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_16"></input>Api Abuse<br>
+                              </td>
+                             <td>
+                            	<input type="checkbox" class='classChkbx' id="char_17"></input>Errors<br>
+                            	<input type="checkbox" class='classChkbx' id="char_18"></input>Input Validation<br>
+                            	<input type="checkbox" class='classChkbx' id="char_19"></input>Features<br>
+                            	<input type="checkbox" class='classChkbx' id="char_20"></input>Memory Use<br>
+                            	<input type="checkbox" class='classChkbx' id="char_21"></input>Processor Use<br>
+                            	<input type="checkbox" class='classChkbx' id="char_22"></input>Architecture Changeability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_23"></input>Data Changeability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_24"></input>Logic Changeability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_25"></input>Architecture Reliability<br>
+                             </td>
+                             <td>
+                            	<input type="checkbox" class='classChkbx' id="char_26"></input>Data Reliability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_27"></input>Exception Handling<br>
+                            	<input type="checkbox" class='classChkbx' id="char_28"></input>Fault Tolerance<br>
+                            	<input type="checkbox" class='classChkbx' id="char_29"></input>Instruction<br>
+                            	<input type="checkbox" class='classChkbx' id="char_30"></input>logic reliability<br>
+                            	<input type="checkbox" class='classChkbx' id="char_31"></input>Syncronization<br>
+                            	<input type="checkbox" class='classChkbx' id="char_32"></input>Unit Tests<br>
+                           	    <input type="checkbox" class='classChkbx' id="char_33"></input>Integration Level<br>
+                           	    <input type="checkbox" class='classChkbx' id="char_34"></input>Unit Level<br>
+                             </td>
+                          </tr>
+                       </table>
+		            </div>                   
+                  </td>
+               </tr>
+               
+               <tr id='trDetailRemediation'>
+                   <td id='tdDetailRemediation' colspan="2">
+                      <table id='tbDetailRemediation'>
+                        <tr>
+                             <td id='tdRemediationSeverity'>
+                                <div class='divHeaderLight'>Severity</div>
+                                <table id='tbRemediationSeverity'>
+	                                <tr><td><input type="checkbox" class='classChkbx' id="severity_1"></input>A_Info</td></tr>
+	                                <tr><td><input type="checkbox" class='classChkbx' id="severity_2"></input>B_Minor</td></tr>
+	                                <tr><td><input type="checkbox" class='classChkbx' id="severity_3"></input>C_Major</td></tr>
+	                                <tr><td><input type="checkbox" class='classChkbx' id="severity_4"></input>D_Critical</td></tr>
+	                                <tr><td><input type="checkbox" class='classChkbx' id="severity_5"></input>E_Blocking</td></tr>
+                                </table>
+                            </td>
+                            <td id='tdRemediationType'>
+                              <div class=divHeaderLight>Unit</div>
+	                              <table id='tbRemediationType'>
+		                              <tr><td><input type="checkbox" class='classChkbx' id="type_1"></input>Fixed </td></tr>
+		                              <tr><td><input type="checkbox" class='classChkbx' id="type_2"></input>Linear</td></tr>
+                                  </table>
+                            </td>
+                            <td id='tdRemediationCost'>
+                              <div class='divHeaderLight'>Cost</div>
+                              <table id='tbRemediationCost'>
+	                              <tr><td><input type="checkbox" class='classChkbx' id="unit_1"></input>Minute</td></tr>
+	                              <tr><td><input type="checkbox" class='classChkbx' id="unit_2"></input>Hour</td></tr>
+	                              <tr><td><input type="checkbox" class='classChkbx' id="unit_3"></input>Day</td></tr>
+	                              <tr><td><input type="checkbox" class='classChkbx' id="unit_4"></input>Month</td></tr>
+	                              <tr><td id='remediationCost'>0</td></tr>
+	                          </table>
+                           </td>
+                           <td id='tdRemediationThreshold'>
+                              <div class='divHeaderLight'>Threshold</div>
+                                 <table id='tbThreshold'>
+                                   <tr>
+                                      <td class='thresholdHdr'>id</td>
+                                      <td id='thresholdId' class='thresholdCom'></td>
+                                    </tr>
+                                   <tr>
+                                      <td class='thresholdHdr'>Range</td>
+                                      <td id='thresholdRange' class='thresholdCom'></td>
+                                    </tr>
+                                   <tr>
+                                      <td class='thresholdHdr'>Low</td>
+                                      <td id='thresholdLow' class='thresholdCom'></td>
+                                    </tr>
+                                   <tr>
+                                      <td class='thresholdHdr'>High</td>
+                                      <td id='thresholdHigh' class='thresholdCom'></td>
+                                    </tr>
+                                 </table>
+                           </td>
+                        </tr>   
+                      </table>
+                  </td>
+               </tr>
+               
+               <tr id='trDetailMaintEstim'>
+                  <td id='tdDetailMaintEstim' colspan="2">
+                     <div class=divHeaderLight>Impact Maintenance Estimation Time</div>
+                </td>
+               </tr>
+            </table>
+          </div>     
+       </td> 
+        
+    </tr>
+     
+</table>
+
+
+<script type="text/javascript">
+"use strict";
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlUserGET = 'user';
+var urlEnumGET = 'enum';
+var urlSubSysGET = 'subsys';                                			// Sottosistemi definiti nel sistema
+var urlPgmsOwnedGET  = 'objectsOwned';                      			// Programmi posseduti dal sottosistema selezionato
+var urlQualityConfigurationsGET  = 'qualityConfigurations'; 			// All configNames in MetricViolationConfig
+var urlViolationConfigurationGET = "metricViolationConfiguration";		// Violation rules
+
+var userInp="";
+var curSys = "";
+var curSubSys = "";
+var curConfigName = "";
+var curQualityFactor = "";
+var curQualityCharacteristic = "";
+
+var company = "";
+
+var arSubSys = [];    	            						// Sottosistemi in combo box
+var arViolation = [];    	            				    // Tutte le violazioni del sottosistema
+
+var iSelViolation = "";                
+var iSelViolationOld = "999";            
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    afterLoaded();
+	}
+}
+
+
+function afterLoaded() {
+// 	adjustLayout();
+	userInp = localStorage.getItem("user");		
+	curSys = localStorage.getItem("sys");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");	
+	company = localStorage.getItem("company");	
+//	document.getElementById("companyDesc").innerHTML = company;
+    
+	loadComboSubSys(loadComboIdConfig, loadTbViolationRule);
+	loadComboByEnum(selQualityFactor, "EnumMetricsQualityFactors")
+	loadComboByEnum(selQualityCharacteristic, "EnumMetricsQualityCharacteristics")
+} 
+
+/*
+ * Caricamento combo sottosistema
+ */
+function loadComboSubSys(loadComboIdConfig, loadTbViolationRule) {
+	var objects = [] ;
+	var xmlhttp;
+	var url;
+    var main = ""; 
+    var subSysDesc = "";
+    var arWrk = [];
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlSubSysGET + "/"+ userInp 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+		objects=JSON.parse(xmlhttp.responseText);
+		arSubSys = objects;
+		
+		selSubSys.disable=true;
+		while (selSubSys.length != 0) {
+			selSubSys.remove(0);		
+		}
+	
+	     // Scan rows from server
+	     for (var i=0; i < objects.length; i++) {
+	    	 
+	    	 if (objects[i].idObject == "") {continue;}
+	    	 
+	         subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+	         if (subSysDesc != "") {
+	        	subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+	     	 }
+	         
+	         selSubSys.add(new Option(subSysDesc, subSysDesc));
+	     } 
+	     selSubSys.disable=false;
+	     
+	     arWrk = selSubSys.value.split(" ");
+	     curSubSys = arWrk[0];
+	     loadComboIdConfig(loadTbViolationRule);
+	};
+} 
+
+/*
+ * Caricamento combo con le configurazioni definite per il sottosistema
+ */
+function loadComboIdConfig(loadTbViolationRule) {
+	var objects = [] ;
+	var xmlhttp;
+	var url;
+	    
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlQualityConfigurationsGET + "/"+ userInp + "/"+ curSys + "/"+ curSubSys
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+		objects=JSON.parse(xmlhttp.responseText);
+		selIdConfig.disable=true;
+		while (selIdConfig.length != 0) {
+			selIdConfig.remove(0);		
+		}
+	
+	    // Scan rows from server
+	    for (var i=0; i < objects.length; i++) {
+	    	selIdConfig.add(new Option(objects[i].configName, objects[i].configName));
+	    } 
+	    selIdConfig.disable=false;
+		
+	    curConfigName = selIdConfig.value;
+	    
+	    loadTbViolationRule();
+	};
+	
+}
+
+
+/*
+ * Caricamento combo da enumeration
+ */
+function loadComboByEnum(oSel, enumName) {
+	var xmlhttp;
+	xmlhttp=createRequest();
+  	var url = baseUrl + "/" + urlEnumGET + "/" + userInp + "/" + enumName;
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		var enums=JSON.parse(xmlhttp.responseText);
+		oSel.disable=true;
+		while (oSel.length != 0) {
+			oSel.remove(0);		
+		}
+	    for (var i=0; i < enums.length; i++) {
+	 	    var value = enums[i].ordinal + " " + enums[i].value;
+	 	    if (value.indexOf("FREE") > 0) {continue;}
+	 	    if (value.substr(0, 5) == "0 NOT") {
+	 	    	value = "";
+			}
+	 	    oSel.add(new Option(value, value));
+	    }
+	    oSel.disable=false;			
+	}
+}
+
+function onChangeSelSubSys() {
+	var arWrk = [];
+    arWrk = selSubSys.value.split(" ");
+    curSubSys = arWrk[0];
+    loadComboIdConfig(loadTbViolationRule);
+}
+
+function onChangeIdConfig() {
+	curConfigName = selIdConfig.value;
+	curQualityFactor = "";
+	curQualityCharacteristic = "";
+	loadTbViolationRule();
+}
+
+function onChangeQualityFactor() {	
+	var arWrk = [];
+	arWrk = selQualityFactor.value.split(" ");
+	curQualityFactor = arWrk[0];
+	loadTbViolationRule();
+}
+
+function onChangeCharacteristic() {
+	var arWrk = [];
+	arWrk = selQualityCharacteristic.value.split(" ");
+	curQualityCharacteristic=arWrk[0];
+	loadTbViolationRule();
+}
+
+/*
+ * Tabella rviolazioni
+ */
+function loadTbViolationRule() {
+	var xmlhttp;
+	var objects = null;
+	var violation = {};
+    var tbltop = "";
+    var main = ""; 
+	var tblBottom = "";
+	var tbl = "";	
+	var typeViolation = "*";
+	var qualityFactor = "";
+	var qualityCharacteristic = "";
+	var ruleNum = "";
+    var i = 0;
+	
+    // Nessuna configurazione attiva
+    if (curConfigName == "") {
+		return;
+	}
+    
+    qualityFactor = curQualityFactor
+    if (curQualityFactor == "") {
+    	qualityFactor = "*";
+	}
+    qualityCharacteristic = curQualityCharacteristic;
+    if (curQualityCharacteristic == "") {
+    	qualityCharacteristic = "*";
+	}
+    
+    
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlViolationConfigurationGET + "/" + userInp + "/" + curSys  + "/" + curSubSys + "/" + curConfigName + "/" + typeViolation + "/" + qualityFactor + "/" + qualityCharacteristic;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	   return;
+    	}   
+    }; 
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		
+		objects=JSON.parse(xmlhttp.responseText);
+		
+		// Solo se ci sono tutte le violazioni, ordinate per numero
+		if (qualityFactor == "*" &&  qualityCharacteristic == "*") {
+			arViolation = objects;
+		}
+		
+	    tbltop = "<table id='tbViolationRule' >"
+	             + "<tr>"
+	               + "<th>Rule Name</th>"
+	               + "<th>Enabled</th>"
+	           + "</tr>";
+	    main = ""; 
+	    	
+    	// Scan violation rules
+    	for (i=0; i < objects.length; i++) {
+    		 violation = objects[i];
+    		 ruleNum = violation.violationDesc.substr(1, 4);
+    		 main  += "<tr class='trViolationRule'>"
+				   +    "<td id='ruleDesc_"    + ruleNum  + "' class='tdViolationRule' onclick='onclick_violation(this.id)' >"  + violation.violationDesc + "</td>" 
+				   +    "<td id='ruleEnabled_" + ruleNum  + "' class='tdViolationEnabled'>" + violation.isRuleEnabled + "</td>" 
+    		       +  "</tr>";
+    	}   
+	    	
+    	tblBottom = '</table>'
+    	tbl = tbltop + main + tblBottom;	 
+    	document.getElementById('divTbViolationRule').innerHTML = tbl;	 
+	
+	};	
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function onClickBtnConfig() {
+  window.open("ViolationConfig.html","_blank");
+}
+
+/*
+ * - Gestione selezione/deselezione
+ * - Recupero descrittore violazione
+ * - Popolamento dettaglio violazione
+ */
+function onclick_violation(clicked_id) {
+	var violation = {};
+	var control = null;
+	var rule = "";
+	var ruleNum = 0;
+	var i =0;
+	
+	i = clicked_id.indexOf("_");
+	rule = clicked_id.substr(i+1, 5);
+	ruleNum = rule.substr(0);
+	
+    control = document.getElementById("ruleDesc_" + iSelViolationOld);
+    if (control != null) {
+	    document.getElementById("ruleDesc_" + iSelViolationOld).classList.remove("selected");
+	    document.getElementById("ruleEnabled_" + iSelViolationOld).classList.remove("selected");
+	}
+    document.getElementById("ruleDesc_"    + ruleNum).classList.add("selected"); 
+    document.getElementById("ruleEnabled_" + ruleNum).classList.add("selected");
+ 
+    // Imposta per nuova selezione
+    iSelViolationOld = ruleNum;	
+    
+    // Valorizzazione dettaglio violazione
+    i = parseInt(ruleNum);
+    violation = arViolation[i];
+    
+    // Uncheck quality factors
+    document.getElementById("qual_1").checked=false;
+    document.getElementById("qual_2").checked=false;
+    document.getElementById("qual_3").checked=false;
+    document.getElementById("qual_4").checked=false;
+    document.getElementById("qual_5").checked=false;
+    document.getElementById("qual_6").checked=false;
+    document.getElementById("qual_7").checked=false;
+    
+    // Quality factor
+    if (violation.qualityFactorOrdinal == 1) {document.getElementById("qual_1").checked=true;}
+    if (violation.qualityFactorOrdinal == 2) {document.getElementById("qual_2").checked=true;}
+    if (violation.qualityFactorOrdinal == 3) {document.getElementById("qual_3").checked=true;}
+    if (violation.qualityFactorOrdinal == 4) {document.getElementById("qual_4").checked=true;}
+    if (violation.qualityFactorOrdinal == 5) {document.getElementById("qual_5").checked=true;}
+    if (violation.qualityFactorOrdinal == 6) {document.getElementById("qual_6").checked=true;}
+    if (violation.qualityFactorOrdinal == 7) {document.getElementById("qual_7").checked=true;}
+    
+    // Uncheck/Check Characteristic
+    for (var i = 8; i < 35; i++) {
+        document.getElementById("char_" + i).checked = false;
+	}
+    document.getElementById("char_" + violation.qualityCharacteristicOrdinal).checked = true;
+
+    // Uncheck/Check severity
+    document.getElementById("severity_1").checked = false;
+    document.getElementById("severity_2").checked = false;
+    document.getElementById("severity_3").checked = false;
+    document.getElementById("severity_4").checked = false;
+    document.getElementById("severity_5").checked = false;
+    document.getElementById("severity_" + violation.violationSeverityOrdinal).checked = true;
+    
+    // Uncheck/Check type
+    document.getElementById("type_1").checked = false;
+    document.getElementById("type_2").checked = false;
+    if (violation.ruleTypeOrdinal > 0) {
+    	document.getElementById("type_" + violation.ruleTypeOrdinal).checked = true;
+	}
+ 
+    // Uncheck/Check unit
+    document.getElementById("unit_1").checked = false;
+    document.getElementById("unit_2").checked = false;
+    document.getElementById("unit_3").checked = false;
+    document.getElementById("unit_4").checked = false;
+    document.getElementById("unit_" + violation.remediationUnitOrdinal).checked = true;
+    if (violation.remediationCost > 0) {
+        document.getElementById("remediationCost").innerHTML = violation.remediationCost;
+	}
+
+    // Threshold
+    if (violation.threshold) {
+    	document.getElementById("thresholdId").innerHTML = violation.threshold;
+	}
+    document.getElementById("thresholdRange").innerHTML = violation.thresholdGood;
+    document.getElementById("thresholdLow").innerHTML = violation.thresholdLow;
+    document.getElementById("thresholdHigh").innerHTML = violation.thresholdHigh;
+}
+
+/* set properties not working just with CSS */
+function adjustLayout() {
+	var maxHeight = "";
+	var maxHeightN = "";
+	var div1 = "";
+	var div1Height = "";
+	var div1HeightN = 0;
+	var div2 = "";
+	var div2Height = "";
+	var div2HeightN = 0;
+	var div3 = "";
+	var div3Height = "";
+	var div3HeightN = 0;
+	var div4 = "";
+	var div4Height = "";
+	var div4HeightN = 0;
+	var div5 = "";
+	var div5Height = "";
+	var div5HeightN = 0;
+	
+	var newHeightN = "";
+	var newHeightT = "";
+	var x = 0;
+	var y = 0;
+
+	maxHeight = document.getElementById("mainTable").clientHeight;
+	maxHeightN = parseInt(maxHeight);
+	
+	// Pgm structure box
+	div1 = document.getElementById("mainTableRowHeader");
+	div1Height = div1.clientHeight;
+	div1HeightN = parseInt(div1Height)
+	div2 = document.getElementById("headerSystem");
+	div2Height = div2.offsetHeight;
+	div2HeightN = parseInt(div2Height)
+	div3 = document.getElementById("divLeftTop");
+	div3Height = div3.offsetHeight;
+	div3HeightN = parseInt(div3Height)
+	div4 = document.getElementById("divMenu");
+	div4Height = div4.offsetHeight;
+	div4HeightN = parseInt(div4Height)
+	div5 = document.getElementById("countObjectsShared");
+	div5Height = div5.offsetHeight;
+	div5HeightN = parseInt(div5Height)
+	
+	newHeightN = maxHeightN - div1HeightN - div2HeightN
+	newHeightT = newHeightN.toString() + "px";
+	
+ 	document.getElementById ( "divLeftTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divCenterTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divRightTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdLeftArrow" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdRightArrow" ).style.maxHeight = newHeightT;	
+
+	newHeightN = maxHeightN - div1HeightN - div2HeightN - div4HeightN - div5HeightN;
+	newHeightT = newHeightN.toString() + "px";
+	
+	document.getElementById ( "divObjList" ).style.maxHeight = newHeightT;	
+
+}
+
+
+</script>
+</body>
+</html>

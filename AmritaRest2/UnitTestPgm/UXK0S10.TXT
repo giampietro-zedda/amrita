@@ -1,0 +1,865 @@
+       IDENTIFICATION DIVISION.
+      **************************
+       PROGRAM-ID.   UXK0S10.
+       DATE-WRITTEN. 06-2005.
+       AUTHOR.       SISTEMI INFORMATIVI
+      ******************************************************************
+      *             *** KAMS - OPERATIVITA' CARTE E POS ***            *
+      *      *****************************************************     *
+      *      PREPARAZIONE SETUP PER LE STRUTTURE UXSTRKH E UXST50H     *
+      ******************************************************************
+      *                                                                *
+      *  FILE DI INPUT                                                 *
+      *   - SKSETUP   PARAMETRI DI SETUP                               *
+      *   - CARDSI    OPERATIVITA' CARTE                               *
+      *   - CIRCPOS   OPERATIVITA' POS                                 *
+      *                                                                *
+      *  FILE DI OUTPUT                                                *
+      *   - UXK0S10S  PARAMETRI DI SETUP VALORIZZATI                   *
+      *   - UXK0S11S  FILE SPIA PER RIFACIMENTI                        *
+      *                                                                *
+      ******************************************************************
+061005*INSERITA IMPOSTAZIONE VARIABILE DTELAB PER LA PROCED. DI PRELOAD
+061005*(IN CASO DI RIFACIMENTI IN ESSA BISOGNA IMPOSTARE IL MESE SUCCES.
+061005*A QUELLO DA RIELABORARE , ALTRIMENTI SI LASCIA DFTACPUA)
+061005*TALE DATA VIENE USATA PER CALCOLARE I PERIODI CHE VENGONO ELIMINA
+061005*TI DALLA TABELLA
+      ******************************************************************
+       ENVIRONMENT DIVISION.
+      ******************************************************************
+       CONFIGURATION SECTION.
+      ************************
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+      ***********************
+       FILE-CONTROL.
+      *
+           SELECT SKSETUP   ASSIGN SKSETUP   STATUS ST-SKSETUP.
+           SELECT CARDSI    ASSIGN CARDSI    STATUS ST-CARDSI.
+           SELECT CIRCPOS   ASSIGN CIRCPOS   STATUS ST-CIRCPOS.
+      *
+           SELECT UXK0S10S  ASSIGN UXK0S10S  STATUS ST-UXK0S10S.
+           SELECT UXK0S11S  ASSIGN UXK0S11S  STATUS ST-UXK0S11S.
+
+      ******************************************************************
+       DATA DIVISION.
+      ******************************************************************
+       FILE SECTION.
+      ***************
+      *
+       FD  SKSETUP
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  REC-SKSETUP                   PIC  X(80).
+      *
+       FD  CARDSI
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  REC-CARDSI                    PIC  X(600).
+      *
+       FD  CIRCPOS
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  REC-CIRCPOS                   PIC  X(630).
+      *
+      *
+      *
+       FD  UXK0S10S
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  REC-UXK0S10S                  PIC  X(80).
+      *
+       FD  UXK0S11S
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  REC-UXK0S11S                  PIC  X(80).
+
+
+       WORKING-STORAGE SECTION.
+      **************************
+
+      * ---- STATUS DEI FILES
+      *
+       01 FILLER.
+          05 ST-SKSETUP                  PIC X(02) VALUE SPACE.
+             88 FINE-SKSETUP                       VALUE '10'.
+          05 ST-CARDSI                   PIC X(02) VALUE SPACE.
+             88 FINE-CARDSI                        VALUE '10'.
+          05 ST-CIRCPOS                  PIC X(02) VALUE SPACE.
+             88 FINE-CIRCPOS                       VALUE '10'.
+          05 ST-UXK0S10S                 PIC X(02) VALUE SPACE.
+          05 ST-UXK0S11S                 PIC X(02) VALUE SPACE.
+
+
+      * ---- CAMPI DI COMODO
+      *
+       01 FILLER.
+          05 WS-CTR-SKSETUP              PIC 9(13) COMP-3 VALUE ZERO.
+          05 WS-CTR-CARDSI               PIC 9(13) COMP-3 VALUE ZERO.
+          05 WS-CTR-CIRCPOS              PIC 9(13) COMP-3 VALUE ZERO.
+          05 WS-CTR-UXK0S10S             PIC 9(13) COMP-3 VALUE ZERO.
+          05 WS-CTR-UXK0S11S             PIC 9(13) COMP-3 VALUE ZERO.
+      *
+          05 WS-DATA-CARTE               PIC X(06) VALUE SPACE.
+061005    05 WS-DATA-CARTE-9 REDEFINES WS-DATA-CARTE.
+061005       10  WS-DATA-CARTE-9-AAAA    PIC  9(04).
+061005       10  WS-DATA-CARTE-9-MM      PIC  9(02).
+
+          05 WS-DATA-POS                 PIC X(06) VALUE SPACE.
+
+061005    01 WS-DATA-COMODO.
+061005       10  WS-SSAA-COMODO      PIC  9(04) VALUE ZEROES.
+061005       10  WS-MM-COMODO        PIC  9(02) VALUE ZEROES.
+      *
+      * ---- MESSAGGI
+      *
+       01 FILLER.
+          05 WS-MSG-DUMP.
+             10 FILLER                   PIC X(10) VALUE 'ERRORE IN '.
+             10 WS-MSG-OPER              PIC X(05).
+             10 FILLER                   PIC X(12) VALUE ' - SUL FILE '.
+             10 WS-MSG-FILE              PIC X(20).
+             10 FILLER                   PIC X(10) VALUE ' - STATUS '.
+             10 WS-MSG-RETC              PIC X(02).
+      *
+          05 WS-MSG-DUMP2.
+             10 WS-MSG-DESC              PIC X(32) VALUE SPACE.
+             10 FILLER                   PIC X(09) VALUE ' - CARTE '.
+             10 WS-MSG-DATA-CARTE        PIC X(06).
+             10 FILLER                   PIC X(07) VALUE ' - POS '.
+             10 WS-MSG-DATA-POS          PIC X(06).
+      *
+          05 WS-MSG-DUMP3.
+             10 FILLER                   PIC X(26) VALUE
+                                         '*** PER MESI PRECEDENTI A '.
+             10 WS-MSG-DATA-ELAB         PIC X(06).
+             10 FILLER                   PIC X(26) VALUE
+                                         ' UTILIZZARE TIPO ELAB: RIF'.
+      *
+          05 WS-MSG-PARM.
+             10 FILLER                   PIC X(37) VALUE
+                               '*** SCHEDA PARAMETRO ---> TIPO ELAB: '.
+             10 WS-MSG-ELAB-PARM         PIC X(03).
+             10 FILLER                   PIC X(09) VALUE ' - DATA: '.
+             10 WS-MSG-DATA-PARM         PIC X(08).
+061005*
+061005 01  WS-MSG-ERR-DT-PARM.
+061005     05 FILLER                     PIC  X(28)  VALUE
+061005              '*** DATA ERRATA           = '.
+061005     05 WS-MSG-DT-PARM             PIC  X(08).
+061005*
+061005 01  WS-MSG-ZKZZM11.
+061005     05 FILLER                   PIC  X(28)  VALUE
+061005              '* RET.CODE MODULO ZKZZM11 = '.
+061005     05 WS-MSG-ZK11-RC           PIC  X(01).
+
+
+      * ---- CAMPI
+      *
+       01 FILLER.
+          05 WS-REC-02.
+             10 FILLER                   PIC X(23) VALUE
+                                         'EDIT /DATA=AAAAMM/DATA='.
+             10 WS-REC02-DATA            PIC X(06).
+             10 FILLER                   PIC X(01) VALUE '/'.
+             10 FILLER                   PIC X(50) VALUE SPACE.
+      *
+          05 WS-REC-03.
+             10 FILLER                   PIC X(27) VALUE
+                                         'EDIT /DTRIF=AAAAMMGG/DTRIF='.
+             10 WS-REC03-DATA            PIC X(08).
+             10 FILLER                   PIC X(01) VALUE '/'.
+             10 FILLER                   PIC X(44) VALUE SPACE.
+      *
+          05 WS-REC-04.
+             10 FILLER                   PIC X(44) VALUE
+                'EDIT /REG=''A00S00T00M12''/REG=''A00S00T00M00''/'.
+             10 FILLER                   PIC X(36) VALUE SPACE.
+      *
+061005    05 WS-REC-05.
+061005       10 FILLER                   PIC X(29) VALUE
+061005                                 'EDIT /DTELAB=DFTACPUA/DTELAB='.
+061005       10 WS-REC05-DATA            PIC X(08).
+061005       10 FILLER                   PIC X(01) VALUE '/'.
+061005       10 FILLER                   PIC X(42) VALUE SPACE.
+
+
+      * ---- TRACCIATI DI INPUT
+      *
+       01 WS-SKSETUP                     PIC X(80) VALUE SPACE.
+      *
+       01 WS-CARDSI.
+          05 FILLER                      PIC X(32)  VALUE SPACE.
+   ********* LA DATA (AAAA-MM-GG) E' FINE MESE DI CALENDARIO
+          05 WS-CARDSI-DATA              PIC X(10)  VALUE SPACE.
+          05 FILLER                      PIC X(558) VALUE SPACE.
+      *
+       01 WS-CIRCPOS.
+          05 FILLER                      PIC X(07)  VALUE SPACE.
+   ********* LA DATA (AAAAMMGG) E' FINE MESE LAVORATIVO
+          05 WS-CIRCPOS-DATA             PIC X(08)  VALUE SPACE.
+          05 FILLER                      PIC X(615) VALUE SPACE.
+
+
+      * ---- TRACCIATI DI OUTPUT
+      *
+       01 WS-UXK0S10S                    PIC X(80) VALUE SPACE.
+      *
+       01 WS-UXK0S11S.
+          05 FILLER                      PIC X(12) VALUE 'RIFACIMENTO '.
+          05 WS-UXK0S11S-DATA            PIC X(06).
+          05 FILLER                      PIC X(62) VALUE SPACE.
+
+
+      * ---- COPY PER ROUTINE STATISTICHE E SEGNALAZIONI
+      *
+       01 FILLER                         PIC X(08) VALUE 'UXZZW00'.
+          COPY UXZZW00.
+      *
+061005*TRACCIATO PER UTILITY DATE (ZKZZM11)
+061005 01  FILLER               PIC X(16) VALUE '*** ZKZZW11C ***'.
+061005     COPY ZKZZW11C.
+061005*
+
+
+       LINKAGE SECTION.
+      ******************
+       01 LK-PARM.
+          05 LK-PARM-LUNG                PIC S9(04) COMP.
+          05 LK-TIPO-ELAB                PIC X(03).
+          05 LK-DATA-ELAB-MENO1          PIC X(06).
+
+      ******************************************************************
+       PROCEDURE DIVISION USING LK-PARM.
+      ******************************************************************
+      *
+           PERFORM A00-OPERAZIONI-INIZIALI  THRU A00-EX
+      *
+           PERFORM C00-CONTROLLA-DATE       THRU C00-EX
+           PERFORM D00-PREPARA-DATE         THRU D00-EX
+      *
+           PERFORM E00-ELABORAZIONE         THRU E00-EX
+             UNTIL FINE-SKSETUP
+      *
+           PERFORM Z00-OPERAZIONI-FINALI    THRU Z00-EX
+      *
+           STOP RUN.
+      *
+      *
+      ******************************************************************
+       A00-OPERAZIONI-INIZIALI.
+      ******************************************************************
+      *
+           PERFORM X10-OPEN-STAT         THRU X10-EX
+           PERFORM A10-PREPARA-STAT      THRU A10-EX
+           PERFORM A20-CONTROLLA-PARM    THRU A20-EX
+      *
+           PERFORM R10-OPEN-SKSETUP      THRU R10-EX
+           PERFORM R20-OPEN-CARDSI       THRU R20-EX
+           PERFORM R30-OPEN-CIRCPOS      THRU R30-EX
+           PERFORM S10-OPEN-UXK0S10S     THRU S10-EX
+      *
+           PERFORM R11-READ-SKSETUP      THRU R11-EX
+             UNTIL WS-SKSETUP(1:6) = '/LOGON' OR FINE-SKSETUP
+
+           IF FINE-SKSETUP
+              MOVE '*** SKSETUP - VUOTO ***'  TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF
+      *
+           PERFORM R21-READ-CARDSI       THRU R21-EX
+
+           IF FINE-CARDSI
+              MOVE ZERO                        TO WS-CARDSI-DATA
+              MOVE '*** CARDSI - VUOTO ***'   TO UXZZW00-TB-RIGA(1)
+              PERFORM X40-SEGNALA-STAT   THRU X40-EX
+           END-IF
+      *
+           PERFORM R31-READ-CIRCPOS      THRU R31-EX
+
+           IF FINE-CIRCPOS
+              MOVE ZERO                        TO WS-CIRCPOS-DATA
+              MOVE '*** CIRCPOS - VUOTO ***'   TO UXZZW00-TB-RIGA(1)
+              PERFORM X40-SEGNALA-STAT       THRU X40-EX
+           END-IF.
+      *
+       A00-EX.
+           EXIT.
+      *
+      ******************************************************************
+       A10-PREPARA-STAT.
+      ******************************************************************
+      *
+           MOVE SPACE                            TO UXZZW00-MSG-USER
+      *
+           MOVE '*****************************************************'
+                                                 TO UXZZW00-TB-DES (01)
+           MOVE '***              STATISTICHE UXK0S10              ***'
+                                                 TO UXZZW00-TB-DES (02)
+           MOVE '***  PREPARA SETUP PER STRUTTURE UXSTRKH UXST50H  ***'
+                                                 TO UXZZW00-TB-DES (03)
+           MOVE '*****************************************************'
+                                                 TO UXZZW00-TB-DES (04)
+           MOVE 'REC.LETTI   - SKSETUP'          TO UXZZW00-TB-DES (05)
+           MOVE 'REC.LETTI   - CARDSI'           TO UXZZW00-TB-DES (06)
+           MOVE 'REC.LETTI   - CIRCPOS'          TO UXZZW00-TB-DES (07)
+           MOVE '------------------------------' TO UXZZW00-TB-DES (08)
+           MOVE 'REC.SCRITTI - SETUP'            TO UXZZW00-TB-DES (09)
+           MOVE 'REC.SCRITTI - FILE SPIA RIFAC'  TO UXZZW00-TB-DES (10)
+           MOVE '*****************************************************'
+                                                 TO UXZZW00-TB-DES (11).
+      *
+       A10-EX.
+           EXIT.
+      *
+      ******************************************************************
+       A20-CONTROLLA-PARM.
+      ******************************************************************
+      *
+           MOVE LK-TIPO-ELAB                     TO WS-MSG-ELAB-PARM
+           MOVE LK-DATA-ELAB-MENO1               TO WS-MSG-DATA-PARM
+           MOVE WS-MSG-PARM                      TO UXZZW00-TB-RIGA(1)
+
+           PERFORM X40-SEGNALA-STAT            THRU X40-EX
+      *
+           IF LK-PARM-LUNG NOT > ZERO
+              MOVE '*** SCHEDA PARAMETRO MANCANTE ***'
+                                           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF
+      *
+           IF LK-TIPO-ELAB NOT = 'ORD' AND 'RIF'
+              MOVE '*** TIPO ELABORAZIONE ERRATO SU SCHEDA PARM ***'
+                                           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF.
+      *
+       A20-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       C00-CONTROLLA-DATE.
+      ******************************************************************
+      *
+           MOVE WS-CARDSI-DATA(1:4)        TO WS-DATA-CARTE(1:4)
+           MOVE WS-CARDSI-DATA(6:2)        TO WS-DATA-CARTE(5:2)
+      *
+           MOVE WS-CIRCPOS-DATA(1:6)       TO WS-DATA-POS
+      *
+           IF WS-DATA-CARTE  NOT =  WS-DATA-POS
+              MOVE '*** DATE FLUSSI DIVERSE TRA LORO'
+                                           TO WS-MSG-DESC
+              MOVE WS-DATA-CARTE           TO WS-MSG-DATA-CARTE
+              MOVE WS-DATA-POS             TO WS-MSG-DATA-POS
+              MOVE WS-MSG-DUMP2            TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF
+      *
+           IF WS-DATA-CARTE  NOT =  LK-DATA-ELAB-MENO1
+              IF WS-DATA-CARTE < LK-DATA-ELAB-MENO1
+                 IF LK-TIPO-ELAB  NOT =  'RIF'
+                    MOVE '*** DATE FLUSSI'    TO WS-MSG-DESC
+                    MOVE WS-DATA-CARTE        TO WS-MSG-DATA-CARTE
+                    MOVE WS-DATA-POS          TO WS-MSG-DATA-POS
+                    MOVE LK-DATA-ELAB-MENO1   TO WS-MSG-DATA-ELAB
+                    MOVE WS-MSG-DUMP3         TO UXZZW00-TB-DES-ANOM(1)
+                    MOVE WS-MSG-DUMP2         TO UXZZW00-TB-DES-ANOM(2)
+                    PERFORM X99-ABEND       THRU X99-EX
+                 END-IF
+              ELSE
+                 MOVE '*** DATA DEI FLUSSI DEL MESE IN CORSO ***'
+                                              TO UXZZW00-TB-DES-ANOM(1)
+                 PERFORM X99-ABEND          THRU X99-EX
+              END-IF
+           END-IF.
+      *
+       C00-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       D00-PREPARA-DATE.
+      ******************************************************************
+      ****
+      *****   SCRIVE IL FILE SPIA SE E' UN RIFACIMENTO
+      ****
+           IF LK-TIPO-ELAB = 'RIF'
+              MOVE WS-DATA-CARTE             TO WS-UXK0S11S-DATA
+              PERFORM S20-OPEN-UXK0S11S    THRU S20-EX
+              PERFORM S21-WRITE-UXK0S11S   THRU S21-EX
+              PERFORM S22-CLOSE-UXK0S11S   THRU S22-EX
+           END-IF
+      ****
+      *****   PRENDE LA DATA CARTE COME RIFERIMENTO PERCHE'
+      *****   UGUALE A QUELLA DEL POS
+      ****
+           MOVE WS-DATA-CARTE                TO WS-REC02-DATA
+           MOVE WS-DATA-CARTE                TO WS-REC03-DATA(1:6)
+           MOVE WS-CARDSI-DATA(9:2)          TO WS-REC03-DATA(7:2).
+      *
+       D00-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       E00-ELABORAZIONE.
+      ******************************************************************
+      *
+           IF WS-SKSETUP(1:18) = 'EDIT /DATA=AAAAMM/'
+              MOVE WS-REC-02               TO WS-UXK0S10S
+           ELSE
+           IF WS-SKSETUP(1:21) = 'EDIT /DTRIF=AAAAMMGG/'
+              MOVE WS-REC-03               TO WS-UXK0S10S
+           ELSE
+           IF WS-SKSETUP(1:25) = 'EDIT /REG=''A00S00T00M12''/'
+              IF LK-TIPO-ELAB = 'RIF'
+                 MOVE WS-REC-04            TO WS-UXK0S10S
+              ELSE
+                 MOVE WS-SKSETUP           TO WS-UXK0S10S
+              END-IF
+           ELSE
+061005     IF WS-SKSETUP(1:22) = 'EDIT /DTELAB=DFTACPUA/'
+061005        IF LK-TIPO-ELAB = 'RIF'
+061005           PERFORM E30-FINE-MESE   THRU E30-EX
+061005           MOVE WS-REC-05            TO WS-UXK0S10S
+061005        ELSE
+061005           MOVE WS-SKSETUP           TO WS-UXK0S10S
+061005        END-IF
+           ELSE
+               MOVE WS-SKSETUP             TO WS-UXK0S10S.
+      *
+           PERFORM S11-WRITE-UXK0S10S    THRU S11-EX
+      *
+           IF WS-SKSETUP(1:7) = '/LOGOFF'
+              SET  FINE-SKSETUP            TO TRUE
+           ELSE
+              PERFORM R11-READ-SKSETUP   THRU R11-EX
+           END-IF.
+      *
+       E00-EX.
+           EXIT.
+      *
+061005******************************************************************
+061005*   RICHIAMO PGM ZKZZM11 PER TROVARE ULT.GG DEL MESE SUCCESSIVO
+061005******************************************************************
+061005 E30-FINE-MESE.
+061005*
+061005     MOVE WS-DATA-CARTE-9-AAAA   TO WS-SSAA-COMODO
+061005     MOVE WS-DATA-CARTE-9-MM     TO WS-MM-COMODO
+061005
+061005*----CALCOLA MESE SUCCESSIVO A QUELLO DA RIFARE:
+061005*
+061005     IF  WS-MM-COMODO = 12
+061005         MOVE 01                   TO WS-MM-COMODO
+061005         COMPUTE WS-SSAA-COMODO = WS-SSAA-COMODO + 1
+061005     ELSE
+061005         COMPUTE WS-MM-COMODO = WS-MM-COMODO + 1
+061005     END-IF.
+061005
+061005     INITIALIZE  ZK11-AREA-PARAMETRI.
+061005*
+061005*----CALCOLA ULTIMO GIORNO DEL MESE:
+061005*
+061005     MOVE WS-DATA-COMODO     TO  ZK11-DATA-IN.
+061005
+061005     CALL 'ZKZZM11'    USING ZK11-AREA-PARAMETRI.
+061005*
+061005     IF  ZK11-RC NOT = '0'
+061005        MOVE ZK11-DATA-IN          TO WS-MSG-DT-PARM
+061005        MOVE ZK11-RC               TO WS-MSG-ZK11-RC
+061005        MOVE WS-MSG-ERR-DT-PARM    TO UXZZW00-TB-DES-ANOM (01)
+061005        MOVE WS-MSG-ZKZZM11        TO UXZZW00-TB-DES-ANOM (02)
+061005        PERFORM X99-ABEND          THRU X99-EX.
+061005
+061005     MOVE ZK11-GG-OUT              TO WS-REC05-DATA(7:2)
+061005
+061005     MOVE WS-SSAA-COMODO           TO WS-REC05-DATA(1:4)
+061005     MOVE WS-MM-COMODO             TO WS-REC05-DATA(5:2).
+061005*
+061005 E30-EX.
+061005     EXIT.
+      *
+      ******************************************************************
+       R10-OPEN-SKSETUP.
+      ******************************************************************
+      *
+           OPEN INPUT SKSETUP
+      *
+           IF ST-SKSETUP NOT = '00'
+              MOVE 'OPEN'                TO WS-MSG-OPER
+              MOVE 'SKSETUP'             TO WS-MSG-FILE
+              MOVE ST-SKSETUP            TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       R10-EX.
+           EXIT.
+
+      ******************************************************************
+       R11-READ-SKSETUP.
+      ******************************************************************
+      *
+           READ SKSETUP   INTO WS-SKSETUP
+      *
+           IF ST-SKSETUP = '00'
+              ADD  1                     TO WS-CTR-SKSETUP
+           ELSE
+              IF NOT FINE-SKSETUP
+                 MOVE 'READ'             TO WS-MSG-OPER
+                 MOVE 'SKSETUP'          TO WS-MSG-FILE
+                 MOVE ST-SKSETUP         TO WS-MSG-RETC
+                 MOVE WS-MSG-DUMP        TO UXZZW00-TB-DES-ANOM(1)
+                 PERFORM X99-ABEND     THRU X99-EX
+              END-IF
+           END-IF.
+      *
+       R11-EX.
+           EXIT.
+
+      ******************************************************************
+       R12-CLOSE-SKSETUP.
+      ******************************************************************
+      *
+           CLOSE SKSETUP
+      *
+           IF ST-SKSETUP NOT = '00'
+              MOVE 'CLOSE'               TO WS-MSG-OPER
+              MOVE 'SKSETUP'             TO WS-MSG-FILE
+              MOVE ST-SKSETUP            TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       R12-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       R20-OPEN-CARDSI.
+      ******************************************************************
+      *
+           OPEN INPUT CARDSI
+      *
+           IF ST-CARDSI NOT = '00'
+              MOVE 'OPEN'                TO WS-MSG-OPER
+              MOVE 'CARDSI'              TO WS-MSG-FILE
+              MOVE ST-CARDSI             TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       R20-EX.
+           EXIT.
+
+      ******************************************************************
+       R21-READ-CARDSI.
+      ******************************************************************
+      *
+           READ CARDSI    INTO WS-CARDSI
+      *
+           IF ST-CARDSI = '00' OR '04'
+              ADD  1                     TO WS-CTR-CARDSI
+           ELSE
+              IF NOT FINE-CARDSI
+                 MOVE 'READ'             TO WS-MSG-OPER
+                 MOVE 'CARDSI'           TO WS-MSG-FILE
+                 MOVE ST-CARDSI          TO WS-MSG-RETC
+                 MOVE WS-MSG-DUMP        TO UXZZW00-TB-DES-ANOM(1)
+                 PERFORM X99-ABEND     THRU X99-EX
+              END-IF
+           END-IF.
+      *
+       R21-EX.
+           EXIT.
+
+      ******************************************************************
+       R22-CLOSE-CARDSI.
+      ******************************************************************
+      *
+           CLOSE CARDSI
+      *
+           IF ST-CARDSI NOT = '00'
+              MOVE 'CLOSE'               TO WS-MSG-OPER
+              MOVE 'CARDSI'              TO WS-MSG-FILE
+              MOVE ST-CARDSI             TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       R22-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       R30-OPEN-CIRCPOS.
+      ******************************************************************
+      *
+           OPEN INPUT CIRCPOS
+      *
+           IF ST-CIRCPOS NOT = '00'
+              MOVE 'OPEN'                TO WS-MSG-OPER
+              MOVE 'CIRCPOS'             TO WS-MSG-FILE
+              MOVE ST-CIRCPOS            TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       R30-EX.
+           EXIT.
+
+      ******************************************************************
+       R31-READ-CIRCPOS.
+      ******************************************************************
+      *
+           READ CIRCPOS   INTO WS-CIRCPOS
+      *
+           IF ST-CIRCPOS = '00' OR '04'
+              ADD  1                     TO WS-CTR-CIRCPOS
+           ELSE
+              IF NOT FINE-CIRCPOS
+                 MOVE 'READ'             TO WS-MSG-OPER
+                 MOVE 'CIRCPOS'          TO WS-MSG-FILE
+                 MOVE ST-CIRCPOS         TO WS-MSG-RETC
+                 MOVE WS-MSG-DUMP        TO UXZZW00-TB-DES-ANOM(1)
+                 PERFORM X99-ABEND     THRU X99-EX
+              END-IF
+           END-IF.
+      *
+       R31-EX.
+           EXIT.
+
+      ******************************************************************
+       R32-CLOSE-CIRCPOS.
+      ******************************************************************
+      *
+           CLOSE CIRCPOS
+      *
+           IF ST-CIRCPOS NOT = '00'
+              MOVE 'CLOSE'               TO WS-MSG-OPER
+              MOVE 'CIRCPOS'             TO WS-MSG-FILE
+              MOVE ST-CIRCPOS            TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       R32-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       S10-OPEN-UXK0S10S.
+      ******************************************************************
+      *
+           OPEN OUTPUT UXK0S10S
+      *
+           IF ST-UXK0S10S NOT = '00'
+              MOVE 'OPEN'                TO WS-MSG-OPER
+              MOVE 'UXK0S10S'            TO WS-MSG-FILE
+              MOVE ST-UXK0S10S           TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       S10-EX.
+           EXIT.
+
+      ******************************************************************
+       S11-WRITE-UXK0S10S.
+      ******************************************************************
+      *
+           WRITE REC-UXK0S10S   FROM WS-UXK0S10S
+      *
+           IF ST-UXK0S10S = '00'
+              ADD  1                     TO WS-CTR-UXK0S10S
+           ELSE
+              MOVE 'WRITE'               TO WS-MSG-OPER
+              MOVE 'UXK0S10S'            TO WS-MSG-FILE
+              MOVE ST-UXK0S10S           TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       S11-EX.
+           EXIT.
+
+      ******************************************************************
+       S12-CLOSE-UXK0S10S.
+      ******************************************************************
+      *
+           CLOSE UXK0S10S
+      *
+           IF ST-UXK0S10S NOT = '00'
+              MOVE 'CLOSE'               TO WS-MSG-OPER
+              MOVE 'UXK0S10S'            TO WS-MSG-FILE
+              MOVE ST-UXK0S10S           TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       S12-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       S20-OPEN-UXK0S11S.
+      ******************************************************************
+      *
+           OPEN OUTPUT UXK0S11S
+      *
+           IF ST-UXK0S11S NOT = '00'
+              MOVE 'OPEN'                TO WS-MSG-OPER
+              MOVE 'UXK0S11S'            TO WS-MSG-FILE
+              MOVE ST-UXK0S11S           TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       S20-EX.
+           EXIT.
+
+      ******************************************************************
+       S21-WRITE-UXK0S11S.
+      ******************************************************************
+      *
+           WRITE REC-UXK0S11S   FROM WS-UXK0S11S
+      *
+           IF ST-UXK0S11S = '00'
+              ADD  1                     TO WS-CTR-UXK0S11S
+           ELSE
+              MOVE 'WRITE'               TO WS-MSG-OPER
+              MOVE 'UXK0S11S'            TO WS-MSG-FILE
+              MOVE ST-UXK0S11S           TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       S21-EX.
+           EXIT.
+
+      ******************************************************************
+       S22-CLOSE-UXK0S11S.
+      ******************************************************************
+      *
+           CLOSE UXK0S11S
+      *
+           IF ST-UXK0S11S NOT = '00'
+              MOVE 'CLOSE'               TO WS-MSG-OPER
+              MOVE 'UXK0S11S'            TO WS-MSG-FILE
+              MOVE ST-UXK0S11S           TO WS-MSG-RETC
+              MOVE WS-MSG-DUMP           TO UXZZW00-TB-DES-ANOM(1)
+              PERFORM X99-ABEND        THRU X99-EX
+           END-IF.
+      *
+       S22-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       Z00-OPERAZIONI-FINALI.
+      ******************************************************************
+      *
+           PERFORM R12-CLOSE-SKSETUP     THRU R12-EX
+           PERFORM R22-CLOSE-CARDSI      THRU R22-EX
+           PERFORM R32-CLOSE-CIRCPOS     THRU R32-EX
+           PERFORM S12-CLOSE-UXK0S10S    THRU S12-EX
+      *
+           PERFORM X20-WRITE-STAT        THRU X20-EX
+           PERFORM X30-CLOSE-STAT        THRU X30-EX.
+      *
+       Z00-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       X10-OPEN-STAT.
+      ******************************************************************
+      *
+           INITIALIZE  UXZZW00
+      *
+           MOVE 'UXK0S'                    TO UXZZW00-JOB
+           MOVE 'UXK0S10'                  TO UXZZW00-STEP
+           MOVE  SPACES                    TO UXZZW00-MSG-USER
+      *
+           MOVE 'O'                        TO UXZZW00-FUNZ
+      *
+           CALL 'UXZZM00'               USING UXZZW00
+      *
+           IF UXZZW00-RET-CODE NOT = '0'
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF.
+      *
+       X10-EX.
+           EXIT.
+
+      ******************************************************************
+       X20-WRITE-STAT.
+      ******************************************************************
+      *
+           MOVE  WS-CTR-SKSETUP          TO UXZZW00-TB-COUNT(05)
+           MOVE  WS-CTR-CARDSI           TO UXZZW00-TB-COUNT(06)
+           MOVE  WS-CTR-CIRCPOS          TO UXZZW00-TB-COUNT(07)
+           MOVE  WS-CTR-UXK0S10S         TO UXZZW00-TB-COUNT(09)
+           MOVE  WS-CTR-UXK0S11S         TO UXZZW00-TB-COUNT(10).
+      *
+       X20-EX.
+           EXIT.
+
+      ******************************************************************
+       X30-CLOSE-STAT.
+      ******************************************************************
+      *
+           MOVE 'C'                        TO UXZZW00-FUNZ
+      *
+           CALL 'UXZZM00'               USING UXZZW00
+      *
+           IF UXZZW00-RET-CODE NOT = '0'
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF.
+      *
+       X30-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       X40-SEGNALA-STAT.
+      ******************************************************************
+      *
+           MOVE 'M'                        TO UXZZW00-FUNZ
+      *
+           CALL 'UXZZM00'               USING UXZZW00
+      *
+           IF UXZZW00-RET-CODE NOT = '0'
+              PERFORM X99-ABEND          THRU X99-EX
+           END-IF
+      *
+           INITIALIZE  UXZZW00-RIGHE-MULT.
+      *
+       X40-EX.
+           EXIT.
+      *
+      *
+      ******************************************************************
+       X99-ABEND.
+      ******************************************************************
+      *
+           PERFORM X20-WRITE-STAT        THRU X20-EX
+      *
+           MOVE 'A'                        TO UXZZW00-FUNZ
+      *
+           CALL 'UXZZM00'               USING UXZZW00
+      *
+           MOVE  4                         TO RETURN-CODE.
+      *
+           GOBACK.
+      *
+       X99-EX.
+           EXIT.

@@ -1,0 +1,42 @@
+#--------------------------------------------------------------------
+# Pilot di Test funzione di SourceDetect su procedura ASSEGNI
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+DETECT_SOURCE_TYPE_ENABLED
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+SOURCE_DETECTED_UPDATE_DB_ENABLED
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+
+#--------------------------------------------------------------------------
+# Estrazione Copy Cobol
+#--------------------------------------------------------------------------
+
+# G/GA
+SYSTEM_VALUE G
+SUB_SYSTEM_VALUE GA
+FILTER_ON_OBJECT_NAME 1 GA
+OBJECT_TYPE_COPY_COBOL_PROC 
+OBJECT_TYPE_COPY_COBOL_DATA 
+LIBRARY COPYCOB F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+END_OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+#Esecuzione
+#--------------------------------------------------------------------------
+
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+FUNCTION_LIBRARY_SCAN	 	 
+START

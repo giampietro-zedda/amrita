@@ -1,0 +1,24 @@
+//SPXAV0J JOB AMFK010N3,MSGCLASS=K,CLASS=B,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//* OLD NAME=PXY053J
+//*    RESTART=
+//*
+//      EXEC Y6TWSSR
+//SYSIN DD *
+ SRSTAT 'S.NOD.DEP.PXA40J.PXAV0J' SUBSYS(G7OT) AVAIL(YES)
+//*
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE   : ALLOCAZIONE RISORSA PER NUOVO GIRO
+//*-----------
+//*SCHEDULAZIONE : GIORNALIERA
+//*-------------
+//*VINCOLO TP    : NO
+//*----------
+//*DUMP          : CONTATTARE FUNZIONE INTERESSATA
+//*----
+//*PROSEND
+//************************************************************

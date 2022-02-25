@@ -1,0 +1,20 @@
+//SMIEUVBK JOB ADMI000N7,'MF     14',MSGCLASS=K,CLASS=B,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//       EXEC SMIEUVBK,REGION=0K
+//*
+//*
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE   :  *** PROSE NON DEFINITA ***
+//*-----------
+//*SCHEDULAZIONE :
+//*-------------
+//*VINCOLO TP    :
+//*----------
+//*DUMP          :
+//*----
+//*PROSEND
+//************************************************************

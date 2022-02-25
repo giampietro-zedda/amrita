@@ -1,0 +1,315 @@
+@charset "ISO-8859-1";
+
+html, body {
+  height:100%;
+  width:100%;  
+  margin:0;
+  padding:0;
+  overflow-y: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main table of the SPA Impact application */
+#mainTable {
+  width: 100%;
+  height: 100%;
+  border: 1px,solid, black;
+  border-collapse: collapse;
+  margin: 0;
+}
+#mainTableRowHeader {
+  vertical-align: top;  
+  width: 100%;
+  height: 30px;
+  border-collapse: collapse;
+  padding:0;
+}
+#headerSystem {
+  height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 150%;
+}	
+#headerCellTh {
+  border: 1px solid black;  
+  font-size: xx-large;
+  height: 30px;
+}
+
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  border: 1px solid black;
+  padding:0;
+} 
+
+#containerTbluserLink{
+  border-collapse:collapse;	
+  margin: 0;
+  padding:0;
+}  
+
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+#headerRightTh{
+} 
+
+/* Application row */
+#trMainTableBody {vertical-align: top; width: 100%;}
+	
+	#tdleft {margin:0; width: 42%; height: 100%;  padding:0} 
+	  #tbToolBarPgm {width: 100%; height: 18px; border: 1px solid black; border-bottom: 0; border-spacing: 0;} 
+	    #tdSelSubSys {width: 150px;} 
+	      #selSubSys {width: 100% ; height:100%; font-weight: bold;} 
+	    #tdSelPgm {width: 90px;} 
+	      #selPgm {width: 100%;  height:100%;  font-weight: bold;} 
+	    #tdbtnNextSetting {width: 12px; max-width: 12px;} 
+	      .btnNextSetting {width: 100%; font-weight: bold; font-size: large; padding: 0; opacity: 0.4;} 
+	    #tdbtnPrevSetting {width: 12px; max-width: 12px;} 
+	      .btnPrevSetting {width: 100%; font-weight: bold; font-size: large; padding: 0; opacity: 0.4;} 
+	    #tdBtnTracking {width: 30px;} 
+	      #btnTracking {width: 100%; font-weight: bold; font-size: large; padding: 0;} 
+	  
+	  #divSources {height: calc(100% - 31px); border: 1px solid black;  overflow: auto;} 
+         #tbPgm {border-collapse:collapse; border: 1px solid black; width: 100%;}
+            .displayTableCell {display: table-cell;}
+            
+            /* Comuni a tutti i sorgenti */
+            .trHdrPgm {display: none;}
+            .tdHdrPgm {font-size: 80%;font-weight:bold;background-color: gray;color:white;  padding: 0; text-align: center;}
+            .trSourcePgm {display: none;}
+            .tdSourcePgm {height:0; margin:0; border:0;}
+            .divTbSourceRowsPgm {display: none; margin:0; overflow: auto;}
+            .trRowDownPgm {display: none;}
+            .tdRowDownPgm {height:0; margin:0; border:0;}
+            .divRowDownPgm {height:0; max-height; 0;margin:0; display: none;}  
+            
+            /* Specifici modificati da JavaScript per sorgente 1-5 */
+            #divPgmContainer_0 {width: 100%; height: 542px; max-height: 542px; overflow: auto;}  /*  height max-height Replaced Dynamically By Javascript */ 
+	            #trHdrPgm_0 {}
+	            #trSourcePgm_0 {}
+	            #divTbSourceRowsPgm_0 {}  /* border: 2px solid red; */ 
+	            #divRowDownPgm_0  {} 
+	            #trRowDownPgm_0 {} 
+	            #tdRowDownPgm_0 {} 
+	            #divRowDownPgm_0 {}               
+           #divPgmContainer_1 {width: 100%; height: 542px; max-height: 542px; overflow: auto;}  /*  height max-height Replaced Dynamically By Javascript */ 
+	            #trHdrPgm_1 {}
+	            #trSourcePgm_1 {}
+	            #divTbSourceRowsPgm_1 {}  
+	            #divRowDownPgm_1  {}     
+	            #trRowDownPgm_1 {} 
+	            #tdRowDownPgm_1 {height:56px; margin-bottom: 3px;} 
+	            #divRowDownPgm_1 {padding:0; height:56px; width:56px; border: 1px solid black;  margin: auto; } 
+	            .imgArrowDown {width:56px; height:56px; object-fit:cover; margin: 3px;  margin:0;} 
+	                          
+            #divPgmContainer_2 {width: 100%; height: 542px; max-height: 542px; overflow: auto;}  /*  height max-height Replaced Dynamically By Javascript */ 
+	            #trHdrPgm_2 {}
+	            #trSourcePgm_2 {}
+	            #divTbSourceRowsPgm_2 {}   
+	            #divRowDownPgm_2  {}     
+	            #trRowDownPgm_2 {} 
+	            #tdRowDownPgm_2 {} 
+	            #divRowDownPgm_2 {}               
+            #divPgmContainer_3 {width: 100%; height: 542px; max-height: 542px; overflow: auto;}  /*  height max-height Replaced Dynamically By Javascript */ 
+	            #trHdrPgm_3 {}
+	            #trSourcePgm_3 {}
+	            #divTbSourceRowsPgm_3 {}    
+	            #divRowDownPgm_3  {}     
+	            #trRowDownPgm_3 {} 
+	            #tdRowDownPgm_3 {} 
+	            #divRowDownPgm_3 {}               
+            #divPgmContainer_4 {width: 100%; height: 542px; max-height: 542px; overflow: auto;}  /*  height max-height Replaced Dynamically By Javascript */ 
+	            #trHdrPgm_4 {}
+	            #trSourcePgm_4 {}
+	            #divTbSourceRowsPgm_4 {}    
+	            #divRowDownPgm_4  {}     
+	            #trRowDownPgm_4 {} 
+	            #tdRowDownPgm_4 {} 
+	            #divRowDownPgm_4 {}               
+            #divPgmContainer_5 {width: 100%; height: 542px; max-height: 542px; overflow: auto;}  /*  height max-height Replaced Dynamically By Javascript */ 
+	            #trHdrPgm_5 {}
+	            #trSourcePgm_5 {}
+	            #divTbSourceRowsPgm_5 {}   
+	            #divRowDownPgm_5  {}     
+	            #trRowDownPgm_5 {} 
+	            #tdRowDownPgm_5 {} 
+	            #divRowDownPgm_5 {}               
+            
+            /* Comuni per tutti i sorgenti */
+ 		    table#tbSourceRows   {border-collapse: collapse; width: 100%;}
+		    table.tbSourceRows   {border-collapse: collapse; width: 100%;}
+		    table#tbSourceRows td{padding:0; }
+		    table.tbSourceRows td{padding:0; }
+		    table#tbSourceRowsWorking   {border-collapse: collapse; width: 100%; }
+		    table#tbSourceRowsWorking td{padding:0;}
+		    table#tbSourceRowsLinkage   {border-collapse: collapse; width: 100%;  }
+		    table#tbSourceRowsLinkage td{padding:0;}
+		    table#tbSourceRowsFD   {border-collapse: collapse; width: 100%;}
+		    table#tbSourceRowsFD td{padding:0;}
+		    table.tbSourceCopyRows   {border-collapse: collapse; width: 100%; }
+		    table.tbSourceCopyRows td{padding:0; }
+			   .nRow{height: 12px; font-style: oblique; font-size: X-small; font-weight: bold; color: grey; background-color:#e8e8e8;}
+               .nInstr {height: 12px; font-style: oblique; font-size: 12; font-weight: bold; color: black; background-color: #e8e8e8;}
+			   .expand {width: 5px; height: 12px; font-size: 90%; font-weight: bold; color: red; background-color: #e8e8e8;}
+			   .row{border-right: 1px solid grey; font-style:normal; font-family: monospace; font-size: 85%; text-align: left; color: #54e854; font-weight: bold; background-color: black;}	        
+			   .trDiv {}
+	
+	#tdRight {width: 58%; padding:0;}  
+	  #divData {height: 50%; border: 1px solid black; border-bottom: 0; border-left: 0; margin-right: 4px;margin-top: -1px; margin-left: -1px; border-spacing: 0;} 
+	    #dataTable {width: 100%; height: 100%; border-collapse: collapse; vertical-align: top;} 	      
+	      .cellTdData {height: 100%; padding-top: 0;}
+		  
+		  #cellTdWorking {width: 70%; height: 100%; padding-top: 0; }
+	    	 .divDataHeader {width: calc(100% - 2px);height: 13px; margin-top:1; margin-bottom:auto; padding-left: 3px; font-size: 70%;font-weight:bold;background-color: gray;color:white;text-align:center}
+	         #divTbWorkingContainer{width: 100%; height:calc(100% - 13px); height: 279px; border: 1px solid black; margin:0; overflow: auto;  }
+          
+          #cellTdWorkingIO  {width: 20px; height: 100%;}
+	        #divTbWorkingContainerIO{width: 100%; height:calc(100% - 13px); height: 279px; border: 1px solid black; border-right: 0;  margin-left: 1px; overflow: auto; }   /* height changed by JavaScript */
+		       table.tbXref {width: 100%;  border-collapse: collapse; color:  green; background-color: white; color: green; font-weight: bold; font-family: monospace; font-size: 75%; text-align: left;}
+			      th.thXref{width: 5px; border: 1px solid white; color:white; background-color:#040471; text-align: center;}
+					td.tdXrefIO{ width: 5px; border: 1px solid black; border-left: 0; color: navy; font-weight: bold; font-size: small;}
+					td.tdXrefNum{width: 10px; max-width: 10px; border: 1px solid black; border-right: 0; color: #FF5722; font-weight: bold; font-size: small; background-color: white; }		  
+		  
+		  #cellTdLinkage {width: 70%; height: 100%; }
+	         #divTbLinkageContainer{width: 100%; height:calc(100% - 13px); height: 279px; border: 1px solid black; margin:0; overflow: auto;  } /* height changed by JavaScript */
+          #cellTdLinkageIO  {width: 20px; height: 100%;  }
+            #divTbLinkageContainerIO{width: 100%; height:calc(100% - 13px); margin:0; overflow: auto;  }
+		  
+		  #cellTdFD {width: 70%; height: 100%;}
+	         #divTbFdContainer{width: 100%; height:calc(100% - 13px); height: 279px; border: 1px solid black; margin:0; overflow: auto;   }   /* height changed by JavaScript */
+          #cellTdFdIO  {width: 20px; height: 100%; }
+	         #divTbFdContainerIO{width: 100%; height:calc(100% - 13px); border: 0px; margin:0; overflow: auto;  }
+
+          #cellTdCopy  {width: 20px; height: 100%; padding-top: 0; }
+	    	 .divDataHeaderCopy {width: calc(100% - 2px); height: 13px ; margin-top:1; margin-bottom:auto; padding-left: 3px; font-size: small;font-weight:bold;background-color: gray;color:white;text-align:center}
+ 	         #divTbCopyContainer {width: 100%; height:calc(100% - 13px); height: 279px; margin:0; overflow: auto;  border: 1px solid black; } /* height changed by JavaScript */
+				 table#tbPgmCopy {width: 100%; border: 1px solid black; border-collapse: collapse; color:  green; background-color: white; color: green; font-weight: bold; font-family: monospace; font-size: 75%; text-align: left;}
+				    th.thPgmCopyInclude {border: 1px solid white; color:white; background-color:#040471; text-align: center; }
+           	        td.tdPgmCopyType {border: 1px solid black; color:black; font-weight: bold; font-size: small; }	
+			        td.tdPgmCopyName {border: 1px solid black;font-weight: normal;font-size: 100%;}
+		  #celldSqlInclude {height: 100%; padding-top: 0; }	
+	         #divTbSqlIncludeContainer {width: 100%; height:calc(100% - 13px); height: 279px; border: 1px solid black; border-left: 0; border-right: 0;   margin:0; overflow: auto; }	  /* height changed by JavaScript */ 
+             #cellTdSqlInclude  {width: 20px; height: 100%; padding-top: 0; }
+
+	  #divTracking {height: 50%;  border: 1px solid black; border-top: 0; border-left: 0; margin-left: 1px; margin-right: 2px; margin-left: 0;} 
+         #tbToolBarTracking {width: 100%; height: 18px; border: 1px solid black; border-left: 0; border-right: 0; border-spacing: 0;}
+	        #tdHdrField {margin-left: 0; width: 40px; border-left: 1px solid black;} 
+	        #tdTrackingField {width: 200px; border: 1px solid black; font-size: small; font-weight:bold;  border-top: 0; border-bottom: 0;} 
+	        #hdrInstr {margin-left: 0; width: 35px;} 
+            #trackingInstr {width: 30px; border: 1px solid black; font-size: small; font-weight:bold; border-top: 0; border-bottom: 0;} 
+	        #tdTrackingInstrDyn {width: 55px;} 
+	           #selTrackingInstrDyn {width: 100%; height: 100%; font-weight:bold;} 
+	        #tdSelLabel {width: 180px;} 
+	           #selLabel {width: 100%;  height: 100%; height: 100%; border: 1px solid black; font-weight: bold;} 
+		    #tdbtnToggleData {width: 12px; max-width: 12px;} 
+		      #btnToggleData {width: 100%; font-weight: bold; font-size: medium; padding: 0;} 
+       
+          #tbSubFieldValuesCaller {width: 99.7%; height: calc(40% - 18px); border-spacing: 0; padding-top: 1px; padding-right:0;}                  
+            
+            #tdDivTbSubField {width: 100%; border-spacing: 0; padding: 0.5;}                           
+              #divTbSubField {width: 100%; height: calc(100% - 15px); overflow: auto; border: 1px solid black; }
+                 .hdrTracking {width: 100%; height: 15px; background-color: grey; color: white; font-size: small; text-align: center; border-left: 0.5px solid black; border-right: 0.5px solid black;}
+                 #tbFields {width: 100%; border-top: 0; border-left:0; border:right: 0; margin-top: 0; margin-bottom: auto; border-collapse:collapse;}             
+                 .fieldFS {color: red; border: 1px solid black; border-top: 0; border-left: 0; font-size: x-small; text-align: center; width: 10px;}
+                 .fieldName {color: green; border: 1px solid black; border-top: 0; border-right: 0; font-size: x-small; }
+            
+            #tdDivTbValues {padding: 0.5;}   
+              #divTbValues {width:70px;  height: calc(100% - 15px); overflow: auto;  border: 1px solid black; border-right:0;}
+                 #tbValues {width: 100%; border-top: 0; border-left:0; border:right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse; }
+                 .tbValues {width: 100%; border-top: 0; border-left:0; border:right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse; }
+                 table.tbValues td {border-bottom: 1px solid black; font-size: x-small; }
+                   .fieldValue {padding:0; border-spacing: 0; height: 14px; max-height: 14px;  color: green; border: 1px solid black; border-top: 0; border-left:0; border-right: 0; font-size: x-small; }
+
+            #tdDivTbChains {min-width: 60px; border-spacing: 0; padding: 0.5;}   
+              #divTbChains {width: 100%; height: calc(100% - 15px); overflow: auto;  border: 1px solid black;}
+                  table.tbChains td {width: 80px; border-bottom: 1px solid black; font-size:x-small; color: green; }              
+                  #tbChains {width: 100%; height: 100%;  border-top: 0; border-left:0; border:right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse;}
+                  .tbChains {height: 10px; max-height: 10px;}              
+
+            #tdDivTbCaller {min-width: 70px; border-spacing: 0; padding: 0.5;}   
+              #divTbCaller {width: 100%; height: calc(100% - 15px); overflow: auto;  border: 1px solid black;}
+                  table.tbCaller td {width: 80px; border-bottom: 1px solid black; font-size:x-small; color: green; }              
+                  #tbCaller {width: 100%; height: 100%;  border-top: 0; border-left:0; border:right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse;}
+                  .tbCaller {height: 10px; max-height: 10px;}              
+            #tdDivCallerXref {min-width: 70px; max-width: 70px; border-spacing: 0; padding: 0.5;}
+               #divCallerXref {width: 100%; height: calc(100% - 15px); overflow: auto;  border: 1px solid black; } 
+                  table#tbCallerXref td {font-size:x-small; border-bottom: 1px solid black; }
+                  .tdFieldXrefNumInstr {width: 30px; min-width: 30px; font-size:x-small; border-bottom: 1px solid black;}
+                  #tbCallerXref {width: 100%; height: 10px; max-height: 10px; border-top: 0; border-left:0; border-right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse; border-spacing: 0;margin:0; padding:0;}                 
+                  .tbCallerXref {height: 80px; max-height: 80px;} 
+                     .tdFieldXrefNumInstr {width: 30px; font-size: x-small; color: green; }               
+                     .tdFieldXrefBtn {width: 5px; max-width: 5px;  min-width: 5px; border-right: 1px solid black; border-left: 1px solid black;}               
+                     .btnCaller {height: 10px; font-size: x-small; margin-left: 0; margin-right: auto;}               
+                     .btnCallerLogic {background-color: green; margin-left: 0; margin-right: auto;}          
+                     .btnCallerInspector {background-color: red; margin-left: 0; margin-right: auto;}          
+  
+            #tdDivTbCalled {min-width: 70px; border-spacing: 0; padding: 0.5;}    
+              #divTbCalled {width: 100%; height: calc(100% - 15px); overflow: auto;  border: 1px solid black;}
+                  table.tbCalled td {width: 80px; border-bottom: 1px solid black; font-size:x-small; color: green; }  
+                  #tbCalled {width: 100%; height: 100%;  border-top: 0; border-left:0; border:right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse;}
+                  .tbCalled {height: 10px; max-height: 10px;}   
+            #tdDivCalledXref {min-width: 30px; max-width: 30px; border-spacing: 0; padding: 0.5;}
+               #divCalledXref {width: 100%; height: calc(100% - 15px); overflow: auto;  border: 1px solid black;} 
+                  table#tbCalledXref td {width: 40px; min-width: 10px; font-size:x-small; border-bottom: 1px solid black;  }
+                  #tbCalledXref {width: 100%; height: 15px; max-height: 15px;  border-top: 0; border-left:0; border-right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse; border-spacing: 0;margin:0; padding:0;}                 
+                     .tdFieldXrefNumInstr {width: 15px;  min-width: 15px; font-weight: bold; font-size: x-small; color: red; }               
+               
+        #tbTransfDetail {width: 99.7%; height: calc(60% - 9px); border-spacing: 0; padding-top: 1px; padding-right:0;}                
+           #tdDivTransfDetail {width: 50%; border-spacing: 0; padding: 0.5;}
+              #divTbDynSetting {width: 100%; height: calc(100% - 16px); overflow: auto;  border: 1px solid black; border-right: 0;}
+                 #tbDynSetting {width: 100%; height: 15px; border-top: 0; border-left:0; border:right: 0; margin-top: 0; margin-bottom: auto; border-collapse:collapse; }
+                    table.tbDynSetting td {height: 10px; max-height: 10px; font-size: x-small; font-weight: bold; }
+                    .tbDynSetting {padding:0; border-spacing: 0; }
+                    .dynSettingNumChain {width: 20px; border-bottom: 1px solid black;  font-weight: bold; font-size: small; background-color: black; color: white; border-right: 1px solid black; text-align: center;}
+                    .dynSettingNumInstr {width: 30px;  border-bottom: 1px solid black;  font-weight: bold; font-size: small; border-right: 1px solid black; text-align: center; font-size: x-small;}
+                    .dynSettingPgm {width: 55px;  border-bottom: 1px solid black;  font-weight: bold; font-size: small; border-right: 1px solid black; font-size: x-small;}
+                    .dynSettingSetMode { border-bottom: 1px solid black;  font-weight: bold; color: blueviolet; background-color:#fdfd36; font-size: x-small;}
+                    .dynSettingSetModeLastSet {color: #fdfd36; background-color:blueviolet;}
+
+
+           #tdDivTbDetail {width: 50%; border-spacing: 0; padding: 0.5;}
+              #divTbDynSettingDetail {width: 100%; height: calc(100% - 16px); overflow: auto;  border: 1px solid black;}
+                 #tbDynSettingDetail {width: 100%; height: 100%;  border-top: 0; border-left:0; border:right: 0;  margin-top: 0; margin-bottom: auto; border-collapse:collapse;}
+                     table.tbDynSettingDetail td {border-bottom: 1px solid black;font-size: 65%; font-weight: bold; }
+                     .tbDynSettingDetail {padding:0; border-spacing: 0; height: 15px;  }
+                     .dynSettingHeader {color: white; background-color: grey; font-weight: bold; }
+                     .dynSettingDetailId {width: 250px; font-size: x-small; border-right: 1px solid black;}
+                     .dynSettingDetailValue {}
+                     #dynSettingPgmSet {}
+
+
+/*--------------*/
+/* Service      */
+/*--------------*/
+.topAlign {
+  margin-top: 0;
+  margin-bottom: auto;  
+}
+
+.btnOpacityZero { 
+  width: 100%; font-weight: bold; font-size: large; padding: 0; 
+  opacity: 1;
+}
+
+.selected {  
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+}
+
+.focusSource {border: 3px solid red;} 
+.focusSourceLine {border-top: 3px solid red;}   

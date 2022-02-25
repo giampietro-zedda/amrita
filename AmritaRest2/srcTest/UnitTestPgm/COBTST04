@@ -1,0 +1,496 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance     
+      *      Reverse
+      *       Integrated
+      *         Tecnology 
+      *           Application
+      *
+      *================================================================
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.     COBTST04.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: programma per Unit test esaustivo logiche spreaded.
+      *                 : Lo scopo è di testare l'ultimo luvello
+      *                 : di programmi chiamanti con logiche spreaded.
+      *                 :  
+      *  Scritto il    	: 08-04-2011
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================       
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+ 
+       DATA DIVISION.
+       FILE SECTION.
+       WORKING-STORAGE SECTION.
+       
+       01 FILLER.
+      * Nome programma, file ...
+          05 TXXX-COBTST02                PIC X(8) VALUE 'COBTST02'.
+          05 TXXX-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T036-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T037-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T038-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T042-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T040-FLD-SINGLE              PIC X(8) VALUE SPACE.
+  
+      * Campi di servizio e trasformazione specifici per test
+          05 T040-FLDX8                   PIC X(8).
+
+
+      * Campi per test T037
+          05 T037-DYNAMIC-SPREADED.
+             07 T037-FILE-NAME           PIC X(08).
+             07 T037-PGM-NAME            PIC X(8).
+             07 T037-PGM-NAME2           PIC X(8).
+                   
+      * Campi per test T038
+          05 T038-DYNAMIC-SPREADED.
+             07 T038-FILE-NAME           PIC X(08).
+             07 T038-PGM-NAME            PIC X(8).
+             07 T038-PGM-NAME2           PIC X(8).
+                   
+      * Campi per test passasggio da numerico ad alfanumerico e redefines
+          05 TXXX-X8.
+             07 TXXX-98                    PIC 9(8).
+             07 TXXX-98X REDEFINES TXXX-98 PIC X(8).
+          05 TXXX-X2.
+             07 FILLER                     PIC XX.
+          05 TXXX-X9 REDEFINES TXXX-X2     PIC 99.
+          05 TXXX-X2-RED REDEFINES TXXX-X2 PIC XX.
+          
+      * Campi di servizio vari e trasformazione generici
+          05 T002-FLD01                   PIC X(8) VALUE 'TEST'.
+          05 TXXX-KEY                     PIC X(10).
+          05 TXXX-IOAREA                  PIC X(100).
+          05 TXXX-FLDX1                   PIC X.
+          05 TXXX-FLDX2                   PIC X(2).
+          05 TXXX-FLDX3                   PIC X(3).
+          05 TXXX-FLDX4                   PIC X(4).
+          05 TXXX-FLDX5                   PIC X(5).
+          05 TXXX-FLDX6                   PIC X(6).
+          05 TXXX-FLDX7                   PIC X(7).
+          05 TXXX-FLDX8                   PIC X(8).
+          05 TXXX-FLDX82                  PIC X(8).
+          05 TXXX-FLDN1                   PIC 9(3).
+          05 TXXX-FLDN2                   PIC 9(7)  COMP-3.
+          05 TXXX-FLDN3                   COMP.
+          05 TXXX-SPACE                   PIC X(4) VALUE SPACE.
+          05 TXXX-ZERO                    PIC X(2) VALUE ZEROES.
+          05 TXXX-A                       PIC X    VALUE 'A'.
+          05 TXXX-ZZ                      PIC XX   VALUE 'ZZ'.
+          05 TXXX-88                      PIC X    VALUE SPACE.
+	          88 TXXX-88-A VALUE 'A'. 
+	          88 TXXX-88-B VALUE 'B'. 
+	          88 TXXX-88-C VALUE 'C'. 
+	          88 TXXX-88-D VALUE 'D'. 
+ 
+          
+      * Campi per gestione test T029-T030-T031
+      * Ioarea lng=100
+       01 T0XX-IOAREA.
+	         05 T0XX-TIPO-REC                PIC X.     
+	         05 T0XX-FLD01                   PIC X(8).     
+	         05 T0XX-FLD02                   PIC 9(5).     
+	         05 T0XX-FILE-NAME               PIC X(8).     
+	         05 T0XX-PGM-NAME                PIC X(8).     
+	         05 T0XX-TS-NAME                 PIC X(8).     
+	         05 T0XX-PREFIX                  PIC XX.     
+	         05 T0XX-DATI                    PIC X(60).     
+          
+      * Campi per gestione test T041
+       01 T041-WS-CSA.
+          07 T041-WS-CSA-COD                 PIC X.
+          07 T041-WS-CSA-FILE-NAME           PIC X(8).
+          07 T041-WS-CSA-FILE-NAME2          PIC X(8).
+
+      * Campi per gestione test T042
+       01 T042-DFHCOMMAREA.
+           05 T042-FILE-NAME                PIC X(8).
+           05 T042-FILE-NAME2               PIC X(8).
+           05 T042-TS-NAME                  PIC X(8).
+           05 T042-PGM-NAME                 PIC X(8).
+           05 T042-PGM-NAME2                PIC X(8).
+           05 T042-MAP                      PIC X(8).
+           05 T042-MAPSET                   PIC X(8).
+           05 T042-TRANSID                  PIC X(4).
+          
+      * Campi per gestione test T040
+      * Ioarea lng=100
+        01 T040-IOAREA.
+	       05 T040-TIPO-REC                 PIC X.     
+	       05 T040-FLD01                    PIC X(8).     
+	       05 T040-FLD02                    PIC 9(5).     
+	       05 T040-FILE-NAME                PIC X(8).     
+	       05 T040-PGM-NAME                 PIC X(8).     
+	       05 T040-TS-NAME                  PIC X(8).     
+	       05 T040-PREFIX                   PIC XX.     
+	       05 T040-DATI                     PIC X(60).    
+
+      * Info generiche di linkage (param 1)
+       01 WS-PARM.
+          05 WS-SPREADED-PARM-LUNG           PIC S9(04) COMP.
+          05 WS-SPREADED-TIPO-ELAB           PIC X(03).
+          05 WS-SPREADED-DATA-ELAB-MENO1     PIC X(06).
+          05 WS-SPREADED-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.
+      * Pos=16 Dsp=15
+          05 WS-SPREADED-PGM-SUFFIX-O        PIC X.
+          
+      * Info per logiche spreaded in pgm chiamanti (param 2)
+       01 WS-DYNAMIC-SPREADED.
+          05 WS-SPREADED-FILE-NAME           PIC X(8).
+          05 WS-SPREADED-FILE-NAME2          PIC X(8).
+          05 WS-SPREADED-TS-NAME             PIC X(8). 
+          05 WS-SPREADED-TS-NAME2            PIC X(8). 
+          05 WS-SPREADED-PGM-NAME            PIC X(8).
+      * Pos=41 Dsp=40
+          05 WS-SPREADED-PGM-PREFIX          PIC X(4).
+      * Pos=45 Dsp=44
+          05 WS-SPREADED-PGM-ID              PIC X(3).
+      * Pos=48
+          05 WS-SPREADED-PGM-SUFFIX          PIC X.
+          05 WS-SPREADED-MAP                 PIC X(8).
+          05 WS-SPREADED-MAPSET              PIC X(8).
+          05 WS-SPREADED-TRANSID             PIC X(4).
+      * Pos=69
+          05 WS-SPREADED-PGM-PREFIX-T044     PIC X(4).
+      * Pos=73
+          05 WS-SPREADED-PGM-ID-T044         PIC X(3).
+      * Pos=76
+          05 WS-SPREADED-PGM-SUFFIX-T044     PIC X.
+	       
+	         
+        01 WS-DFHCOMMAREA                   PIC X(4096).  
+        01 WS-TWA                           PIC X(2000).
+        01 WS-CSA                           PIC X(2000).
+        
+      * Per test T047 T048 T049          
+        01 POINTER-TWA USAGE POINTER.         
+        01 POINTER-CSA USAGE POINTER.         
+     
+ 
+ 
+       LINKAGE SECTION.
+      * Info generiche di linkage (param 1)
+       01 LK-PARM.
+          05 LK-PARM-LUNG                PIC S9(04) COMP.
+          05 LK-TIPO-ELAB                PIC X(03).
+          05 LK-DATA-ELAB-MENO1          PIC X(06).
+          05 LK-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.
+          05 LK-SPREADED-PGM-SUFFIX-0    PIC X.
+          
+      * Info per logiche spreaded in pgm chiamanti (param 2)
+       01 LK-DYNAMIC-SPREADED.
+          05 LK-SPREADED-FILE-NAME           PIC X(8).
+          05 LK-SPREADED-FILE-NAME2          PIC X(8).
+          05 LK-SPREADED-TS-NAME             PIC X(8). 
+          05 LK-SPREADED-TS-NAME2            PIC X(8). 
+          05 LK-SPREADED-PGM-NAME            PIC X(8).
+          05 LK-SPREADED-PGM-PREFIX          PIC X(4).
+          05 LK-SPREADED-PGM-ID              PIC X(3).
+          05 LK-SPREADED-PGM-SUFFIX          PIC X.
+          05 LK-SPREADED-MAP                 PIC X(8).
+          05 LK-SPREADED-MAPSET              PIC X(8).
+          05 LK-SPREADED-TRANSID             PIC X(4).
+      * Pos=69
+          05 LK-SPREADED-PGM-PREFIX-T044     PIC X(4).
+      * Pos=73
+          05 LK-SPREADED-PGM-ID-T044         PIC X(3).
+      * Pos=76
+          05 LK-SPREADED-PGM-SUFFIX-T044     PIC X.
+      *
+
+      * Info per logiche spreaded in pgm chiamanti (param 3)
+       01 LK-DYNAMIC-BY-SET-ADDRESS.
+          05 LK-BY-SET-FILE-NAME         PIC X(8).
+          05 LK-BY-SET-FILE-NAME2        PIC X(8).
+          05 LK-BY-SET-TS-NAME           PIC X(8).
+          05 LK-BY-SET-PGM-NAME          PIC X(8).
+          05 LK-BY-SET-PGM-PREFIX        PIC X(4).
+          05 LK-BY-SET-PGM-ID            PIC X(3).
+          05 LK-BY-SET-PGM-SUFFIX        PIC X.
+          05 LK-BY-SET-MAP               PIC X(8).
+          05 LK-BY-SET-MAPSET            PIC X(8).
+          05 LK-BY-SET-TRANSID           PIC X(4).
+
+      * Dfhcommarea Cics
+       01 DFHCOMMAREA                   PIC X(4096).
+ 
+       01 POINTER-TWA USAGE POINTER.
+       01 POINTER-CSA USAGE POINTER.
+ 
+      * TWA Cics
+       01 TWA-AREA.
+       
+      * Campi per gestione test T039
+          05 T039-TWA.
+             07 FILLER                   PIC X(20).
+             07 T049-TWA-PGM-NAME        PIC X(8).
+       
+      * Campi per gestione test T040
+          05 T040-TWA.
+             07 T040-TWA-FILE-NAME       PIC X(8).
+             07 T040-TWA-PGM-NAME        PIC X(8).
+             
+      * Campi per gestione test T049
+          05 T049-TWA.
+             07 T049-TWA-FILE-NAME            PIC X(8).
+             07 T049-TWA-FILE-NAME2           PIC X(8).
+             07 T049-TWA-POINTER    USAGE POINTER.
+             07 FILLER                        PIC X(8).
+             07 T049-TWA-SUBFLD1              PIC X.
+             07 T049-TWA-SUBFLD2              PIC X(3).
+             07 T049-TWA-SUBFLD3              PIC X(2).
+             07 T049-TWA-SUBFLD4              PIC X(2).
+
+      * CSA Cics
+      * Campi per gestione test T049
+       01 CSA-AREA.
+
+      * Campi per gestione test T041
+          05 T041-CSA.
+             07 T041-CSA-COD                  PIC X.
+             07 T041-CSA-FILE-NAME            PIC X(8).
+             07 T041-CSA-FILE-NAME2           PIC X(8).
+              
+      * Campi per gestione test T048
+          05 T048-CSA.
+             07 T048-CSA-FILE-NAME            PIC X(8).
+             07 T048-CSA-FILE-NAME2           PIC X(8).
+             07 T048-CSA-POINTER    USAGE POINTER.
+             
+      * Campi per gestione test T049
+          05 T049-CSA.
+             07 FILLER                        PIC X(8).
+             07 T049-CSA-SUBFLD1              PIC X.
+             07 T049-CSA-SUBFLD2              PIC X(3).
+             07 T049-CSA-SUBFLD3              PIC X(2).
+             07 T049-CSA-SUBFLD4              PIC X(2).
+       
+        
+       PROCEDURE DIVISION USING LK-PARM, LK-DYNAMIC-SPREADED.
+      
+      *--------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati individuati nel pgm 
+      * attraverso assegnazioni dirette e/o indirette e/o parziali
+      *-------------------------------------------------------------------- 
+      
+      * TXXX Assegnazioni iniziali campi e sottocampi per i vari test
+           PERFORM TXXX-INITIAL-ASSIGN
+      
+      *------------------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati da individuare fuori dal pgm 
+      * in programmi chiamanti a fronte di Linkage/DFHCOMMAREA/TWA/CSA o Using Parm
+      * I valori effettivi saranno individuati in programmi diversi con
+      * la funzione LOGIC_SPREADED, da eseguire a valle di questa elaborazione.
+      *------------------------------------------------------------------------------
+           
+      * T038 OK   Campo singolo con Move da Linkage in Using
+           PERFORM T038-SINGLE-MOVE-FROM-USING-PASSTHRU
+           
+      * T040 OK   Campo singolo con Move da Cics TWA 
+           PERFORM T040-SPREADED-MOVE-FROM-CICS-TWA
+           
+      * T041 OK   Campo singolo con Move da Cics CSA 
+           PERFORM T041-SPREADED-MOVE-FROM-CICS-CSA
+           
+      * T044 OK  Campo singolo con sottocampi con Move da Linkage in Using
+           PERFORM T044-SINGLE-MOVE-FROM-USING
+            
+      * T049 OK  Sottocampo passato a chiamato in CSA e utilizzato in COBTST02
+            PERFORM T049-SPREADED-GROUP-MIXED
+ 
+           STOP RUN.
+ 
+ 
+      *------------------------------------------------------------------
+      * Inizializzazione iniziale campi valida per tutti i test e path
+      *------------------------------------------------------------------
+       TXXX-INITIAL-ASSIGN.
+       
+      * Test T002 - Assegnazione campo con value programma
+           MOVE T002-FLD01 TO TXXX-FLD-SINGLE.
+        
+       TXXX-EX. EXIT.
+ 
+
+      *-----------------------------------------------------------------------------------------
+      * T038 Valorizzazione sottocampo WS-SPREADED-PGM-SUFFIX necessario a pgm due livelli 
+      *      + annidato (COBTST02) passato da programma passthru (COBTST03) ultimo nel primo 
+      *      parametro
+      *         con la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02
+      * Valori attesi: A, B, C, D
+      *-----------------------------------------------------------------------------------------
+       T038-SINGLE-MOVE-FROM-USING-PASSTHRU.
+           
+           IF TXXX-FLDN1 = 1
+              MOVE 'A' TO WS-SPREADED-PGM-SUFFIX-O
+           END-IF  
+            
+           IF TXXX-FLDN1 = 2
+              MOVE 'B' TO WS-SPREADED-PGM-SUFFIX-O
+           END-IF   
+           
+           IF TXXX-FLDN1 = 3
+              MOVE 'C' TO WS-SPREADED-PGM-SUFFIX-O
+           END-IF  
+            
+           IF TXXX-FLDN1 = 4
+              MOVE 'D' TO WS-SPREADED-PGM-SUFFIX-O
+           END-IF   
+  
+           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.
+           
+       T038-EX. EXIT.
+   
+      *---------------------------------------------------------------------------------
+      * T040 Valorizzazione sottocampo in Cics TWA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA 
+      *        Il campo di TWA viene passato ai programmi chiamati (COBTST03/COBTST02)
+      *      Si testa il corretto indirizzamento della TWA con individuazione 
+      *      Si testa che non venga inserito nessun valore di default
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02 
+      *
+      * Valori attesi: T0400001, T0400002
+      *---------------------------------------------------------------------------------- 
+       T040-SPREADED-MOVE-FROM-CICS-TWA.
+           
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+      
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0400001' TO T040-TWA-FILE-NAME
+           END-IF   
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0400002' TO T040-TWA-FILE-NAME
+           END-IF   
+           
+           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.
+           
+       T040-EX. EXIT.
+   
+      *---------------------------------------------------------------------------------
+      * T041 Valorizzazione sottocampo in Cics TWA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA 
+      *        Il campo di TWA viene passato ai programmi chiamati (COBTST03/COBTST02)
+      *      Si testa il corretto indirizzamento della TWA con individuazione 
+      *      Si testa che non venga inserito nessun valore di default
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02 
+      *
+      * Valori attesi: T0400001, T0400002
+      *---------------------------------------------------------------------------------- 
+       T041-SPREADED-MOVE-FROM-CICS-CSA.
+           
+      * Recupero indirizzo CSA da Cics
+      * Indirizzamento CSA con Api Cics
+           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF CSA-AREA) 
+                USING(POINTER-CSA)
+           END-EXEC
+      
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0410001' TO T041-WS-CSA-FILE-NAME
+           END-IF   
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0410002' TO T041-WS-CSA-FILE-NAME
+           END-IF   
+           
+           MOVE T041-WS-CSA  TO  T041-CSA.
+           
+           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.
+           
+       T041-EX. EXIT.
+   
+   
+      *-----------------------------------------------------------------------------------------
+      * T044 Valorizzazione sottocampo WS-SPREADED-PGM-SUFFIX-T044 necessario a pgm due livelli 
+      *      + annidato (COBTST02) passato da programma passthru (COBTST03) ultimo nel primo 
+      *      parametro
+      *         con la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02
+      * Valori attesi: A, B, C
+      *-----------------------------------------------------------------------------------------
+       T044-SINGLE-MOVE-FROM-USING.
+           
+           IF TXXX-FLDN1 = 1
+              MOVE 'A' TO WS-SPREADED-PGM-SUFFIX-T044
+           END-IF  
+            
+           IF TXXX-FLDN1 = 2
+              MOVE 'B' TO WS-SPREADED-PGM-SUFFIX-T044
+           END-IF   
+           
+           IF TXXX-FLDN1 = 3
+              MOVE 'C' TO WS-SPREADED-PGM-SUFFIX-T044
+           END-IF  
+              
+           CALL 'COBTST03' USING WS-PARM, WS-DYNAMIC-SPREADED.
+           
+       T044-EX. EXIT.
+   
+      *-------------------------------------------------------------------- 
+      * T049 Sottocampo valorizzato e passato ai chiamati in CSA
+      *      Si testa il caso di logiche spreaded relative a + sottocampi.
+      *      Si testa il passaggio al chiamante di un sottocampo in CSA
+      *      Si testa che il chiamante non esegua operazioni e lo passi
+      *        sempre in CSA, al pgm chiamato utilizzatore, COBTST02
+      *      Qui viene impostato solo il campo in Cics Csa.
+      *
+      * Valori composti in pgm chiamato:T0493141,T0493142,T0493141,T0493142
+      *--------------------------------------------------------------------- 
+       T049-SPREADED-GROUP-MIXED.
+ 
+      * Indirizzamento Cics CSA
+           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.
+           EXEC CICS ADDRESS 
+                 SET(ADDRESS OF CSA-AREA)
+                 USING(POINTER-CSA) 
+           END-EXEC.
+ 
+      * In Cics CSA, passata al chiamato COBTST02
+           IF TXXX-FLDN1 = 1
+              MOVE '41'  TO          T049-CSA-SUBFLD4 
+           END-IF
+           
+           IF TXXX-FLDN1 = 2
+              MOVE '42'  TO          T049-CSA-SUBFLD4 
+           END-IF
+            
+            EXEC CICS LINK 
+                PROGRAM('COBTST03') 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+       T049-EX. EXIT.
+   
+   
+  

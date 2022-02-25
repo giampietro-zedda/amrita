@@ -1,0 +1,508 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerDynamicCode.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div  id="divDynInstrTable">   	
+      <table class='header'><tr>
+                 <td id='FieldsCols'>Dynamic Instructions</td> 
+                 <td class='counter' id='CountDynInstr'>0</td>     
+             </tr>  
+      </table> 
+      <div id="dynInstrTable"></div> 
+</div>
+
+<div id="divSubFieldTable">  
+      <table class='header'><tr>
+                 <td>Subfields</td> 
+                 <td class='counter' id='CountSubField'>0</td>     
+             </tr>  
+      </table> 
+   <div id="subFieldTable"></div> 
+</div>
+
+
+<div id="divSubFieldValueTable">  
+      <table class='header'><tr>
+                 <td>Values</td> 
+                 <td class='counter' id='CountSubFieldValue'>0</td>     
+             </tr>  
+      </table> 
+   <div id="subFieldValueTable"></div> 
+</div>
+
+<iframe id='iframeSourceForDynamicCode' name='iframeSourceForDynamicCode' title="description"></iframe> 
+   	
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+var baseurl = 'http://localhost:8080/AmritaRest2/rest';
+var urlDynamicFieldGET = 'dynamicField'
+var urlDynamicFieldSubGET = 'dynamicFieldSub'
+var urlDynamicFieldSubValueGET = 'dynamicFieldSubValue'
+
+var winOpenViewer=null;            // Viewer reference
+var objConfig=null;                // Configuration object from Viewer
+var objSelRow=null;                // Object row selected in viewer
+var jsonArray = null;              // Contains relations
+var objects=[];                    // JsonArray   
+
+//To manage instruction list
+var arDynInstrRow = [];      		// Rows objects    
+var objDynInstrSelRow=null;         // Info Dyn Instr selected row  
+var iSelDynInstr=0;
+var iSelDynInstrOld=0;
+
+//To manage subfield list
+var arSubFieldRow = [];             // Rows objects    
+var objSubFieldSelRow=null;         // Info subfield row  
+var iSelSubField=0;
+var iSelSubFieldOld=0;           
+
+//To manage subfield value list
+var arSubFieldValueRow = [];         // Rows objects    
+var objSubFieldValueSelRow=null;     // Info subfield row  
+var iSelSubFieldValue=0;
+var iSelSubFieldValueOld=0;           
+
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+  winOpenViewer=window.opener;          // Viewer
+  if (winOpenViewer != null) {
+  	  objSelRow=winOpenViewer.getObjSelRow();
+  	  objConfig=winOpenViewer.getConfig();
+  	  loadDynInstr();
+  }   
+}
+
+function getWinViewer() {
+	  return winOpenViewer;
+}
+
+function loadDynInstr() {
+	  getJsonResponseDynInstrGET();  
+}
+
+function loadSubFields() {
+	  getJsonResponseSubFieldsGET(); 
+}
+
+function loadSubFieldValues() {
+	if (objDynInstrSelRow.idSubField == "") {
+		objDynInstrSelRow.idSubField = '*'
+	}
+    getJsonResponseSubFieldValuesGET(); 
+}
+
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function getJsonResponseDynInstrGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlDynamicFieldGET + "/" +  objConfig.user + "/" + objSelRow.sys + "/" + objSelRow.subSys + "/" + objSelRow.idObject + "/" + objSelRow.typeObjectN + "/" + "*" + "/" + "*" ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseDynInstr(xmlhttp);};
+	document.getElementById("CountDynInstr").innerHTML = "Database fetching ...";	
+}  
+
+function handleJsonResponseDynInstr(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+	       arDynInstrRow = new Array();
+		   
+	       var tbltop = "<table class='clsListEntity' id='listDynInstr'>"
+		 	          +    "<tr>"
+		              +      "<th>Pgm</th>"
+		              +      "<th>#Inst</th>"
+		              +      "<th>Field Name</th>"	                  
+		              +      "<th>#def</th>"
+		              +      "<th>Light</th>"
+		              +      "<th>solved</th>"
+		              +      "<th>Full</th>"
+		              +      "<th>Wait</th>"
+		              +      "<th>Spreaded</th>"	                  
+		              +      "<th>Type</th>"
+		              +      "<th>PreComp</th>"
+		              +      "<th>Oprnd</th>"
+		              +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           
+	    	   main  += "<tr>"
+	     	         +    "<td id='idObjectD_"               + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].idObject              + "</td>" 
+	     	         +    "<td id='numInstrD_"               + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].numInstr              + "</td>" 
+	     	         +    "<td id='idFieldD_"                + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].idField               + "</td>" 	     	         
+	     	         +    "<td id='numFieldD_"               + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].numField              + "</td>" 
+	     	         +    "<td id='light_"                   + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].light                 + "</td>" 
+	     	         +    "<td id='solved_"                  + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].solved                + "</td>" 
+	     	         +    "<td id='solvedFull_"              + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].solvedFull            + "</td>" 
+	     	         +    "<td id='waitingForData_"          + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].waitingForData        + "</td>" 
+	     	         +    "<td id='spreaded_"                + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].spreaded              + "</td>" 
+	     	         +    "<td id='instrCobolType_"          + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].instrCobolType        + "</td>" 
+	     	         +    "<td id='instrPrecompType_"        + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].instrPrecompType      + "</td>" 
+	     	         +    "<td id='instrPrecompOprndType_"   + i + "' onclick='onclick_dynInstrRow(this.id);'>" + objects[i].instrPrecompOprndType + "</td>" 
+	     	         +  "</tr>"
+	     	         
+		  	     	   var objDynInstrRow = new DynInstrRow(
+								                              objects[i].sys	 
+								                             ,objects[i].subSystem	     			                           
+								                             ,objects[i].idObject                           
+								                             ,objects[i].typeObject                                                    
+								                             ,objects[i].numInstr  
+								                             ,objects[i].idField  
+								                             ,objects[i].numField  
+								                             ,''            // idSubField
+								                             ,0             // numSubField
+								                             ,objects[i].typeObjectOrdinal  
+								                             ,0             // typeSubFieldOrdinal
+								                           );
+	                    arDynInstrRow.push(objDynInstrRow);                                        
+
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('dynInstrTable').innerHTML = tbl;	
+		   document.getElementById("CountDynInstr").innerHTML = objects.length;
+    }	
+}
+
+function getJsonResponseSubFieldsGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlDynamicFieldSubGET + "/" + objConfig.user + "/" + objDynInstrSelRow.sys + "/" + objDynInstrSelRow.subSys + "/" + objDynInstrSelRow.idObject + "/" + objDynInstrSelRow.typeObjectN + "/" + objDynInstrSelRow.numInstr + "/" + objDynInstrSelRow.idField ;
+	document.getElementById("CountSubField").innerHTML = "Database fetching ...";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSubField(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseSubField(xmlhttp, jsonArray) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+	       arSubFieldRow = new Array(DynInstrRow);
+	       
+	       var tbltop = "<table class='clsListEntity' id='listSubField'>"
+		 	          +    "<tr>"
+		              +      "<th>Field Name</th>"	
+		              +      "<th>SubField Name</th>"		                  
+		              +      "<th>#def</th>"
+		              +      "<th>Size</th>"
+		              +      "<th>Type</th>"
+		              +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	     	         +    "<td id='idFieldS_"                + i + "' onclick='onclick_subFieldRow(this.id);'>" + objects[i].idField               + "</td>" 	     	         
+	     	         +    "<td id='idSubFieldS_"             + i + "' onclick='onclick_subFieldRow(this.id);'>" + objects[i].idSubField            + "</td>" 	     	         
+	     	         +    "<td id='numdSubFieldS_"           + i + "' onclick='onclick_subFieldRow(this.id);'>" + objects[i].numSubField           + "</td>" 
+	     	         +    "<td id='sizeSubField_"            + i + "' onclick='onclick_subFieldRow(this.id);'>" + objects[i].sizeSubField          + "</td>" 
+	     	         +    "<td id='typeSubField_"            + i + "' onclick='onclick_subFieldRow(this.id);'>" + objects[i].typeSubField          + "</td>" 
+	     	         +  "</tr>"
+	     	         
+		  	     	 var objSubFieldRow = new DynInstrRow(
+	                              objects[i].sys	 
+	                             ,objects[i].subSystem	     			                           
+	                             ,objects[i].idObject                           
+	                             ,objects[i].typeObject                                                    
+	                             ,objects[i].numInstr  
+	                             ,objects[i].idField  
+	                             ,objects[i].numField  
+	                             ,objects[i].idSubField  
+	                             ,objects[i].numSubField  
+	                             ,objects[i].typeObjectOrdinal  
+	                             ,objects[i].typeSubFieldOrdinal 
+	                           );
+                    arSubFieldRow.push(objSubFieldRow);                                        
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		  
+	       document.getElementById('subFieldTable').innerHTML = tbl;
+		   document.getElementById("CountSubField").innerHTML = objects.length;
+    }	
+}
+
+function getJsonResponseSubFieldValuesGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlDynamicFieldSubValueGET + "/" + objConfig.user + "/" + objDynInstrSelRow.sys + "/" + objDynInstrSelRow.subSys + "/" + objDynInstrSelRow.idObject + "/" + objDynInstrSelRow.typeObjectN + "/" + objDynInstrSelRow.numInstr + "/" + objDynInstrSelRow.idField + "/" + objDynInstrSelRow.idSubField ;
+	document.getElementById("CountSubFieldValue").innerHTML = "Database fetching ...";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSubFieldValue(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseSubFieldValue(xmlhttp, jsonArray) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+	       arSubFieldRow = new Array(DynInstrRow);
+	       
+	       var tbltop = "<table class='clsListEntity' id='listSubFieldValue'>"
+		 	          +    "<tr>"
+		              +      "<th>Value</th>"
+		              +      "<th>Field</th>"	
+		              +      "<th>SubField</th>"		                  
+		              +      "<th>Progr</th>"
+		              +      "<th>Pos</th>"
+		              +      "<th>Lng</th>"
+		              +      "<th>Pgm From</th>"
+		              +      "<th>#Inst From</th>"
+		              +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	     	         +    "<td id='value_"                   + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].value                 + "</td>" 
+	     	         +    "<td id='idFieldV_"                + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].idField               + "</td>" 	     	         
+	     	         +    "<td id='idSubFieldV_"             + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].idSubField            + "</td>" 	     	         	     	         
+	     	         +    "<td id='progr_"                   + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].progr                 + "</td>" 
+	     	         +    "<td id='posInSubField_"           + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].posInSubField         + "</td>" 
+	     	         +    "<td id='lngInSubField_"           + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].lngInSubField         + "</td>" 
+	     	         +    "<td id='idObjectFrom_"                + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].idObjectFrom          + "</td>" 
+	     	         +    "<td id='numInstrFrom_"            + i + "' onclick='onclick_subFieldValueRow(this.id);'>" + objects[i].numInstrFrom          + "</td>" 
+	     	         +  "</tr>"
+	     	         
+		  	     	 var objSubFieldValueRow = new DynInstrRow(
+	                              objects[i].sys	 
+	                             ,objects[i].subSystem	     			                           
+	                             ,objects[i].idObject                           
+	                             ,objects[i].typeObject                                                    
+	                             ,objects[i].numInstr  
+	                             ,objects[i].idField  
+	                             ,objects[i].numField  
+	                             ,objects[i].idSubField  
+	                             ,objects[i].numSubField  
+	                             ,objects[i].typeObjectOrdinal  
+	                             ,objects[i].typeSubFieldOrdinal 
+	                           );
+                    arSubFieldValueRow.push(objSubFieldValueRow);                                        
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		  
+	       document.getElementById('subFieldValueTable').innerHTML = tbl;
+		   document.getElementById("CountSubFieldValue").innerHTML = objects.length;
+    }	
+}
+
+
+function onclick_dynInstrRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelDynInstr = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelDynInstr != iSelDynInstrOld && iSelDynInstrOld >= 0) {
+		document.getElementById("idObjectD_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("numInstrD_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("idFieldD_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("numFieldD_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("light_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("solved_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("solvedFull_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("waitingForData_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("spreaded_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("instrCobolType_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("instrPrecompType_"+iSelDynInstrOld).classList.remove("selected"); 
+		document.getElementById("instrPrecompOprndType_"+iSelDynInstrOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("idObjectD_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("numInstrD_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("idFieldD_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("numFieldD_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("light_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("solved_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("solvedFull_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("waitingForData_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("spreaded_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("instrCobolType_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("instrPrecompType_"+iSelDynInstr).classList.add("selected"); 
+		document.getElementById("instrPrecompOprndType_"+iSelDynInstr).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelDynInstrOld=iSelDynInstr;
+    
+    // Database access and loading
+    objDynInstrSelRow=arDynInstrRow[iSelDynInstr+1];	// Element 0 contains var names
+    loadSubFields();	
+} 
+
+function onclick_subFieldRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelSubField = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelSubField != iSelSubFieldOld && iSelSubFieldOld >= 0) {
+		document.getElementById("idFieldS_"+iSelSubFieldOld).classList.remove("selected"); 
+		document.getElementById("idSubFieldS_"+iSelSubFieldOld).classList.remove("selected"); 
+		document.getElementById("numdSubFieldS_"+iSelSubFieldOld).classList.remove("selected"); 
+		document.getElementById("sizeSubField_"+iSelSubFieldOld).classList.remove("selected"); 
+		document.getElementById("subSys_"+iSelSubFieldOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("idFieldS_"+iSelSubField).classList.add("selected"); 
+		document.getElementById("idSubFieldS_"+iSelSubField).classList.add("selected"); 
+		document.getElementById("numdSubFieldS_"+iSelSubField).classList.add("selected"); 
+		document.getElementById("sizeSubField_"+iSelSubField).classList.add("selected"); 
+		document.getElementById("typeSubField_"+iSelSubField).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelSubFieldOld=iSelSubField;
+    
+    // Database access and loading
+    objSubFieldSelRow =arSubFieldRow[iSelSubField+1];	// Element 0 contains var names
+    loadSubFieldValues();	
+} 
+
+
+function onclick_subFieldValueRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelSubFieldValue = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelSubFieldValue != iSelSubFieldValueOld && iSelSubFieldValueOld >= 0) {
+		document.getElementById("value_"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("idFieldV_"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("idSubFieldV_"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("progr_"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("posInSubField_"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("lngInSubField__"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("idObjectFrom_"+iSelSubFieldValueOld).classList.remove("selected"); 
+		document.getElementById("numInstrFrom_"+iSelSubFieldValueOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("value_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("idFieldV_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("idSubFieldV_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("progr_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("posInSubField_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("lngInSubField_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("idObjectFrom_"+iSelSubFieldValue).classList.add("selected"); 
+		document.getElementById("numInstrFrom_"+iSelSubFieldValue).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelSubFieldValueOld=iSelSubFieldValue;
+    
+    // Database access and loading
+    objSubFieldSelRow =arSubFieldRow[iSelSubFieldValue+1];	// Element 0 contains var names
+    
+    // Hide sections 
+	document.getElementById("divDynInstrTable").style.display="none";
+	document.getElementById("divSubFieldTable").style.display="none";
+	document.getElementById("divSubFieldValueTable").style.display="none";
+	
+ 	// Show only source
+ 	document.getElementById("iframeSourceForDynamicCode").style.display="block";
+	document.getElementById("iframeSourceForDynamicCode").style.height = "100%";
+	document.getElementById("iframeSourceForDynamicCode").style.width = "99%";
+	window.open('ViewerSourceViewer.html', 'iframeSourceForDynamicCode');    
+} 
+
+function hideSource(){
+
+	// Hide
+	document.getElementById("iframeSourceForDynamicCode").style.display="none";
+
+	// Show
+	document.getElementById("divDynInstrTable").style.display="block";
+	document.getElementById("divSubFieldTable").style.display="block";
+	document.getElementById("divSubFieldValueTable").style.display="block";
+}
+
+// Custom objects for dynamic instruction row row
+function DynInstrRow(		
+		  sys 
+		, subSys 
+		, idObject 
+		, typeObject
+		, numInstr            
+        , idField
+		, numField  
+        , idSubField
+		, numSubField  		
+		, typeObjectN
+		, typeSubFieldN
+)  {
+   this.sys = sys;  
+   this.subSys = subSys;    
+   this.idObject = idObject;
+   this.typeObject = typeObject;
+   this.numInstr = numInstr;
+   this.idField = idField;
+   this.numField = numField;
+   this.idSubField = idSubField;
+   this.numSubField = numSubField;   
+   this.typeObjectN = typeObjectN;
+   this.typeSubFieldtN = typeSubFieldN;
+}
+							                             
+</script>
+
+</html>

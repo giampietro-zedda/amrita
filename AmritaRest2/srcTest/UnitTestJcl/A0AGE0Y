@@ -1,0 +1,32 @@
+//SA0AGE0Y JOB AMA0000N7,'CAD-RENAME FLUSSI',MSGCLASS=K,CLASS=B,        00000100
+//             SCHENV=SC                                                00010000
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)                   00010000
+//*
+//*--------------------------------------------------------------------*00000200
+//P0DEL    EXEC PGM=IDCAMS                                              00000300
+//SYSPRINT DD SYSOUT=F                                                  00000400
+//SYSIN    DD DSN=LOPS0.DMSDEL(A0AGE0YG),DISP=SHR                       00000500
+//*--------------------------------------------------------------------*00000600
+//P0001    EXEC PGM=IEBGENER                                            00000700
+//SYSPRINT DD SYSOUT=*                                                  00000800
+//SYSUT1   DD DSN=DOP0A0.ST0G0.A0AGE.CADERR.CAD,DISP=SHR                00000900
+//SYSUT2   DD DSN=DOP0A0.ST0G0.A0AGEE,                                  00001000
+//            DISP=(NEW,CATLG,DELETE),                                  00002000
+//            SPACE=(CYL,(001,001)),                                    00003000
+//            DSORG=PS,LRECL=0081,RECFM=FBA                             00004001
+//SYSIN    DD DUMMY                                                     00005000
+//*--------------------------------------------------------------------*00006000
+//*
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE   :  *** PROSE NON DEFINITA ***
+//*-----------
+//*SCHEDULAZIONE :
+//*-------------
+//*VINCOLO TP    :
+//*----------
+//*DUMP          :
+//*----
+//*PROSEND
+//************************************************************

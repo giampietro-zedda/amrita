@@ -1,0 +1,39 @@
+@charset "ISO-8859-1";
+
+
+table.clsForm  {
+	font-family:monospace;
+	font-size: medium;
+	border-collapse: collapse;
+	width: 100%;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;  
+}	
+
+table.clsForm th {
+	border: 1px solid #0000a0;
+    background-color: gray;  	
+	color: black; 
+	font-family:monospace;
+	font-size: x-large; 
+}	
+
+table.clsForm td {
+	border: 1px solid #0000a0;
+	padding: 0;
+ 
+}	
+
+.clsFormC1Err {
+	font-weight: 700;
+	width: 30%;
+}	
+
+.clsFormC2Err {
+	width: 70%;
+}	
+
+

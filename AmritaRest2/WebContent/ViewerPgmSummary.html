@@ -1,0 +1,435 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerPgmSummary.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div class='divHeader' id='divHeader'>Pgm Summary</div> 	
+
+ <div id='divToolBar'>
+     <table  id='tbToolBarPgm'>
+        <tr>
+     	  <td id='tdSelSubSys'><select       id='selSubSys'         name="selSubSys"                   	  onChange="onChangeSelSubSys()"></select></td>          
+      	  <td id='tdSelPgm'><select          id='selPgm'      	    name="selPgm"                   	  onChange="onChangeSelPgm()"></select></td>          
+   	      <td id='tdBtnHTMLExport'><input 	 id='btnHTMLExport' 	name="btnHTMLExport" type="button" 	  onClick="onClickBtnHTMLExport()"     value='HTML Page Export'></input></td>    
+  	      <td id='tdBtnShowOnBrowser'><input id='btnShowOnBrowser' 	name="btnShowOnBrowser" type="button" onClick="onClickBtnShowOnBrowser()"  value='Show On Browser'></input></td>    
+         </tr>
+    </table>
+ </div>
+
+ <div id='docSections'> 
+   <table>
+     <tr>
+       <td><select id='selSections' name="selSections" onChange="onChangeSelSections()"></select> </td>
+       <td id='msgProcessing'></td>
+     </tr>
+   </table>
+ </div>
+
+<br>
+
+<div id='divContainer'>
+	<a id="anchorHTMLInfoAmrita"></a>  
+	<div class='divHeaderSection'>Info Amrita</div>
+	<div class='divHTMLBody' id='divHTMLInfoAmrita'></div>
+	
+	<a id="anchorHTMLInfoSource"></a>  
+	<div class='divHeaderSection'>Source Info</div>
+	<div class='divHTMLBody' id='divHTMLInfoSource'></div>
+	
+	<a id="anchorHTMLProgramOptions"></a>  
+	<div class='divHeaderSection'>Program Options</div>
+	<div class='divHTMLBody' id='divHTMLProgramOptions'></div>
+	
+	<a id="anchorHTMLRelationships"></a> 
+	<div class='divHeaderSection'>Relationships</div>
+	<div class='divHTMLBody' id='divHTMLRelationships'></div>
+	
+	<a id="anchorHTMLCopySqlInclude"></a> 
+	<div class='divHeaderSection'>Copy/Sql Include</div>
+	<div class='divHTMLBody' id='divHTMLCopySqlInclude'></div>
+	
+	<a id="anchorHTMLCrudMatrix"></a> 
+	<div class='divHeaderSection'>Program CRUD Matrix</div>
+	<div class='divHTMLBody' id='divHTMLCrudMatrix'></div>
+	
+	<a id="anchorHTMLFileSystemIO"></a> 
+	<div class='divHeaderSection'>File System I/O</div>
+	<div class='divHTMLBody' id='divHTMLFileSystemIO'></div>
+	
+	<a id="anchorHTMLSourceCoded"></a> 
+	<div class='divHeaderSection'>Source Coded </div>
+	<div class='divHTMLBody' id='divHTMLSourceCoded'></div>
+	
+	<a id="anchorHTMLScreenLayout"></a> 
+	<div class='divHeaderSection'>Screen Layout</div>
+	<div class='divHTMLBody' id='divHTMLScreenLayout'></div>
+	
+	<a id="anchorHTMLDynamicCode"></a> 
+	<div class='divHeaderSection'>Dynamic Code Instructions</div>
+	<div class='divHTMLBody' id='divHTMLDynamicCode'></div>	
+	
+	<a id="anchorHTMLParSectionXref"></a>    
+	<div class='divHeaderSection'>Paragraph/Section Xref List</div>
+	<div class='divHTMLBody' id='divHTMLParSectionXref'></div>
+	
+	<a id="anchorHTMLSymbolsXref"></a>
+	<div class='divHeaderSection'>Symbols Xref List</div>
+	<div class='divHTMLBody' id='divHTMLSymbolsXref'></div>	
+	
+	<a id="anchorHTMLDeadCode"></a>
+	<div class='divHeaderSection'>Dead Code Instructions List</div>
+	<div class='divHTMLBody' id='divHTMLDeadCode'></div>
+	
+	<a id="anchorHTMLMetrics"></a>
+	<div class='divHeaderSection'>Program Metrics Measures</div>
+	<div class='divHTMLBody' id='divHTMLMetrics'></div>
+	
+	<a id="anchorHTMLQuality"></a>
+	<div class='divHeaderSection'>Quality Factors</div>
+	<div class='divHTMLBody' id='divHTMLQuality'></div>
+	
+	<a id="anchorHTMLViolation"></a>
+	<div class='divHeaderSection'>Rules Violations</div>
+	<div class='divHTMLBody' id='divHTMLViolation'></div>
+</div>
+
+ 
+</body>
+
+<script type="text/javascript">
+"use strict";
+const OBJECT_PGM_COBOL = "1";  	        		// 01 Sorgenti Cobol  
+
+var userInp="amrita";       								// Replaced by localStorage  
+var hostName = "";          								// Replaced by localStorage  
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  	// Replaced then with actual value
+var urlSubSysGET = 'subsys';                                // Sottosistemi definiti nel sistema
+var urlPgmsOwnedGET  = 'objectsOwned';                      // Programmi posseduti dal sottosistema selezionato
+var urlPgmSummaryGET = 'programPgmSummaryHTML'              // Program Documentation Summary
+var urlMetricValueGET = 'metricValue'                       // Metriche di programma (livello programma, section)
+
+var curSys="VN";             		// System from login in localStorage
+var curSubSys="AN";             	// SubSystem from combo subSys selection
+var curCompany="";             	    // Societa da login
+var curProgramOrigin="";            // Programma iniziale 
+var curProgram="";                  // Programma corrente attivo (iniziale o chiamante selezionato) 
+
+var winOpenViewer=null;      		// Viewer reference
+var objects=[];              		// JsonArray   
+var jsonObjectMetricValue=null;   	// Json Object to Pass to Open Window
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+  	winOpenViewer=window.opener;
+  
+	// Initial essential
+	userInp = localStorage.getItem("user");		
+	curSys = localStorage.getItem("sys");		
+	curCompany = localStorage.getItem("company");	
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");	
+
+	// Load combo sottosistemi applicativi
+	loadComboSubSys();
+	loadComboSections(); 
+}
+
+/*
+ * Caricamento combo sottosistema
+ */
+function loadComboSubSys() {
+	var objects = [] ;
+	var xmlhttp;
+	var url;
+    var main = ""; 
+    var subSysDesc = "";
+    var i = 0;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlSubSysGET + "/"+ userInp 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+		objects=JSON.parse(xmlhttp.responseText);
+		
+		selSubSys.disable=true;
+		while (selSubSys.length != 0) {
+			selSubSys.remove(0);		
+		}
+	
+	     // Scan rows from server
+	     for (var i=0; i < objects.length; i++) {
+	    	 
+	    	 if (objects[i].idObject == "") {continue;}
+	    	 
+	         subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+	         if (subSysDesc != "") {
+	        	subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+	     	 }
+	         
+	         selSubSys.add(new Option(subSysDesc, subSysDesc));
+	     } 
+	     selSubSys.disable=false;
+	};
+} 
+
+/*
+ * Caricamento programmi del sottosistema in combo
+ */
+function onChangeSelSubSys() { 
+	var xmlhttp;
+	var url;
+	var objects = null;
+    var subSysFull = "";
+    var ar = [];
+   
+	// Estrae subsys
+	subSysFull = selSubSys.value;
+	ar = subSysFull.split(" ");
+	curSubSys = ar[0];
+	
+	// Load programs
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlPgmsOwnedGET + "/"+ userInp + "/" + curSys + "/"+ curSubSys + "/" + OBJECT_PGM_COBOL; 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {		
+		
+	    var i = 0;
+	    
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+		objects=JSON.parse(xmlhttp.responseText);
+
+		selPgm.disable=true;
+		while (selPgm.length != 0) {
+			selPgm.remove(0);		
+		}
+        
+		selPgm.add(new Option("", ""));  // Il programma deve essere selezionato successivamente
+		
+	    // Scan rows from server
+	    for (var i=0; i < objects.length; i++) {
+	    	 selPgm.add(new Option(objects[i].idObject, objects[i].idObject));
+
+	    }   
+	    selPgm.disable=false;	    
+	};
+}
+
+/*
+ * Caricamento informazioni pgm summary via web service
+ */
+function onChangeSelPgm() { 
+	const COPY_SOURCE_INCLUDED = "Y";
+	var xmlhttp;
+	var object = {} ;
+	var url;
+	
+	curProgram = document.getElementById("selPgm").value;
+    
+	// Nessun programma selezionato
+	if (curProgram == "") {
+		// Clear layout
+		
+		return;
+	}
+	
+	document.getElementById("msgProcessing").style.color="red";
+	document.getElementById("msgProcessing").innerHTML = "Please Wait...Generating Full Documentation.";
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlPgmSummaryGET + "/"+ userInp + "/" + curSys + "/"+ curSubSys + "/" + curProgram + "/" + COPY_SOURCE_INCLUDED; 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {		
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+		object=JSON.parse(xmlhttp.responseText);
+		
+		document.getElementById("msgProcessing").style.color="green";
+		document.getElementById("msgProcessing").innerHTML = "Full Documentation Succesfully Generated.";
+		
+ 		// HTML dal server in ogni sezione
+	    document.getElementById('divHTMLInfoAmrita').innerHTML = object.divHTMLInfoAmrita;
+	    document.getElementById('divHTMLInfoSource').innerHTML = object.divHTMLInfoSource;
+	    document.getElementById('divHTMLProgramOptions').innerHTML = object.divHTMLProgramOptions;
+	    document.getElementById('divHTMLRelationships').innerHTML = object.divHTMLRelationships;
+	    document.getElementById('divHTMLCopySqlInclude').innerHTML = object.divHTMLCopySqlInclude;
+	    document.getElementById('divHTMLCrudMatrix').innerHTML = object.divHTMLCrudMatrix;
+	    document.getElementById('divHTMLFileSystemIO').innerHTML = object.divHTMLFileSystemIO;
+	    document.getElementById('divHTMLSourceCoded').innerHTML = object.divHTMLSourceCoded;
+	    document.getElementById('divHTMLScreenLayout').innerHTML = object.divHTMLScreenLayout;
+	    document.getElementById('divHTMLDynamicCode').innerHTML = object.divHTMLDynamicCode;	     
+	    document.getElementById('divHTMLParSectionXref').innerHTML = object.divHTMLParSectionXref;	
+	    document.getElementById('divHTMLSymbolsXref').innerHTML = object.divHTMLSymbolsXref;	
+	    document.getElementById('divHTMLDeadCode').innerHTML = object.divHTMLDeadCode;
+	   	document.getElementById('divHTMLMetrics').innerHTML = object.divHTMLMetrics;		
+	   	document.getElementById('divHTMLQuality').innerHTML = object.divHTMLQuality;		
+	   	document.getElementById('divHTMLViolation').innerHTML = object.divHTMLViolation;		
+	};   
+}
+
+/*
+ * Caricamento combo con sezioni di dcumentazione disponibili
+ */
+function loadComboSections() {
+
+	selSections.add(new Option("", ""));
+	
+	selSections.disable=true;
+	while (selSections.length != 0) {
+		selSections.remove(0);		
+	}
+	selSections.add(new Option("01 Info Amrita", "01"));
+	selSections.add(new Option("02 Source Info", "02"));
+	selSections.add(new Option("03 Program Options", "03"));
+	selSections.add(new Option("04 Relationships", "04"));
+	selSections.add(new Option("05 Copy/Sql Include", "05"));
+	selSections.add(new Option("06 Program CRUD Matrix", "06"));
+	selSections.add(new Option("07 File System I/O", "07"));
+	selSections.add(new Option("08 Source Coded", "08"));
+	selSections.add(new Option("09 Screen Layout", "09"));
+	selSections.add(new Option("10 Dynamic Code", "10"));
+	selSections.add(new Option("11 Paragraph/Section", "11"));
+	selSections.add(new Option("12 Symbols Xref", "12"));
+	selSections.add(new Option("13 Dead Code", "13"));
+	selSections.add(new Option("14 Program Metrics Measures", "14"));
+	selSections.add(new Option("15 Quality Factors", "15"));
+	selSections.add(new Option("16 Rules Violations", "16"));
+	selSections.disable=false;
+} 
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+/*
+ * Posizionamento sulla sezione di documentazione selezionata
+ */
+function onChangeSelSections() {
+	var section = "";
+	var divIdSection = "";
+	
+	section = selSections.value;
+	
+	if (section == "01") {
+		divIdSection = 'anchorHTMLInfoAmrita';
+	} else if (section == "02") {
+		divIdSection = 'anchorHTMLInfoSource';
+	} else if (section == "03") {
+		divIdSection = 'anchorHTMLProgramOptions';
+	} else if (section == "04") {
+		divIdSection = 'anchorHTMLRelationships';
+	} else if (section == "05") {
+		divIdSection = 'anchorHTMLCopySqlInclude';
+	} else if (section == "06") {
+		divIdSection = 'anchorHTMLCrudMatrix';
+	} else if (section == "07") {
+		divIdSection = 'anchorHTMLFileSystemIO';
+	} else if (section == "08") {
+		divIdSection = 'anchorHTMLSourceCoded';	
+	} else if (section == "09") {
+		divIdSection = 'anchorHTMLScreenLayout';	
+	} else if (section == "10") {
+		divIdSection = 'anchorHTMLDynamicCode';
+	} else if (section == "11") {
+		divIdSection = 'anchorHTMLParSectionXref';
+	} else if (section == "12") {
+		divIdSection = 'anchorHTMLSymbolsXref';
+	} else if (section == "13") {
+		divIdSection = 'anchorHTMLDeadCode';
+	} else if (section == "14") {
+		divIdSection = 'anchorHTMLMetrics';
+	} else if (section == "15") {
+		divIdSection = 'anchorHTMLQuality';
+	} else if (section == "16") {
+		divIdSection = 'anchorHTMLViolation';
+	} else {
+		// Internal error
+		alert("Internal Error - onChangeSelSections()")
+	}
+	
+	// Posizionamento
+	document.location = "#" + divIdSection;
+}
+
+/*
+ * Espansione/Contrazione copy
+ */
+function onclick_expandProc(clicked_id) {
+	var i = 0;
+	var expand = "";
+	var division = "";
+	
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);
+	
+	division = clicked_id.substr(0, 1);
+	expand = document.getElementById(clicked_id).innerHTML;
+	if (expand == "+") {
+		document.getElementById(clicked_id).innerHTML = "-";		
+		document.getElementById(division + "trDiv_" + i).style.display = "table-row";	
+	} else {
+		document.getElementById(clicked_id).innerHTML = "+";		
+		document.getElementById(division + "trDiv_" + i).style.display = "none";	
+	}
+}
+
+</script>
+
+</html>

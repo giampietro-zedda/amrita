@@ -1,0 +1,193 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test post analisi processi a livello di programma
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_UPDATE_DB_ENABLED
+
+
+# Opzioni generali di analisi 
+OPT_UPDATE_DB_ENABLED
+OPT_DETECT_DEAD_CODE_ENABLED
+OPT_GRAPH_CREATION_ENABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_LIGHT_ENABLED
+OPT_TRACE_ANY_ANALYSIS_ERROR_ON_DB_ENABLED
+
+# Opzioni per forzatura rianalisi e scrittura tracciato copy
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni per tracciati copy e where used campi in copy
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_DISABLED
+OPT_COPY_DEF_ON_DB_DISABLED
+
+# Categorie di misurazioni e metriche non di base (incluse nell'analisi)
+OPT_METRICS_ALL_DISABLED           	        
+OPT_METRICS_PGM_DETAIL_ON_DB_ENABLED               
+OPT_METRICS_MCCABE_ENABLED 
+OPT_METRICS_HALSTEAD_DISABLED          
+OPT_METRICS_COMPLEXITY_STRUCTURE_DISABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_DISABLED       
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED 
+OPT_METRICS_DETECT_VIOLATIONS_ENABLED
+
+# Violazioni particolari e controlli via exit esterna   (Obsolete non presenti in Enum)         	 	 
+#OPT_CTRL_COB_NAME_PGM_ENABLED                               
+#OPT_CTRL_COB_NAME_FIELD_ENABLED                
+#OPT_CTRL_COB_NAME_SECTION_ENABLED              
+#OPT_CTRL_COB_NAME_PARAGRAPH_ENABLED            
+#OPT_CTRL_COB_NAME_LABEL_ENABLED                
+
+# Compliance 
+OPT_IBM_DB2_MAINFRAME_V10_COMPLIANCE_ENABLED
+OPT_IBM_DB2_AIX_V9_COMPLIANCE_ENABLED
+
+# Librerie sorgenti programmi e copy e search copy included
+LIBRARY FIAT-CPY      F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy\
+LIBRARY FIAT-CPY-SGM  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy_sgm\
+LIBRARY FIAT-CPY-SQB  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy_sqb\
+LIBRARY FIAT-SRC-CICS F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\src_cics\
+LIBRARY FIAT-SRC-BAT  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\src_bat\
+LIBRARY FIAT-SRC-SORT F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\sort\
+LIBRARY SYS-RESOURCES E:\Amrita\Amrita-Java\AmritaFramework\resources\
+
+# Sequenza librerie in search per copy include
+LIBRARY_SOURCE_SEARCH FIAT-CPY
+LIBRARY_SOURCE_SEARCH FIAT-CPY-SGM
+LIBRARY_SOURCE_SEARCH FIAT-SRC-CICS
+LIBRARY_SOURCE_SEARCH SYS-RESOURCES
+
+# Suffissi moduli copy nelle librerie in search da cercare nell'ordine 
+FILE_SUFFIX_COPY cpp
+FILE_SUFFIX_COPY sqb
+FILE_SUFFIX_COPY cbl
+
+# Copy da includere per precompilatori
+#COPY_PRECOMPILER CUSTOM WORKING name.suffix
+COPY_PRECOMPILER CICS LINKAGE CICS-EIB.cbl
+COPY_PRECOMPILER CICS WORKING CICS-API.cbl
+
+# Info per user exit a fronte di oggetti inseriti/aggiornati/..
+#CUSTOMER_CODE FIAT
+#CUSTOMER_INFO SRC-PGM
+#SUB_SYSTEM_VALUE
+#SYSTEM_ON_NAME
+#SYSTEM_BY_EXIT
+#SUB_SYSTEM_BY_EXIT
+#SUB_SYSTEM_ON_NAME
+#SUB_SYSTEM_BY_EXIT
+
+# Identificazione oggetti da analizzare
+SYSTEM_INPUT *
+SUB_SYSTEM_INPUT UK
+#OBJECT_TYPE_PGM_COBOL *ALL* 
+OBJECT_TYPE_PGM_COBOL *SINGLE* RP00FAB1		 
+
+# Stati validi oggetto da considerare
+#INPUT_OBJECTS_STATUS_ALL
+#INPUT_OBJECTS_TO_BE_ANALYZED
+INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS
+INPUT_OBJECTS_ANALYZED_WITH_ERRORS
+INPUT_OBJECTS_ANALYZED_WITH_EXCEPTION
+#INPUT_OBJECTS_PROCESSED_WITH_NO_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_EXCEPTION
+
+
+# Da risolvere per UK
+#OBJECT_TYPE_PGM_COBOL *SINGLE* RP00FAB1  UK To fix: exception Sql Case When then End nella select e where
+
+# (42) Da non considerare causa errori source
+#EXCLUDE_OBJECT_NAME_RANGE AAAAAAA CCCCCCC  
+EXCLUDE_OBJECT_NAME AROPB750   #OP Exception Manca statement Procedure division
+EXCLUDE_OBJECT_NAME GOP0322801 #OP Source error riga 33 definizione non chiusa da . NON recoverabile
+EXCLUDE_OBJECT_NAME GOP0692801 #OP Source error riga ?? definizione non chiusa da . NON recoverabile
+EXCLUDE_OBJECT_NAME SOP0998301 #OP Source error riga 20 definizione non chiusa da . NON recoverabile
+EXCLUDE_OBJECT_NAME AROPCJ27   #OP **** da col 1 a riga 486 (commento?)
+EXCLUDE_OBJECT_NAME AROPI226   #OP Source error riga 837-838 continuazione di un campo fra due righe non gestito correttamente, * a col 72, ...
+EXCLUDE_OBJECT_NAME AROPOT00   #OP Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME AROPOT01   #OP Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME AROPOX00   #OP Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME AROPOE08   #OP Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME AROPJDFS   #OP Source error definizione con USAGE IS SQL TYPE IS BLOB-FILE ammessa + altri errori
+EXCLUDE_OBJECT_NAME AROPJDWL   #OP Source error definizione con USAGE IS SQL TYPE IS BLOB-FILE ammessa + altri errori
+EXCLUDE_OBJECT_NAME AROPJWEB   #OP Source error definizione con USAGE IS SQL TYPE IS BLOB-FILE ammessa + altri errori
+EXCLUDE_OBJECT_NAME AROPR005   #OP Source error riga 585 - literal non chiusa in stmt sql riga 585
+EXCLUDE_OBJECT_NAME RP00FAB1   #UK Source error riga 783 - Errata parentesi chiusa in Sql Declare Cursor
+EXCLUDE_OBJECT_NAME ARUKB932   #UK Source error riga 519. literal aperta con " e chiusa con '
+EXCLUDE_OBJECT_NAME ARUKF020   #UK Source error riga 736  literal oltre colonna 72
+EXCLUDE_OBJECT_NAME ARUKR003   #UK Source error riga 514  literal oltre colonna 72
+EXCLUDE_OBJECT_NAME ARUKR023   #UK Source error riga 490  literal aperta con " e NON chiusa
+EXCLUDE_OBJECT_NAME ARUKTES1   #UK Source error riga 378  literal aperta con doppi apici e chiusa con apice semplice
+EXCLUDE_OBJECT_NAME ARUKTEST   #UK Source error riga 378  literal aperta con doppi apici e chiusa con apice semplice
+EXCLUDE_OBJECT_NAME ARUKR028   #UK Source error riga 628  literal fra doppi apici dentro literal fra doppi apici (recoverabile)
+EXCLUDE_OBJECT_NAME ARLRA11T   #LR Source error riga 656  - apice non chiuso in Display
+EXCLUDE_OBJECT_NAME ARLRF577   #LR Source error riga 347  - literal chiuso a col 73
+EXCLUDE_OBJECT_NAME ARLRFT00   #LR Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME ARLRFT04   #LR Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME ARLRFT11   #LR Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME ARLRFT99   #LR Source error label CICS-API-ERROR non definita e presente in goTo
+EXCLUDE_OBJECT_NAME IRLRI006   #LR Source error riga 287 Errato COPY COBOP071 REPLACING ==: X--:== BY ==OPCL-==.
+EXCLUDE_OBJECT_NAME IRLRI340   #LR Source error riga 131 Errato COPY COBOP071 REPLACING ==: X--:== BY ==OPCL-==.
+EXCLUDE_OBJECT_NAME ACIRG010   #IR Source error riga 287 - apice singolo dentro stringa fra apici (verificare come limitare i token accodati)
+EXCLUDE_OBJECT_NAME ACIRG025   #IR Source error riga 287 - apice singolo dentro stringa fra apici (verificare come limitare i token accodati)
+EXCLUDE_OBJECT_NAME ACIRGC10   #IR Source error riga 291 - apice singolo dentro stringa fra apici (verificare come limitare i token accodati)
+EXCLUDE_OBJECT_NAME GMTOB005   #TO Source error riga 1432 - Display con apice aperto e non chiuso
+EXCLUDE_OBJECT_NAME AROTA190   #OT Source error riga 151 - Definizione dati chiusa da un . a colonna 73, causa 4 tabulazioni
+EXCLUDE_OBJECT_NAME ARNLT140   #NL Source error riga 625  - apice non chiuso in Display
+EXCLUDE_OBJECT_NAME ARNLT140   #NL Source error riga 1297 - String con literal oltre col 72
+EXCLUDE_OBJECT_NAME ARAIB129   #AI Source error riga 735 - apice non chiuso
+EXCLUDE_OBJECT_NAME ARAIB161   #AI Source error riga 312 - apice non chiuso
+EXCLUDE_OBJECT_NAME ARZRAP10   #ZR Source error riga 2032 - Apice non chiuso
+EXCLUDE_OBJECT_NAME IRPDI242   #ZP Source error riga 145 Errato COPY COBOP071 REPLACING ==: X--:== BY ==OPCL-==.
+EXCLUDE_OBJECT_NAME IRZPI240   #ZP Source error - campo LT-PROJECT-SHORT non definito e NON in copy CCRP000A
+#EXCLUDE_CLEAR 
+
+
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+# Processo da attivare
+PROCESS_ANALYZE_SOURCES	 
+START
+
+
+#--------------------------------------------------------------------------
+# Esempi di direttive
+#--------------------------------------------------------------------------
+
+#COPY_TO_FORCE_RE_BUILD_ON_DB UX00000
+#OBJECT_TYPE_COPY_COBOL_DATA *ALL*  
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* UXH1100
+#OBJECT_TYPE_PGM_COBOL *ALL* 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* RP00F090
+#OBJECT_TYPE_PGM_COBOL *ALL* fromName ToName 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP12   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP13   logiche exception
+#FILTER_ON_OBJECT_NAME 1 CO
+#EXCLUDE_OBJECT_NAME_RANGE FromName ToName
+#EXCLUDE_OBJECT_NAME UXQRN03  
+ 
+#ARUKCVP0 Sql error
+
+
+

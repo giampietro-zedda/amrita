@@ -1,0 +1,787 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerCrudMatrix.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div  id="divFilterTable">     
+      <table id="filter">
+        <tr>
+           <td>From/To Program</td> 
+		   <td><input type="text" class="fromTo" id="pgmFrom" name="pgmFrom" value="A" /></td>
+		   <td><input type="text" class="fromTo" id="pgmTo" name="pgmTo" value="Z" /></td>
+		   <td rowspan="2">&nbsp;&nbsp;&nbsp;Subsystem</td> 
+		   <td rowspan="2"> <select id="comboSubSys" > </select></td> 
+		   <td rowspan="2"> <input type="button" id='btnExec' value="Exec" onclick='onclick_btnExec(this.id);' />  </td> 
+        </tr>  
+        <tr>
+           <td>From/To Entity</td> 
+ 		   <td><input type="text" class="fromTo" id="entityFrom" name="entityFrom" value="A"  /></td>
+ 		   <td><input type="text" class="fromTo" id="entityTo"   name="entityTo" value="Z" /></td>
+        </tr>  
+       </table> 
+</div>
+
+<div  id="divHeader">   
+      <table id='headerTable'>
+          <tr>
+               <td><p>Crud Matrix</p></td> 
+               <td class='counter' id='countCrudMatrix'>0</td>   
+          </tr>  
+      </table> 
+</div>
+
+<div  id="divCrudMatrixTable" >   	
+      <div id="crudMatrixTable"></div> 
+</div>  	 
+
+
+<div id="divRelationOriginTable" tabindex="0">  
+      <table class='header'><tr>
+                 <td>Relation Origin</td> 
+                 <td class='counter' id='countRelationOrigin'>0</td>     
+             </tr>   
+      </table> 
+      <div id="relationOriginTable"></div> 
+</div>
+
+<iframe id='iframeSourceForCrudMatrix' name='iframeSourceForCrudMatrix' title="description"></iframe> 
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+const PGM_ENTITY_READ = 11;      		// 011  ENTITY READ
+const PGM_ENTITY_READNEXT = 12;	   	    // 012  ENTITY READNEXT
+const PGM_ENTITY_READPREV = 13; 		// 013  ENTITY READPREV
+const PGM_ENTITY_UPDATE = 14;    		// 014  ENTITY UPDATE
+const PGM_ENTITY_DELETE = 15;    		// 015  ENTITY DELETE
+const PGM_ENTITY_INSERT = 16;    		// 016  ENTITY INSERT
+
+var userInp="amrita";        	// Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+
+var urlSubSysGET = "subsys";
+var urlCrudMatrixGET = 'crudMatrix'
+var urlRelationOriginGET = 'relationOrigin'
+
+var winOpenViewer=null;      	// Viewer reference
+var objConfig=null;          	// Configuration object from Viewer
+var objSelRow=null;          	// Object row selected in viewer an updated here (class ObjectRow)
+var jsonArray = null;        	// Contains relations
+var objects=[];              	// JsonArray   
+var arEntity = [];    		 	// Horizontal
+var arPgm = [];       		 	// Vertical, contains Pgm objects
+var objPgm = null;       		// Pgm object pushed in arPgm
+var objEntityOfPgm=null;        // Service for single table access
+var arObjEntityOfPgm=null;      // Service array for any program
+var objCrudMatrixSelCell=null;  //      		 
+var idSelCell="";				//
+var idSelCellOld="";			//
+
+//To manage relationOrigin list
+var arRelationOriginRow = [];       // Rows objects    
+var objRelOriginSelRow=null;        // Info relationOriginselected row  
+var iSelRelationOrigin=0;
+var iSelRelationOriginOld=0;        // Info relationOriginselected row  
+
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+	
+  userInp = localStorage.getItem("user");		
+  hostName = localStorage.getItem("hostName");		
+  baseUrl = localStorage.getItem("baseUrl");		
+  
+  document.getElementById("pgmFrom").value = "A";
+  document.getElementById("pgmTo").value = "Z"; 
+  document.getElementById("entityFrom").value = "A";
+  document.getElementById("entityTo").value = "Z";
+  
+  winOpenViewer=window.opener;          // Viewer
+  if (winOpenViewer != null) {
+	  objSelRow=winOpenViewer.getObjSelRow();
+	  objConfig=winOpenViewer.getConfig();
+	  loadComboSubSys();
+  }   
+}
+function getWinViewer() {
+  return winOpenViewer;
+}
+
+function loadComboSubSys() {
+	 
+	var xmlhttp;
+	var url = objConfig.baseUrl + "/" + urlSubSysGET  + "/" + objConfig.user
+	xmlhttp=createRequest();
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+						if (xmlhttp.readyState==4 && xmlhttp.status==200){
+							var listSubSys=JSON.parse(xmlhttp.responseText);
+							comboSubSys.disable=true;
+							while (comboSubSys.length != 0) {
+								comboSubSys.remove(0);		
+							}
+							comboSubSys.add(new Option("*", "*"));
+						    for (var i=0; i < listSubSys.length; i++) {
+						 	   var value = listSubSys[i].idObject;
+						 	  comboSubSys.add(new Option(value, value));
+						 	   if (i == 0) {
+						 		  comboSubSys.value = "*";
+							   }
+						    }
+						    comboSubSys.disable=false;	
+						}
+    }
+
+ }
+	
+function loadCrudMatrix() {
+   getJsonResponseCrudMatrixGET();  
+}
+
+
+function loadReleationOrigin(sys, subSys, pgm, typeObjPgm, relation, entity, typeObjEntity) {
+    getJsonResponseRelationOriginGET(sys, subSys, pgm, typeObjPgm, relation, entity, typeObjEntity);  
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+
+function getJsonResponseCrudMatrixGET() {
+	var xmlhttp;
+	
+	var subSys=document.getElementById("comboSubSys").value;	
+	var pgmFrom=document.getElementById("pgmFrom").value;		
+	var pgmTo=document.getElementById("pgmTo").value;	
+	var entityFrom=document.getElementById("entityFrom").value;	
+	var entityTo=document.getElementById("entityTo").value;	
+	
+	xmlhttp=createRequest();
+	
+	if (pgmFrom == "") {
+		pgmFrom = "A";
+	}
+	if (pgmTo == "") {
+		pgmTo = "Z";
+	}
+	if (entityFrom == "") {
+		entityFrom = "A";
+	}
+	if (entityTo == "") {
+		entityTo = "Z";
+	};
+	
+	
+	//2 sys/subSys/idPgmFrom/idPgmTo/idEntityFrom/idEntityTo
+	
+ 	var url = baseUrl + "/" + urlCrudMatrixGET + "/" + userInp + "/" + objConfig.sys + "/" + subSys + "/" + pgmFrom + "/" + pgmTo +  "/" + entityFrom + "/" + entityTo;
+ 
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseCrudMatrix(xmlhttp);};
+ 	document.getElementById("countCrudMatrix").innerHTML = "Database fetching ...";	
+}  
+
+function handleJsonResponseCrudMatrix(xmlhttp) {
+	
+    var iEntity=0;
+    var pgmOld="";
+    var entityOld="";
+    var wkObjPgm="";
+    var isPushed=false;
+    var isAlreadyInserted=false;
+       
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+		   arPgm=new Array();
+		   
+		   // For no data received just empty table
+		   if (objects.length == 0) {			   
+			   document.getElementById('countCrudMatrix').innerHTML = "No Data Available";    
+			   return;
+		   }
+		   
+	       // load Entity array ordered fot table Th   
+	       arEntity = new Array();
+	       for (var i1 = 0; i1 < objects.length; i1++) {
+	    	  wkObjPgm=objects[i1];
+	    	  isAlreadyInserted=arEntity.includes(wkObjPgm.entity);
+	    	  if (!isAlreadyInserted) {
+	    		  arEntity.push(wkObjPgm.entity);
+			  }	    	  
+		   }
+	       arEntity.sort();
+	       
+	       // load pgm array with array of tables accessed 
+	       pgmOld=objects[0].pgm;
+	       entityOld=objects[0].entity;
+	       objPgm=new Pgm(pgmOld, null);
+	       arObjEntityOfPgm = new Array();
+	       objEntityOfPgm = new EntityOfPgm("",-1,0,0,0,0);
+	       
+	       // Scan list of pgm+entity+relation
+	       for (var i1 = 0; i1 < objects.length; i1++) {
+	    	  wkObjPgm=objects[i1];
+	    	  
+			  // Pgm changed
+			  if (wkObjPgm.pgm != pgmOld) {	
+				  // Setting for last entity
+				  iEntity=arEntity.indexOf(entityOld);
+				  objEntityOfPgm.index=iEntity;	
+				  arObjEntityOfPgm.push(objEntityOfPgm);  	
+				  
+				  // Setting for current pgm
+				  objPgm.pgm=pgmOld;
+				  objPgm.arEntityOfPgm=arObjEntityOfPgm;
+				  objPgm.sys=wkObjPgm.sys;
+				  objPgm.subSys=wkObjPgm.subSys;
+				  arPgm.push(objPgm);
+				  
+				  // Setting for next pgm
+				  objPgm=new Pgm(objPgm);
+				  arObjEntityOfPgm = new Array();
+				  objEntityOfPgm = new EntityOfPgm("",-1,0,0,0,0);
+				  pgmOld=wkObjPgm.pgm;
+				  entityOld=wkObjPgm.entity;
+			  } 
+			  
+			  // Entity changed
+			  if (wkObjPgm.entity != entityOld) {
+				  iEntity=arEntity.indexOf(entityOld);
+				  objEntityOfPgm.index=iEntity;	
+				  arObjEntityOfPgm.push(objEntityOfPgm);
+				  objEntityOfPgm = new EntityOfPgm("",-1,0,0,0,0);
+				  entityOld=wkObjPgm.entity;
+			  } 
+			  
+			  // Set operation for current program/entity
+			  objEntityOfPgm.entity=wkObjPgm.entity;
+			  switch (wkObjPgm.relationOrdinal) {
+			    case PGM_ENTITY_INSERT:  
+			    	objEntityOfPgm.relationCreate=wkObjPgm.relationOrdinal;
+			  	    break;
+			    case PGM_ENTITY_READ:  
+			    	objEntityOfPgm.relationRead=wkObjPgm.relationOrdinal;
+			  	    break;
+			    case PGM_ENTITY_UPDATE: 
+			    	objEntityOfPgm.relationUpdate=wkObjPgm.relationOrdinal;
+			  	    break;
+			    case PGM_ENTITY_DELETE:  
+			    	objEntityOfPgm.relationDelete=wkObjPgm.relationOrdinal;
+			  	    break;
+		    	default:
+				break; 
+			  }		      
+		   }
+	       	  
+	       // setting for Last entity
+		   iEntity=arEntity.indexOf(entityOld);
+		   objEntityOfPgm.index=iEntity;	
+		   arObjEntityOfPgm.push(objEntityOfPgm);
+  
+	       // Setting for last pgm
+		   objPgm.sys=wkObjPgm.sys;
+		   objPgm.subSys=wkObjPgm.subSys;
+		   objPgm.pgm=pgmOld;
+		   objPgm.arEntityOfPgm=arObjEntityOfPgm;
+	       arPgm.push(objPgm);
+	       
+	       document.getElementById("countCrudMatrix").innerHTML = arPgm.length+" Pgms /"+" "+arEntity.length+" Entities";;	
+	       
+	       // HTML creation
+		   createCrudMatrixTable();
+    }	
+}
+
+function createCrudMatrixTable() {
+	
+     var cellCrud="";
+	 var tbltop = "<table class='clsCrudMatrixTable' id='crudMatrixTable'>";
+	 var main="";
+	 var tblBottom = "";
+	 var tbl = "";
+	 var wkPgm="";
+	 var iCol=0;
+	 var indexPrec=0;
+	 var cellCrudCreate="";
+	 var cellCrudRead="";
+	 var cellCrudUpdate="";
+	 var cellCrudDelete="";
+	 var tblCellCrud="";
+	 
+	 // Header row
+	 tbltop += "<tr>"
+     tbltop += "<th id='thFirstCell'>PGM </th>";
+	 for (var i = 0; i < arEntity.length; i++) {
+	     tbltop = tbltop +  "<th>" + arEntity[i] + "</th>";      
+	 }
+	 tbltop += "</tr>"		
+	 
+	 // Body rows
+	 main = ""; 
+     for (var i1=0; i1 < arPgm.length; i1++) {
+    	   
+    	   objPgm=arPgm[i1]; 
+    	   arObjEntityOfPgm=objPgm.arEntityOfPgm;
+    	   objEntityOfPgm=arObjEntityOfPgm[0];
+           indexPrec=objEntityOfPgm.index;
+
+           main  += "<tr>"
+           main  += "<td class='pgmName'>" + objPgm.pgm + "</td>";
+        	   
+           // Scan entities accessed by program
+     	   for (var i2 = 0; i2 < arObjEntityOfPgm.length; i2++) { 		   
+    		   objEntityOfPgm=arObjEntityOfPgm[i2];
+    		   
+
+           	   // Empty cells before first current CRUD cell
+           	   if (i2 == 0 && objEntityOfPgm.index > 0) {
+               	   for (var i = 0; i < objEntityOfPgm.index; i++) {
+               		   main  += "<td class='cellCrud'></td>";
+       			   }
+ 		       }
+    		       		   
+           	   // Empty cells before NOT first current CRUD cell
+           	   if (i2 > 0 && objEntityOfPgm.index > (indexPrec + 1)) {
+               	   for (var i = indexPrec+1; i < objEntityOfPgm.index; i++) {
+               		   main  += "<td class='cellCrud'></td>";
+       			   }
+ 		       }
+               indexPrec=objEntityOfPgm.index;
+              
+    		   // Fill cell CRUD text
+           	   cellCrudCreate="-";
+        	   if (objEntityOfPgm.relationCreate > 0) {
+        		   cellCrudCreate="C";
+    		   } 
+        	   cellCrudRead="-";
+        	   if (objEntityOfPgm.relationRead > 0) {
+        		   cellCrudRead="R";
+			   } 
+        	   cellCrudUpdate="-";
+        	   if (objEntityOfPgm.relationUpdate > 0) {
+        		   cellCrudUpdate="U";
+			   }
+        	   cellCrudDelete="-";
+        	   if (objEntityOfPgm.relationDelete > 0) {
+        		   cellCrudDelete="D";
+		       }			
+
+        	   // Crud table composition
+        	   tblCellCrud="<div class='divCrudCellContainer'>";
+	        	   tblCellCrud+="<table class='clsCrudCellTable' id='crudCellTable'>";
+	          	     tblCellCrud+= "<tr>"
+	           	    	tblCellCrud+= "<td class='cellCrud' id='C" + i1 +"_" + objEntityOfPgm.index + "_" + objEntityOfPgm.relationCreate + "' onclick='onclick_cellCrud(this.id);'"  + "' onmouseover='onMouseOver_cellCrud(this.id);'" + "' onmouseout='onMouseOut_cellCrud(this.id);'>" + cellCrudCreate + "</td>"
+	          	    	tblCellCrud+= "<td class='cellCrud' id='R" + i1 +"_" + objEntityOfPgm.index + "_" + objEntityOfPgm.relationRead   + "' onclick='onclick_cellCrud(this.id);'"  + "' onmouseover='onMouseOver_cellCrud(this.id);'" + "' onmouseout='onMouseOut_cellCrud(this.id);'>" + cellCrudRead   + "</td>"
+	         	    	tblCellCrud+= "<td class='cellCrud' id='U" + i1 +"_" + objEntityOfPgm.index + "_" + objEntityOfPgm.relationUpdate + "' onclick='onclick_cellCrud(this.id);'"  + "' onmouseover='onMouseOver_cellCrud(this.id);'" + "' onmouseout='onMouseOut_cellCrud(this.id);'>" + cellCrudUpdate + "</td>"
+	         	    	tblCellCrud+= "<td class='cellCrud' id='D" + i1 +"_" + objEntityOfPgm.index + "_" + objEntityOfPgm.relationDelete + "' onclick='onclick_cellCrud(this.id);'"  + "' onmouseover='onMouseOver_cellCrud(this.id);'" + "' onmouseout='onMouseOut_cellCrud(this.id);'>" + cellCrudDelete + "</td>"
+	                 tblCellCrud+= "</tr>";         	   
+	               tblCellCrud+="</table>";   
+	           tblCellCrud+=" </div>";               
+	          
+               // CRUD cell
+           	   main  +=  "<td class='cellCrudContainer>" + tblCellCrud + "</td>"
+           	   
+           	   // Last entity for the prm
+           	   if (i2 == arObjEntityOfPgm.length - 1) {
+           		   // Last entity defined
+           		   if (objEntityOfPgm.index < (arEntity.length - 1) ) {
+                  	   // Empty cells after current CRUD cell till end of row
+                   	   for (iCol = objEntityOfPgm.index + 1; iCol < arEntity.length; iCol++) {
+                   		   main  += "<td></td>";
+           			   }				
+				}
+           		   
+           	    indexPrec=objEntityOfPgm.index;
+			 }
+           	   
+     	   } // Next entity
+           
+           main  += "</tr>"  	
+     } 	// next pgm	
+     
+     tblBottom = '</table>'
+	 tbl = tbltop + main + tblBottom;	
+     
+     document.getElementById('crudMatrixTable').innerHTML = tbl;    
+  }
+
+function getJsonResponseRelationOriginGET(sys, subSys, idObjectA, typeObjectAN, relationN, idObjectB, typeObjectBN) {
+	var xmlhttp;
+	var subSys=document.getElementById("comboSubSys").value;
+	var url = baseUrl + "/" + urlRelationOriginGET  + "/" + userInp + "/"+ sys + "/" + subSys + "/" + idObjectA +  "/" + typeObjectAN + "/*/" + relationN + "/" + idObjectB + "/" + typeObjectBN + "/*" ;
+	
+	xmlhttp=createRequest();
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelationOrigin(xmlhttp);};
+	document.getElementById("countRelationOrigin").innerHTML = "Database fetching ...";	
+}  
+
+function handleJsonResponseRelationOrigin(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+	       arRelationOriginRow = new Array(RelationRow);
+		   
+	       var tbltop = "<table class='clsListEntity' id='listRelationsOrigin'>"
+	    	          +    "<tr>"
+	                  +      "<th>#Instr</th>"
+	                  +      "<th>#RowStart</th>"
+	                  +      "<th>#RowEnd</th>"
+	                  +      "<th>Pgm Area</th>"
+	                  +      "<th>Source</th>"
+	                  +      "<th>Precompiler</th>"
+	                  +      "<th>Category</th>"
+	                  +      "<th>In Copy</th>"
+	                  +      "<th>#RowStart</th>"
+	                  +      "<th>#RowEnd</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           
+	    	   main  += "<tr>"
+	     	         +    "<td id='numInstrOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].numInstrOrigin       + "</td>" 
+	     	         +    "<td id='rowStartOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].rowStartOrigin       + "</td>" 
+	     	         +    "<td id='rowEndOrigin_"          + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].rowEndOrigin         + "</td>" 
+	     	         +    "<td id='instrProgramArea_"      + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].instrProgramArea     + "</td>" 
+	     	         +    "<td id='relationSource_"        + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].relationSource       + "</td>" 
+	     	         +    "<td id='instrTypePrecompiler_"  + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].instrTypePrecompiler + "</td>" 
+	     	         +    "<td id='instrCategory_"         + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].instrCategory        + "</td>" 
+	     	         +    "<td id='copyOrigin_"  		   + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].copyOrigin           + "</td>" 
+	     	         +    "<td id='rowStartInCopy_"        + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].rowStartInCopy       + "</td>" 
+	     	         +    "<td id='rowEndInCopy_"          + i + "' onclick='onclick_relOriginRow(this.id);'>" + objects[i].rowEndInCopy         + "</td>" 
+	     	         +  "</tr>"
+	     	         
+		  	     	   var objRelationOriginRow = new RelationRow(
+	                             objects[i].sys	 
+	                            ,objects[i].subSystem	
+	                            ,objects[i].idObjectA
+	                            ,objects[i].typeObjectA
+	                            ,objects[i].relation
+	                            ,objects[i].idObjectB
+	                            ,objects[i].typeObjectB
+	                            ,objects[i].numInstrOrigin
+	                            ,objects[i].rowStartOrigin
+	                            ,objects[i].rowEndOrigin	                            
+	                            ,objects[i].typeObjectAOrdinal
+	                            ,objects[i].relationOrdinal
+	                            ,objects[i].typeObjectBOrdinal
+	                            ,objects[i].copyOrigin
+	                            ,objects[i].rowStartInCopy
+	                            ,objects[i].rowEndInCopy
+	                          );
+	                    arRelationOriginRow.push(objRelationOriginRow);                                        
+
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('relationOriginTable').innerHTML = tbl;	
+		   document.getElementById("countRelationOrigin").innerHTML = objects.length;
+    }	
+}
+
+function onclick_btnExec(clicked_id) {
+	loadCrudMatrix();
+} 
+
+function onclick_cellCrud(clicked_id) {
+    
+    idSelCell = clicked_id;
+    
+    // Unselect selected cell
+    if (idSelCell != idSelCellOld) {
+		document.getElementById("idSelCellOld").classList.remove("selected"); 
+	}
+    
+    // Select cell
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById(idSelCell).classList.add("selected"); 
+    }
+    
+    // For next selection
+    idSelCellOld=iSelCell;
+    
+} 
+
+function onclick_cellCrud(clicked_id) {
+    var sys, subSys, pgm, typeObjPgm, relation, entity, typeObjEntity;
+    var iPgm=0, iEntity=0, ar=[];
+    
+    ar=clicked_id.split("_");
+    iPgm=ar[0].substr(1);
+    iEntity=ar[1];
+    relation=ar[2];
+    pgm=arPgm[iPgm].pgm;
+    entity=arEntity[iEntity];
+    typeObjPgm=1;                // OBJECT-PGM-COBOL
+    typeObjEntity=15;            // OBJECT-ENTITY-SQL
+    sys=arPgm[iPgm].sys;
+    subSys=arPgm[iPgm].subSys;
+    
+    loadReleationOrigin(sys, subSys, pgm, typeObjPgm, relation, entity, typeObjEntity);
+    document.getElementById('divRelationOriginTable').focus();
+    document.getElementById("divRelationOriginTable").focus({preventScroll:false});
+} 
+
+function onMouseOver_cellCrud(clicked_id) {
+	  document.getElementById(clicked_id).style.color = "red";
+}
+
+function onMouseOut_cellCrud(clicked_id) {
+  document.getElementById(clicked_id).style.color = "black";
+}
+
+function onclick_relOriginRow(clicked_id) {
+	var winOpenInspector = null;
+    var i = clicked_id.indexOf("_");
+    var id = "";
+    var subSys = "";
+    var idObject = "";
+    var typeObject = "";
+    var typeObjectN = "";
+    var numInstr = 0;
+    var rowStart = 0;
+    var rowEnd = 0;
+    var underCopy = "";
+    var underCopyRowStart = 0;
+    var underCopyRowEnd = 0;
+    
+    iSelRelationOrigin = parseInt(clicked_id.substr(i+1));
+    id = clicked_id.substr(0, i);
+   
+    // Unselect selected row
+    if (iSelRelationOrigin != iSelRelationOriginOld && iSelRelationOriginOld >= 0) {
+		document.getElementById("numInstrOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrProgramArea_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrCategory_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("relationSource_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrTypePrecompiler_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("copyOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelRelationOriginOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("numInstrOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowStartOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowEndOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrProgramArea_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrCategory_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("relationSource_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrTypePrecompiler_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("copyOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelRelationOrigin).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelRelationOriginOld=iSelRelationOrigin;
+    
+    // Database access and loading
+    objRelOriginSelRow =arRelationOriginRow[iSelRelationOrigin+1];	// Element 0 contains var names
+ 
+    // Update selected info on shared object in Viewer
+    subSys = objRelOriginSelRow.subSys;
+    idObject = objRelOriginSelRow.idObjectA;
+    typeObject = objRelOriginSelRow.typeObjectA;
+    typeObjectN = objRelOriginSelRow.typeObjectAN;;
+    numInstr = document.getElementById("numInstrOrigin_"+iSelRelationOrigin).innerHTML;
+    rowStart = objRelOriginSelRow.rowStartOrigin;
+    rowEnd = objRelOriginSelRow.rowEndOrigin;
+    underCopy = document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML;
+    underCopyRowStart = document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML;
+    underCopyRowEnd = document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML;
+    
+    // Set standard identification source parameters 
+   	localStorage.setItem("sourceCaller", "ViewerCrudMatrix");
+   	localStorage.setItem("sourceSubSys", subSys);
+    localStorage.setItem("sourceIdObject", idObject);
+    localStorage.setItem("sourceTypeObject", typeObject);
+    localStorage.setItem("sourceTypeObjectN", typeObjectN);
+    localStorage.setItem("sourceNumInstr", numInstr);       
+    localStorage.setItem("sourceRowStart", rowStart);
+    localStorage.setItem("sourceRowEnd", rowEnd);
+    localStorage.setItem("sourceUnderCopy", underCopy);
+    localStorage.setItem("sourceUnderCopyRowStart", underCopyRowStart);
+    localStorage.setItem("sourceUnderCopyRowEnd", underCopyRowEnd);
+      
+    // Click on instruction, Inspector activation
+    if (id == "numInstrOrigin") {
+    	// Set specific Inspector parameters qualified by program name
+    	localStorage.setItem("sourceCaller"      		+ "_" + idObject, "ViewerCrudMatrix");
+    	localStorage.setItem("sourceSubSys"      		+ "_" + idObject, subSys);
+        localStorage.setItem("sourceIdObject"   		+ "_" + idObject, idObject);
+        localStorage.setItem("sourceTypeObject"  		+ "_" + idObject, typeObject);
+        localStorage.setItem("sourceTypeObjectN" 		+ "_" + idObject, typeObjectN);
+        localStorage.setItem("sourceNumInstr"    		+ "_" + idObject, numInstr);       
+        localStorage.setItem("sourceRowStart"    		+ "_" + idObject, rowStart);
+        localStorage.setItem("sourceRowEnd"      	    + "_" + idObject, rowEnd);
+        localStorage.setItem("sourceUnderCopy"          + "_" + idObject, underCopy);
+        localStorage.setItem("sourceUnderCopyRowStart"  + "_" + idObject, underCopyRowStart);
+        localStorage.setItem("sourceUnderCopyRowEnd"    + "_" + idObject, underCopyRowEnd);
+    	winOpenInspector = window.open("Inspector.html", "_blank");
+    	winOpenInspector.name=idObject;
+    	return;
+	}
+    
+    // Hide sections 
+	document.getElementById("divFilterTable").style.display="none";
+	document.getElementById("divHeader").style.display="none";
+	document.getElementById("divCrudMatrixTable").style.display="none";
+	document.getElementById("divRelationOriginTable").style.display="none";
+	
+	// Show only source
+	document.getElementById("iframeSourceForCrudMatrix").style.display="block";
+	document.getElementById("iframeSourceForCrudMatrix").style.height = "100%";
+	document.getElementById("iframeSourceForCrudMatrix").style.width = "99%";
+	
+ 	// Get parameters set by the caller
+    localStorage.setItem("sourceCaller", "ViewerCrudMatrix");
+ 	localStorage.setItem("sourceSubSys", subSys);
+	localStorage.setItem("sourceIdObject", idObject);
+	localStorage.setItem("sourceTypeObject", typeObject);
+	localStorage.setItem("sourceTypeObjectN", typeObjectN);
+    localStorage.setItem("sourceNumInstr", numInstr);       
+    localStorage.setItem("sourceRowStart", rowStart);
+    localStorage.setItem("sourceRowEnd", rowEnd);
+	
+	window.open('ViewerSourceViewer.html', 'iframeSourceForCrudMatrix'); 	
+} 
+
+function hideSource(){
+
+	// Hide
+	document.getElementById("iframeSourceForCrudMatrix").style.display="none";
+
+	// Show
+	document.getElementById("divFilterTable").style.display="block";
+	document.getElementById("divHeader").style.display="block";
+	document.getElementById("divCrudMatrixTable").style.display="block";
+	document.getElementById("divRelationOriginTable").style.display="block";
+}
+
+function Pgm(		
+			  sys
+			 ,subSys
+		     ,pgm 
+			 ,arEntityOfPgm           
+	      )  {
+	 this.sys = sys;  
+	 this.subSys = subSys;  
+	 this.pgm = pgm;  
+	 this.arEntityOfPgm = arEntityOfPgm;
+}
+
+function EntityOfPgm(		
+					  entity 
+					 ,index            // Column index in table
+					 ,relationCreate   // 16 INSERT
+					 ,relationRead     // 11 READ
+					 ,relationUpdate   // 14 UPDATE
+					 ,relationDelete   // 15 DELETE
+                    )  {
+	 this.entity = entity;  
+	 this.index = index;
+	 this.relationCreate=relationCreate;
+	 this.relationRead=relationRead
+	 this.relationUpdate=relationUpdate
+	 this.relationDelete=relationDelete
+}
+
+//Define relation/origin identification list information
+function RelationRow(		
+		  sys 
+		, subSys 
+		, idObjectA 
+		, typeObjectA 
+		, relation
+		, idObjectB 
+		, typeObjectB		
+		, numInstrOrigin 
+        , rowStartOrigin
+        , rowEndOrigin	                            
+		, typeObjectAN
+		, relationN
+		, typeObjectBN
+		, copyOrigin
+		, rowStartInCopy
+		, rowEndInCopy
+)  {
+   this.sys = sys;  
+   this.subSys = subSys;    
+   this.idObjectA = idObjectA;
+   this.typeObjectA = typeObjectA;
+   this.relation = relation;
+   this.idObjectB = idObjectB;
+   this.typeObjectB = typeObjectB;
+   this.numInstrOrigin = numInstrOrigin;
+   this.rowStartOrigin = rowStartOrigin;
+   this.rowEndOrigin = rowEndOrigin;	                            
+   this.typeObjectAN = typeObjectAN;
+   this.relationN = relationN;
+   this.typeObjectBN = typeObjectBN;
+   this.copyOrigin = copyOrigin;
+   this.rowStartInCopy = rowStartInCopy;
+   this.rowEndInCopy = rowEndInCopy;
+
+}
+
+
+</script>
+
+</html>

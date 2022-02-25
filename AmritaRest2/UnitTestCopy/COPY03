@@ -1,0 +1,26 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance
+      *      Integrated
+      *        Tecnology 
+      *          Application
+      *
+      *================================================================
+      *==============================================================
+      *  Descrizione	: Unit test copy cobol.
+      *                 : Copy semplice senza ricorsivita
+      *                 :  
+      *  Scritto il    	: 16-08-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================
+       
+       
+      * Area di prova
+0      01  X-COPY03-REC.
+1          05 X-COPY03-CAMPO1  PIC 99.
+2          05 X-COPY03-CAMPO2 PIC X(05) VALUE SPACE..
+   

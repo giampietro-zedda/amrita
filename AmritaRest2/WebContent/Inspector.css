@@ -1,0 +1,1027 @@
+@charset "ISO-8859-1";
+
+html, body {
+  height:100%;
+  width:100%;  
+  margin:0;
+  padding:0;
+  overflow-y: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* -----------------  */
+/* Header first line  */
+/* -----------------  */
+#headerTable {
+  width: 100%;
+  border: 1px,solid, black;
+}
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  height: 30px;
+  border: 1px solid black;
+} 
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+#headerRightTh{
+} 
+
+/* ------------  */
+/* Data Section  */
+/* ------------  */
+#dataTable {
+  width: calc(100% - 8px);
+  height: 20%;
+  margin-top:0px;
+  margin-bottom:1px;
+  margin-left:4px;
+  margin-right: 4px;
+  border-collapse: collapse  
+} 
+.cellTdData {
+  height: 100%;
+  padding-top: 0;
+}
+.divDataHeader {
+  width: calc(100% - 2px);
+  height: 10px;
+  margin-top:0.7;
+  margin-bottom:auto;
+  padding-left: 3px;  
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  font-weight:bold;
+  background-color: gray;
+  color:white;
+  text-align:center
+}
+#cellTdWorking {
+  width: 50%;
+  height: 100%;
+  padding-top: 0;  
+}
+#divTbWorkingContainer {
+  width: 100%;
+  height: calc(100% - 6px);
+  border: 1px solid black;
+  margin:0; 
+  overflow: auto; 
+}
+#cellTdWorkingIO { 
+}
+#divTbWorkingContainerIO {
+  width: 65px;
+  min-width:65px;
+  height: calc(100% - 6px);
+  margin-left:1px;
+  border: 1px solid black;
+  overflow: auto;   
+}
+
+#cellTdLinkage {
+  width: 50%;;
+  height: 100%;
+  padding-top: 0;  
+}
+#divTbLinkageContainer {
+  width: 100%;
+  height: calc(100% - 6px);
+  border: 1px solid black;
+  margin:0;
+  overflow: auto;     
+}
+#cellTdLinkageIO {
+}
+#divTbLinkageContainerIO {
+  width: 65px;
+  min-width:65px;
+  height: calc(100% - 6px);
+  border: 1px solid black;
+  margin-left:1px; 
+  overflow: auto;  
+}
+#cellTdFd {
+  width: 50%;
+  height: 100%;
+  padding-top: 0;
+}
+#divTbFdContainer {
+  width: 100%;
+  height: calc(100% - 6px);
+  margin:0;  
+  overflow: auto; 
+  border: 1px solid black;
+}	
+#cellTdFdIO {
+  width: 65px;
+  min-width:65px;
+  height: 100%;
+  padding-top: 0;  
+}
+#divTbFdContainerIO {
+  width: 100%;
+  height: calc(100% - 6px);
+  margin:0;  
+  overflow: auto; 
+  border: 1px solid black;
+}
+
+#cellTdCopy {
+  height: 100%;
+  padding-top: 0;
+}		
+#divTbCopyContainer {
+  width: 75px;
+  height: calc(100% - 4px);
+  margin-left:1px;
+  overflow: auto; 
+  border: 1px solid black;
+}
+/* Table containing pgm copy */
+table#tbPgmCopy{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: 75%;
+	text-align: left;
+	color:  green; 
+	font-weight: bold;		     
+}
+th.thPgmCopyInclude{	
+    border: 1px solid white;  
+    color:white;
+    background-color:#040471;
+    text-align: center;
+}
+
+td.tdPgmCopyType {
+	border: 1px solid black;
+	color:black;
+	font-weight: bold;
+	font-size: medium;
+}	
+td.tdPgmCopyName {
+	border: 1px solid black;
+	font-weight: normal;
+	font-size: 100%;
+}
+#cellTdSqlInclude {
+  height: 100%;
+  padding-top: 0;
+}	
+#divTbSqlIncludeContainer {
+  width: 75px;
+  height: calc(100% - 4px);
+  overflow: auto; 
+  margin:0; 
+  border: 1px solid black; 
+}	
+/* Table containing pgm copy */
+table#tbPgmSqlInclude{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: 75%;
+	text-align: left;
+	color:  green; 
+	font-weight: bold;		     
+}
+/* ---------------  */
+/* Process Section  */
+/* ---------------  */
+#processTable {
+  width: calc(100% - 8px);
+  height: calc(80% - 16px);                     /* height: calc(80% - 0px); */
+  margin-top:0px;
+  margin-bottom:0px;
+  margin-left:4px;
+  margin-right:4px;
+  border-collapse: collapse    
+} 
+.cellTdProcess {
+  width: 100%;
+  height: 100%;
+}
+#divStructureContainer {
+  width: 100%;
+  height: 100%;  /* height: calc(100% - 12px); */
+  max-height: calc(100% - 12px); 
+  margin:0;  
+}
+#divPgmStructureContainer {
+  width: 100%;
+  height: 60%;
+}
+#divPgmLabelContainer {
+  width: 100%;
+  height: 40%;
+}
+
+#celltdPathStructure {
+  width: 20%;
+  height: 100%;
+}
+#cellTdSource {
+  width: 40%;
+  height: 100%;
+}
+/*--------------------------*/
+/* Toolbar                  */
+/*--------------------------*/
+#divSourceToolbar {
+  width: calc(100% - 2px);
+  height: 23px;
+  margin-top: 0;
+  border: 0.5px solid black;
+  background-color: #cfcfcf;
+  margin-bottom: auto;
+}
+#divSourceContainer {
+  width: 100%;
+  height: calc(100% - 12px);
+  border: 1px solid black;
+  margin:0;  
+}
+
+#tbSourceToolBar {
+  margin: 0;
+  cell-spacing:0;
+  border-collapse:collapse;
+}
+/* Stack, Parag., Detail */
+#pathExpandSel {
+   width: 60px;
+   height: 20px;
+   border: 1px inset black;
+   color:red;
+   font-size: x-small; 
+}
+.pathFromTo {
+  width: 32px;
+  height: 20px;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  border: 1px inset black;
+  font-size: x-small;
+  font-weight:bold; 
+}
+/* Path combo */
+#pathSel {
+  width: 65px;
+  height: 20px;
+  border: 1px inset black;
+  font-size: x-small; 
+  font-weight:bold;
+}
+#deadCodeSel {
+  width: 170px;
+  height: 20px;
+  border: 1px inset black;
+  font-size: x-small; 
+  font-weight:bold;
+}
+/* Message on path activity */
+#pathMessage {
+ width: 100%; 
+ height: 20px;
+ background-color: white;
+ border: 1px inset black;
+ color: green;
+ font-size: x-small;
+ font-weight:bold;
+}	
+#btnPaths {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  padding: 0;
+  text-align:center;
+  font-weight:bold; 
+  border: 1px inset black;
+}
+
+/* Table containing working source rows */
+table#tbSourceRowsWorking{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white; 
+}
+/* Table containing Working Xref */
+table#tbWorkingXref{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;
+    min-width:40px;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 1px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: small;	     
+}
+/* Table containing linkage Xref */
+table#tbLinkageXref{	 
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 1px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: small;	     
+}
+/* Table containing File section Xref */
+table#tbFileXref{	 
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 1px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: small;		     
+}
+
+/* Table containing linkage source rows */
+table#tbSourceRowsLinkage{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white; 
+}
+/* Table containing linkage source rows */
+table#tbSourceRowsFd{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white; 
+}
+th.thXref{	
+    border: 1px solid white;  
+    color:white;
+    background-color:#040471;
+    text-align: center;
+}
+td.tdXrefIO{	
+	border: 1px solid black;  
+    color: navy;  
+    font-weight: bold;
+    font-size: small;
+}
+td.tdXrefNum{	
+    border: 1px solid black;  
+	color: #FF5722;  
+    font-weight: bold;
+    font-size: small;
+    background-color: white;
+}
+
+/*--------------------------*/
+/* Source                   */
+/*--------------------------*/
+#divTbSourceRows{
+	width: 100%;
+	max-height: 446px;         /*  Replaced Dynamically By Javascript */
+    height: 446px;	            /*  Replaced Dynamically By Javascript */ 
+	overflow: auto;	           /* Prevent overflowding table height */
+}
+/* Table containing source rows */
+table#tbSourceRows{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white; 
+}
+/* Table containing copy source rows */
+.tbSourceCopyRows{	
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white; 
+}
+
+/* Overall row in tbRows */
+.trAll {
+	border: 0;
+	margin-top: 0;
+    margin-bottom: 0;
+    height: 12px;
+}
+
+ .nRow{height: 12px; font-style: oblique; font-size: X-small; font-weight: bold; color: grey; background-color:#e8e8e8;}
+ .nInstr {height: 12px; font-style: oblique; font-size: 12; font-weight: bold; color: black; background-color: #e8e8e8;}
+ .expand {width: 5px; height: 12px; font-size: 90%; font-weight: bold; color: red; background-color: #e8e8e8;}
+
+
+/* Source row cols 7-72 */
+			   .row{border-right: 1px solid grey; font-style:normal; font-family: monospace; font-size: 85%; text-align: left; color: #54e854; font-weight: bold; background-color: black;}	        
+#divPgmLabel{
+	width: 100%;
+    height: calc(100% -20px);	 
+}
+#divTbPgmLabel{
+	width: 100%;
+/* 	max-height: 445px;         Set Dynamically By Javascript */
+    height: calc(100% -10px);  /* Minus divDataHeader height */
+    overflow: auto;	           /* Prevent overflowding table height */
+    border-left: 1px solid black;
+}
+/* Table containing labels/Sections */
+table#tbPgmLabel{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: 75%;
+	text-align: left;
+	color:  green; 
+	font-weight: bold;		     
+}
+th.thPgmLabel{	
+    border: 1px solid white;  
+    color:white;
+    background-color:#040471;
+    text-align: center;
+}
+td.tdLabelSectionName{	
+    border: 1px solid black;  
+}
+td.tdLabelSection{
+	border: 1px solid black;	
+    color:black;
+}
+td.tdLabelSectionNumInstr{
+	border: 1px solid black;
+	font-size: 12;
+	font-weight: bold;
+	color: black;
+    background-color: #e8e8e8;
+}	
+td.tdLabelSectionInCopy{
+	border: 1px solid black;
+	font-size: 12;
+	font-weight: normal;
+	color: black;
+    background-color: #e8e8e8;
+}
+/* Row for copy expanded */
+.trDiv{
+  margin: 0;
+  padding: 0;	
+}
+/*inside trDiv */
+.tdDiv{
+  margin: 0;
+  padding: 0;
+}
+
+#divTbPgmStructure{
+	width: 100%;
+/* 	max-height: 445px;         Set Dynamically By Javascript */
+    height: calc(100% -10px);  /* Minus divDataHeader height */
+    overflow: auto;	           /* Prevent overflowding table height */
+    border-left: 1px solid black;
+}
+/* Table containing pgm structure */
+table#tbPgmStructure{	
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+    width: 100%;	
+    margin-top:0;
+    margin-bottom:auto;
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;
+	font-family: monospace;
+	font-size: 75%;
+	text-align: left;
+	color:  green; 
+	font-weight: bold;		     
+}
+th.thPgmStructure{	
+    border: 1px solid white;  
+    color:white;
+    background-color:#040471;
+    text-align: center;
+}
+td.tdPgmStructureUnderIf {
+	border: 1px solid black;
+    color:black;
+}	
+td.tdPgmStructureLabelSectionName {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-top: 0px;;
+	border-bottom: 0px;;
+}	
+td.tdPgmStructureShowText {
+	border: 1px solid black;
+	font-weight: bold;
+	color: black;
+    background-color: #e8e8e8;
+}	
+ 
+/*---------------------*/
+/* Execution           */
+/*---------------------*/
+#cellTdExecution {
+  width: 40%;
+  height: 100%;
+}
+#divExecutionContainer {   
+  width: 100%;
+  height: calc(100% - 14px);
+  margin:0;  
+}
+#divPathsStructureContainer {
+  width: 100%;
+  height: 50%;	
+}
+#tbExecutionContainer {
+  width: calc(100% - 3px);
+  margin-top: 6px;
+  margin-left: 0px;
+  height: calc(100% - 10px);
+  border-collapse:collapse;  
+}		
+#divTbPathsContainer  {
+  width: 100%;
+  height: 100%;
+}
+
+#divTbPathsStructureContainer  {
+  height: 50%; 
+}
+#tbPathsStructure {	
+  width: 100%;
+  border-collapse:collapse;    
+} 
+#divTbPaths {
+  border: 1px solid black;
+  height:100px;         /* to be set by javascript */
+  max-height: 100px;    /* to be set by javascript */
+  overflow: auto;
+}
+#tbPaths {
+  width: 100%;
+  border: 1px solid black;
+  border-collapse:collapse;    
+}	
+.cellTdPaths {
+  width: 80px;
+}
+.tdPath {
+  font-size: small;
+  height: 10px;
+}	
+#divTbPathStructure {
+  border: 1px solid black;
+  overflow: auto;
+  height:100px;        /* to be set by javascript */
+  max-height: 100px;   /* to be set by javascript */ 
+}
+#tbPathParagraph {
+  width: 100%;
+  border: 1px solid black;
+  border-collapse:collapse; 
+  font-size: xx-small;  
+}
+/* Instruction number perform to paragraph */
+.tdPathParagraphPerformNum {
+  border: 1px solid black;
+  font-size: xx-small;
+  width: 10px;
+  height: 6px;
+  color: red;
+}	
+.tdPathParagraph {
+  font-size: x-small;
+  height: 6px;
+}	
+#divTbPathsIOContainer  {
+  height: 50%;
+} 
+#tbPathsIO {
+  width: 100%;
+  border-collapse:collapse;    
+}
+
+/*----------------------*/
+/* Fields I/O           */
+/*----------------------*/   
+#cellTdPathsFieldIO {
+  min-width: 200px;
+}	
+#divPathsFieldIO {
+  height: 100px;         /* to be set by javascript */
+  max-height:100px;      /* to be set by javascript */
+  overflow: auto; 
+  margin-bottom: 1px; 
+  border: 1px solid black; 
+}	
+#tbPathsFieldIO {
+  width: 100%;
+  min-width:230px;
+  font-size: xx-small;
+  border: 1px solid black; 
+  border-collapse:collapse;      
+}
+.tdXrefPathField {
+  border: 1px solid black;       
+}
+.tdXrefPathFieldIOSection {
+  font-weight: bold;
+  border: 1px solid black;     
+}
+
+/*----------------------*/
+/* Xref I/O field       */
+/*----------------------*/   
+.cellTdPathsFieldIOXref{
+  min-width: 60px;;
+}	
+#divPathsFieldIOXref {
+  width: 100%;
+  height: 100px;         /* to be set by javascript */
+  max-height:100px;      /* to be set by javascript */
+  overflow-y: auto;
+  border: 1px solid black;
+}	
+#tbPathsFieldIOXref {
+  width: 100%;
+  font-size: xx-small;
+  border-collapse:collapse;   
+}
+.tdPathsFieldXrefIO {
+   width: 10px;
+   border-top: 1px solid black; 
+   border-bottom: 1px solid black;   
+}
+.tdPathsFieldXrefNumInstr {
+   width: 40px;
+   min-width: 30px;
+   font-size: xx-small;
+   color: red;
+   border-left: 1px solid black;    
+   border-top: 1px solid black;   
+}
+      
+/*----------------------*/
+/* Called               */
+/*----------------------*/   
+.cellTdPathsCalled { 
+  width: 100px;
+}	   
+#divPathsCalled  {
+  width: 100%;
+  height: 100px;         /* to be set by javascript */
+  max-height:100px;      /* to be set by javascript */
+  overflow: auto;
+  border-bottom: 1px solid black;
+  margin-left: 1px;
+}	
+#tbPathsCalled {
+  width: 100%;
+  border-collapse:collapse; 
+  color: green; 
+  font-size:x-small; 
+}
+.tdPathCalled { 
+  width: 80px;
+  font-size:x-small;
+  border: 1px solid black; 
+}
+.cellTdPathsCalledXref { 
+}		
+#divPathsCalledXref{
+  width: 100%;   
+  height: 100px;         /* to be set by javascript */
+  max-height:104px;      /* to be set by javascript */
+  overflow: auto;
+  border: 1px solid black; 
+}
+#tbPathsCalledXref {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;      
+}
+.tdPathsFieldXrefNumInstr  {
+  width: 40px;
+  min-width: 40px;
+  font-size:x-small;
+  border: 1px solid black; 
+}
+
+/*----------------------*/
+/* Callers              */
+/*----------------------*/
+.cellTdPathsCaller { 
+  width: 100px;
+}	   
+#divPathsCaller  {
+  width: 100%;
+  height: 100px;         /* to be set by javascript */
+  max-height:100px;      /* to be set by javascript */
+  overflow: auto;
+  border-bottom: 1px solid black;
+  margin-left: 1px;
+}	
+#tbPathsCaller {
+  width: 100%;
+  border-collapse:collapse; 
+  color: green; 
+  font-size:x-small; 
+}
+.tdPathCaller { 
+  width: 80px;
+  font-size:x-small;
+  border: 1px solid black; 
+}
+.cellTdPathsCallerXref { 
+  width: 40px;
+}		
+#divPathsCallerXref{
+  width: 100%;   
+  height: 100px;         /* to be set by javascript */
+  max-height:104px;      /* to be set by javascript */
+  overflow: auto;
+  border: 1px solid black; 
+}
+#tbPathsCallerXref {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;      
+}
+.tdPathsFieldXrefNumInstr  {
+  width: 40px;
+  min-width: 30px;
+  font-size:x-small;
+  border: 1px solid black; 
+}
+
+/*----------------------*/
+/* Codice dinamico      */
+/*----------------------*/
+#divDynamicCodeContainer {
+  width: 100%;
+  height: calc(50% - 33px);
+  border: 1px solid black;
+  margin-top: 2px;
+}
+#tbDynamicCodeContainer {
+  width: calc(100% - 3px);
+  margin-top: 0px;
+  margin-left: 0px;
+  height: 100%;
+  border-collapse:collapse; 
+  margin-top:0;
+  margin-bottom: auto;
+}	
+.tdDynInstr {
+  margin-top:10;
+}
+#divDynInstrContainer {
+  width: 150px;
+  height: calc(30% - 2px);
+  border: 1px solid black;
+  border-bottom: 0px;
+}
+#divTbDynInstr {
+  width: 100%;
+  height: 65px;         /* to be set by javascript */
+  max-height:65px;      /* to be set by javascript */ 
+  overflow: auto;
+ }
+#tbDynInstr  {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small; 
+  font-weight: bold;  
+}	
+#divDynFieldsContainer {
+  width: 150px;
+  height: calc(35% - 2px);
+  border: 1px solid black;
+  border-bottom: 0px;
+}	
+#divTbDynFields {
+  width: 100%;
+  height: 63px;         /* to be set by javascript */
+  max-height:63px;      /* to be set by javascript */ 
+  overflow: auto;
+ }
+#tbDynFields td {
+  border: 1px solid black;
+  font-weight: bold;  
+}	
+#tbDynFields  {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;   
+}
+
+#divDynValuesContainer {
+  width: 150px;
+  height: calc(35% - 2px);
+  border: 1px solid black;
+}
+#divTbDynValues {
+  width: 100%;
+  height: 50px;         /* to be set by javascript */
+  max-height:50px;      /* to be set by javascript */ 
+  overflow: auto;
+ }
+#tbDynValues td {
+  border: 1px solid black;
+}
+#tbDynValues  {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;
+  font-weight: bold;     
+}
+.dynValue  {
+}
+
+/*--------------------------*/
+/* Trasformazioni campo     */
+/*--------------------------*/
+#divDynSettingContainer {
+  width: 100%;
+  height: calc(50% - 2px);
+  border: 1px solid black;
+  border-bottom: 0px;
+  border-left: 0px;
+}
+#divDynSetting {
+ border: 1px solid black;
+ border-bottom: 0px;
+ }
+#divTbDynSetting {
+  width: 100%;
+  height: 93px;         /* to be set by javascript */
+  max-height:93px;      /* to be set by javascript */ 
+  overflow: auto;
+ }
+#tbDynSetting td {
+  border: 1px solid black;
+
+}	
+#tbDynSetting  {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;    
+}
+.tdDynSetting  {
+  width: 100%;
+  font-weight: bold;
+}
+.dynSettingNumChain  {
+ width: auto;
+ font-weight: bold;
+}
+.dynSettingPgm  {
+ width: auto;
+ color: green;
+ font-weight: bold;
+}
+.dynSettingNumInstr  {
+ width: auto;
+ font-weight: bold;
+}
+.dynSettingSetMode  {
+  width: 100%;
+  font-weight: bold;
+  color: blueviolet;
+  background-color:#fdfd36;
+}
+		
+/*--------------------------*/
+/* Dettaglio trasformazione */
+/*--------------------------*/
+#divDynSettingDetailContainer {
+  width: 100%;
+  height: calc(50% - 2px);
+  border: 1px solid black;
+}
+#divTbDynSettingDetail {
+  width: 100%;
+  height: 93px;         /* to be set by javascript */
+  max-height:93px;      /* to be set by javascript */ 
+  overflow: auto;
+ }
+#tbDynSettingDetail td {
+  border: 1px solid black;
+  border-left: 0;
+}	
+#tbDynSettingDetail  {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;    
+}
+.dynSettingHeader  {
+  color: white;
+  background-color: grey;
+  font-weight: bold;
+}	
+.dynSettingDetailId  {
+  width: 120px;
+}
+.dynSettingDetailValue {
+
+}
+
+/*--------------*/
+/* Service      */
+/*--------------*/
+.topAlign {
+  margin-top: 0;
+  margin-bottom: auto;  
+}
+
+.selected {  
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+}
+

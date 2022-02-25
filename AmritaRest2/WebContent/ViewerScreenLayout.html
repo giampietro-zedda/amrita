@@ -1,0 +1,538 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>ScreenViewer</title>
+<link rel="stylesheet" type="text/css" href="ViewerScreenLayout.css"/>  
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div class='divHeader' id='divHeader'>Screen Layout</div> 	
+
+
+<div id='divScreenLayout'>   
+  <table id='tbScreenLayout'>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_0'  class='tdScreenLayoutTop'> <pre>   </pre> </tr>                                        
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_1'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_2'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_3'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_4'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_5'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_6'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_7'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_8'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_9'  class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_10' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_11' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_12' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_13' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_14' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_15' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_16' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_17' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_18' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_19' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_20' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_21' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_22' class='tdScreenLayout'>    <pre>   </pre> </tr>
+     <tr class='trScreenLayout'> <td onclick='onclick_rowMap(this.id)' id='row_23' class='tdScreenLayoutBottom'> <pre> </pre> </tr>
+  </table>
+</div>
+
+<div id='divHeader2' class='screenDescriptorHeader' >MAP IDENTIFICATION </div>
+<div id='divScreenDescriptor'> 
+     <table id='tbScreenDescriptor'>
+        <tr>
+            <td class='screenDescriptorDetailId'>Map</td> 
+            <td class='screenDescriptorDetailValue' id='idObjectMap' onclick='onclick_showSourceBms(this.id)' > </td>                                    
+            <td class='screenDescriptorDetailId'>Row Begin</td> 
+            <td class='screenDescriptorDetailValue' id='rowBegin'> </td>                                    
+            <td class='screenDescriptorDetailId'>Rows Size</td> 
+            <td class='screenDescriptorDetailValue' id='rowsSize'> </td>                                    
+       </tr>
+       <tr>
+            <td class='screenDescriptorDetailId'>Mapset</td> 
+            <td class='screenDescriptorDetailValue' id='idObjectMapset' onclick='onclick_showSourceBms(this.id)'> </td>                                    
+            <td class='screenDescriptorDetailId'>Col Begin</td> 
+            <td class='screenDescriptorDetailValue' id='colBegin'> </td>                                               
+            <td class='screenDescriptorDetailId'>Cols Size</td> 
+            <td class='screenDescriptorDetailValue' id='colsSize'> </td>                                    
+        </tr>
+        <tr>
+            <td class='screenDescriptorDetailId'>Bms Source</td> 
+            <td class='screenDescriptorDetailValue' id='bmsSource' onclick='onclick_showSourceBms(this.id)'> </td>                                    
+            <td class='screenDescriptorDetailId'>Form</td> 
+            <td class='screenDescriptorDetailValue' id='form'> </td>                                                
+            <td class='screenDescriptorDetailId'>Field Cursor</td> 
+            <td class='screenDescriptorDetailValue' id='fieldCursor'> </td>                                    
+        </tr>
+ 	</table>
+</div>
+
+
+<div id='divHeader3' class='screenDescriptorHeader' >SCREEN FIELDS </div>
+<div id='divScreenFields'> 
+   <table id='tbScreenFields'>  
+	   <tr>
+          <th>Field</th>
+          <th>Desc</th>
+          <th>Row</th>
+          <th>Col</th>
+          <th>Lng</th>
+          <th>Attrb</th>
+          <th>Grp</th>
+          <th>Occ</th>
+          <th>Initial</th>
+       </tr>
+  	  <tr>
+	      <td  class='tdScreenFields bold' id='field_0' tabindex='0' > ...</td>
+	      <td  class='tdScreenFields' id='desc_0' tabindex='0'> ...</td>
+	      <td  class='tdScreenFields' id='row_0' tabindex='0' > ...</td>
+	      <td  class='tdScreenFields' id='col_0' tabindex='0'> ...</td>
+	      <td  class='tdScreenFields' id='lng_0' tabindex='0'> ...</td>
+	      <td  class='tdScreenFields' id='attrb_0' tabindex='0'> ...</td>
+	      <td  class='tdScreenFields' id='grp_0' tabindex='0'> ...</td>
+	      <td  class='tdScreenFields' id='occ_0' tabindex='0'> ...</td>
+	      <td  class='tdScreenFields' id='initial_0' tabindex='0'> ...</td>
+      </tr>
+   </table>
+</div>
+	
+<iframe id='iframeSource' name='iframeSource' height='0' width='0'></iframe> 
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+const OBJECT_CICS_MAP = "68";	  			        	 // Mappe BMS
+const OBJECT_CICS_BMS_SOURCE = "70";	  			     // Bms source
+
+var userInp="amrita";        							 // Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlMapDescriptorGET = 'mapDescriptor'; 			     // Map descriptor 
+var urlMapItemGET = 'mapItem';                           // Fields defined
+
+// Parametri passati via localStorage dal chiamante
+var sysCur = "";                      
+var subSysCur = "";
+var screenMap = "";
+var screenCaller = "";
+var screenMapset = "";
+var screenBmsSource = "";
+var screenTypeObject = "";
+var screenTypeObjectN = "";
+
+var objects=[];              		// JsonArray
+var arMapItem=[];                   // Campi definiti
+var ObjMapDescriptor = {};          // Descriptor from db
+var winOpenViewer=null;      		// Viewer/impact reference
+
+var oldFieldSelected = "";
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+ 	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+	 userInp = localStorage.getItem("user");		
+	 hostName = localStorage.getItem("hostName");		
+	 baseUrl = localStorage.getItem("baseUrl");		
+	 sysCur = localStorage.getItem("filterObjSys");
+	 subSysCur = localStorage.getItem("filterObjSubSys");
+	 screenCaller = localStorage.getItem("screenCaller");
+	 screenMap = localStorage.getItem("screenMap");
+	 screenMapset = localStorage.getItem("screenMapset");
+	 screenBmsSource = localStorage.getItem("screenBmsSource");
+	 screenTypeObject = localStorage.getItem("screenTypeObject");
+	 screenTypeObjectN = localStorage.getItem("screenTypeObjectN");
+  	 winOpenViewer=window.opener;          				// Viewer/Impact
+  	   	  	 
+  	// Parametri in local-storage non disponibili
+  	if (screenMap == null) {
+  		return;
+	}
+  	
+  	// Se Impact NO header
+  	if (screenCaller == "impact") {
+		document.getElementById("divHeader").style.display="none";
+		localStorage.setItem("screenCaller", "");
+	}
+  	loadMap();
+}
+
+
+/*
+ * Caricamento mappa
+ */
+function loadMap() {
+	var xmlhttp;	
+    
+	xmlhttp=createRequest();
+  	var url = baseUrl + "/" + urlMapDescriptorGET + "/" + userInp + "/" + sysCur + "/" + subSysCur + "/" + screenMap + "/" + OBJECT_CICS_MAP;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+												if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+												
+												objects=JSON.parse(xmlhttp.responseText);
+											    
+												// Descrittore mappa non trovato
+												if (objects.length == 0) {
+													alert("Map "+screenMap+" Not Found On db")
+													return;
+												}
+												
+												// Caricamento descrittore mappa
+												ObjMapDescriptor = objects[0];
+												document.getElementById('idObjectMap').innerHTML = screenMap;  
+												document.getElementById('idObjectMapset').innerHTML = ObjMapDescriptor.idObjectMapset;  
+												document.getElementById('bmsSource').innerHTML = ObjMapDescriptor.idObjectBmsSource; 
+												document.getElementById('form').innerHTML = screenMap + "-" + ObjMapDescriptor.idObjectMapset; 
+												document.getElementById('rowsSize').innerHTML = ObjMapDescriptor.rowsSize;  
+												document.getElementById('colsSize').innerHTML = ObjMapDescriptor.colsSize;  
+												document.getElementById('rowBegin').innerHTML = ObjMapDescriptor.rowBegin;  
+												document.getElementById('colBegin').innerHTML = ObjMapDescriptor.colBegin;  
+												document.getElementById('fieldCursor').innerHTML = ObjMapDescriptor.fieldCursor;  
+												
+												// Caricamento campi mappa e layout
+												loadLayoutAndFields();    
+										    }	
+}
+
+
+
+// Caricamento nomi oggetti	a livello 0 direttamente da Object 
+function loadLayoutAndFields() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlMapItemGET + "/" + userInp + "/" + sysCur + "/" + subSysCur + "/" + screenMap + "/" + OBJECT_CICS_MAP;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {                 
+												if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+												
+												arMapItem=JSON.parse(xmlhttp.responseText);
+												loadMapRows();
+												loadMapFields();
+                   							}; 	
+};
+
+/*
+ * Load rows map
+ *   Protected fields green
+ *   Protected fields BRI white
+ *   Dark fields grey
+ *   Unprotected fields white
+ * 
+ */
+function loadMapRows() {
+	var objMapItem = {};
+    var strSpace80 = "                                                                                ";
+    var strRowNew = "";
+    var strRow = "";
+    var strWrk = "";
+    var rowNum = 0;
+    var i = 0;
+    var iRow = 0;
+    
+    strRow = strSpace80;
+    rowNum = arMapItem[0].row;
+    
+	// Scan fields defined
+	for (i=0; i < arMapItem.length; i++) {
+		
+		objMapItem = arMapItem[i];
+		
+		if (objMapItem.row != rowNum ) {
+			iRow = rowNum - 1;
+			// Normalize to 80 crt
+ 			strRow = strRow + strSpace80;
+ 			strRow = strRow.substr(0, 80);
+			document.getElementById("row_" + iRow).innerHTML = "<pre>" + strRow + "</pre>";
+			strRow = strSpace80;
+			rowNum = objMapItem.row;
+		}
+		
+		// Campo singolo askip di chiusura campo precedente: skip
+   		if (objMapItem.bmsLength == 1  && objMapItem.bmsIdField == "" && objMapItem.bmsFlgAskip) {
+   			continue;
+   		}
+   	    
+		// Initial valorizzato
+		// Green  Askip Initial valorizzato
+		if (objMapItem.bmsInitial != "") {
+			strRow = updateRowInitial(strRow, objMapItem);
+			continue;
+		}
+		
+		// Campo non testata, digitabile o no: fill XXXXXXX
+		if (objMapItem.bmsIdField != "") {
+			strRow = updateRowXXX(strRow, objMapItem);
+		}		
+    } 
+	
+	// Last row to be updateted on map
+	iRow = rowNum - 1;
+	document.getElementById("row_" + iRow).innerHTML = strRow;
+}
+
+
+// Update initial value on row
+// Brt    White brillante
+// objects.bmsFlgBrt = false  White opaco
+// 
+function updateRowInitial(strRow, objMapItem) {
+    var strWrk = "";
+    var strSpace80 = "                                                                                ";
+    var strRowNew = "";   
+	
+    strRow = strRow + strSpace80;
+    strWrk = objMapItem.bmsInitial + "                                                               ";
+	strRowNew = strRow.substring(0, objMapItem.col);
+//	if (objMapItem.bmsFlgBrt = true) {
+//		strRowNew = strRowNew + "<span style='color:white'>" + strWrk.substr(0, objMapItem.bmsLength)  +  "</span>";
+//	} else {
+		strRowNew = strRowNew + strWrk.substr(0, objMapItem.bmsLength) 
+//	}
+	
+	return strRowNew;
+}
+
+// Update XXXXX value on row white o white brillante
+function updateRowXXX(strRow, objMapItem) {
+    var strX80 = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    var strSpace80 = "                                                                                ";
+    var strRowNew = ""; 
+    
+    strRow = strRow + strSpace80;
+	strRowNew = strRow.substring(0, objMapItem.col);
+//	if (objMapItem.bmsFlgBrt = true) {
+//		strRowNew = strRowNew + "<span style='color:white'>" + strX80.substr(0, objMapItem.bmsLength)  +  "</span>";
+//	} else {
+		strRowNew = strRowNew + strX80.substr(0, objMapItem.bmsLength);
+//	}
+	return strRowNew;
+}
+
+function loadMapFields() {
+	var objMapItem = {};
+  	var tbltop = "<table id='tbScreenFields'>"
+  	var main = ""; 
+  	var attrb = "";
+    
+  	main  += "<tr>"
+        +       "<th>Field</th>"
+        +       "<th>Desc</th>"
+        +       "<th>Row</th>"
+        +       "<th>Col</th>"
+        +       "<th>Lng</th>"
+        +       "<th>Attrb</th>"
+        +       "<th>Grp</th>"
+        +       "<th>Occ</th>"
+        +       "<th>Initial</th>"
+        +  "<tr>";
+  	
+  	// Scan Fields
+   	for (var i=0; i < arMapItem.length; i++) {
+   		objMapItem = arMapItem[i];
+   		main  += "<tr> "
+	          +      "<td class='tdScreenFields bold' tabindex='0' id='" + objMapItem.bmsIdField + "'>" 	+ objMapItem.bmsIdField + "</td>"
+	          +      "<td class='tdScreenFields' id='desc_"  		+ i + "'>" + objMapItem.bmsDescField 	+ "</td>"
+	          +      "<td class='tdScreenFields' id='row_"  		+ i + "'>" + objMapItem.row 			+ "</td>"
+	          +      "<td class='tdScreenFields' id='col_"  		+ i + "'>" + objMapItem.col 			+ "</td>"
+	          +      "<td class='tdScreenFields' id='lng_"  		+ i + "'>" + objMapItem.bmsLength 		+ "</td>"
+	          +      "<td class='tdScreenFields' id='attrb_"  		+ i + "'>" + getAttrb(objMapItem) 		+ "</td>"
+	          +      "<td class='tdScreenFields' id='grp_"  		+ i + "'>" + objMapItem.bmsNumGrp 		+ "</td>"
+	          +      "<td class='tdScreenFields' id='occ_"  		+ i + "'>" + objMapItem.bmsNumGrpOccurs + "</td>"
+	          +      "<td class='tdScreenFields' id='initial_" 	+ i + "'>" + objMapItem.bmsInitial + "</td>"
+	          + "</tr> ";
+    }         
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;
+   
+    document.getElementById("divScreenFields").innerHTML = tbl;
+}
+
+/*
+ * 
+ */
+function getAttrb(objMapItem) {
+	var attrb = "";
+	
+	if (objMapItem.bmsFlgIc == true) {
+		attrb += "IC ";
+	}
+	if (objMapItem.bmsFlgUnprot == true) {
+		attrb += "UNPROT ";
+	}
+	if (objMapItem.bmsFlgProt == true) {
+		attrb += "PROT ";
+	}
+	if (objMapItem.bmsFlgAskip == true) {
+		attrb += "ASKIP ";
+	}
+	if (objMapItem.bmsFlgNorm == true) {
+		attrb += "NORM ";
+	}
+	if (objMapItem.bmsFlgBrt == true) {
+		attrb += "BRT ";
+	}
+	if (objMapItem.bmsFlgDark == true) {
+		attrb += "DARK ";
+	}
+	if (objMapItem.bmsFlgFset == true) {
+		attrb += "FSET ";
+	}
+	return attrb;
+}
+
+/*
+ * Richiesta AJAX
+ */
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+    
+
+/*
+ * Individuazione campo 
+ */
+function onclick_rowMap(clicked_id) {
+    var i = 0;
+    var row = 0;          // 1-based
+    var col = 0;          // 1-based
+    var selection = null;
+	var objMapItem = {};
+    
+    i = clicked_id.indexOf("_");
+    row = parseInt(clicked_id.substr(i+1));  
+    
+    // Posizione cursore
+    selection = window.getSelection();
+    col = selection.focusOffset;
+   
+    row++;
+    col++;
+    
+    /*
+     * Ricerca campo definito in POS=(row, col)
+     * Impostazione nome campo in colonna a destra
+     * Posizionamento e focus su riga descrittiva campo
+     */
+     
+ 	// Scan fields defined
+ 	for (var i = 0; i < arMapItem.length; i++) {
+ 		objMapItem = arMapItem[i];
+ 		
+ 		// Field defined found
+ 		if (row == objMapItem.row 
+ 		&& col >= objMapItem.col 
+ 		&& col <= (objMapItem.col + objMapItem.bmsLength)) {
+ 			
+ 		    if (oldFieldSelected != "") {
+ 		    	document.getElementById(oldFieldSelected).classList.remove("selected"); 
+ 			}
+ 		    document.getElementById(objMapItem.bmsIdField).focus();
+ 		    document.getElementById(objMapItem.bmsIdField).classList.add("selected"); 
+ 		    oldFieldSelected = objMapItem.bmsIdField;
+ 		    if (winOpenViewer.document.title = "Impact") {
+ 			    winOpenViewer.getselectedField(oldFieldSelected, objMapItem.bmsLength);
+			}
+ 		}
+ 	}     
+}
+
+/*
+ * Visualizzazione sorgente
+ */
+function onclick_showSourceBms(clicked_id) {
+
+	// Impostazione parametri per source
+	localStorage.setItem("sourceSubSys", subSysCur);
+	localStorage.setItem("sourceIdObject",screenBmsSource);
+	localStorage.setItem("sourceTypeObject", "OBJECT_CICS_BMS_SOURCE");
+	localStorage.setItem("sourceTypeObjectN", OBJECT_CICS_BMS_SOURCE);   
+    localStorage.setItem("sourceRowStart", "0");
+    localStorage.setItem("sourceRowEnd", "0");    
+    localStorage.setItem("sourceIsShowPgm", "false");
+    localStorage.setItem("sourceIsIdxFileToGet", "false");
+
+    // Hide sections 
+	document.getElementById("divHeader").style.display="none";
+	document.getElementById("divScreenLayout").style.display="none";
+	document.getElementById("divHeader").style.display="none";
+	document.getElementById("divScreenLayout").style.display="none";
+	document.getElementById("divHeader2").style.display="none";
+	document.getElementById("divScreenDescriptor").style.display="none";
+	document.getElementById("divHeader3").style.display="none";
+	document.getElementById("divScreenFields").style.display="none";
+	
+	// Show only source
+    document.getElementById("iframeSource").style.display="block";
+	document.getElementById("iframeSource").style.height = "100%";
+	document.getElementById("iframeSource").style.width = "99%";
+	
+	window.open('ViewerSourceViewer.html', 'iframeSource'); 
+
+}
+
+function hideSource(){
+
+	// Hide
+	document.getElementById("iframeSource").style.display="none";
+
+	// Show
+	document.getElementById("'divHeader'").style.display="block";
+	document.getElementById("divScreenLayout").style.display="block";
+	document.getElementById("'divHeader'").style.display="block";
+	document.getElementById("divScreenLayout").style.display="block";
+	document.getElementById("'divHeader2'").style.display="block";
+	document.getElementById("'divScreenDescriptor'").style.display="block";
+	document.getElementById("'divHeader3'").style.display="block";
+	document.getElementById("'divScreenFields'").style.display="block";
+}
+
+function getWinViewer() {
+	return winOpenViewer;
+}
+</script>
+
+
+</html>

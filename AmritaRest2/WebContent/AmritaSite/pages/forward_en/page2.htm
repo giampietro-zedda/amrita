@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>e-Amrita</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body link="#000000" vlink="#000000" alink="#000000">
+<table width="1169" height="605" align="center" bgcolor="#E3E2E1">
+  <tr> 
+    <td height="102" colspan="4"> 
+      <div align="left"><a href="../index_en.htm"><img src="nome_4.jpg" width="816" height="100" border="0"></a></div></td>
+    <td width="1">&nbsp;</td>
+    <td colspan="2" rowspan="2" bgcolor="#BEBEBE">
+<div align="left"> 
+        <p><font size="2" face="Arial, Helvetica, sans-serif">Automatically, the 
+          Sql query will be built and executed and the application will get only 
+          columns required as normal java variables.<br>
+          <br>
+          <strong><em>LDV</em></strong> is the normal way to get data access in 
+          Forward applications, coded by a simple language for analyst.<br>
+          As the Forward application described by <em><strong>FSD</strong></em>, 
+          the Forward Logical Data View is quite declarative and lets to navigate 
+          the relational entities tree, to get rows.<br>
+          A complex Sql Select Inner and Left join will be automatically generated.<br>
+          Rule tables, used at least to get code descriptions, are all managed 
+          by Forward in the same Sql phisical table.<br>
+          They are, as showed in the example, numbered and handled in the same 
+          way of legacy entities.</font></p>
+        <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Entity level</strong><br>
+          <br>
+          On specific application needs it's possible to get data access directly 
+          by the java EntityBrean object, using the Forward <em>Data Base Entity 
+          Interface</em>.<br>
+          It's possible to perform all CRUD operations and rows set level operations 
+          too<br>
+          <br>
+          <strong>Custom level</strong><br>
+          <br>
+          At this level the application gets data access directly using the Forward<em> 
+          Data Base Interface</em> and a valid Sql statementis required. <br>
+          </font><font color="#0000FF" size="2" face="Arial, Helvetica, sans-serif"><br>
+          </font><font size="2" face="Arial, Helvetica, sans-serif"><a href="page1.htm"><strong><font color="#0000FF">Prev</font></strong></a></font></p>
+        </div></td>
+  </tr>
+  <tr> 
+    <td rowspan="2" bgcolor="#CCCCCC">&nbsp;</td>
+    <td width="274" rowspan="2" bgcolor="#DFDFDF"><p align="left"><font size="2" face="Arial, Helvetica, sans-serif">Data 
+        access is a very important component of Forward, that implements for the 
+        persistence an ORM like Hibernate, but functional to the forward structure, 
+        organized on three levels.</font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif"><strong>Logical data 
+        View level</strong></font></p>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">The application gets 
+        access data by means of a Forward Logical Data View (<em><strong>LDV</strong></em>) 
+        object.<br>
+        There are only three types of declaration:</font></p>
+      <ul>
+        <li><font size="2" face="Arial, Helvetica, sans-serif"> <strong>FOR-ANY()</strong><br>
+          To get one row by key from an Entity or by a many to one or a one one 
+          relationship.</font></li>
+        <li><font size="2" face="Arial, Helvetica, sans-serif"> <strong>FOR_EACH()</strong><br>
+          To get rows by a one to many relationship.</font></li>
+        <li><font size="2" face="Arial, Helvetica, sans-serif"> <strong>FOR_SQL()</strong><br>
+          To get rows by a user coded Sql Select with the same effect of for-any-each 
+          declarations</font></li>
+      </ul>
+      <p><font size="2" face="Arial, Helvetica, sans-serif">The entity named in 
+        above declaratives must be coded as a Forward java EntityBrean object, 
+        describing columns and relationships.</font></p></td>
+    <td width="5" height="377">&nbsp;</td>
+    <td width="523"><div align="left"><font color="#66FF33"><strong><font color="#33FF00" size="2">/*<em> 
+        Fixed row key columns var</em> */</font></strong></font><font color="#0000FF" size="2"><br>
+        VAR</font><font size="2">(&quot;<font color="#FF0000">typeObject</font>&quot;, 
+        EnumObject.<font color="#000000">OBJECT_PGM_COBOL</font>.ordinal());<br>
+        <font color="#0000FF">VAR</font>(&quot;<font color="#FF0000">scope</font>&quot;, 
+        EnumObject.<font color="#000000">OBJECT_PGM_COBOL</font>.ordinal());<br>
+        <br>
+        </font><font color="#33FF00" size="2">/*<em><strong> Data access declaration</strong></em> 
+        */</font><font size="2"><br>
+        <font color="#0000FF">FOR_ANY</font>(<font color="#FF0000">EntityMetric</font>.class, 
+        &quot;METR&quot;, &quot;&quot;, null, new String[]{&quot;scope&quot;}, 
+        false);<br>
+        - <font color="#0000FF">FOR_ANY</font>(<font color="#FF0000">45</font>, 
+        &quot;T045&quot;, &quot;&quot;, new String[]{&quot;rowData AS metricsScopeDesc&quot;});<br>
+        - <font color="#0000FF">FOR_EACH</font>(<font color="#FF0000">EntityMetricViolation</font>.class, 
+        &quot;METV&quot;, &quot;&quot;, null, true) ;<br>
+        -- <font color="#0000FF">FOR_ANY</font>(<font color="#FF0000">46</font>, 
+        &quot;T046&quot;, &quot;&quot;, new String[]{&quot;rowData AS typeViolationDesc&quot;});<br>
+        -- <font color="#0000FF">FOR_ANY</font>(<font color="#FF0000">47</font>, 
+        &quot;T047&quot;, &quot;&quot;, new String[]{&quot;rowData AS severityViolationDesc&quot;});<br>
+        -- <font color="#0000FF">FOR_ANY</font>(<font color="#FF0000">48</font>, 
+        &quot;T048&quot;, &quot;&quot;, new String[]{&quot;rowData AS remediationUnitDesc&quot;});<br>
+        -- <font color="#0000FF">FOR_ANY</font>(<font color="#FF0000">49,</font></font> 
+        <font size="2">&quot;T049&quot;, &quot;&quot;, new String[]{&quot;rowData 
+        AS qualDesc&quot;});<br>
+        <font color="#0000FF">ORDER_BY</font>(&quot;<font color="#FF0000">typeViolationDesc</font>&quot;);<br>
+        <br>
+        <font color="#00FF00">/<font color="#33FF00">*<em><strong> Updated operations 
+        allowed</strong></em> by logical data view */</font></font><br>
+        <font color="#0000FF">INSERT</font>(<font color="#FF0000">EntityMetric</font>.class);<br>
+        <font color="#0000FF">UPDATE</font>(<font color="#FF0000">EntityMetric</font>.class, 
+        true, null);<br>
+        <font color="#0000FF">DELETE</font>(<font color="#FF0000">EntityMetric</font>.class);</font></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td height="54">&nbsp;</td>
+    <td colspan="4" bgcolor="#FF9933"> <div align="center"><strong><font size="4"><em>Elementary 
+        data item approach needs a central definition of elementary data and relationships</em></font></strong></div></td>
+  </tr>
+  <tr> 
+    <td width="3" height="21">&nbsp;</td>
+    <td colspan="5"><font size="2" face="Arial, Helvetica, sans-serif">Copyright 
+      e-Amrita 2012</font></td>
+    <td width="316"><div align="center"><font size="3" face="Arial, Helvetica, sans-serif"><strong>English 
+        -<a href="../forward_it/page2.htm"> Italian</a></strong></font></div></td>
+  </tr>
+</table>
+</body>
+</html>

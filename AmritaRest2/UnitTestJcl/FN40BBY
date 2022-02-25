@@ -1,0 +1,21 @@
+//SFN40BBY  JOB AMFN000N3,'TL 11',MSGCLASS=K,CLASS=B,REGION=6000K,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//******ELIMINATO START-01025
+//       EXEC SFNK04,SERV=FN,PERIOD=0,FASE=FN40B
+//*
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE   : DA DEFINIRE
+//*-----------
+//*SCHEDULAZIONE : DEMAND IN PROCEDURA DA @FN40B
+//*-------------
+//*VINCOLO TP    : SI
+//*----------
+//*DUMP          : CONTATTARE IL PROGRAMMATORE REPERIBILE
+//*----
+//*PROSEND
+//************************************************************
+//**** ELIMINATO END-01025

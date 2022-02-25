@@ -1,0 +1,680 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache">
+<meta http-Equiv="Pragma"    Content="no-cache">
+<meta http-Equiv="Expires"    Content="0">
+<link rel="stylesheet" type="text/css" href="AnalyzerStatusAnalysis.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>	
+
+	<table id='mainTable'>
+
+	  <tr id='tr1'>
+	  
+	    <td id='td1'>  
+	      	  <div class='divHeader'>To Be Acquired </div> 
+              <table class='countTable' id='countTbTobeAcquired'>
+                    <tr><td class='lblCountObjects' id='lblCountTbTobeAcquired'>Count:</td>
+                        <td class='countObjects' id='countTobeAcquired'>0</td>
+                    </tr>
+              </table>
+             <div id='divTbTobeAcquired'></div>
+ 	    </td>
+ 	    
+	    <td id='td2'>  
+	      	  <div class='divHeader'>To Be Analyzed </div> 
+              <table class='countTable' id='countTbTobeAnalyzed'>
+                    <tr><td class='lblCountObjects' id='lblCountTbTobeAnalyzed'>Count:</td>
+                        <td class='countObjects' id='countTobeAnalyzed'>0</td>
+                    </tr>
+              </table>
+             <div id='divTbTobeAnalyzed'></div>
+ 	    </td>
+ 	    
+	    <td id='td3'>  
+	      	  <div class='divHeader'>In Error </div> 	
+              <table class='countTable' id='countTbInError'>
+                    <tr><td class='lblCountObjects' id='lblCountTbInError'>Count:</td>
+                        <td class='countObjects' id='countInError'>0</td>
+                    </tr>
+              </table>
+	      	 <div id='divTbInError'></div>	
+ 	    </td>
+ 	    
+	    <td id='td4'>  
+	      	  <div class='divHeader'>In Exception </div> 	
+              <table class='countTable' id='countTbInException'>
+                    <tr><td class='lblCountObjects' id='lblCountTbInException'>Count:</td>
+                        <td class='countObjects' id='countInException'>0</td>
+                    </tr>
+              </table>
+	      	 <div id='divTbInException'></div>	
+	 	    </td>
+	 	    
+	    <td id='td5'>  
+	      	 <div class='divHeader'>Dynamic Code Waiting For data </div> 
+             <table class='countTable' id='countTbWaitingForData'>
+                    <tr><td class='lblCountObjects' id='lblCountTbWaitingForData'>Count:</td>
+                        <td class='countObjects' id='countWaitingForData'>0</td>
+                    </tr>
+             </table>
+             <div id='divTbWaitingForData'></div>	            
+ 	    </td>
+ 
+ 	    <td id='td6'>  
+	      	 <div class='divHeader'>Dynamic Code Waiting For Callers </div> 
+             <table class='countTable' id='countTbWaitingForCaller'>
+                    <tr><td class='lblCountObjects' id='lblCountTbWaitingForCallers'>Count:</td>
+                        <td class='countObjects' id='countWaitingForCallers'>0</td>
+                    </tr>
+             </table>
+             <div id='divTbWaitingForCallers'></div>	            
+ 	    </td>
+ 
+  	  </tr>
+	  
+	</table>
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+const OBJECT_TO_BE_ACQUIRED = "12";            	 // 12 Oggetto da acquisire con library scan (tipicamente un programma)
+const OBJECT_TO_BE_ANALYZED = "10";      		 // 10 Oggetto ancora da analizzare, a fronte di analisi di altri oggetti
+const OBJECT_ANALYZED_WITH_ERRORS = "5";         // 05 Oggetto a fronte di analisi sorgente con   errori
+const OBJECT_ANALYZED_WITH_EXCEPTION = "6";      // 06 Oggetto a fronte di analisi sorgente in exception
+
+var activeProcess="*";				 // From radio check box
+var userinp="amrita";       // Replaced by localSession variable   
+var userinp2="amrita";       // Replaced by localSession variable   
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest'; // Replaced then with actual value
+var urlObjectGET = 'object'
+var urlObjectShortGET = 'objectShort'
+var urlDynamicFieldSubWaitExtGET = 'dynamicFieldSubWaitExt'
+var urDynamicSubFieldSettingLastSetSpreadGET = 'programDynamicSubFieldSettingLastSetSpread'
+
+var objConfig=null;         // Contains Configuration parameters available to all pages	
+var winOpener=null;         // Viewer/inspector reference
+var winAnalyzer=null;       // Analyzer reference
+var winFunc=null;           // ViewerRelations/ViewerWereUsed/Viewer/DynamicCode/ViewerCrudMatrix
+var jsonArray = null;       // Service
+var objects=[];             // JsonArray  
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    winAnalyzer=window.opener;
+	    objConfig=winAnalyzer.getConfig();
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+//	userinp = localStorage.getItem("user");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");		
+
+	loadTbTobeAcquired();
+    loadTbTobeAnalyzed();
+    loadTbInError();
+    loadTbInException();
+    loadTbWaitingForData();	
+    loadTbWaitingForCallers();	
+
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function loadTbTobeAcquired()  {
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlObjectGET + "/" + userinp2 + "/"+ objConfig.sys + "/" + "*" + "/" + "*" + "/" + OBJECT_TO_BE_ACQUIRED + "/*" + "/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectTobeAcquired(xmlhttp);};
+ 	document.getElementById("countTobeAcquired").innerHTML = "Fetching";	
+}
+
+function handleJsonResponseObjectTobeAcquired(xmlhttp) {
+    var typeObjectShort="";
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+           var i;
+	       
+ 		   document.getElementById("countTobeAcquired").innerHTML = objects.length;		   
+
+	       var tbltop = "<table class='tbStatus' id='tbTobeAcquired'>"		   
+		          +      "<tr>"
+	              +        "<th>Sub</th>"
+	              +        "<th>Own</th>"
+	              +        "<th>Type</th>"
+	              +        "<th>Name</th>"
+	              +      "</tr>"
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+	    	    typeObjectShort=getTypeObjectShort(objects[i].typeObjectOrdinal);  	   	     	         
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystem       + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystemOwner  + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + typeObjectShort      + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].idObject        + "</td>" 
+	     	          +  "</tr>"
+
+	       } 
+	       if (objects.length == 0) {
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "...</td>" 
+	     	          +  "</tr>"
+		   }
+	       
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById("divTbTobeAcquired").innerHTML = tbl;
+ 		   document.getElementById("countTobeAcquired").value = objects.length;
+    }	
+}
+
+function loadTbTobeAnalyzed()  {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlObjectShortGET + "/" + userinp + "/" + objConfig.sys + "/" + "*" + "/" + "*" + "/" + OBJECT_TO_BE_ANALYZED ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectTobeAnalyzed(xmlhttp);};
+ 	document.getElementById("countTobeAnalyzed").innerHTML = "Fetching";	
+}
+
+function handleJsonResponseObjectTobeAnalyzed(xmlhttp) {
+    var typeObjectShort="";
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+           var i;
+	       
+ 		   document.getElementById("countTobeAnalyzed").innerHTML = objects.length;		   
+
+	       var tbltop = "<table class='tbStatus' id='tbTobeAnalyzed'>"		   
+		          +      "<tr>"
+	              +        "<th>Sub</th>"
+	              +        "<th>Own</th>"
+	              +        "<th>Type</th>"
+	              +        "<th>Name</th>"
+	              +      "</tr>"
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+	    	    typeObjectShort=getTypeObjectShort(objects[i].typeObjectOrdinal);  	   	     	         
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystem       + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystemOwner  + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + typeObjectShort      + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].idObject        + "</td>" 
+	     	          +  "</tr>"
+
+	       }         
+	       if (objects.length == 0) {
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "...</td>" 
+	     	          +  "</tr>"
+		   }
+
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById("divTbTobeAnalyzed").innerHTML = tbl;
+  		   document.getElementById("countTobeAnalyzed").value = objects.length;
+    }	
+}
+
+function loadTbInError()  {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlObjectGET + "/" + userinp + "/"+ objConfig.sys + "/" + "*" + "/" + "*" + "/" + OBJECT_ANALYZED_WITH_ERRORS + "/*" + "/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectInError(xmlhttp);};
+ 	document.getElementById("countInError").innerHTML = "Fetching";	
+}
+
+function handleJsonResponseObjectInError(xmlhttp) {
+    var typeObjectShort="";
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+           var i;
+	       
+ 		   document.getElementById("countInError").innerHTML = objects.length;		   
+
+	       var tbltop = "<table class='tbStatus' id='tbInError'>"		   
+		          +      "<tr>"
+	              +        "<th>Sub</th>"
+	              +        "<th>Own</th>"
+	              +        "<th>Type</th>"
+	              +        "<th>Name</th>"
+	              +      "</tr>"
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+	    	    typeObjectShort=getTypeObjectShort(objects[i].typeObjectOrdinal);  	   	     	         
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystem       + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystemOwner  + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + typeObjectShort      + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].idObject        + "</td>" 
+	     	          +  "</tr>"
+
+	       }
+	       if (objects.length == 0) {
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "...</td>" 
+	     	          +  "</tr>"
+		   }
+	       
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById("divTbInError").innerHTML = tbl;
+ 		   document.getElementById("countInError").value = objects.length;
+    }	
+}
+
+function loadTbInException()  {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlObjectGET + "/" + userinp + "/"+ objConfig.sys + "/" + "*" + "/" + "*" + "/" + OBJECT_ANALYZED_WITH_EXCEPTION + "/*" + "/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectInException(xmlhttp);};
+ 	document.getElementById("countInException").innerHTML = "Fetching";	
+}
+
+function handleJsonResponseObjectInException(xmlhttp) {
+    var typeObjectShort="";
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+           var i;
+	       
+ 		   document.getElementById("countInException").innerHTML = objects.length;		   
+
+	       var tbltop = "<table class='tbStatus' id='tbInException'>"		   
+		          +      "<tr>"
+	              +        "<th>Sub</th>"
+	              +        "<th>Own</th>"
+	              +        "<th>Type</th>"
+	              +        "<th>Name</th>"
+	              +      "</tr>"
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+	    	    typeObjectShort=getTypeObjectShort(objects[i].typeObjectOrdinal);  	   	     	         
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystem       + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystemOwner  + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + typeObjectShort      + "</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].idObject        + "</td>" 
+	     	          +  "</tr>"
+
+	       } 
+	       if (objects.length == 0) {
+	    	    main  += "<tr>"
+	      	          +    "<td class='tdTbStatus' id='subSystem1_"        + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='subSystemOwner1_"   + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='typeObject1_"       + i + "...</td>" 
+	      	          +    "<td class='tdTbStatus' id='idObject1_"         + i + "...</td>" 
+	     	          +  "</tr>"
+		   }
+	       
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById("divTbInException").innerHTML = tbl;
+     	   document.getElementById("countInException").value = objects.length;
+    }	
+}
+function getTypeObjectShort(typeObjectOrdinal) {
+	var str="";
+	switch (typeObjectOrdinal) {
+	case 1:
+		str="PGM"
+		break;
+	case 9:
+		str="CPP"
+		break;
+	case 10:
+		str="CPD"
+		break
+	// Copy Identification Division
+	case 12:
+		str="CPI"
+		break;
+	    // Internal File
+	case 23:
+		str="INF"
+		break;
+		// External File
+	case 24:
+		str="INF"
+		break;
+    // Sql Script
+	case 42:
+		str="SQS"
+		break;
+	case 70:
+		str="BMS"
+		break;
+
+	default:
+		str=typeObjectOrdinal
+		break;
+	}
+	
+	return str;  
+}
+
+function loadTbWaitingForData() {
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+
+	var url = objConfig.baseUrl + "/" + urlDynamicFieldSubWaitExtGET + "/" + userinp + "/" + objConfig.sys + "/*/*/*/*/*/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectWaitingForData(xmlhttp);};
+ 	document.getElementById("countInException").innerHTML = "Fetching";	
+}
+
+function handleJsonResponseObjectWaitingForData(xmlhttp) {
+    var objects = null;
+    var typeObjectExternal = "";
+    var typeSystemFieldExternal = "";
+    var i = 0;
+
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+  
+	objects=JSON.parse(xmlhttp.responseText);		   
+    
+	document.getElementById("countWaitingForData").innerHTML = objects.length;		   
+
+    var tbltop = "<table class='tbStatus' id='tbWaitingForData'>"		   
+           +      "<tr>"
+           +        "<th>Sub</th>"
+           +        "<th>Name</th>"
+           +        "<th>Inst</th>"
+           +        "<th>Field</th>"
+           +        "<th>SubField</th>"
+           +        "<th>Type</th>"
+           +        "<th>From</th>"
+           +        "<th>Pos</th>"
+           +        "<th>Lng</th>"
+           +        "<th>CicsField</th>"
+           +        "<th>CicsName</th>"
+           +        "<th>SqlColumn</th>"
+           +        "<th>Dsname</th>"
+           +      "</tr>"
+	var main = "";
+           
+    for (var i=0; i < objects.length; i++) {
+  	  
+  	    typeObjectExternal = objects[i].typeObjectExternal;
+  	    typeSystemFieldExternal = objects[i].typeSystemFieldExternal;
+  	    if (typeObjectExternal.substring(0, 6) == 'OBJECT') {typeObjectExternal = typeObjectExternal.substring(7);}
+  	    if (typeSystemFieldExternal.substring(0, 4) == 'CICS') {typeSystemFieldExternal = typeSystemFieldExternal.substring(5);} 	    
+  	    
+  	    main  += "<tr>"
+   	          +    "<td class='tdTbStatus' id='subSystem5_"        + i + "'>"  + objects[i].subSystem             + "</td>" 
+    	      +    "<td class='tdTbStatus' id='idObject5_"         + i + "'>"  + objects[i].idObject              + "</td>" 
+    	      +    "<td class='tdTbStatus' id='numInstr5_"         + i + "' onclick='onclick_numInstrWaiting(this.id);'>"  + objects[i].numInstr  + "</td>" 
+   	          +    "<td class='tdTbStatus' id='idField5_"          + i + "'><pre>"  + objects[i].idField               + "</pre></td>" 
+   	          +    "<td class='tdTbStatus' id='idSubField5_"       + i + "'><pre>"  + objects[i].idSubField            + "</pre></td>" 
+     	      +    "<td class='tdTbStatus' id='fromType5_"         + i + "'>"  + typeObjectExternal               + "</td>" 
+      	      +    "<td class='tdTbStatus' id='from5_"             + i + "'><pre>"  + objects[i].idObjectExternal      + "</pre></td>" 
+      	      +    "<td class='tdTbStatus' id='pos5_"              + i + "'>"  + objects[i].posColumnExternal     + "</td>" 
+      	      +    "<td class='tdTbStatus' id='lng5_"              + i + "'>"  + objects[i].lengthColumnExternal  + "</td>" 
+      	      +    "<td class='tdTbStatus' id='cicsField5_"        + i + "'>"  + typeSystemFieldExternal          + "</td>" 
+      	      +    "<td class='tdTbStatus' id='cicsName5_"         + i + "'>"  + objects[i].cicsNameExternal      + "</td>" 
+      	      +    "<td class='tdTbStatus' id='idFieldExternal5_"  + i + "'>"  + objects[i].idFieldExternal       + "</td>" 
+      	      +    "<td class='tdTbStatus' id='dsnameExternal5_"   + i + "'>"  + objects[i].dsnameExternal        + "</td>" 
+    	      +  "</tr>"
+
+    } 
+    if (objects.length == 0) {
+ 	    main  += "<tr>"
+   	          +    "<td class='tdTbStatus' id='subSystem5_"        + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idObject5_"         + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='numInstr5_"         + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idField5_"          + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idSubField5_"       + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='fromType5_"         + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='from5_"             + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='pos5_"              + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='lng5_"              + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='cicsField5_"        + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='cicsName5_"         + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idFieldExternal5_"  + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='dsnameExternal5_"   + i + "'>...</td>" 
+   	          +  "</tr>"
+   }
+    
+   var tblBottom = '</table>'
+   var tbl = tbltop + main + tblBottom;
+   document.getElementById("divTbWaitingForData").innerHTML = tbl;
+   document.getElementById("countWaitingForData").value = objects.length;  
+}
+
+function onclick_numInstrWaiting (clicked_id){
+	var winOpenInspector = null;
+	var i = clicked_id.indexOf("_");
+	var numInstr = "";
+	var pgmName = "";
+	var subSys = "";
+	
+	i = parseInt(clicked_id.substr(i+1));	
+	numInstr = document.getElementById(clicked_id).innerHTML;
+	pgmName = document.getElementById('idObject5_' + i).innerHTML;
+	subSys = document.getElementById('subSystem5_' + i).innerHTML; 
+	
+	callInspector(numInstr, pgmName, subSys);
+}
+
+function onclick_numInstrWaitingForCallers (clicked_id){
+	var winOpenInspector = null;
+	var i = clicked_id.indexOf("_");
+	var numInstr = "";
+	var pgmName = "";
+	var subSys = "";
+	
+	i = parseInt(clicked_id.substr(i+1));	
+	numInstr = document.getElementById(clicked_id).innerHTML;
+	pgmName = document.getElementById('idObject6_' + i).innerHTML;
+	subSys = document.getElementById('subSystem6_' + i).innerHTML; 
+	
+	callInspector(numInstr, pgmName, subSys);
+}
+
+
+
+/*
+ * Attivazione Inspector
+ */
+function callInspector(numInstr, pgmName, subSys) {
+	var winOpenInspector = null;
+	
+	// Specific inspector parameters
+	localStorage.setItem("sourceSubSys_" + pgmName, subSys);
+   	localStorage.setItem("sourceIdObject_" + pgmName, pgmName);
+   	localStorage.setItem("sourceTypeObject_" + pgmName, "");  
+   	localStorage.setItem("sourceTypeObjectN_" + pgmName, "1");  
+   	
+   	localStorage.setItem("sourceNumInstr_" + pgmName, numInstr);    
+    localStorage.setItem("sourceRowStart_" + pgmName, "0");
+    localStorage.setItem("sourceRowEnd_" + pgmName,   "0");    
+    localStorage.setItem("sourceUnderCopy_" + pgmName, "");
+    localStorage.setItem("sourceUnderCopyRowStart_" + pgmName, "0");
+    localStorage.setItem("sourceUnderCopyRowEnd_" + pgmName, "0");
+    localStorage.setItem("sourceOriginArea_" + pgmName, "P");
+    
+    // Load inspector in a new page
+	winOpenInspector = window.open("Inspector.html", "_blank");
+	winOpenInspector.name=pgmName;	
+	
+}
+
+function loadTbWaitingForCallers() {
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+
+	var url = objConfig.baseUrl + "/" + urDynamicSubFieldSettingLastSetSpreadGET + "/" + userinp + "/" + objConfig.sys + "/" + "*" + "/" + "Y";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectWaitingForCallers(xmlhttp);};
+ 	document.getElementById("countInException").innerHTML = "Fetching";	
+}
+
+function handleJsonResponseObjectWaitingForCallers(xmlhttp) {
+    var objects = null;
+    var i = 0;
+
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+  
+	objects=JSON.parse(xmlhttp.responseText);		   
+    
+	document.getElementById("countWaitingForCallers").innerHTML = objects.length;		   
+
+    var tbltop = "<table class='tbStatus' id='tbWaitingForCallers'>"		   
+           +      "<tr>"
+           +        "<th>Sub</th>"
+           +        "<th>pgm</th>"
+           +        "<th>Instr</th>"
+           +        "<th>Field</th>"
+           +        "<th>SubField</th>"
+           +        "<th>pgmSet</th>"
+           +        "<th>instrSet</th>"
+           +        "<th>SetMode</th>"
+           +        "<th>UsingParm</th>"
+           +        "<th>DspInParm</th>"
+           +        "<th>DspInLinkage</th>"
+           +        "<th>PtrType</th>"
+           +        "<th>PtrDspInLinkage</th>"
+           +        "<th>PtrInUsingParm</th>"
+           +        "<th>PtrDspInUsingParm</th>"
+           +      "</tr>"
+	var main = "";
+           
+    for (var i=0; i < objects.length; i++) {
+  	    	    
+  	    main  += "<tr>"
+   	          +    "<td class='tdTbStatus' id='subSystem6_"        + i + "'>"  + objects[i].subSys              + "</td>" 
+    	      +    "<td class='tdTbStatus' id='idObject6_"         + i + "'>"  + objects[i].idObject              + "</td>" 
+    	      +    "<td class='tdTbStatus' id='numInstr6_"         + i + "' onclick='onclick_numInstrWaitingForCallers(this.id);'>"  + objects[i].numInstr  + "</td>" 
+   	          +    "<td class='tdTbStatus' id='idField6_"          + i + "'> <pre>"  + objects[i].idField               + "</pre></td>" 
+   	          +    "<td class='tdTbStatus' id='idSubField6_"       + i + "'> <pre>"  + objects[i].idSubField            + "</pre></td>" 
+   	          +    "<td class='tdTbStatus' id='idPgmSet6_"         + i + "'>"  + objects[i].idPgmSet            						+ "</td>" 
+   	          +    "<td class='tdTbStatus' id='numInstrSet6_"      + i + "'>"  + objects[i].numInstrSet            						+ "</td>" 
+ 	          +    "<td class='tdTbStatus' id='setMode6_"          + i + "'>"  + objects[i].setMode            							+ "</td>" 
+ 	          +    "<td class='tdTbStatus' id='numUsingParm6_"     + i + "'>"  + objects[i].numUsingParm            					+ "</td>" 
+ 	          +    "<td class='tdTbStatus' id='dspFieldInUsingParm6_"   	+ i + "'>"  + objects[i].dspFieldInUsingParm            	+ "</td>" 
+ 	          +    "<td class='tdTbStatus' id='dspFieldInLinkage6_"   		+ i + "'>"  + objects[i].dspFieldInLinkageArea            	+ "</td>" 
+	          +    "<td class='tdTbStatus' id='typePointerArea6_"   		+ i + "'>"  + objects[i].typePointerArea           		 	+ "</td>" 
+	          +    "<td class='tdTbStatus' id='dspPointerInLinkageArea6_"   + i + "'>"  + objects[i].dspPointerInLinkageArea            + "</td>" 
+	          +    "<td class='tdTbStatus' id='numUsingParmPointer6_"   	+ i + "'>"  + objects[i].numUsingParmPointer            	+ "</td>" 
+	          +    "<td class='tdTbStatus' id='dspPointerInUsingParm6_"   	+ i + "'>"  + objects[i].dspPointerInUsingParm            + "</td>" 
+     	      +  "</tr>"
+
+    } 
+    if (objects.length == 0) {
+ 	    main  += "<tr>"
+   	          +    "<td class='tdTbStatus' id='subSystem6_"        			+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idObject6_"         			+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='numInstr6_"         			+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idField6_"          			+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idSubField6_"       			+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='idPgmSet6_"         			+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='numInstrSet6_"             	+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='setMode6_"              		+ i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='numUsingParm6_"              + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='dspFieldInUsingParm6_"       + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='dspFieldInLinkage6_"         + i + "'>...</td>" 
+   	          +    "<td class='tdTbStatus' id='typePointerArea6_"  			+ i + "'>...</td>" 
+  	          +    "<td class='tdTbStatus' id='dspPointerInLinkageArea6_"   + i + "'>...</td>" 
+  	          +    "<td class='tdTbStatus' id='numUsingParmPointer6_"   	+ i + "'>...</td>" 
+  	          +    "<td class='tdTbStatus' id='dspPointerInUsingParm6_"   	+ i + "'>...</td>" 
+   	          +  "</tr>"
+   }
+    
+   var tblBottom = '</table>'
+   var tbl = tbltop + main + tblBottom;
+   document.getElementById("divTbWaitingForCallers").innerHTML = tbl;
+   document.getElementById("countWaitingForCallers").value = objects.length;  
+}
+</script>
+
+</html>
+

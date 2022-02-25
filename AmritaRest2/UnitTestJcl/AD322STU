@@ -1,0 +1,131 @@
+//********************** INIZIO PROC. AD322STU ************************  0000001
+//P0LOG    EXEC PGM=IRXJCL,PARM='LOG'
+//SYSEXEC  DD DSN=X000GL.PE000.CLIST,DISP=SHR
+//SYSTSPRT DD SYSOUT=*
+//SYSTSIN  DD DUMMY
+//NOME     DD  DSN=DOP0GL.PE000.NOMEPROC(AD322STU),DISP=SHR
+//LOG      DD DSN=DOP0GL.PE000.LOGPROC,DISP=MOD
+//P000GS   EXEC PGM=IDCAMS                                              00000080
+//SYSPRINT   DD SYSOUT=*
+//SYSIN      DD DSN=LOPS0.DMSDEL(AD322SGS),DISP=SHR
+//*
+//P000WK   EXEC PGM=IDCAMS                                              00000080
+//SYSPRINT   DD SYSOUT=*
+//SYSIN      DD DSN=LOPS0.DMSDEL(AD322SWK),DISP=SHR
+//*
+//P010   EXEC PGM=IEFBR14
+//ALL01      DD DSN=AD.STAMPE.AD322SBA,DISP=(,CATLG),
+//           SPACE=(CYL,(10,5)),
+//           LRECL=133,RECFM=FB
+//ALL02      DD DSN=AD.STAMPE.AD322SBB,DISP=(,CATLG),
+//           SPACE=(CYL,(1,1)),
+//           LRECL=133,RECFM=FBA
+//*-------------------------------------------------------------------* 00005300
+//M4REPO   DD DSN=DOP0AD.TW000.M4REPO.AD322STU,DISP=(,CATLG),
+//            SPACE=(CYL,20),
+//            LRECL=4092,RECFM=VB
+//M4REPI   DD DSN=DOP0AD.TW000.M4REPI.AD322STU,DISP=(,CATLG),
+//            SPACE=(CYL,20),
+//            LRECL=4092,RECFM=VB
+//M4SORT   DD DSN=DOP0AD.TW000.M4SORT.AD322STU,DISP=(,CATLG),
+//            SPACE=(CYL,20)
+//*
+//P020   EXEC PGM=SY20014                                               00005400
+//SYSIN      DD DUMMY                                                   00005500
+//SYSPRINT   DD SYSOUT=K                                                00005600
+//SYSUT1     DD DUMMY,DCB=(LRECL=10,RECFM=FBA,BLKSIZE=9070)             00005700
+//SYSUT2     DD DSN=AD.GEST.SUBF01.AD322STU,DISP=(,CATLG),              00005800
+//           SPACE=(CYL,(10,30)),                                       00005800
+//           DCB=*.SYSUT1                                               00005800
+//*-------------------------------------------------------------------* 00005300
+//P030   EXEC PGM=SY20014                                               00005400
+//SYSIN      DD DUMMY                                                   00005500
+//SYSPRINT   DD SYSOUT=K                                                00005600
+//SYSUT1     DD DUMMY,DCB=(LRECL=200,RECFM=FBA,BLKSIZE=9000)            00005700
+//SYSUT2     DD DSN=AD.GEST.SUBF02.AD322STU,DISP=(,CATLG),              00005800
+//           SPACE=(CYL,(10,30)),                                       00005800
+//           DCB=*.SYSUT1                                               00005800
+//*-------------------------------------------------------------------* 00005900
+//P040   EXEC PGM=SY20014                                               00005400
+//SYSIN      DD DUMMY                                                   00005500
+//SYSPRINT   DD SYSOUT=K                                                00005600
+//SYSUT1     DD DUMMY,DCB=(BLKSIZE=1330,LRECL=133,RECFM=FBA)            00005700
+//SYSUT2     DD DSN=AD.STAMPE.AD322SBA,DISP=OLD                         00005800
+//*
+//P040DUD  EXEC PGM=MN06001,COND=(0,EQ,P040),
+// PARM='ATTENZIONE >>> PASSO NON VALIDO <<< VEDI MESSAGGI SU SYSPRINT'
+//SYSPRINT DD SYSOUT=*,DCB=(LRECL=121,RECFM=FBA,BLKSIZE=121)
+//*
+//P050   EXEC PGM=SY20014                                               00005400
+//SYSIN      DD DUMMY                                                   00005500
+//SYSPRINT   DD SYSOUT=K                                                00005600
+//SYSUT1     DD DUMMY,LRECL=133,RECFM=FBA                               00005700
+//SYSUT2     DD DSN=AD.STAMPE.AD322SBB,DISP=OLD                         00005800
+//*
+//P050DUD  EXEC PGM=MN06001,COND=(0,EQ,P050),
+// PARM='ATTENZIONE >>> PASSO NON VALIDO <<< VEDI MESSAGGI SU SYSPRINT'
+//SYSPRINT DD SYSOUT=*,DCB=(LRECL=121,RECFM=FBA,BLKSIZE=121)
+//*-------------------------------------------------------------------* 00005900
+//P060   EXEC PGM=DFSRRC00,REGION=3000K,                                00000180
+//       PARM=(DLI,INFORMDE,ADMIF322)
+//DFSRESLB    DD DSN=Y100IMS.PE000.RESLIB,DISP=SHR
+//STEPLIB    DD DSN=Y100IMS.PE000.RESLIB,DISP=SHR                           0000
+//           DD DSN=Y100ANS.PE000.INFORM.LOADLIB,DISP=SHR                 0000
+//        DD DISP=SHR,DSN=Y100LE37.PE000.SCEERUN
+//         DD DISP=SHR,DSN=LOPSY.TBAN0000.LOADBATC                            00
+//         DD DISP=SHR,DSN=LOPSD.TBAN0000.LOADBATC                            00
+//IMS        DD DSN=X10SIMS.PE000.PSBLIB,DISP=SHR
+//           DD DSN=X10SIMS.PE000.DBDLIB,DISP=SHR
+//DFSVSAMP   DD DSN=LOPS0.INPUT(DFSVSAMP),DISP=SHR
+//IEFRDER    DD DUMMY,LRECL=1916,RECFM=VB
+//SYSUDUMP   DD SYSOUT=9                                                  000018
+//SYSPRINT   DD SYSOUT=*                                                       0
+//INFLOG     DD SYSOUT=*,                                               00000230
+//           RECFM=FB,LRECL=200
+//INFIN     DD DSN=LOPS0.INPUT(AD322STU),DISP=SHR
+//*         DD DSN=LOP00.INPUT(MIW322),DISP=SHR
+//           DD DSN=LOPS0.INPUT(ANSWLOG),DISP=SHR
+//INFORMLF     DD DSN=X100ANS.VS000.SCO.INFORM.FGLIB,DISP=SHR
+//INFORMCF     DD DSN=X100ANS.VS000.SCO.INFORM.INFCOM,DISP=SHR
+//INFREPT    DD DSN=AD.STAMPE.AD322SBA,DISP=SHR
+//M4LIB      DD DSN=X100ANS.VS000.SCO.INFORM.BGLIB,DISP=SHR
+//SYSOUT     DD DSN=AD.STAMPE.AD322SBB,DISP=OLD
+//M4DUMMY    DD DUMMY                                                     000018
+//HD01F322   DD DSN=MIV.HD01F322.DL1PS,DISP=SHR                         18
+//HD01X322   DD DSN=MIV.HD01X322.DL1VS,DISP=SHR                         18
+//HD01A322   DD DSN=MIV.HD01A322.DL1VS,DISP=SHR                         18
+//HD01B322   DD DSN=MIV.HD01B322.DL1VS,DISP=SHR                         18
+//HD01C322   DD DSN=MIV.HD01C322.DL1VS,DISP=SHR                         18
+//HD01F533   DD DSN=CFV.HD01F533.DL1PS,DISP=SHR                         18
+//HD01A533   DD DSN=CFV.HD01A533.DL1VS,DISP=SHR                         18
+//HD01B533   DD DSN=CFV.HD01B533.DL1VS,DISP=SHR                         18
+//SUBF01     DD DSN=AD.GEST.SUBF01.AD322STU,DISP=OLD
+//SUBF02     DD DSN=AD.GEST.SUBF02.AD322STU,DISP=OLD
+//*-------------------------------------------------------------------* 00005300
+//M4REPI   DD DSN=DOP0AD.TW000.M4REPI.AD322STU,DISP=SHR
+//SORTOUT  DD DSN=DOP0AD.TW000.M4REPI.AD322STU,DISP=SHR
+//M4REPO   DD DSN=DOP0AD.TW000.M4REPO.AD322STU,DISP=SHR
+//SORTIN   DD DSN=DOP0AD.TW000.M4REPO.AD322STU,DISP=SHR
+//M4SORT   DD DSN=DOP0AD.TW000.M4SORT.AD322STU,DISP=SHR
+//SYSIN    DD DSN=DOP0AD.TW000.M4SORT.AD322STU,DISP=SHR
+//*
+//P060DUD  EXEC PGM=MN06001,COND=(0,EQ,P060),
+// PARM='ATTENZIONE >>> PASSO NON VALIDO <<<'
+//SYSPRINT DD SYSOUT=*,DCB=(LRECL=121,RECFM=FBA,BLKSIZE=121)
+//*
+//P070   EXEC PGM=SY20014,COND=ONLY                                     00005400
+//SYSIN      DD DUMMY                                                   00005500
+//SYSPRINT   DD SYSOUT=K                                                00005600
+//SYSUT1     DD DSN=DOP0AD.TW000.M4INPUT.AD322STU,DISP=OLD                   000
+//SYSUT2     DD SYSOUT=D                                                00005800
+//*-------------------------------------------------------------------* 00005900
+//P080   EXEC PGM=SY20014,COND=ONLY                                     00005400
+//SYSIN      DD DUMMY                                                   00005500
+//SYSPRINT   DD SYSOUT=K                                                00005600
+//SYSUT1     DD DSN=DOP0AD.TW000.M4LIST.AD322STU,DISP=OLD                    000
+//SYSUT2     DD SYSOUT=D                                                00005800
+//*-------------------------------------------------------------------* 00005900
+//P999WK  EXEC PGM=IDCAMS
+//SYSPRINT   DD SYSOUT=*
+//SYSIN      DD DSN=LOPS0.DMSDEL(AD322SWK),DISP=SHR
+//************************* FINE PROC. AD322STU *********************    0000058

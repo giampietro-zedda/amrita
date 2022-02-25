@@ -1,0 +1,29 @@
+//JCLTST03  PROC WAITTIME=120,
+//             PDAYONLY=NO,
+//             WTIFDOWN=NO,
+//             BATFORCE=NO,
+//             ERRORIGN=NO,
+//             COMMCICS='N/A',
+//             COMMBATC='=',
+//             SBLOPROC='N/A',
+//             FOR='DUMMY,'
+//*******************************************************
+//* PROC TRITURATA PER METTERE G NELLA DYNA DEL BATCH
+//*******************************************************  
+//P1  EXEC PGM=Y1BC0GDS,REGION=5M,
+//             PARM=('CICS&SOC&CICSID',
+//             '&SOC&CICSID.CIC@',
+//             '&WAITTIME,&PDAYONLY,&WTIFDOWN,&BATFORCE',
+//             '&ERRORIGN,&SBLOPROC,&COMMCICS,&COMMBATC')
+//STEPLIB    DD DISP=SHR,DSN=L&CEN.P0Y.TBAN0000.LOADBATC
+//           DD DISP=SHR,DSN=X&CENN.00CICS.PE000.GGB0000.TABLIB
+//PRCDD01    DD DISP=SHR,
+//          DSN=X&CENN.00CICS.VS000.&SOC&AMB.0&SOC&CICSID..TABDSSA
+//PRCDD02    DD &FOR.DISP=SHR,
+//          DSN=X&CENN.00CICS.VS000.&SOC&AMB.0&SOC&CICSID..TABDSAA
+//PRCDD03    DD DISP=SHR,
+//       DSN=X&CENN.00CICS.PE000.&SOC.GB0000.INPUT(DYNA&SOC&CICSID)
+//PRCDD04    DD DISP=(MOD,DELETE),SPACE=(TRK,1),
+//          DSN=X&CENN.00CICS.TW000.&SOC&AMB.0&SOC&CICSID..TABDSSA.ENQ
+//SYSUDUMP   DD SYSOUT=D
+//         PEND

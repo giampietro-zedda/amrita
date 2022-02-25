@@ -1,0 +1,26 @@
+//SROCRYU  JOB AYRO000N3,'DEMAND STAMPE',MSGCLASS=K,CLASS=B,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//* OLD NAME=ROPH25U
+//*---------------------------------------------------
+//*    ESEGUE DEMAND SU CENTRO STAMPE
+//*---------------------------------------------------
+//*
+//P1    EXEC Y6TWSAD,CENTRO=SK
+//ADD.SYSIN DD *
+ APPL(SROPHBF2#000)
+//*
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE:    DEMAND SU CA7 STAMPE
+//*-----------
+//*SCHEDULAZIONE : DIPENDENZA CON FASE CREANTE
+//*-------------
+//*VINCOLI TP    : NO
+//*----------
+//*DUMP          : SOSPENDERE
+//*----------
+//*PROSEND
+//*************************************************************

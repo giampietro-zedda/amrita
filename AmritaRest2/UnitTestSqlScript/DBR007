@@ -1,0 +1,573 @@
+------------------------------------------------------------------------
+-- Copyright (c) 2009-2011 e-Amrita - Giampietro Zedda   Turin (ITALY)                                                                --
+-- 
+-- Unit test case Sql DDL script SCRIPT01
+--
+------------------------------------------------------------------------
+--
+-- T001 OK SET
+--
+  SET CURRENT SQLID='U0251  ';
+  SET CURRENT SQLID='U0E2948';
+  SET CURRENT SQLID ='U0E2948';
+  SET CURRENT SQLID= 'FIATT' ;
+  SET CURRENT PATH = "SYSIBM","SYSFUN","SYSPROC","STARTASK" ;
+--
+-- T002 OJ CREATE STOGROUP
+--
+  CREATE STOGROUP SGT001
+    VOLUMES("*")
+    VCAT SES ;
+
+--
+-- T002 OK CREATE DATABASE
+--
+
+  CREATE DATABASE DBT002
+    BUFFERPOOL BP0
+    INDEXBP    BP0
+    CCSID      EBCDIC
+    STOGROUP   SGT001;
+
+--
+-- T003 OK CREATE TABLESPACE
+--
+  CREATE TABLESPACE TST003
+    IN DBT002
+    USING STOGROUP SGT001
+    PRIQTY 720 SECQTY 720
+    ERASE  NO
+    FREEPAGE 0 PCTFREE 0
+    GBPCACHE CHANGED
+    TRACKMOD YES
+    SEGSIZE 64
+    BUFFERPOOL BP0
+    LOCKSIZE ANY
+    LOCKMAX SYSTEM
+    CLOSE YES
+    COMPRESS NO
+    CCSID      EBCDIC
+    DEFINE YES
+    MAXROWS 255;
+
+--
+-- T004 OK CREATE TABLESPACE
+--
+  CREATE LOB TABLESPACE TST004
+    IN DBT002
+    USING STOGROUP SGT001
+    PRIQTY 720 SECQTY 7200
+    ERASE  NO
+    FREEPAGE 3 PCTFREE 10
+    GBPCACHE CHANGED
+    TRACKMOD YES
+    SEGSIZE 4
+    BUFFERPOOL BP1
+    LOCKSIZE ANY
+    LOCKMAX SYSTEM
+    CLOSE YES
+    COMPRESS NO
+    CCSID      EBCDIC
+    DEFINE YES
+    MAXROWS 255;
+    
+--
+-- T005 OK CREATE TABLE
+--
+  CREATE TABLE OWNRT01.TB0001
+     (SMALLINT01         SMALLINT               FOR SBCS DATA NOT NULL WITH DEFAULT NULL,
+      SMALLINT02         INTEGER                FOR SBCS DATA NOT NULL WITH DEFAULT SESSION_USER,
+      SMALLINT03         INT                    FOR SBCS DATA NOT NULL WITH DEFAULT USER,
+      SMALLINT04         BIGINT                 FOR SBCS DATA NOT NULL WITH DEFAULT CURRENT SQLID,
+      DECIMAL01          DECIMAL                FOR SBCS DATA NOT NULL WITH DEFAULT FIELDPROC PGMT001,
+      DECIMAL02          DEC                    FOR SBCS DATA NOT NULL WITH DEFAULT FIELDPROC PGMT001("AA","B"),
+      DECIMAL03          NUMERIC                FOR SBCS DATA NOT NULL WITH DEFAULT,
+      DECIMAL04          DECIMAL(4,0)           FOR SBCS DATA NOT NULL WITH DEFAULT AS SECURITY LABEL,
+      DECIMAL05          DEC(5)                 FOR SBCS DATA NOT NULL WITH DEFAULT IMPLICITLY HIDDEN,
+      DECIMAL06          NUMERIC(6, 2)          FOR SBCS DATA NOT NULL WITH DEFAULT INLINE LENGTH 50,
+      FLOAT01            FLOAT                  FOR SBCS DATA NOT NULL WITH DEFAULT FNCCAST01(NULL),
+      FLOAT02            FLOAT(7)               FOR SBCS DATA NOT NULL WITH DEFAULT FNCCAST01(NULL),
+      FLOAT03            REAL                   FOR SBCS DATA NOT NULL WITH DEFAULT CONSTRAINT PK01 PRIMARY KEY,
+      FLOAT04            DOUBLE                 FOR SBCS DATA NOT NULL WITH DEFAULT CONSTRAINT PK02 UNIQUE,
+      FLOAT05	         DOUBLE PRECISION       FOR SBCS DATA NOT NULL WITH DEFAULT UNIQUE,
+      DECFLOAT01         DECFLOAT               FOR SBCS DATA NOT NULL WITH DEFAULT PRIMARY KEY,
+      DECFLOAT02         DECFLOAT (34)          FOR SBCS DATA NOT NULL WITH DEFAULT,
+      DECFLOAT03         DECFLOAT (16)          FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER01        CHARACTER              FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER02        CHAR                   FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER03        CHARACTER(20)          FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER04        CHAR(30)               FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER05        CHAR VARYING(30)       FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER06        CHARACTER VARYING (30) FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER07        VARCHAR(50)            FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER08        CHAR LARGE OBJECT(4 G) FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER09        CHAR LARGE OBJECT      FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER10        CLOB                   FOR SBCS DATA NOT NULL WITH DEFAULT,
+      CHARACTER11        CLOB (4 M)             FOR SBCS DATA NOT NULL WITH DEFAULT,
+      GRAPHIC01          GRAPHIC                FOR SBCS DATA NOT NULL WITH DEFAULT, 
+      GRAPHIC02          GRAPHIC(3000)          FOR SBCS DATA NOT NULL WITH DEFAULT,
+      GRAPHIC03          DBCLOB                 FOR SBCS DATA NOT NULL WITH DEFAULT,
+      GRAPHIC04          DBCLOB (5 G)           FOR SBCS DATA NOT NULL WITH DEFAULT,
+      GRAPHIC05          VARGRAPHIC (2000)      FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY01           BINARY                 FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY02           BINARY LARGE OBJECT    FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY03           BLOB                   FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY04           BINARY                 FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY05           BINARY(10)             FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY06           BINARY VARYING(20)     FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY07           VARBINARY(6)           FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY08           BINARY LARGE OBJECT(4 M) FOR SBCS DATA NOT NULL WITH DEFAULT,
+      BINARY09           BLOB  (1 G)            FOR SBCS DATA NOT NULL WITH DEFAULT,
+      DATE01             DATE                   FOR SBCS DATA NOT NULL WITH DEFAULT,
+      TIME01             TIME                   FOR SBCS DATA NOT NULL WITH DEFAULT,
+      TIMESTAMP01        TIMESTAMP              ,
+      TIMESTAMP02        TIMESTAMP              WITH TIME ZONE,
+      TIMESTAMP03        TIMESTAMP              WITHOUT TIME ZONE,
+      TIMESTAMP04        TIMESTAMP (10)         ,
+      TIMESTAMP05        TIMESTAMP (10)         WITH TIME ZONE,
+      TIMESTAMP06        TIMESTAMP (10)         WITHOUT TIME ZONE,
+      ROWID01            ROWID                  NOT NULL GENERATED ALWAYS,
+      ROWID02            ROWID                  NOT NULL GENERATED BY DEFAULT,
+      ROWID03            ROWID                  GENERATED ALWAYS AS IDENTITY,
+      ROWID04            ROWID                  GENERATED ALWAYS AS IDENTITY
+                                                (START WITH 1, INCREMENT BY 1, MAXVALUE 100),
+      ROWID05            ROWID                  GENERATED FOR EACH ROW ON UPDATE AS ROW CHANGE TIMESTAMP,
+      ROWID06            ROWID                  GENERATED AS ROW BEGIN,
+      ROWID07            ROWID                  GENERATED AS ROW END,
+      ROWID08            ROWID                  GENERATED AS TRANSACTION START ID,
+      XML01              XML(URL WWW.ADDR), 
+--        
+      PRIMARY KEY (CHARACTER01, CHARACTER02),
+      FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM),
+            
+      CONSTRAINT PK01 PRIMARY KEY (CHARACTER01, CHARACTER02) BUSINESS_TIME WITHOUT OVERLAPS,
+      CONSTRAINT FK01 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM)
+            ON DELETE RESTRICT,
+      CONSTRAINT FK02 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM)
+            ON DELETE NO ACTION,
+      CONSTRAINT FK03 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM)
+            ON DELETE SET NULL,
+      CONSTRAINT FK04 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM),
+      CONSTRAINT FK05 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM)
+            ENFORCED,
+      CONSTRAINT FK06 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM)
+            NOT ENFORCED,
+      CONSTRAINT FK07 FOREIGN KEY(CHARACTER03,CHARACTER04) 
+            REFERENCES OWNRT01.TB0002 (COD_CONDIZIONE,COD_CONDIZ_ELEM)
+            ENABLE QUERY OPTIMIZATION,
+      CHECK('check'),
+      CONSTRAINT CHECK01 CHECK('check'), 
+--      
+      PERIOD SYSTEM_TIME(CHARACTER01, CHARACTER02),
+      PERIOD BUSINESS_TIME(CHARACTER01, CHARACTER02) 
+    )
+
+	  LIKE OWNRT01.TB0002
+    IN DBT002.TST003
+    EDITPROC PGMP001
+    EDITPROC PGMP001 WITH ROW ATTRIBUTES
+    EDITPROC PGMP001 WITHOUT ROW ATTRIBUTES
+    VALIDPROC PGMV001
+    AUDIT NONE 
+    OBID 200
+    DATA CAPTURE NONE
+    DATA CAPTURE CHANGES
+    WITH RESTRICT ON DROP
+    CCSID      EBCDIC 
+    NOT VOLATILE
+    NOT VOLATILE CARDINALITY
+    APPEND NO
+    PARTITION BY SIZE
+    PARTITION BY SIZE EVERY 2 G
+    PARTITION BY RANGE(CHARACTER01) (  
+           PARTITION 1 ENDING AT ('000'), 
+           PARTITION 2 ENDING    ('AAA'),
+           PARTITION 3 ENDING AT ('ZZZZ')
+          )
+    PARTITION BY (CHARACTER02 NULLS LAST ASC, CHARACTER02 DESC)
+          (PARTITION 1 ENDING AT (MINVALUE,'AAA'),
+           PARTITION 2 ENDING    ('BBB','ZZZ'),
+           PARTITION 3 ENDING AT (MAXVALUE, MAXVALUE)
+          )
+    PARTITION BY (CHARACTER03) 
+          (PARTITION 1 ENDING AT (MINVALUE) HASH SPACE 1 G,
+           PARTITION 2 ENDING    ('CCC') INCLUSIVE,
+           PARTITION 3 ENDING AT (MAXVALUE) HASH SPACE 1 G INCLUSIVE
+          )
+    ORGANIZE BY HASH UNIQUE (CHARACTER01,CHARACTER02) HASH SPACE 2 G
+    ;
+    
+--
+-- T006 OK CREATE INDEX
+--
+  CREATE UNIQUE INDEX OWNRT01.IXT006
+    ON OWNRT01.TB0001
+     (COD_AZIENDA ASC)
+    USING STOGROUP SGT001
+    PRIQTY 720 SECQTY 720
+    ERASE  NO
+    FREEPAGE 0 PCTFREE 10
+    GBPCACHE CHANGED
+    NOT CLUSTER
+    BUFFERPOOL BP0
+    CLOSE YES
+    COPY NO
+    DEFINE YES
+    PIECESIZE 2 G;
+
+--
+-- T007 OK CREATE TABLE
+--
+  CREATE TABLE OWNRT01.TB0002
+     (COD_CONDIZIONE       CHAR(8) FOR SBCS DATA NOT NULL,
+      COD_UNI_MIS_COND     CHAR(1) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      IND_VERS_MIGL_COND   CHAR(1) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      DESC_RID_COND        CHAR(15) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      COD_CONDIZ_ELEM      CHAR(8) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      COD_FAMIGLIA         CHAR(4) FOR SBCS DATA NOT NULL
+        WITH DEFAULT 'N',
+      COD_FAC_SPRD_COND    CHAR(8) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      IND_TASSO_ATT_MST    CHAR(1) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      COD_TIPO_DEROGA      CHAR(1) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      IND_UTILIZZO_TRASP   CHAR(1) FOR SBCS DATA NOT NULL
+        WITH DEFAULT 'N',
+      COD_DIPENDENTE       CHAR(26) FOR SBCS DATA NOT NULL
+        WITH DEFAULT,
+      DATA_INSER           TIMESTAMP NOT NULL
+        WITH DEFAULT '0001-01-01-00.00.00.000000',
+      DATA_ULT_MODIF       TIMESTAMP NOT NULL
+        WITH DEFAULT '0001-01-01-00.00.00.000000')
+    IN DBT002.TST004
+    AUDIT NONE
+    DATA CAPTURE NONE
+    CCSID      EBCDIC
+    NOT VOLATILE;
+    
+--
+-- T008 OK CREATE INDEX
+--
+  CREATE INDEX  OWNRT01.IT008TB02
+    ON OWNRT01.TB0002
+     (COD_CONDIZIONE        ASC)
+    USING STOGROUP SGT001
+    PRIQTY 720 SECQTY 7200
+    ERASE  NO
+    FREEPAGE 0 PCTFREE 10
+    GBPCACHE CHANGED
+    CLUSTER
+    BUFFERPOOL BP0
+    CLOSE YES
+    COPY NO
+    DEFINE YES
+    PIECESIZE 2 G;
+    
+--
+-- T009 OK CREATE INDEX
+--
+  CREATE UNIQUE WHERE NOT NULL INDEX OWNRT01.IT009TB02
+    ON OWNRT01.TB0002
+     (COD_CONDIZIONE        ASC,
+      COD_CAT_ORD_COND      DESC,
+      COD_NAT_CRED_COND     RANDOM, BUSINESS_TIME WITHOUT OVERLAPS
+      )
+    USING STOGROUP SGT001
+    PRIQTY 720 SECQTY 7200
+    ERASE  NO
+    FREEPAGE 5 PCTFREE 20
+    GBPCACHE CHANGED
+    NOT CLUSTER
+    NOT PADDED
+    BUFFERPOOL BP0
+    CLOSE YES
+    COMPRESS YES
+    COPY NO
+    DEFINE YES
+    PIECESIZE 2 G
+    PARTITIONED
+    PARTITION BY RANGE 
+          (PARTITION 1 ENDING AT (MINVALUE) USING VCAT     VCAT01 FREEPAGE 5 PCTFREE 20 ERASE YES,
+           PARTITION 2 ENDING    ('CCC')     USING STOGROUP SGT001 PRIQTY 720 SECQTY 7200 FREEPAGE 5 PCTFREE 20 ,
+           PARTITION 3 ENDING AT (MAXVALUE) INCLUSIVE ERASE NO GBPCACHE CHANGED
+          )
+   
+    ;
+    
+--
+-- T010 OK CREATE INDEX
+--
+  CREATE INDEX OWNRT01.IT010TB02
+    ON OWNRT01.TB0002
+     (COD_CONDIZ_ELEM       ASC,
+      COD_CAT_ORD_COND      ASC,
+      COD_FORMA_TEC_COND    ASC)
+    USING STOGROUP SGT001
+    PRIQTY 720 SECQTY 7200
+    ERASE  NO
+    FREEPAGE 5 PCTFREE 20
+    GBPCACHE CHANGED
+    NOT CLUSTER
+    BUFFERPOOL BP0
+    CLOSE YES
+    COPY NO
+    DEFINE YES
+    PIECESIZE 2 G;
+    
+    
+--
+-- T011 -- CREATE SYNONYM
+--
+    CREATE SYNONYM T011SYN01
+    FOR OWNRT01.TB0001;
+
+--
+-- T012 -- CREATE ALIAS
+--
+    CREATE ALIAS T012ALS01
+    FOR OWNRT01.TB0001;
+
+--
+-- T017 -- CREATE VIEW
+--
+    CREATE VIEW T017VIEW (COD_CONDIZIONE,COD_CONDIZ_ELEM) AS
+    SELECT * FROM OWNRT01.TB0002
+    WITH LOCAL CHECK OPTION;
+  
+--
+-- T013 -- CREATE VIEW
+--
+    CREATE VIEW T013VIEW AS SELECT * FROM OWNRT01.TB0001;
+    
+--
+-- T014 -- CREATE VIEW
+--
+    CREATE VIEW T014VIEW AS SELECT * FROM OWNRT01.TB0001
+    WITH CHECK OPTION;
+    
+--
+-- T015 -- CREATE VIEW
+--
+    CREATE VIEW T015VIEW AS SELECT * FROM OWNRT01.TB0002
+    WITH CASCADED CHECK OPTION;
+    
+--
+-- T016 -- CREATE VIEW
+--
+    CREATE VIEW T016VIEW AS SELECT * FROM OWNRT01.TB0002
+    WITH LOCAL CHECK OPTION;
+    
+    
+--
+-- T018 -- CREATE VIEW
+--
+    CREATE VIEW T017VIEW (COD_CONDIZIONE,COD_CONDIZ_ELEM) AS
+    WITH TB-ID01 (COL1,COL2) AS SELECT * FROM TB1TEST,
+         TB-ID02 (COL1,COL2) AS SELECT * FROM TB2TEST
+    SELECT * FROM OWNRT01.TB0002
+       WITH LOCAL CHECK OPTION;
+    
+  
+  
+        
+--
+--
+--#SET TERMINATOR ?
+--
+------------------------------------------------------------------------
+--    Triggers for Table=FIATT.TB01R007
+------------------------------------------------------------------------
+--
+  SET CURRENT SQLID='STARTASK'?
+--
+  SET CURRENT PATH = "SYSIBM","SYSFUN","SYSPROC","STARTASK" ?
+--
+  CREATE TRIGGER FIATT.$TPCUXX
+    NO CASCADE BEFORE UPDATE ON OWNRT01.TB0001
+    REFERENCING NEW AS NEWROW
+    FOR EACH ROW MODE DB2SQL
+    WHEN (NEWROW.DATA_ULT_MODIF IS NULL)
+      SET NEWROW.DATA_ULT_MODIF = CURRENT TIMESTAMP ?
+--
+------------------------------------------------------------------------
+--    Triggers for Table=FIATT.TB08R007
+------------------------------------------------------------------------
+--
+  SET CURRENT SQLID='U0E1127'?
+--
+  CREATE TRIGGER FIATT.$TPCU87
+    AFTER UPDATE OF
+    DESC_CONVENZIONE, DATA_DECO_CONV, DATA_DECA_CONV, COD_TIPO_CONV,
+    COD_NATURA_CONV, COD_UNITA_OP, COD_AZIENDA_GEST, IND_COPIA_CLONI,
+    IND_SCOLL_CONV, COD_ATTRIBUTO_CONV, COD_CONVENZIONE_AG,
+    COD_ORIGINE_APPL, COD_TIPO_RAGGRUPP
+    ON FIATT.TB08R007
+    REFERENCING OLD AS O
+    FOR EACH ROW MODE DB2SQL
+      UPDATE FIATT.TB08R007
+        SET DATA_ULT_MODIF= CURRENT TIMESTAMP
+          WHERE COD_CONVENZIONE_PC = O.COD_CONVENZIONE_PC ?
+--
+------------------------------------------------------------------------
+--    Triggers for Table=FIATT.TB08R007
+------------------------------------------------------------------------
+--
+  SET CURRENT PATH = "SYSIBM","SYSFUN","SYSPROC","U035353" ?
+--
+  CREATE TRIGGER FIATT.$TPCU01
+    NO CASCADE BEFORE INSERT ON OWNRT01.TB0002
+    REFERENCING NEW AS NEWROW
+    FOR EACH ROW MODE DB2SQL
+    WHEN (NEWROW.COD_TIPO_RAGGRUPP IS NULL)
+      SET NEWROW.COD_TIPO_RAGGRUPP = CASE NEWROW.COD_TIPO_CONV
+          WHEN 'PB' THEN 'CV' WHEN 'PR' THEN 'CV' WHEN 'SV' THEN 'CS'
+          WHEN 'RF' THEN '' END ?
+--
+------------------------------------------------------------------------
+--    Triggers for Table=FIATT.TB08R007
+------------------------------------------------------------------------
+--
+  CREATE TRIGGER FIATT.$TPCU02
+    NO CASCADE BEFORE UPDATE ON OWNRT01.TB0002
+    REFERENCING OLD AS OLDROW
+                NEW AS NEWROW
+    FOR EACH ROW MODE DB2SQL
+    WHEN (OLDROW.COD_TIPO_RAGGRUPP <> ''
+      AND NEWROW.COD_TIPO_RAGGRUPP = '')
+      SET NEWROW.COD_TIPO_RAGGRUPP = OLDROW.COD_TIPO_RAGGRUPP ?
+--
+------------------------------------------------------------------------
+--    Triggers for Table=FIATT.TB11R007
+------------------------------------------------------------------------
+--
+  SET CURRENT SQLID='U1E0302'?
+--
+  CREATE TRIGGER FIATT.$TPCU04
+    NO CASCADE BEFORE UPDATE ON OWNRT01.TB0002
+    REFERENCING NEW AS NEWROW
+    FOR EACH ROW MODE DB2SQL
+      SET NEWROW.DATA_ULT_MODIF = CURRENT TIMESTAMP ?
+--
+------------------------------------------------------------------------
+--    Triggers for Table=FIATT.TB16R007
+------------------------------------------------------------------------
+--
+  CREATE TRIGGER FIATT.$TPCU07
+    NO CASCADE BEFORE UPDATE ON OWNRT01.TB0002
+    REFERENCING NEW AS NEWROW
+    FOR EACH ROW MODE DB2SQL
+      SET NEWROW.DATA_ULT_MODIF = CURRENT TIMESTAMP ?
+--
+--#SET TERMINATOR ;
+--
+  COMMIT;
+
+
+
+----------------------------
+
+-- DDL Statements for Views
+
+----------------------------
+SET CURRENT SCHEMA = "IARICA1P";
+SET CURRENT PATH = "SYSIBM","SYSFUN","SYSPROC","SYSIBMADM","IARICA1P";
+CREATE VIEW DBA.REORGCHK AS ( SELECT  SUBSTR(T. TABSCHEMA,1,12) AS TABSCHEMA
+                                     , SUBSTR(T.TABNAME,1,36) AS TABNAME 
+                                     , (S.PAGESIZE / 1024) AS KSIZE
+                                     , T.CARD 
+                                     , T.NPAGES 
+                                     , T.FPAGES 
+                                     , I.NLEAF 
+                                     , T.CARD * (C.AVGCOLLEN + 10) AS TSIZE 
+                                     , cast(S.PAGESIZE*T.NPAGES/1024/1024 as int) AS MB 
+                                     , CASE WHEN T.CARD = 0 THEN NULL 
+                                            ELSE 100*T.OVERFLOW/T.CARD      
+                                            END AS F1 
+                                     , CASE WHEN ((T.FPAGES-1) * (S.PAGESIZE-68)) = 0  THEN NULL 
+                                            ELSE 100*(T.CARD * (C.AVGCOLLEN + 10)) / ((T.FPAGES-1) * (S.PAGESIZE-68)) 
+                                            END    AS F2 
+                                     , CASE WHEN T.FPAGES = 0 THEN NULL 
+                                            ELSE 100*T.NPAGES/T.FPAGES      
+                                            END AS F3 
+                                     , CASE WHEN T.CARD = 0 THEN '-' 
+                                            ELSE CASE WHEN 100*T.OVERFLOW/T.CARD >= 5 THEN '*' 
+                                                      ELSE '-' 
+                                                 END 
+                                            END 
+                                            || 
+                                            CASE WHEN  ((T.FPAGES-1) * (S.PAGESIZE-68)) = 0 THEN '-' 
+                                             ELSE CASE WHEN 100*(T.CARD * (C.AVGCOLLEN + 10)) / ((T.FPAGES-1) * (S.PAGESIZE-68)) <= 70  THEN '*' 
+                                                       ELSE '-' 
+                                                  END 
+                                             END || CASE WHEN  T.CARD = 0 THEN '-' 
+                                                         ELSE CASE WHEN  100*T.NPAGES/T.FPAGES  <= 80 THEN '*' 
+                                                                   ELSE '-' 
+                                                              END 
+                                                    END AS REORG FROM SYSCAT.TABLES T 
+                                                  , SYSCAT.TABLESPACES S 
+                                                  , (SELECT TABSCHEMA, TABNAME, SUM( CASE WHEN LOGGED = '' THEN AVGCOLLEN
+                                                                                          WHEN LENGTH <= 1024    THEN 72 
+                                                                                          WHEN LENGTH <= 8192    THEN 96 
+                                                                                          WHEN LENGTH <= 65536   THEN 120 
+                                                                                          WHEN LENGTH <= 524000  THEN 144 
+                                                                                          WHEN LENGTH <= 4190000 THEN 168 
+                                                                                          WHEN LENGTH <= 134000000  THEN 200 
+                                                                                          WHEN LENGTH <= 536000000 THEN 224 
+                                                                                          WHEN LENGTH <= 1070000000  THEN 256 
+                                                                                          WHEN LENGTH <= 1470000000 THEN 280 
+                                                                                          WHEN LENGTH <= 2147483647  THEN 316 
+                                                                                     END 
+                                                                                     + 
+                                                                                     CASE WHEN LOGGED <> '' AND NULLS = 'Y' THEN 1 
+                                                                                          ELSE 0 
+                                                                                     END ) 
+                                                         AS AVGCOLLEN FROM SYSCAT.COLUMNS 
+                                                                     GROUP BY TABSCHEMA, TABNAME ) AS C 
+                                                                    , (SELECT TABSCHEMA, TABNAME, SUM(NLEAF) AS NLEAF, SUM(NLEVELS) AS NLEVELS FROM SYSCAT.INDEXES GROUP BY TABSCHEMA,
+TABNAME ) AS I WHERE T.TBSPACEID   =  S.TBSPACEID AND     T. TABSCHEMA
+=  C.TABSCHEMA AND     T.TABNAME     =  C.TABNAME AND     T. TABSCHEMA
+=  I.TABSCHEMA AND     T.TABNAME     =  I.TABNAME AND     T.TYPE  = 'T'
+);
+
+
+CREATE VIEW DBA.REORGCHK AS ( SELECT  SUBSTR(T. TABSCHEMA,1,12) AS TABSCHEMA
+,       SUBSTR(T.TABNAME,1,36) AS TABNAME , (S.PAGESIZE / 1024) AS KSIZE
+,       T.CARD ,       T.NPAGES ,       T.FPAGES ,       I.NLEAF ,    
+  T.CARD * (C.AVGCOLLEN + 10) AS TSIZE ,       cast(S.PAGESIZE*T.NPAGES/1024/1024
+as int)                                       AS MB ,       CASE WHEN T.CARD
+= 0 THEN NULL ELSE 100*T.OVERFLOW/T.CARD      END AS F1 ,       CASE WHEN
+ ((T.FPAGES-1) * (S.PAGESIZE-68)) = 0 THEN NULL ELSE 100*(T.CARD * (C.AVGCOLLEN
++ 10)) / ((T.FPAGES-1) * (S.PAGESIZE-68)) END    AS F2 ,       CASE WHEN
+T.FPAGES = 0 THEN NULL ELSE 100*T.NPAGES/T.FPAGES      END AS F3 ,    
+  CASE WHEN T.CARD = 0 THEN '-' ELSE CASE WHEN 100*T.OVERFLOW/T.CARD >=
+5 THEN '*' ELSE '-' END END || CASE WHEN  ((T.FPAGES-1) * (S.PAGESIZE-68))
+= 0 THEN '-' ELSE CASE WHEN 100*(T.CARD * (C.AVGCOLLEN + 10)) / ((T.FPAGES-1)
+* (S.PAGESIZE-68)) <= 70  THEN '*' ELSE '-' END END || CASE WHEN  T.CARD
+=0 THEN '-' ELSE CASE WHEN  100*T.NPAGES/T.FPAGES  <= 80 THEN '*' ELSE
+'-' END END AS REORG FROM SYSCAT.TABLES      T ,    SYSCAT.TABLESPACES
+S ,   (SELECT TABSCHEMA, TABNAME, SUM( CASE WHEN LOGGED = '' THEN AVGCOLLEN
+WHEN LENGTH <= 1024 THEN 72 WHEN LENGTH <= 8192  THEN 96 WHEN LENGTH <=
+65536  THEN 120 WHEN LENGTH <= 524000  THEN 144 WHEN LENGTH <= 4190000
+ THEN 168 WHEN LENGTH <= 134000000  THEN 200 WHEN LENGTH <= 536000000 THEN
+224 WHEN LENGTH <= 1070000000  THEN 256 WHEN LENGTH <= 1470000000 THEN
+280 WHEN LENGTH <= 2147483647  THEN 316 END + CASE WHEN LOGGED <> '' AND
+NULLS = 'Y' THEN 1 ELSE 0 END ) AS AVGCOLLEN FROM SYSCAT.COLUMNS GROUP
+BY TABSCHEMA, TABNAME ) AS C ,   (SELECT TABSCHEMA, TABNAME, SUM(NLEAF)
+AS NLEAF, SUM(NLEVELS) AS NLEVELS FROM SYSCAT.INDEXES GROUP BY TABSCHEMA,
+TABNAME ) AS I WHERE T.TBSPACEID   =  S.TBSPACEID AND     T. TABSCHEMA
+=  C.TABSCHEMA AND     T.TABNAME     =  C.TABNAME AND     T. TABSCHEMA
+=  I.TABSCHEMA AND     T.TABNAME     =  I.TABNAME AND     T.TYPE  = 'T'
+);
+

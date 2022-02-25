@@ -1,0 +1,96 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test FUNCTION_PGM_SUMMARY
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FunctionPgmSummary.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY PGMTEST  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+LIBRARY COPYTEST E:\Amrita\Amrita-Java\AmritaFramework\UnitTestCopy\
+LIBRARY PGMUX F:\SPaolo\Sources\LTM0T.SAE.SOURCE\
+LIBRARY COPYUX F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+LIBRARY_SOURCE_SEARCH COPYTEST
+LIBRARY_SOURCE_SEARCH COPYUX
+
+
+#--------------------------------------------------------------------------
+# Identificazione programmi da documentare
+#--------------------------------------------------------------------------
+
+SYSTEM_VALUE S
+SUB_SYSTEM_VALUE UX
+FILTER_ON_OBJECT_NAME 1 UX
+
+#OBJECT_TYPE_PGM_COBOL *ALL* 
+ 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UX50030
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UX57200
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH1100
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2400
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2500
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2500
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2600
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2700
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2800
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH3000
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH3400
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH3400
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO1997
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO2998
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO3997
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO5997
+OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP12
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP13
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP14
+
+
+#--------------------------------------------------------------------------
+# Opzioni e direttive specifiche FUNCTION_PGM_SUMMARY
+#--------------------------------------------------------------------------
+
+OPT_PGM_SUMMARY_ALL_DISABLED 	                // Sommario programma con tutte le opzioni previste disabilitato
+OPT_LIST_SOURCE_CODED_ENABLED 	                // Lista programma codificato
+OPT_LIST_XREF_LABEL_ENABLED                    	// Lista Xref label
+OPT_LIST_XREF_SECTION_ENABLED                   // Lista Xref Sections
+OPT_LIST_XREF_SYMBOLS_ENABLED 	                // Lista Xref simboli (literal, data items)
+OPT_LIST_IO_FILE_SYSTEM_ENABLED 	            // Lista I-O file system effettuato dal pgm
+OPT_LIST_IO_SQL_ENABLED                        	// Lista I-O tabelle sql effettuato dal pgm
+OPT_LIST_IO_DL1_ENABLED                        	// Lista I-O segmenti Dl1 effettuato dal pgm
+OPT_LIST_IO_ADABAS_ENABLED 	                	// Lista I-O files Adabas effettuato dal pgm
+OPT_LIST_RELATIONSHIPS_ENABLED 	            	// Lista Relazioni selettive fra oggetti
+OPT_LIST_RELATIONSHIPS_ORIGIN_ENABLED 	        // Lista origine Relazioni  
+OPT_LIST_OPTIONS_ENABLED 	                    // Lista opzioni di programma
+OPT_LIST_DYNAMIC_CODE_INFO_ENABLED             	// Lista Info di dettaglio istruzioni dinamiche (pasths campi, sottocampi,..)
+OPT_LIST_DEAD_CODE_ENABLED                     	// Lista dead code programma
+OPT_LIST_METRICS_ENABLED                 		// Lista metriche di programma
+OPT_LIST_CRUD_MATRIX_ENABLED                	// Lista matrice CRUD a livello di programma
+OPT_LIST_PROGRAM_GRAPH_ENABLED                 	// Lista grafo di programma
+
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+FUNCTION_PGM_SUMMARY 	 
+START

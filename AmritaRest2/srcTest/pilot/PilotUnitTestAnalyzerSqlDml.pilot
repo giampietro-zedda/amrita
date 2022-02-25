@@ -1,0 +1,75 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test analizzatore Sql Script
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+CUSTOMER_CODE SANPAOLO
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY PGMCOB  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+LIBRARY COPYCOB E:\Amrita\Amrita-Java\AmritaFramework\UnitTestCopy\
+LIBRARY_SOURCE_SEARCH COPYCOB
+
+#--------------------------------------------------------------------------
+# Opzioni e direttive specifiche di processo
+#--------------------------------------------------------------------------
+
+OPT_UPDATE_DB_ENABLED
+OPT_DETECT_DEAD_CODE_DISABLED
+OPT_PGM_GRAPH_CREATION_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+
+# Opzioni per forzatura rianalisi e scrittura tracciato copy
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni per tracciati copy e where used campi in copy
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_DISABLED
+OPT_COPY_DEF_ON_DB_ENABLED
+
+# Categorie di misurazioni e metriche non di base (incluse nell'analisi)
+OPT_METRICS_ALL_DISABLED           	        
+OPT_METRICS_MCCABE_HALSTEAD_DISABLED          
+OPT_METRICS_COMPLEXITY_STRUCTURE_DISABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_DISABLED        
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED                 
+
+#--------------------------------------------------------------------------
+# Identificazione oggetti da analizzare
+#--------------------------------------------------------------------------
+
+SYSTEM_VALUE Z
+SUB_SYSTEM_VALUE ZZ
+FILTER_ON_OBJECT_NAME 1 CO
+
+OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST05
+
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 	 
+START

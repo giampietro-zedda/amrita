@@ -1,0 +1,132 @@
+//SX974B JOB  AVX9000N7,'USER15',CLASS=B,MSGCLASS=K,REGION=0M,
+//      SCHENV=SCIMST
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//      INCLUDE MEMBER=SQ3013
+//*
+//**********************************************************************
+//*.CM1  -PROD.P.N. DI GIRO VALUTA ALLA GESTIONE 090 E RITORNO ALLE
+//*       GESTIONI VALUTARIE IL PRIMO GIORNO DEL MESE SUCCESSIVO
+//*      -PROD.P.N. CONGUAGLIO CAMBI GESTIONI SPECIALI
+//*---------------------------------------------------------------------
+//*                    *** CRB - CARISBO ***
+//*---------------------------------------------------------------------
+//* TEMPO DI ELAPSED   = 40 MINUTI
+//* PERIODICITA'       = MENSILE - SCALETTA  "ICGTRIM"
+//*                      CATENA CA7 "ICGPNMES" SCHID=31
+//* PUNTI DI RESTART   = VEDI PROCEDURE
+//* RESPONSABILE EDP   = SPOSARO
+//* DESTINATARIO STAMPE= NON EMETTE STAMPE UTENTI-RUOTARE IN MSGCLASS U
+//* NOTE               = RIF. P.N. : 7098 - 8098
+//*
+//**********************************************************************
+//*
+//*********************************************************************
+//* CANCELLAZIONE AUTOMATICA TEMPORANEI
+//*********************************************************************
+//*--------------------------------------------------------------------
+//X9PRCDEL EXEC SX9PRC,ENTE=CRB,@FASE=X974B
+//*
+//ICG41$PR EXEC SX9U78,@FASE=X974B,
+//    SOUT=L,SOUT1=(E,ICG41R02),ENTE=CRB
+//*--------------------------------------------------------------------*
+//*   CONTROLLO  CONTI TRANSITORI VALUTARI
+//*--------------------------------------------------------------------*
+//ICG41U02.SEQIN DD *    *DATA SIT.AAAA-MM-GG*
+AAAA-MM-GG
+//*
+//ICGGV#PR EXEC SX9T15,@FASE=X974B,
+//    ENTE=CRB
+//*--------------------------------------------------------------------*
+//*   GIRO VALUTE A GESTIONE 090 E RITORNO ALLE GESTIONI VALUTARIE
+//*   N.B. GESTISCE IN AUTOMATICO IL RIFERIMENTO 0001 SE SI LAVORA
+//*        SULLA CHIUSURA DI ESERCIZIO (SULLA P.N DI RITORNO)
+//*   MODIFICA 1.98
+//*   LA SCHEDA ICGGVU10.SYSUT1, TIMESTAMP, E' NECESSARIA SOLO
+//*   NEL CASO DEL GIRO VALUTA PER DIFFERENZA, QUALORA SI VOGLIA
+//*   FAR STRALCIARE ALLA PROCEDURA I MOVIMENTI DI C/E ANCHE
+//*   PRECEDENTI ALLA PRIMA NOTA "NORMALE " DI GIRO VALUTA GIA' ESEGUITA
+//*--------------------------------------------------------------------*
+//ICGGVU01.SYSUT1 DD *   * DATA SIT.AAAA-MM-GG + ENTE
+AAAA-MM-GGB
+//*ICGGVU10.SYSUT1 DD *   * TIMESTAMP AAAA-MM-GG-HH.MM.SS.CCCCCC
+//*1999-01-04-16.30.00.000000
+//*
+//CGS#MAPN EXEC SX9055,@FASE=X974B,
+//    SOUT=L
+//*--------------------------------------------------------------------*
+//*              CAMBIA RIFERIMENTI P.N.
+//*--------------------------------------------------------------------*
+//BAR00650.INP  DD DSN=DOP0B9.TI000.CRB.GVIMI.CRB,
+//        DISP=SHR
+//              DD DSN=DOP0B9.TI000.CRB.IMIGV.CRB,
+//        DISP=SHR
+//BAR00650.OUT  DD DSN=DOP0X9.TI000.CRB.GV.X974B,
+//    UNIT=3390,SPACE=(TRK,(15,15),RLSE),
+//    DISP=(NEW,CATLG),
+//    DSORG=PS,LRECL=0086,RECFM=FB
+//*
+//CGO#MADE EXEC SX9026,@FASE=X974B,
+//    SOUT=L
+//*--------------------------------------------------------------------*
+//*         PRODUZIONE MATRICI DI P.N. IN DEROGA
+//*--------------------------------------------------------------------*
+//CGE00030.FILEA  DD  DSN=DOP0X9.TI000.CRB.GV.X974B,
+//        DISP=SHR
+//*
+//CGOBMPB1 EXEC SX9030,@FASE=X974B,
+//    ORD=NO,PREV=SI,SOUT=L,SOUT1=L
+//*--------------------------------------------------------------------*
+//*            PRODUZIONE PRIMA NOTA AUTOMATICA
+//*--------------------------------------------------------------------*
+//EASY01.FILEA     DD  DSN=DOP0X9.TI000.CRB.GV.X974B,
+//        DISP=SHR
+//DELINBMP.DD1     DD  DSN=DOP0B9.TI000.CRB.GV.INDBCGP.CRB
+//CGNSORT1.SORTOUT DD  DSN=DOP0B9.TI000.CRB.GV.INDBCGP.CRB
+//BAU00080.INPN    DD  DSN=DOP0B9.TI000.CRB.GV.INDBCGP.CRB
+//*
+//*ICG40#PR EXEC X9276,SOUT=F
+//*--------------------------------------------------------------------*
+//*      CONGUAGLIO CAMBI GESTIONI SPECIALI RIF.P.N. 7098
+//*--------------------------------------------------------------------*
+//*ICGL8DZR.DATA  DD  *    * DATA SIT. AAAAMMGG *
+//*20020131
+//*
+//*CGO#MAD2 EXEC X9026
+//*--------------------------------------------------------------------*
+//*         PRODUZIONE MATRICI DI P.N. IN DEROGA
+//*--------------------------------------------------------------------*
+//*CGE00030.FILEA  DD  DSN=DOP0B9.TI000.GESPE.PNRIGA.SEQFB,DISP=OLD
+//*
+//*CGOBMPB2 EXEC X9030,ORD=NO,PREV=SI,SOUT=F,SOUT1=F
+//*--------------------------------------------------------------------*
+//*            PRODUZIONE PRIMA NOTA AUTOMATICA
+//*--------------------------------------------------------------------*
+//*EASY01.FILEA     DD  DSN=DOP0B9.TI000.GESPE.PNRIGA.SEQFB,DISP=OLD
+//*DELINBMP.DD1     DD  DSN=DOP0B9.TI000.CRB.GESPE.SEQFB
+//*CGNSORT1.SORTOUT DD  DSN=DOP0B9.TI000.CRB.GESPE.SEQFB
+//*BAU00080.INPN    DD  DSN=DOP0B9.TI000.CRB.GESPE.SEQFB
+//*
+//* ******************************************************************
+//* PASSO DI VERIFICA DUD INSERITO AUTOMATICAMENTE
+//* ******************************************************************
+// IF RC > 0 THEN
+//AUTODUD EXEC PGM=MN06001,
+// PARM='ATTENZIONE >>> PASSO NON VALIDO <<< VEDI MESSAGGI SU SYSPRINT'
+//SYSPRINT   DD SYSOUT=*,DCB=(LRECL=121,RECFM=FBA,BLKSIZE=121)
+// ENDIF
+//*
+//*PROSTART
+//*
+//************************************************************
+//*DESCRIZIONE   :  *** PROSE NON DEFINITA ***
+//*-----------
+//*SCHEDULAZIONE :  MENSILE
+//*-------------
+//*VINCOLO TP    :  NO
+//*----------
+//*DUMP          :  SOSPENDERE
+//*----
+//************************************************************
+//*PROSEND

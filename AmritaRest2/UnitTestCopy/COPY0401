@@ -1,0 +1,28 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance
+      *      Integrated
+      *        Tecnology 
+      *          Application
+      *
+      *================================================================
+      *==============================================================
+      *  Descrizione	: Unit test copy cobol.
+      *                 : Copy con richiami di copy nested
+      *                 : Primo livello di ricorsione
+      *                 :  
+      *  Scritto il    	: 16-08-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================
+       
+       
+      * Area di prova
+0      01  COPY0401-REC.
+1          05 COPY0401-INIZIO  PIC 99.
+           COPY COPY0402.
+2          05 COPY0401-FINE PIC X(05).
+   

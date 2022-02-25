@@ -1,0 +1,1629 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance
+      *      Integrated
+      *        Tecnology 
+      *          Application
+      *
+      *================================================================
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.     COBTST01.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: Unit test esaustivo Analyzer Cobol.
+      *                 : Ogni istruzione viene testata in tutti i modi 
+      *                 : previsti dalla sintassi Cobol e gestiti da
+      *                 : Analyzer
+      *  Scritto il    	: 16-08-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================
+       
+0      ENVIRONMENT DIVISION.
+1      CONFIGURATION SECTION.
+2      SOURCE-COMPUTER. IBM-370.
+3      OBJECT-COMPUTER. IBM-370.
+4      SPECIAL-NAMES.
+           C01 IS NEW-PAGE
+           Currency Sign is "CHF " with Picture Symbol "F" 
+           Currency Sign is "EUR " with Picture Symbol "U"
+           DECIMAL-POINT IS COMMA.
+       REPOSITORY. 
+           CLASS JavaException is “java.lang.Exception”
+           CLASS JavaInteger      'java.lang.Integer'
+           CLASS javaDouble jobjectArrayDouble      
+           CLASS javaBoolean jobjectArrayBoolean:'java.lang.Boolean'     
+5      INPUT-OUTPUT SECTION.
+6      FILE-CONTROL.
+
+      * Test 010 Select file sequenziale full options
+7          SELECT OPTIONAL FSEQ01    ASSIGN TO DDFSEQ01
+              RESERVE 2 AREA ORGANIZATION IS SEQUENTIAL
+              PADDING CHARACTER IS 'Z' RECORD DELIMITER
+              IS STANDARD-1 ACCESS MODE IS SEQUENTIAL
+              PASSWORD IS PWD6
+              FILE STATUS IS FILE-STATUS-FILE01.
+
+      * Test 012 Select indexed file full options
+8          SELECT OPTIONAL FIDX01    ASSIGN TO DDFIDX01
+              RESERVE 2 AREA ORGANIZATION IS INDEXED
+              ACCESS MODE IS RANDOM RECORD KEY IS KUDX01
+              PASSWORD IS PWD6 
+              ALTERNATE RECORD KEY IS ARK01 WITH DUPLICATES
+              PASSOWRD IS PWD07  
+              ALTERNATE RECORD KEY IS ARK01 WITH DUPLICATES
+              PASSOWRD IS PWD08  
+              FILE STATUS IS FILE-STATUS-FILE01 FILE-STATUS-FILE02.
+
+      * Test 013 Select relative file full options
+9          SELECT OPTIONAL FIDX01    ASSIGN TO DDFREL01 DDFREL02
+              RESERVE 2 AREAS ORGANIZATION IS RELATIVE
+              ACCESS MODE IS DYNAMIC RELATIVE KEY IS KUDX01
+              PASSWORD IS PWD6 
+              FILE STATUS IS FILE-STATUS-FILE01 FILE-STATUS-FILE02.
+
+      * Test 014 Select line sequential file full options
+10         SELECT OPTIONAL FLSQ01    ASSIGN TO DDFREL01 DDFLSQ01
+              ORGANIZATION IS LINE SEQUENTIAL
+              ACCESS MODE IS SEQUENTIAL
+              PASSWORD IS PWD6 
+              FILE STATUS IS FILE-STATUS-FILE01.
+
+      * Test 015 Select file sequenziale full options no optional words
+11         SELECT          FSEQ02    ASSIGN  DDFSEQ02
+              RESERVE 2      ORGANIZATION    SEQUENTIAL
+              PADDING              'Z' RECORD DELIMITER
+                STANDARD-1 ACCESS         SEQUENTIAL
+              PASSWORD    PWD6      STATUS    FILE-STATUS-FILE01.
+ 
+      * Test 016 Select file sequenziale minimale
+12         SELECT          FSEQ03    ASSIGN  DDFSEQ03.
+  
+      * Test 017 Select file dichiarati in FD
+13         SELECT          FILE01    ASSIGN  DD1 DD2.
+13         SELECT          FILE02    ASSIGN  DD3.  
+ 
+0      DATA DIVISION.
+1      FILE SECTION.
+      * Test 020 Fd full option gestite
+2      FD  FILE01       RECORDING MODE F
+                        BLOCK CONTAINS 0 RECORDS
+                        IS EXTERNAL
+                        IS GLOBAL
+                        RECORD IS VARYING IN SIZE FROM 1 TO 80
+                        DEPENDING ON DEP02
+                        BLOCK CONTAINS 0 RECORDS
+                        DATA RECORDS ARE REC-FILE021 REC-FILE022
+                        LABEL RECORDS ARE STANDARD.
+
+3      01  REC-FILE01.
+4          05 DEP02  PIC 99 COMP-3.
+5          05 FILLER PIC X(78).
+6      01  REC-FILE012      PIC X(80).
+
+      * Test 021 Fd block 0 records
+7      FD  FILE02                        RECORDING F
+                                         BLOCK CONTAINS 0 RECORDS
+                                         LABEL RECORDS ARE STANDARD.
+
+8      01  REC-FILE02.
+           05 F2-BYNARY                  PIC 9(5) BINARY.
+           05 FILLER                     PIC X(70).
+      *
+9      WORKING-STORAGE SECTION.
+  
+       01 F610.
+          03 F618 OCCURS 30.
+             05 F598  USAGE COMP-2 OCCURS 30.
+  
+      * Test 029 Value particolari e floating point
+10     01  G00.
+           05 VAL-P-00 PIC 9(13) VALUE 9999999999999.
+           05 VAL-P-01 PIC X(2)  VALUE X'0000'.
+              88  WS-CRT-OK      VALUE   X'C1' THRU X'C9'.
+           05 VAL-P-02 PIC X(2)  VALUE NX'0000'.
+           05 VAL-P-03 PIC X(2)  VALUE X"FFFF".
+           05 VAL-P-04 PIC X(2)  VALUE NX"FFFF".
+           05 VAL-P-05           VALUE X'0000'  PIC X(2).
+           05 VAL-P-06           VALUE NX'0000' PIC X(2).
+           05 VAL-P-07           VALUE X"FFFF"  PIC X(2).
+           05 VAL-P-08           VALUE NX"FFFF" PIC X(2).
+           05 VAL-P-09 PIC X(5)  VALUE Z' 234'.
+           05 VAL-P-10           VALUE Z' 234'  PIC X(5).
+           05 VAL-P-11 PIC X(5)  VALUE Z" 234".
+           05 VAL-P-12           VALUE Z" 234"  PIC X(5).
+           05 VAL-P-13 PIC X(5)  VALUE N' 23 '.
+           05 VAL-P-14 PIC X(5)  VALUE N"Z 23 ".
+           05 VAL-P-15           VALUE N' 23 '  PIC X(5).
+           05 VAL-P-16           VALUE N"Z 23 " PIC X(5).
+           05 VAL-P-17 COMP-1    VALUE +0.5E-3.
+           05 VAL-P-18 COMP-2    VALUE +0,5E-3.
+           05 VAL-P-19           VALUE -0.72E-3 COMP-1.
+           05 VAL-P-20           VALUE +0,5E-3  COMP-2.
+           05 VAL-P-21           VALUE  0.5E-3  COMP-2.
+           05 VAL-P-21           VALUE  0.5E3   COMP-2.
+           05 WS-NSG-MAX-VALUE   PIC  9(13)  VALUE  9999999999999.
+
+      * Test 030 Gruppo
+10     01  G01.
+      
+      * Test 031 Picture & Value & Usage clause
+11         05 PIC-01  PICTURE X VALUE "A" USAGE IS DISPLAY.
+12         05 PIC-02  PIC XX    VALUE ' IF * L1' USAGE DISPLAY.
+13         05 PIC-03  PIC XX    VALUE ' END-EVALUATE' DISPLAY-1.
+14         05 PIC-04  PIC XX    DISPLAY VALUE SPACES.
+15         05 PIC-05  PIC X(10) 	VALUE SPACE.
+16         05 PIC-06  PIC X 	 	VALUE QUOTE.
+17         05 PIC-07	VALUE LOW-VALUE PIC A(5)9(3)X(2).
+18         05 PIC-08	PIC AAAXXX999 	VALUE LOW-VALUES.
+19         05 PIC-09	PIC XX      VALUE HIGH-VALUE.
+20         05 PIC-10	PIC XX      VALUE HIGH-VALUES.
+21         05 PIC-11	PIC XX      VALUE ZERO.
+22         05 PIC-12	PIC XX      VALUE ZEROS.
+23         05 PIC-13	PIC XX      VALUE ZEROES.
+24         05 PIC-14	PIC 9       VALUE ZERO COMP.
+25         05 PIC-15	PIC 99      VALUE 0 COMPUTATIONAL.
+26         05 PIC-16	PIC 9       VALUE ZERO COMP-1.
+27         05 PIC-15	PIC 99      VALUE 0 COMPUTATIONAL-1.
+28         05 PIC-17	PIC 9       VALUE ZERO COMP-2.
+29         05 PIC-18	PIC 99      VALUE 0 COMPUTATIONAL-2.
+30         05 PIC-19	PIC 9       VALUE ZERO COMP-3.
+31         05 PIC-20	PIC 99      VALUE 0 COMPUTATIONAL-3.
+32         05 PIC-21	PIC 9       VALUE ZERO COMP-4.
+33         05 PIC-22	PIC 99      VALUE 0 COMPUTATIONAL-4.
+34         05 PIC-23	PIC 9       VALUE ZERO COMP-5.
+35         05 PIC-24	PIC 99      VALUE 0 COMPUTATIONAL-5.
+36         05 PIC-25	PIC S9(5) COMP-3.
+37         05 PIC-26	PIC S9(5) PACKED.
+38         05 PIC-27	PIC S9(5) PACKED-DECIMAL.
+39         05 PIC-28	PIC S9(8) USAGE POINTER.
+40         05 PIC-29	PIC S9(8) USAGE INDEX.
+41         05 PIC-30	PIC S9(8) USAGE PROCEDURE-POINTER.
+42         05 PIC-31	PIC S9(8) USAGE FUNCTION-POINTER.
+43         05 PIC-32	PIC S9(8) BINARY.
+44         05 PIC-33	PIC 99      VALUE +5.
+45         05 PIC-34	PIC S99     VALUE +4.
+46         05 PIC-35	PIC S9(2)V99.
+47         05 PIC-36	PIC S9(2)V9(4).
+48         05 PIC-37	PIC V9(4).
+49         05 PIC-38	PIC V999.
+50         05 PIC-39	PIC ZZ.ZZZZ.ZZZ.
+51         05 PIC-40	PIC CRZZ,ZZZ,ZZZ.
+52         05 PIC-41	PIC -ZZ,ZZZ,ZZZ.
+
+      * Test 032 Picture & Value & Usage clause senza data name
+           05           PIC  X(11) VALUE '-- CHIAVE: '.
+           05           PIC  X(05) VALUE ALL '0'.
+            
+      * Test 033 Value Literal in riga successiva  con literal interne
+53         05 PIC-42	PIC XX     VALUE 
+              '*''1'' ''2''*'.
+              
+      * Test 034   Literal inizia in riga successiva  con una continuazione
+54         05 PIC-43	PIC X(10)  VALUE 
+              '**----------------------------------------------------72+
+      -'+73--99'. 
+      *    Literal inizia in riga corrente con 3 righe di continuazione
+55        05 PIC-44	PIC X(100)  VALUE  '+----------------------------72+
+      -'+01++++++++++++++++Riga Continuazione 1++++++++++++++++++++++72+ 
+      -'+01++++++++++++++++Riga Continuazione 2++++++++++++++++++++++72+ 
+      -       '+73+++++++++++++++++Ultima riga++++++++99'.
+
+ 
+      * Test 035 Redefines clause
+56     01 RED-01 REDEFINES G01.
+57        05 FILLER PIC X.
+58     01 RED-02 REDEFINES G01 PIC X(20).
+59     01 G02.
+60        05 FILLER PIC X.
+61        05 FILLER PIC X.
+62        05 FILLER PIC X.
+63        05 FILLER PIC X.
+64     01 RED-03 REDEFINES G02 PIC X(4).
+       
+      * Test 036 Renames clause
+65     01 G-03.
+66        05 F01 PIC X.
+67        05 F02 PIC X(8).
+68        05 F03 PIC X.
+69        05 F04 INDEX.
+70        05 F05 USAGE INDEX.
+71        05 F06 INDEX.
+72     66 REN01 RENAMES F02.
+73     66 REN02 RENAMES F01 THRU F02.   
+74     66 REN02 RENAMES F01 THROUGH F03.   
+
+      * Test 037 Occurs clause fixed length campi singoli
+75     01 G05.
+76        05 OCC01 OCCURS 10 TIMES PIC X.
+77        05 OCC02 OCCURS 5 PIC X.
+          
+      * Test 038 Occurs clause fixed length gruppi  
+78     01 G06.
+79        05 OCC03 OCCURS 100 
+                   ASCENDING KEY IS F08, F07        
+                   INDEXED BY F06.
+80           07 F07 PIC X(20).
+81           07 F08 PIC X(2).
+82           07 F09 PIC 99V999.
+             
+      * Test 039 Occurs clause fixed length gruppo indexed con virgole  
+83           07 OCC04 OCCURS 50
+                      ASCENDING KEY F11
+                      INDEXED F04, F05.
+84              09 F10 PIC 99.
+85              09 F11 PIC XX. 
+                
+      * Test 040 Occurs clause fixed length gruppi indexesd con spazi 
+86           07 OCC05 OCCURS 20
+                  	  ASCENDING KEY F14 F12
+                  	  INDEXED F04 F05.
+87             09 F12 PIC 99.
+88             09 F13 PIC XX. 
+89             09 F14 PIC X(5). 
+               
+      * Test 041 Occurs clause variable length  
+90     01 G07.
+91        05 F15 PIC 9(4) VALUE 3.
+92        05 OCC06 OCCURS 5 TO 20 TIMES
+                   DEPENDING ON F15
+                   ASCENDING KEY IS F14, F13        
+                   INDEXED BY F06.
+93           07 F13 PIC X(20).
+94           07 F14 PIC X(2).
+95           07 F15 PIC 99.
+             
+      * Test 042 Occurs clause variable length  
+96        05 OCC06 OCCURS 30 
+                   DEPENDING F15
+                   ASCENDING KEY IS F17, F16        
+                   INDEXED BY F06.
+97           07 F16 PIC X(20).
+98           07 F17 PIC X(2).
+99           07 F18 PIC 99.
+
+      * Test 043 Occurs 3 dimensioni
+100       05 OCC07 OCCURS 15. 
+101           07 OCC08 OCCURS 15. 
+102             09 OCC09 OCCURS 15. 
+103                11 F19  PIC X.
+104                11 FILLER  PIC X.
+105                11 F20  PIC 9
+106                11 F22  PIC X.
+107                11 F22  PIC 9.
+108                11 F23  PIC X.
+109                11 F24  PIC X.
+
+            
+      * Test 050 Blank when zero clause
+110    01 G08.
+111       05 F25 PIC X BLANK WHEN ZERO.
+112       05 F26 BLANK ZERO 		PIC X.
+113       05 F27 BLANK ZEROS 		PIC X.
+114       05 F28 BLANK ZEROES 		PIC X.
+115       05 F29 BLANK WHEN ZEROES 	PIC X.
+          
+      * Test 051 External, global clause e literal dentro literal
+116    01 G09 EXTERNAL.
+117       05 F30 PIC X(20) GLOBAL VALUE 'A "INSIDE" Z'. 
+118       05 FILLER PIC X.
+          
+      * Test 052 Justified clause
+119    01 G10.
+120       05 F31 PIC X(2) JUSTIFIED. 
+121       05 F32 PIC X(2) JUST. 
+122       05 F33 PIC X(2) JUST RIGHT. 
+
+      * Test 053 Sign clause
+123    01 G11.
+124       05 F34 PIC S9(6) SIGN IS LEADING SEPARATE CHARACTER. 
+125       05 F35 PIC S9(6) SIGN IS LEADING SEPARATE. 
+126       05 F36 PIC S9(6) SIGN IS LEADING. 
+127       05 F37 PIC S9(6) SIGN IS TRAILING. 
+128       05 F38 PIC S9(6) SIGN    TRAILING. 
+129       05 F39 PIC S9(6)         TRAILING. 
+130       05 F40 PIC S9(6)         LEADING. 
+        
+      * Test 054 Syncronized clause
+131    01 G12.
+132       05 FILLER PIC XX. 
+133       05 F41 PIC S9(6) SYNCRONIZED. 
+134       05 F42 PIC S9(6) SYNC. 
+135       05 F43 PIC S9(6) SYNC LEFT. 
+136       05 F44 PIC S9(6) SYNCRONIZED RIGHT. 
+
+      * Test 055 Condition clause su numerico
+137    01 G13.
+138      05 F45 PIC 99.
+139         88 COND01 VALUE IS  0.
+140         88 COND01 VALUE     0.
+141         88 COND02 VALUES ARE 0 THRU 10.
+142         88 COND03 VALUES ARE 0 THROUGH 10.
+143         88 COND04 VALUES ARE 0, 5 THROUGH 10.
+144         88 COND06 VALUES     0, 5 THROUGH 10.
+145         88 COND07 VALUES     0, 1,  5 THROUGH 10.
+146         88 COND08 VALUES     0  1   5 THROUGH 10.
+            
+      * Test 056 Condition clause su alfanumerico
+147    01 G14.
+148      05 F46 PIC XX.
+149         88 COND01 VALUE IS  '0'.
+150         88 COND01 VALUE     '0'.
+151         88 COND02 VALUES ARE '0' THRU '10'.
+152         88 COND03 VALUES ARE '0' THROUGH '10'.
+153         88 COND04 VALUES ARE '0', 5 THROUGH '10'.
+154         88 COND06 VALUES     '0', 5 THROUGH '10'.
+155         88 COND07 VALUES     '0', 1,  5 THROUGH '10'.
+156         88 COND08 VALUES     '0'  1   5 THROUGH '10'.
+
+      * Test 056-2 Condition clause su alfanumerico con literal con spaces
+         05 F47   PIC X(04)    VALUE SPACE.
+           88 NO-CCIAA     VALUES 'PF  '
+                                  'PFM '
+                                  'CO  '.
+
+
+      * Test 057 Definizioni per Move Corresponding
+157    01 G15.
+158       05 F47-CORR-01 PIC 9.
+159       05 F48-CORR-02 PIC XX.
+160       05 F49-CORR-03 PIC XX.
+161       05 F50-CORR-04 PIC X(4).
+162    01 G16.
+163       05 F47-CORR-01 PIC 9.
+164       05 F48-CORR-02 PIC XX.
+165       05 F49-CORR-03 PIC XX.
+166       05 F50-CORR-04 PIC X(4).
+
+      * Test 058 Definizioni per Add Corresponding
+167    01 G17-ADD.
+168       05 F51-ADD PIC 99.
+169       05 F52-ADD PIC 99.
+170       05 F52-ADD PIC 99.
+171       05 F53-ADD PIC 99.
+172    01 G18-ADD.
+173       05 F51-ADD PIC 99.
+174       05 F52-ADD PIC 99.
+175       05 F52-ADD PIC 99.
+176       05 F53-ADD PIC 99.
+ 
+      * Test 070 Copy minimal options (4 ITEMS)
+177        COPY COPY01.
+
+
+
+      * Test 071 Copy minimal options (4 ITEMS)
+182        COPY 'COPY02'.
+           
+      * Test 072 Copy full options (3 ITEMS)
+186        COPY COPY02 OF LIB1 SUPPRESS
+               REPLACING COPY02-CAMPO1 
+                      BY COPY02-CAMPO1-REPLACED.
+      
+      * Test 073 Copy full options multiple replacing identifier
+190        COPY COPY03 SUPPRESS IN 'LIB2' 
+               REPLACING X-COPY03-CAMPO1 BY COPY03-CAMPO1-REPLACED
+                              REPLACED BY CHANGED.
+      
+      * Test 074 Copy full options multiple replacing literal
+194        COPY COPY03 SUPPRESS IN 'LIB2' 
+               REPLACING 'X-COPY03-CAMPO1' BY 'COPY03-CAMPO1-REPLACED'
+                              'REPLACED' BY 'CHANGED'.
+       
+      * Test 075 Copy full options multiple replacing pseudo text
+198        COPY COPY03 SUPPRESS IN 'LIB2'  
+               REPLACING ==X-== BY ==P1-==
+                         ==05== BY ==07==.
+
+      * Test 076 Copy full options multiple replacing pseudo text
+202        COPY COPY03 SUPPRESS IN 'LIB2'  
+               REPLACING ==X-== BY ==P2-== 
+                         ==05== BY ==07==.
+
+      * Test 077 Copy copy ricorsivo COPY0401 e COPY0402 (11 items)
+216        COPY COPY04 SUPPRESS IN 'LIB2'  
+               REPLACING ==(05)== BY ==(07)==  
+                         ==05== BY ==07==.
+
+ 
+      * Test 080 Istruzione precompilatore SQL
+219        EXEC SQL
+                INCLUDE SQLCA
+           END-EXEC.
+
+      * Test 080 Istruzione precompilatore SQL
+220        EXEC SQL
+                INCLUDE URTCTPMT
+           END-EXEC.
+      
+      * Campi vari definiti strani
+       01 G19.
+      * Per test nome campo con numeri iniziali
+          05 17-UX43007     PIC X(10).
+          05 03-DESC-FIL-UO PIC X(10).
+          
+      * Campi per exec Cics
+       01 CICS-FIELDS.
+          05 MAP-NAME  		PIC X(8)    VALUE SPACE.
+          05 MAPSET-NAME  	PIC X(8)    VALUE SPACE.
+          05 MAP-IOAREA  	PIC X(200)  VALUE SPACE.
+          05 FILE-NAME  	PIC X(20)   VALUE SPACE.
+          05 FILE-KEY  	    PIC X(20)   VALUE SPACE.
+          05 FILE-IOAREA.
+             07 FILE-PCKD   PIC 9(7) COMP-3.
+             07 FILLER      PIC X(200).
+          05 QUEUE-NAME  	PIC X(8)    VALUE SPACE.
+          05 QUEUE-IOAREA  	PIC X(300)  VALUE SPACE.
+          05 QUEUE-ITEM  	PIC 9(8)  COMP.
+          05 START-FROM  	PIC X(200).
+      
+      
+      
+221     LINKAGE SECTION.
+222    01  DFHCOMMAREA PIC X.
+223    01  LNK01 PIC X(10).
+224    01  LNK02 PIC X(20).
+      *
+      
+      
+      * Test 90 Procedure division 
+0     *PROCEDURE DIVISION.
+0      PROCEDURE DIVISION USING LNK01 LNK02.
+0     *PROCEDURE DIVISION USING LNK01, LNK02.
+0     *PROCEDURE DIVISION USING BY REFERENCE LNK01, LNK02.
+0     *PROCEDURE DIVISION USING BY REFERENCE LNK01  LNK02.
+0     *PROCEDURE DIVISION USING BY REFERENCE LNK01 BY VALUE LNK02.
+
+      * Test 92 Declaratives  OK
+1      DECLARATIVES.
+ 
+      * Test 93 Use Exception/Error full option  OK 
+2          USE global AFTER STANDARD EXCEPTION PROCEDURE ON INPUT.
+3          USE GLOBAL AFTER STANDARD EXCEPTION PROCEDURE ON OUTPUT.
+4          USE GLOBAL AFTER STANDARD EXCEPTION PROCEDURE ON I-O.
+5          USE GLOBAL AFTER STANDARD EXCEPTION PROCEDURE ON EXTEND.
+6          USE GLOBAL AFTER STANDARD EXCEPTION PROCEDURE 
+                ON FILE01,FILE02
+       
+      * Test 94 Use Exception/Error minimal option  OK 
+7          USE AFTER EXCEPTION PROCEDURE FILE01,FILE02
+ 
+      * Test 95 Use Label full option  OK 
+8          USE GLOBAL AFTER STANDARD BEGINNING FILE LABEL PROCEDURE
+                    ON INPUT.
+9          USE GLOBAL AFTER STANDARD BEGINNING REEL LABEL PROCEDURE
+                    ON OUTPUT.
+10         USE GLOBAL AFTER STANDARD ENDING UNIT LABEL PROCEDURE
+                    ON I-O.
+11         USE GLOBAL AFTER STANDARD BEGINNING FILE LABEL PROCEDURE
+                    ON FILE01 FILE02.
+ 
+      * Test 96 Use Label minimal option  OK 
+12         USE AFTER  LABEL PROCEDURE FILE01 FILE02.
+ 
+      * Test 97 Use debugging minimal option  OK
+13         USE DEBUGGING ALL PROCEDURES.
+
+      * Test 98 Use debugging full option   
+14         USE FOR DEBUGGING ON ALL PROCEDURES.
+15         USE FOR DEBUGGING ON SECTION01, SECTION02.
+
+      * Test 98 End Declaratives 
+16      END DECLARATIVES.
+
+
+      * Test 100 Label  OK
+17     LABEL1.
+
+
+      * Test 107 Move literal numerica segnata OK
+           MOVE +101           TO F25
+           MOVE -101           TO F25
+  
+      * Test 108 Move con campi che iniziano con numeri OK
+           MOVE 'UX66009'              TO 17-UX43007
+           MOVE 17-UX43007 TO F41.
+           MOVE SPACES TO 17-UX43007,F41.
+           MOVE SPACES TO 17-UX43007, F41.
+           MOVE SPACES TO 17-UX43007 ,F41.
+
+      * Test 109 Move con ref mod elementi di tabella OK
+           MOVE LNK01(F20(F39,3,4):F20(1,2,3)) TO F41.
+
+           MOVE F20(5,1,6)(F20(F39,3,4):F20(1,2,3)) TO F41.
+      
+      * Test 110 Move semplice identifier  OK
+18         MOVE LNK01 TO F41.
+19         MOVE LNK01 TO F41.
+           .
+      * Test 111 Move semplice literal alfanumerica  OK
+10         MOVE 'A  ' TO F26.
+           
+      * Test 112 Move semplice literal numerica  OK
+21         MOVE 5 TO F40.
+  
+      * Test 113 Move a identificatori multipli  OK
+22         MOVE LNK02 TO F41  F26.    
+23         MOVE LNK02 TO F41,  F26.   
+24         MOVE LNK02 TO F41 ,  F26.  
+      
+      * Test 114 Move corresponding  OK
+25         MOVE CORR G15 TO G16.
+26         MOVE CORRESPONDING G15 TO G16.
+       
+      * Test 115 Move da special register  OK 
+27         MOVE LENGTH OF F26 TO F40.
+28         MOVE ADDRESS OF F26 TO F40.
+29         MOVE RETURN-CODE TO F40.
+30         MOVE TALLY TO F40.
+ 
+      * Test 116 Move con reference modification OK
+31         MOVE F26(:4) TO F40.
+32         MOVE F26(1:) TO F40.
+33         MOVE F26(1:LENGTH OF F40 - 1) TO F40.
+34         MOVE F26(LENGTH OF F25:) TO F40.
+ 
+      * Test 117 Move da elemento di tabella unidimensionale  OK
+35         MOVE F07(1) TO F25.
+36         MOVE F07 (1) TO F25.
+37         MOVE F07 ( 1) TO F25.
+38         MOVE F07 ( 1 ) TO F25.
+39         MOVE F07 (F39) TO F25.
+40         MOVE F07 (F39+1) TO F25.
+41         MOVE F07 (F39 -1) TO F25.
+
+      * Test 118 Move da elemento di tabella multidimensione  OK
+42         MOVE F20(1, 4, 10) TO F25.
+43         MOVE F20(1,F39+1,F40 - 2 + F39) TO F25.
+44         MOVE F20(LENGTH OF F26,4,10) TO F25.				 
+45         MOVE F20(1,LENGTH OF F26,10) TO F25.				 
+ 
+      * Test 119 Move da elemento di tabella con reference modification  OK
+46         MOVE F20(1, 4, 10)(2:) TO F25.
+47         MOVE F20(1, 4, 10)(2:5) TO F25.
+47         MOVE F20(1, 4, 10)(2:5)TO F25.
+48         MOVE F20(1,4,10) (:LENGTH OF F26) TO F25.
+49         MOVE F20(1,4,10) (F40:F41) TO F25.
+
+      * Test 120 Move OF  OK 
+50         MOVE F47-CORR-01 OF G15 TO F47-CORR-01 OF G16
+51         MOVE F47-CORR-01 OF G15 TO F47-CORR-01 OF G16(1:10)
+            
+      * Test 121 Move literals delimitate da '  OK  
+52         MOVE 'ABCD' TO F25
+53         MOVE ' ZZ ' TO F25
+54         MOVE ' Z''Z ' TO F25
+
+      * Test 122 Move literals delimitate da ' con continuazione  OK 
+55         MOVE 
+              'ABCD' TO F25.
+56         MOVE                                               '123456789 
+      -                     '0123456789' 
+                TO F25     
+  
+      * Test 123 Move literals delimitate da "  OK
+57         MOVE "ABCD" TO F25
+57         MOVE " ES. 1 ->" TO F25
+58         MOVE " ZZ " TO F25
+59         MOVE " Z''Z " TO F25
+           MOVE ' "INSIDE" ' TO F25
+
+      * Test 124 Move special register  OK  
+60         MOVE LENGTH OF  F25  TO F40
+61         MOVE ADDRESS OF F25  TO F40
+62         MOVE RETURN-CODE TO F25
+63         MOVE TALLY TO F25
+  
+      * Test 125 Move costanti figurative  OK
+64         MOVE SPACE TO F25
+65         MOVE SPACES TO F25
+66         MOVE ZERO TO F25
+67         MOVE ZEROS TO F25
+68         MOVE ZEROES TO F25
+69         MOVE LOW-VALUE TO F25
+70         MOVE HIGH-VALUE TO F25
+71         MOVE LOW-VALUES TO F25
+
+      * Test 126 Move collegata in grafo a prec e succ If  OK
+75         MOVE HIGH-VALUES TO F25
+
+      * Test 127 Move funzione intrinseca alfanumerica  OK
+           MOVE FUNCTION UPPER-CASE(START-FROM)(1:8) TO LNK01.
+
+      * Test 128 Move funzione intrinseca alfanumerica con ref mod  OK
+           MOVE FUNCTION UPPER-CASE(START-FROM) (F25:8) TO LNK01.
+           MOVE FUNCTION LOWER-CASE(START-FROM)(F25:8) TO LNK01.
+
+      * Test 141 If con operatori ridondanti OK
+           IF F25 IS EQUAL TO 25
+              MOVE SPACE TO F41.
+           IF F25 IS GREATER THAN 25
+              MOVE SPACE TO F41.
+
+      * Test 142 If con condizione con funzione intrinseca OK
+           IF (FUNCTION MEAN (F15(1)
+               F15(2)
+               F15(3))
+               NOT = 0) * 12
+              MOVE SPACES TO START-FROM
+           END-IF
+
+      * Test 143 If con literal numerica intera OK
+           IF F25 NOT = 9999999999999
+              MOVE 0 TO F25
+           END-IF
+ 
+      * Test 144 If con condizione di inizio literal =' OK
+           IF F25 = 'Y' AND
+               F25 ='000000CASBT '
+               MOVE ZEROS TO F25
+           END-IF
+
+      * Test 145 If con condizione di fine literal '))
+           IF ((F25  = 'IDC000000050'  OR           
+                                      'IDC000000060') OR           
+                   (F25 = 'B9          '  OR           
+                                      'B4          '  OR           
+                                      'B45         '  OR           
+                                     'A8          ') OR           
+                  (F25      = 'B9          '  OR            
+                                      'B4          '  OR      
+                                      'B45         '  OR     
+                                      'A8          '  OR    
+                                      'DA          '))        
+               MOVE ZEROS TO F25
+           END-IF.
+                    
+      * Test 146 If con condizione con numero negativo
+           IF F25 = -1
+              MOVE ZEROS TO F25
+           END-IF
+
+
+      * Test 147 If con condizione con literal con dentro spaces
+           IF F25 = '0 '
+              MOVE ZEROS TO F25
+           END-IF
+
+
+      * Test 148 If con condizione ALL
+           IF F25 = ALL '0'
+              MOVE ZEROS TO F25
+           END-IF
+
+      * Test 149 If no Then complessa OK
+           IF F20(F25)(6:11)  =  F20(F25)
+              MOVE ZEROS TO F25
+           END-IF
+           
+      * Test 150 If completa di Then e END-IF  OK
+72         IF F25(1:10) EQUAL SPACES OR LOW-VALUE THEN
+73            MOVE ZEROS TO F25
+74         END-IF
+
+           
+      * Test 151 If no Then + Else END-IF    OK
+76         IF F25 EQUAL SPACES OR LOW-VALUE 
+77            MOVE ZEROS TO F25
+78         ELSE
+79            MOVE 4 TO F26
+80         END-IF
+
+      * Test 152 If nidificata  OK
+81         IF (F25 + F26) > 0 AND F20 EQUAL SPACES OR LOW-VALUE 
+82            IF F40 = ZERO
+83               GOBACK
+84            END-IF   
+85         END-IF
+
+      * Test 153 If nidificate con ELSE
+86         IF LENGTH OF  F25 > 0 AND F20 EQUAL SPACES OR LOW-VALUE 
+87            IF F40 = ZERO
+88               MOVE ZEROS TO F25
+89            ELSE
+90               MOVE SPACES TO F25
+91            END-IF
+92         ELSE
+93            MOVE ZEROS TO F20    
+94         END-IF
+
+      * Test 154 If nidificate chiuse da .  OK
+95         IF (F25 + F26) > 0 AND F20 EQUAL SPACES OR LOW-VALUE 
+96            IF F40 = ZERO
+97               MOVE ZEROS TO F25
+98            ELSE
+99               NEXT SENTENCE
+100        ELSE
+101           MOVE ZEROS TO F20.    
+
+      * Test 160 Go To semplice  OK
+102          GO TO LABEL1.
+103    LABEL2.
+104        GO LABEL1.
+           
+      * Test 161 Go To Depending On  OK 
+105        GO TO LABEL3
+                 LABEL4 DEPENDING ON F20.
+106    LABEL3.
+107    LABEL4.
+ 
+      * Test 162 Go To Depending On  OK
+108        GO    LABEL6
+                ,LABEL7
+                , LABEL8 DEPENDING    F20.
+109    LABEL6.
+110    LABEL7.
+111    LABEL8.
+  
+      * Test 170 Call semplice  OK
+112        call 'PGMCAL1'
+        
+      * Test 171 Call dinamica  OK
+113        call F02.
+      
+      * Test 172 Call semplice con using  OK
+114        call 'PGMCAL2' USING F25 f26 
+115        call 'PGMCAL3' USING F25, F26 
+116        call 'PGMCAL4' USING F25 ,F26 
+ 
+      * Test 173 Call con using estesa  OK
+117        call 'PGMCAL5' USING BY REFERENCE F25
+                                REFERENCE F26
+                                REFERENCE G01, G02
+                                ADDRESS OF G01, G02.
+
+      * Test 174 Call con using estesa + On Overflow  OK
+118        call 'PGMCAL6' USING BY CONTENT F25
+                                "C4LIT"
+                                'C4LIT' ,
+                                LENGTH OF G01,  
+                                LENGTH OF G02
+119             ON OVERFLOW MOVE SPACE TO G02
+121        END-CALL        
+
+      * Test 175 Call con using estesa + Not On Overflow  OK
+122        call 'PGMCAL7' USING F25
+123          NOT    ON OVERFLOW MOVE SPACE TO G02
+125        END-CALL        
+
+      * Test 176 Call con using estesa + On Exception  OK
+126        call 'PGMCAL8' USING F25
+127          ON EXception MOVE ZERO TO G02.
+  
+      * Test 177 Call con using estesa + On Exception  OK
+129        call 'PGMCAL9' USING F25
+130          EXception MOVE ZERO TO G02.
+  
+
+      * Test 178 Call con using estesa + Not On Exception  OK
+132        call 'PGMCAL10' USING F25
+133          NOT ON EXception MOVE ZERO TO G02.
+
+      * Test 179 Call con using estesa + Not On Exception  OK
+135        call 'PGMCAL11' USING F25
+136          NOT EXception MOVE ZERO TO G02.
+
+
+      * Test 180 Cancel  OK
+138        cancel 'PGMCAL12' "PGMCAL13", F26
+
+      * Test 190 Open singole semplici  OK
+139        OPEN INPUT FSEQ01 REVERSED
+140        OPEN OUTPUT FIDX01 WITH NO REWIND
+141        OPEN I-O FSEQ02 NO REWIND
+142        OPEN EXTEND FSEQ03
+
+      * Test 191 Open multiple semplici OK  
+143        OPEN INPUT FSEQ01, FSEQ02
+144        OPEN OUTPUT FIDX01 FSEQ02
+145        OPEN I-O FSEQ02 FSEQ03
+146        OPEN EXTEND FSEQ03, FSEQ02
+
+      * Test 192 Open multiple stesso statement OK
+147        OPEN INPUT FSEQ01, FSEQ02
+               OUTPUT FIDX01 FSEQ02
+               I-O FSEQ02 FSEQ03
+               EXTEND FSEQ03, FSEQ02
+
+      * Test 200 Close singole  OK
+148        close FSEQ01, FSEQ02
+149        close FSEQ01, FSEQ02
+150        close FSEQ01, FSEQ02
+151        close FSEQ01, FSEQ02
+152        close FSEQ01 WITH LOCK FSEQ02
+153        close FSEQ03 REEL FOR REMOVAL
+154        close FSEQ03 UNIT WITH NO REWIND
+
+
+      * Test 201 Read sequenziale  OK
+           READ  FILE01                    INTO  REC-FILE01             10070000
+             AT  END                                                    10080000
+                 MOVE  HIGH-VALUE  TO  F25                              10090000
+               NOT AT  END                                              10110000
+                 ADD    1               TO   G02                        10120000
+           END-READ.                                                    10130000
+      
+155        read FILE01 
+156        read FILE02 NEXT RECORD
+157        read FILE01 NEXT RECORD INTO REC-FILE01
+158             AT END GO TO LABEL1.
+160        read FILE02 NOT AT END MOVE ZERO TO G02.    
+163        read FILE02 
+164        end-read
+
+      * Test 202 Read random  OK
+165        read FILE02 RECORD INTO REC-FILE02 KEY IS F25
+166           INVALID KEY MOVE ZERO TO G02     
+168           NOT INVALID KEY MOVE SPACES TO G02  
+170        end-read
+171        read FILE02     INTO REC-FILE02 KEY  F25
+172           INVALID KEY MOVE ZERO TO G02     
+174           NOT INVALID KEY MOVE SPACES TO G02  
+176        end-read
+177        read FILE02 RECORD
+178           INVALID   MOVE ZERO TO G02     
+180           NOT INVALID   MOVE SPACES TO G02  
+182        end-read
+
+      * Test 203 Write Seq/Vsam  OK
+183        write REC-FILE02 FROM G01  
+184           INVALID KEY  MOVE ZERO TO G02     
+186           NOT INVALID KEY  MOVE SPACES TO G02  
+188        end-write        
+
+      * Test 204 Write Qsam  OK
+189        write REC-FILE02 FROM G01 BEFORE ADVANCING 3 Lines  
+190             END-OF-PAGE  MOVE ZERO TO G02     
+192             EOP  MOVE SPACES TO G02.  
+194        write REC-FILE02         AFTER ADVANCING NEW-PAGE  
+195           AT END-OF-PAGE  MOVE ZERO TO G02     
+197           AT EOP  MOVE SPACES TO G02.  
+199        write REC-FILE02 FROM G01 AFTER ADVANCING NEW-PAGE  
+200           NOT AT END-OF-PAGE  MOVE ZERO TO G02     
+202           NOT AT EOP  MOVE SPACES TO G02.  
+204        write REC-FILE02 FROM G01 AFTER ADVANCING NEW-PAGE  
+205           NOT    END-OF-PAGE  MOVE ZERO TO G02     
+207           NOT    EOP  MOVE SPACES TO G02.  
+
+      * Test 205 Write Qsam  OK
+209        write REC-FILE02 FROM G01 BEFORE ADVANCING 3 Lines  
+210             END-OF-PAGE  MOVE ZERO TO G02     
+212             EOP  MOVE SPACES TO G02.  
+214        write REC-FILE02         AFTER ADVANCING NEW-PAGE  
+215           AT END-OF-PAGE  MOVE ZERO TO G02     
+217           AT EOP  MOVE SPACES TO G02 . 
+219        write REC-FILE02 FROM G01 AFTER ADVANCING NEW-PAGE  
+220           NOT AT END-OF-PAGE  MOVE ZERO TO G02     
+222           NOT AT EOP  MOVE SPACES TO G02.  
+224        write REC-FILE02 FROM G01 AFTER ADVANCING NEW-PAGE  
+225           NOT    END-OF-PAGE  MOVE ZERO TO G02     
+227           NOT    EOP  MOVE SPACES TO G02.  
+      
+      * Test 206 Rewrite  OK
+229        rewrite REC-FILE02 FROM G01 
+230             INVALID  MOVE ZERO TO G02     
+232             NOT INVALID MOVE SPACES TO G02  
+234        end-rewrite     
+235        rewrite REC-FILE02 
+ 
+      * Test 207 Delete  OK
+236        delete FILE01 RECORD
+237        delete FILE02
+
+      * Test 208 Start  OK     
+238        START FILE01  KEY IS EQUAL TO F25
+239        START FILE01  KEY    EQUAL    F25
+240        START FILE01  KEY    =        F25
+241        START FILE01  KEY IS GREATER THEN F25
+242        START FILE01  KEY    GREATER      F25
+243        START FILE01  KEY    NOT LESS THEN F25
+244        START FILE01  KEY    NOT <    F25
+245        START FILE01  KEY    GREATER THEN OR EQUAL TO F25
+246        START FILE01  KEY    GREATER      OR EQUAL    F25
+247        START FILE01  KEY    >=    F25
+248        END-START
+ 
+      * Test 210 Perform semplice section  OK  
+249        PERFORM SECTION01
+250        PERFORM SECTION01 THRU EX-SECTION01
+251        PERFORM SECTION01 THROUGH EX-SECTION01
+ 
+      * Test 211 Perform semplice paragrafo  OK 
+252        PERFORM ROUT01
+253        PERFORM ROUT01 THRU EX-ROUT01
+
+      * Test 212 Perform innern  OK  
+254        PERFORM UNTIL F25 > 20
+255           CONTINUE
+256        END-PERFORM
+
+      * Test 213 Perform k Times  OK 
+257        PERFORM ROUT01  5 times
+258        PERFORM ROUT01  F25 times
+259        PERFORM ROUT01  THRU EX-ROUT01 F25 times
+
+      * Test 214 Perform until  OK
+260        PERFORM ROUT01  THRU EX-ROUT01  
+                    UNTIL F25 > 10
+261        PERFORM ROUT01  THRU EX-ROUT01
+                  WITH TEST BEFORE  
+                    UNTIL F25 > 10
+262        PERFORM ROUT01  THRU EX-ROUT01
+                  WITH TEST BEFORE  
+                    UNTIL F25 > 10 AND F26 EQUAL SPACE
+263        PERFORM ROUT01  THRU EX-ROUT01
+                    TEST BEFORE  
+                    UNTIL F25 > 10 AND F26 EQUAL SPACE
+
+      * Test 215 Perform Varying until  OK
+264        PERFORM ROUT01  THRU EX-ROUT01 
+              VARYING F25 FROM 1 BY 1 
+                    UNTIL F25 > 10
+265        PERFORM ROUT01  THRU EX-ROUT01
+                  WITH TEST BEFORE  
+                    VARYING F25 FROM F25 BY F26 
+                    UNTIL F25 > 10
+ 
+      * Test 216 Perform Varying until after  OK
+266        PERFORM ROUT01  THRU EX-ROUT01 
+              VARYING F25 FROM 1 BY 1 
+                    UNTIL F25 > 10
+               AFTER F26 FROM -24 BY 1
+                  UNTIL F26 GREATER THEN 0
+               AFTER F26 FROM 1 BY -1
+                  UNTIL F26 > F25
+
+      * Test 217 Perform k times inner OK  
+           PERFORM F25  TIMES
+             CONTINUE
+           END-PERFORM
+           
+      * Test 218 Perform k times inner con condizione OK
+           PERFORM 10  TIMES UNTIL F26 > F25
+             CONTINUE
+           END-PERFORM
+           
+      * Test 220 Evaluate TRUE con When Other  OK
+267        Evaluate TRUE
+268          When F25 < 4  ALSO F25 EQUAL 100
+269              Move space to f26
+270          When (F25 > 4 AND F26 = 'A')
+271              Move zeroes to f26
+272          When Other
+273              Move zeroes to f26
+274        end-evaluate 
+ 
+      * Test 221 Evaluate FALSE  OK
+275        Evaluate FALSE
+276          When F25 < 4  ALSO F25 EQUAL 100
+277              Move space to f26
+278          When F25 > 4
+279              Move zeroes to f26
+280        end-evaluate 
+
+      * Test 222 Evaluate condition con ALSO  OK
+281        Evaluate F25 LESS ZERO  ALSO F25 = 2 ALSO F25 = 6
+282          When F25 < 4  ALSO F25 EQUAL 100
+283              Move space to f26
+284          When F25 > 4
+285              Move zeroes to f26
+286              Move space to f26.
+ 
+
+      * Test 223 Evaluate condition When TRUE  OK
+287        Evaluate F25 LESS ZERO  
+288          When TRUE  
+289              Move space to f26
+290          When FALSE
+291              Move zeroes to f26
+292          When ANY
+293              Move zeroes to f26
+294        end-evaluate 
+ 
+      * Test 224 Evaluate condition When full options  OK
+295        Evaluate F25   
+296          When ALPHABETIC
+297              Move space to f26
+298          When ALPHABETIC-LOWER
+299              Move zeroes to f26
+300          When ALPHABETIC-UPPER
+301              Move zeroes to f26
+302          When NOT F26
+303              Move zeroes to f26
+304          When NOT 112 ALSO NOT 1 THRU 10
+                          ALSO 20 THROUGH F26
+305              Move zeroes to f26
+306          When 112
+307              Move zeroes to f26
+308          When 11 THRU 200
+309              Move zeroes to f26
+310              Move zeroes to f26 
+311          end-evaluate 
+ 
+      * Test 230 Search semplice  OK
+312        SEARCH OCC03  
+313           AT  END Move zeroes to f26
+315          WHEN F09(F06) = 5
+316              Move zeroes to f26
+317              NEXT SENTENCE
+318          WHEN F09(F06) = 10
+319              Move zeroes to f26 
+320              NEXT SENTENCE
+321          WHEN F09(F06) = 100     
+322              Move zeroes to f26
+323          WHEN F09(F06) = 1000 
+324              Move zeroes to f26.
+                 
+      * Test 232 Search All  OK
+325        SEARCH ALL OCC03  
+326           AT  END Move zeroes to f26
+328          WHEN F09(F06) = 5
+329              Move zeroes to f26
+330              NEXT SENTENCE
+331        END-SEARCH      
+ 
+ 
+      * Test 233 Compute complessa con campo num starting e trattino OK
+           COMPUTE F25=F25-17-UX43007.
+           COMPUTE F25 = F25 - 17-UX43007.
+
+      * Test 234 Compute con moltipicazione
+           COMPUTE F25=  F25 * -1
+           
+      * Test 235 Compute con numero con virgola OK
+          COMPUTE F25 = (F25 * F26) + 0,5000001
+
+      * Test 236 Compute con valori da elemento di tabella numero con virgola OK
+          COMPUTE F25 = (F22(1,3,5) * F26) + 0,5000001
+          COMPUTE F25 = (F22( 1,F25 ,5) * F26) + 0,5000001
+          
+      * Test 237 Compute con valori esponenziali OK
+          COMPUTE F41 = 2,71828182845904**F42. 
+          COMPUTE F41 = 2,71828182845904/F42*(2**F25)-5. 
+          
+      * Test 238 Compute con espressioni con funzioni intrinseche OK
+          COMPUTE F41 = (FUNCTION MEAN (F41 F42))*6
+    
+      * Test 240 Compute sempice  OK
+332       COMPUTE F25 = F26 + 2
+333       COMPUTE F25 EQUAL F26 + (F25/4)
+          
+      * Test 241 Compute rounded  OK
+334       COMPUTE F25 ROUNDED = F26 + 2
+335       COMPUTE F25 ROUNDED EQUAL F26 + (F25/4)
+    
+      * Test 242 Compute risultato multiplo  OK
+336       COMPUTE F25, F26 ROUNDED = F26 + 2
+337       COMPUTE F25 ROUNDED F26 ROUNDED = F06 + (F25/4)
+338       COMPUTE F25 ROUNDED ,F26 ROUNDED = F06 + (F25/4)
+ 
+      * Test 243 Compute con Exception  OK
+339       COMPUTE F25 ROUNDED = F26 + 2
+340         ON SIZE ERROR Move zeroes to f26
+342         NOT ON SIZE ERROR Move 2 to f26
+344       END-COMPUTE
+345       COMPUTE F25 ROUNDED = F26 + 2
+346            SIZE ERROR Move zeroes to f26
+349         NOT   SIZE ERROR Move 2 to f26
+350       END-COMPUTE
+
+      * Test 240 Add semplice  OK 
+351        ADD 2   TO F06
+352        ADD 2   TO F06 ROUNDED
+           
+      * Test 241 Add multipla  OK
+353        ADD 100  TO F06 ROUNDED, F25 F26 ROUNDED
+354        ADD 2, F26 F25   TO F06 ROUNDED, F25 F26 ROUNDED
+            
+      * Test 242 Add Giving  OK
+355        ADD 100  TO F06 ROUNDED, F25  
+              GIVING F26 F06 ROUNDED
+356        END-ADD
+    
+      * Test 243 Add Corresponding OK
+357        ADD CORR G17-ADD TO G18-ADD ROUNDED 
+358        ADD CORRESPONDING G17-ADD TO G18-ADD ROUNDED 
+
+      * Test 244 Sub semplice  OK
+359        SUBTRACT 2   FROM F06
+360        SUBTRACT 2   FROM F06 ROUNDED
+           
+      * Test 245 Sub multipla  OK
+361        SUBTRACT 100  FROM F06 ROUNDED, F25 F26 ROUNDED
+362        SUBTRACT 2, F26 F25   FROM F06 ROUNDED, F25 F26 ROUNDED
+            
+      * Test 246 Sub Giving  OK
+363        SUBTRACT 100  FROM F06 ROUNDED, F25  
+              GIVING F26 F06 ROUNDED
+364        END-SUBTRACT
+    
+      * Test 247 Sub Corresponding  OK
+365        SUBTRACT CORR G17-ADD FROM G18-ADD ROUNDED 
+366        SUBTRACT CORRESPONDING G17-ADD FROM G18-ADD ROUNDED 
+
+      * Test 248 Mult Semplice  OK
+367        MULTIPLY 2   BY F06
+368        MULTIPLY 2   BY F06 ROUNDED
+           
+      * Test 249 Mult multipla  OK
+369        MULTIPLY 100  BY F06 ROUNDED, F25 F26 ROUNDED
+            
+      * Test 250 Mult Giving  OK
+370        MULTIPLY 100  BY F06  
+              GIVING F26 ROUNDED
+371        END-MULTIPLY
+    
+      * Test 251 Div semplice  OK
+372        DIVIDE 2   INTO F06
+373        DIVIDE 10   BY F06  
+           
+      * Test 252 Div Giving  OK
+374        DIVIDE 100  BY F06  
+              GIVING F26 ROUNDED
+375        END-DIVIDE
+    
+      * Test 253 Div Giving Remainder  OK 
+376        DIVIDE 100  BY F06  
+              GIVING F26 ROUNDED
+               REMAINDER F25
+
+      * Test 260 Set semplice  OK
+377        SET F06  TO 5
+378        SET F06  TO F26
+
+      * Test 261 Set multipla  OK
+379        SET F06, F07  TO 5
+ 
+      * Test 262 Set UP/DOWN  OK
+380        SET F06  UP   BY 1
+381        SET F06  DOWN   BY F26
+
+      * Test 263 Set ON/OFF  OK
+382        SET F06  TO ON
+383        SET F06  TO OFF
+384        SET F06, F07  TO ON  
+
+      * Test 264 Set TRUE  OK
+385        SET COND01   TO TRUE
+386        SET COND01 COND02  TO TRUE
+  
+      * Test 265 Set Addrress Of  OK
+387        SET F05   TO ADDRESS OF DFHCOMMAREA       
+388        SET F05 F06  TO ADDRESS OF DFHCOMMAREA
+389        SET ADDRESS OF DFHCOMMAREA  TO F05
+390        SET ADDRESS OF DFHCOMMAREA  TO NULL
+391        SET ADDRESS OF DFHCOMMAREA  TO NULLS
+     
+      * Test 270 Initialize n OK
+           INITIALIZE  03-DESC-FIL-UO.
+  2   *    INITIALIZE G15                      ERRORE CON sez col 1-6 
+2          INITIALIZE G15  
+393        INITIALIZE   G15 G16 REPLACING 
+                  ALPHANUMERIC BY SPACE   
+                  ALPHABETIC BY ZEROES
+                  NUMERIC BY 3.  
+394        INITIALIZE   G15 REPLACING 
+                  ALPHANUMERIC BY F26.  
+                        
+      * Test 275 Accept elementare  OK
+395        ACCEPT F26.
+
+      * Test 276 Accept info di sistema  OK
+396        ACCEPT F26  FROM DATE.
+397        ACCEPT F26  FROM TIME.
+398        ACCEPT F26  FROM DAY.
+399        ACCEPT F26  FROM DAY-OF-WEEK.
+
+      * Test 277 Accept from environment name  OK
+400        ACCEPT F26  FROM SYSIN.
+401        ACCEPT F26  FROM SYSIPT.
+402        ACCEPT F26  FROM SYSOUT.
+403        ACCEPT F26  FROM SYSLST.
+404        ACCEPT F26  FROM SYSPUNCH.
+405        ACCEPT F26  FROM SYSPCH.
+406        ACCEPT F26  FROM CONSOLE.
+407        ACCEPT F26  FROM C01.
+408        ACCEPT F26  FROM C12.
+409        ACCEPT F26  FROM C12.
+410        ACCEPT F26  FROM CSP.
+411        ACCEPT F26  FROM S01.
+412        ACCEPT F26  FROM S02.
+413        ACCEPT F26  FROM S03.
+414        ACCEPT F26  FROM S04.
+415        ACCEPT F26  FROM S05.
+   
+      * Test 278 Accept from mnemonic name  OK
+416        ACCEPT F26  FROM INPUT-STANDARD.
+
+      * Test 280 Display semplici e multiple  OK
+417        DISPLAY F26
+418        DISPLAY F25, F26
+419        DISPLAY F25 ,F26
+420        DISPLAY F25 ' PROVA '
+421        DISPLAY F25 " PROVA "
+422        DISPLAY ' Literal ' UPON STAMPANTE WITH NO ADVANCING
+423        DISPLAY " Literal "
+           
+      * Test 281 Display su environmen/mnemonic name  OK
+424        DISPLAY F25 " PROVA' "  UPON SYSLST
+425        DISPLAY F25 " PROVA' "  UPON STAMPA-STANDARD
+
+      * Test 282 Display con continuazione  OK
+426        DISPLAY                                     			  " PROV
+      -                     "A DI CONTINUAZIONE" UPON SYSLST.
+      
+      * Test 283 Display con  literal embedded  OK
+427        DISPLAY"TEST 01" UPON SYSLST.
+428        DISPLAY'TEST 02' UPON SYSLST.
+
+
+           STRING   '* VALORE PARAMETRO: "'
+                     F26'"' DELIMITED BY SIZE
+               INTO  G15
+           END-STRING
+
+           STRING
+       ',18,2)/COUNT(DISTINCT AZIENDA.DATA_CALC_CR),18,2)) ACC_AZIENDA,'
+           DELIMITED BY SIZE  INTO START-FROM
+
+
+      * Test 290 String  OK 
+429        STRING "AB", ' Z ' F26 DELIMITED BY "/"
+               INTO G15 WITH POINTER F25
+430        END-STRING    
+
+      * Test 291 UnString  OK
+431        UNSTRING G15 DELIMITED BY ALL '/' OR "@"
+             INTO F47-CORR-01 DELIMITED IN F26 COUNT IN F24
+                  F48-CORR-02 DELIMITED IN F25 COUNT IN F27
+432        END-UNSTRING
+
+      * Test 300 Sort Full option Using/Giving  OK
+433        SORT FILE01 ON ASCENDING KEY F25, F26
+                       ON DESCENDING KEY F47-CORR-01
+               WITH DUPLICATES IN ORDER      
+               COLLATING SEQUENCE IS ALPHABET1
+               USING FILE01 FILE02
+               GIVING FILE01 FILE02    
+
+      * Test 301 Sort Full option Input/Output Procedure
+434        SORT FILE01 ON ASCENDING KEY F25, F26   
+                       ON DESCENDING KEY F47-CORR-01
+               WITH DUPLICATES IN ORDER      
+               COLLATING SEQUENCE IS ALPHABET1
+               INPUT PROCEDURE IS PROC-INPUT THRU EX-PROC-INPUT
+               OUTPUT PROCEDURE IS PROC-OUTPUT THRU EX-PROC-OUTPUT 
+                              
+      * Test 302 Sort minimal options  OK
+435        SORT FILE01  ASCENDING  F25, F26
+                        DESCENDING F47-CORR-01
+              USING FILE01 
+              GIVING  FILE02    
+ 
+      * Test 305 Merge Full option giving  OK
+436        MERGE FILE01 ON ASCENDING KEY F25, F26
+                       ON DESCENDING KEY F47-CORR-01
+               COLLATING SEQUENCE IS ALPHABET1
+               USING FILE01, FILE02    
+               GIVING FILE01 FILE02    
+                             
+      * Test 306 Merge Full option Output Procedure  OK
+437        MERGE FILE01 ON ASCENDING KEY F25, F26
+                       ON DESCENDING KEY F47-CORR-01
+               COLLATING SEQUENCE IS ALPHABET1
+               USING FILE01, FILE02 
+              OUTPUT PROCEDURE IS PROC-OUTPUT THRU EX-PROC-OUTPUT 
+                
+      * Test 307 Merge Minimal option  OK
+438        MERGE FILE01   ASCENDING   F25, F26
+                         DESCENDING   F47-CORR-01
+               USING FILE01, FILE02 
+              OUTPUT PROCEDURE IS PROC-OUTPUT THRU EX-PROC-OUTPUT 
+
+      * Test 310 Release  OK
+439        RELEASE REC-FILE01.
+440        RELEASE REC-FILE01  FROM G16.
+ 
+
+      * Test 315 Return  OK
+441        RETURN FILE01
+442        RETURN FILE01  INTO G16.
+ 
+
+      * Test 340 Copy Replacing
+443        MOVE SPACES TO COPY02-CAMPO1
+444        MOVE SPACES TO COPY02-CAMPO1-REPLACED
+445        MOVE SPACES TO COPY03-CAMPO1-CHANGED.
+446        MOVE SPACES TO P1-COPY03-REC.
+447        MOVE SPACES TO P2-COPY03-REC.
+448        MOVE SPACES TO P1-COPY03-CAMPO2
+449        MOVE SPACES TO P2-COPY03-CAMPO2
+ 
+      * Test 345 Stop Run  
+450        STOP RUN.
+ 
+      * Test 350 paragrafo con exit
+451    ROUT01.
+452        MOVE ZERO  TO G02.
+453    EX-ROUT01.  EXIT.
+           
+      * Test 351 Section  
+455    SECTION01 SECTION 10.
+
+      * Test 360 Exec Cics Send statica 
+456        Exec CICS send 
+                     map("MAP01") 
+                     mapset("MAP01S")
+                     FREEKB
+                     ERASE
+                     FROM(MAP-IOAREA)
+           End-Exec.   
+                   
+      * Test 361 Exec Cics  dinamica
+457        MOVE 'MAP01D' TO MAP-NAME.
+458        MOVE 'MAP01SD' TO MAPSET-NAME.
+459          Exec CICS send 
+                     map(MAP-NAME) 
+                     mapset(MAPSET-NAME)
+                     FREEKB
+                     ERASE
+                     FROM(MAP-IOAREA)
+           End-Exec.           
+
+      * Test 362 Exec Cics Receive statica 
+460        Exec CICS RECEIVE 
+                     map("MAP01") 
+                     mapset("MAP01S")
+                     FREEKB
+                     ERASE
+                     FROM(MAP-IOAREA)
+           End-Exec.   
+                   
+      * Test 363 Exec Receive  dinamica
+461        MOVE 'MAP01D' TO MAP-NAME.
+462        MOVE 'MAP01SD' TO MAPSET-NAME.
+463        Exec CICS RECEIVE 
+                     MAP(MAP-NAME) 
+                     MAPSET(MAPSET-NAME)
+                     INTO(MAP-IOAREA)
+           End-Exec.           
+
+      * Test 364 Exec Cics Read statica 
+464        Exec CICS READ 
+                     FILE("FILECIC1") 
+                     RIDFLD(FILE-KEY)
+                     INTO(FILE-IOAREA)
+           End-Exec.   
+                   
+      * Test 365 Exec Read  dinamica
+465        MOVE 'FILECIC1' TO FILE-NAME.
+466        Exec CICS READ 
+                     FILE(FILE-NAME) 
+                     RIDFLD(FILE-KEY)
+                     INTO(FILE-IOAREA)
+           End-Exec.           
+
+      * Test 366 Exec Cics Write statica 
+467        Exec CICS WRITE 
+                     FILE("FILECIC2") 
+                     RIDFLD(FILE-KEY)
+                     FROM(FILE-IOAREA)
+           End-Exec.   
+                   
+      * Test 367 Exec Cics ReWrite statica 
+468        Exec CICS REWRITE 
+                     FILE("FILECIC2") 
+                     NOSUSPEND
+                     FROM(FILE-IOAREA)
+           End-Exec.  
+            
+      * Test 368 Exec Cics Delete statica 
+469        Exec CICS DELETE 
+                     FILE("FILECIC2") 
+                     RIDFLD(FILE-KEY)
+           End-Exec.   
+
+      * Test 369 Exec Cics UnLock statica
+470        Exec CICS UNLOCK 
+                     FILE("FILECIC2") 
+           End-Exec.   
+
+
+      * Test 370 Exec Cics Startbr statica
+471        Exec CICS STARTBR 
+                     FILE("FILECIC2") 
+                     RIDFLD(FILE-KEY)
+           End-Exec.   
+
+      * Test 371 Exec Readnext  statica
+472        Exec CICS READNEXT 
+                     FILE('FILECIC2') 
+                     RIDFLD(FILE-KEY)
+                     INTO(FILE-IOAREA)
+           End-Exec.           
+
+      * Test 372 Exec Readprev  statica
+473        Exec CICS READPREV 
+                     FILE('FILECIC2') 
+                     RIDFLD(FILE-KEY)
+                     INTO(FILE-IOAREA)
+           End-Exec.           
+
+      * Test 373 Exec Readprev  statica
+474        Exec CICS RESETBR 
+                     FILE('FILECIC1') 
+                     RIDFLD(FILE-KEY)
+           End-Exec.           
+
+      * Test 374 Exec Endbr  statica
+475        Exec CICS ENDBR
+                     FILE('FILECIC1') 
+           End-Exec.           
+
+      * Test 375 Exec Writeq Ts  statica
+476        Exec CICS WRITEQ
+                     TS
+                     QUEUE('QTS001') 
+                     FROM(QUEUE-IOAREA)
+                     ITEM(QUEUE-ITEM)
+                     REWRITE
+                     MAIN
+           End-Exec.           
+
+      * Test 376 Exec Readq Ts  statica
+477        Exec CICS READQ
+                     TS
+                     QNAME('QTS001') 
+                     INTO(QUEUE-IOAREA)
+                     ITEM(QUEUE-ITEM)
+           End-Exec.           
+
+
+      * Test 377 Exec Deleteq Ts  statica
+478        Exec CICS DELETEQ
+                     TS
+                     QNAME('QTS001') 
+           End-Exec.           
+
+
+      * Test 378 Exec Writeq Td  statica
+479        Exec CICS WRITEQ
+                     TD
+                     QUEUE('QTD001') 
+                     FROM(QUEUE-IOAREA)
+           End-Exec.           
+
+      * Test 379 Exec Readq Td  statica
+480        Exec CICS READQ
+                     TD
+                     QUEUE('QTD001') 
+                     INTO(QUEUE-IOAREA)
+           End-Exec.           
+
+
+      * Test 380 Exec Deleteq Td  statica
+481        Exec CICS DELETEQ
+                     TD
+                     QUEUE('QTD001') 
+           End-Exec.           
+
+      * Test 381 Exec Link statica
+482        Exec CICS LINK
+                     PROGRAM("PGMLINK1")
+                     COMMAREA(DFHCOMMAREA) 
+                     LENGTH(3000) 
+           End-Exec.           
+
+      * Test 382 Exec Xctl statica
+483        Exec CICS XCTL
+                     PROGRAM("PGMXCTL1")
+                     COMMAREA(DFHCOMMAREA) 
+                     LENGTH(LENGTH OF DFHCOMMAREA) 
+           End-Exec.           
+
+      * Test 383 Exec Load statica
+484        Exec CICS LOAD
+                     PROGRAM("PGMLOAD1")
+           End-Exec.           
+
+      * Test 384 Exec Release statica
+485        Exec CICS RELEASE
+                     PROGRAM("PGMLOAD1")
+           End-Exec.           
+
+      * Test 385 Exec Return statica
+486        Exec CICS RETURN
+                     TRANSID("T001")
+                     COMMAREA(DFHCOMMAREA) 
+                     LENGTH(LENGTH OF DFHCOMMAREA) 
+           End-Exec.           
+
+
+      * Test 386 Exec Start statica
+487        Exec CICS START
+                     TRANSID("T001")
+                     FROM(START-FROM) 
+                     LENGTH(START-FROM) 
+                     TERMID('TRM1')
+           End-Exec.           
+
+      * Test 387 Exec Syncpoint  
+488        Exec CICS SYNCPONT end-exec
+
+      * Test 388 Exec Syncpoint rollback 
+489        Exec CICS SYNCPONT ROLLBACK end-exec
+
+      * Test 389 Exec abend statica
+490        Exec CICS ABEND
+           End-Exec.           
+
+491       Exec CICS ABEND
+                    ABCODE('AB01')
+                    NODUMP
+           End-Exec.           
+
+      * Test 390 Exec handle abend program
+492       Exec CICS HANDLE 
+                    ABEND
+                    PROGRAM('PGMABND')
+          End-Exec.           
+
+      * Test 391 Exec handle abend label
+493       Exec CICS HANDLE 
+                    ABEND
+                    LABEL(LABEL1)
+          End-Exec.           
+
+      * Test 392 Exec handle Aid  
+494       Exec CICS HANDLE 
+                    AID
+                    ANYKEY
+                    CLEAR(LABEL2)
+                    PA2(LABEL3)
+          End-Exec.           
+
+      * Test 393 Exec handle Condition  
+495       Exec CICS HANDLE 
+                    CONDITION
+                    ERROR(LABEL4)
+                    DUPREC(LABEL3)
+                    CLEAR
+          End-Exec.           
+
+
+
+
+496    EX-SECTION01.  EXIT.
+       
+      * Test 400 Section  
+498    SECTION02 
+             SECTION.
+
+      * Test 401 Exit  
+499    S02-EX. 
+500        EXIT.
+
+      * Test 402 Section non referenziata, codice morto 
+501    SECTION99  SECTION.
+502        MOVE SPACES TO G02.
+           
+      * Test 403 Exit  
+503    S99-EX. 
+504        EXIT.
+
+      * Test 403 Copy procedure  
+505    COPY COPYPRO1.
+      
+
+
+
+
+
+
+
+
+
+ 

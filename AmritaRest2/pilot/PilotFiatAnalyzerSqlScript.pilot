@@ -1,0 +1,50 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test analizzatore Sql Script
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti script sql
+#--------------------------------------------------------------------------
+
+
+#--------------------------------------------------------------------------
+# Identificazione oggetti da analizzare
+#--------------------------------------------------------------------------
+
+CUSTOMER_CODE FIAT
+CUSTOMER_INFO SQL-SCRIPT
+
+SYSTEM_BY_EXIT
+SUB_SYSTEM_BY_EXIT
+
+SYSTEM_INPUT *
+SUB_SYSTEM_INPUT *
+
+OBJECT_TYPE_SQL_SCRIPT *ALL*  
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 	 
+START

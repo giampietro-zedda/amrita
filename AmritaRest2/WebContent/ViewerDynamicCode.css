@@ -1,0 +1,107 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+#divDynInstrTable{
+    overflow: auto;	  /* Prevent overflowding table height */
+    height:30%;
+    margin:0;
+    padding:0;
+}
+
+/* Table inside Div #divSubFieldTable*/
+#listDynInstr{
+}
+
+#divSubFieldTable{
+	overflow: auto;  
+    height:auto;
+    margin:0;
+    padding:0;
+}
+
+#listSubField{
+}
+
+#divSubFieldValueTable{
+	overflow: auto;
+    height:auto;
+    margin:0;
+    padding:0;
+}
+
+#listSubFieldValue{
+}
+
+#iframeSourceForDynamicCode {
+ 	width: 0;
+    height: 0;
+ }
+
+table.header td{
+  border: none;  
+  font-size: x-large;
+  height: 25px;
+  margin-top: 5px;
+  margin-Bottom: 5px;
+ }
+
+.header2 {
+  border: none;  
+  font-size: x-large;
+  height: 25px;
+  margin-top: 5px;
+  margin-Bottom: 5px;
+ }
+
+.lblCounter {
+ border: none;	
+ font-size: medium; 
+}
+.counter {
+ border: none;	
+ color: green;
+ font-size: medium; 
+}
+
+.selected {  
+  background-color: yellow;
+}
+
+table.clslistEntity, th, td {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 2px;
+	height: 20px
+}  
+
+table.clslistEntity {
+    width: 99%;
+    max-height: 30px;
+	border: 1px solid #0000a0;
+	border-collapse: collapse;
+	font-family:monospace;
+	font-size: x-small;
+	margin-Bottom: 5px;	 
+}
+
+table.clslistEntity th {  
+    color:  black;  
+    background-color: #ded9d9;  
+} 
+
+table.clslistEntity tr:nth-child(odd) {  
+    background-color: #f1eaea;  
+} 
+
+table.clslistEntity tr:nth-child(odd) th {  
+    color: white;  
+    background-color: gray;  
+} 
+
+

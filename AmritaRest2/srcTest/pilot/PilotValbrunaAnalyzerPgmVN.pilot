@@ -1,0 +1,246 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test analizzatore Cobol X Programmi
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5               
+EXECUTION_UNDER_THREAD_ENABLED 
+
+DATA_BASE_LOG_ANY_SQL_DISABLED
+OPT_STACK_TRACE_ON_PARSING_ERROR_ENANLED
+OPT_VERBOSE_MESSAGES_ENABLED
+OPT_UPDATE_DB_ENABLED
+
+CUSTOMER_CODE VALBRUNA
+CUSTOMER_INFO TEST
+USER_EXIT_CLASS UserExitValbruna
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy 
+#--------------------------------------------------------------------------
+
+# Librerie sorgenti programmi e copy e search copy included
+LIBRARY SYS-RESOURCES C:\Personale\Amrita-2019-workspace\Amrita2019\resources
+LIBRARY PVN-VN-COPY   C:\Personale\Amrita-2019-Valbruna\pvn\copy
+LIBRARY PER-VN-COPY   C:\Personale\Amrita-2019-Valbruna\per\copy
+LIBRARY CER-VN-COPY   C:\Personale\Amrita-2019-Valbruna\cer\copy
+LIBRARY STD-VN-COPY   C:\Personale\Amrita-2019-Valbruna\std\copy
+
+# Sequenza librerie in search per copy include
+LIBRARY_SOURCE_SEARCH SYS-RESOURCES
+LIBRARY_SOURCE_SEARCH PVN-VN-COPY
+LIBRARY_SOURCE_SEARCH PER-VN-COPY
+LIBRARY_SOURCE_SEARCH CER-VN-COPY
+LIBRARY_SOURCE_SEARCH STD-VN-COPY
+
+# Suffissi moduli copy nelle librerie in search da cercare nell'ordine (senza prefisso è accettato) 
+FILE_SUFFIX_COPY cpy
+FILE_SUFFIX_COPY sqb
+FILE_SUFFIX_COPY cbl
+
+# Copy da includere per precompilatori (da SYS-RESOURCES)
+COPY_PRECOMPILER CICS LINKAGE CICS-EIB.cbl
+COPY_PRECOMPILER CICS WORKING CICS-API.cbl
+
+# VN-AN/AT/BD/....
+SYSTEM_INPUT VN
+SUB_SYSTEM_INPUT AN   // Anagrafica soggetti
+
+#SUB_SYSTEM_INPUT UT   // Utility e ambiente
+#SUB_SYSTEM_INPUT MA   // Magazzini
+#SUB_SYSTEM_INPUT SO   // Ordini di lavoro
+#SUB_SYSTEM_INPUT DB   // Anagrafica articoli/distinta base
+#SUB_SYSTEM_INPUT RE   // Cicli e risorse 1
+#SUB_SYSTEM_INPUT RT   // Cicli e risorse
+#SUB_SYSTEM_INPUT SH   // Spedizioni
+#SUB_SYSTEM_INPUT RI   // Ricevimento (no programmi)
+#SUB_SYSTEM_INPUT OF   // Acquisti
+#SUB_SYSTEM_INPUT OC   // Vendite
+
+#---Da analizzare
+#SUB_SYSTEM_INPUT IC   // Fatture fornitori
+#SUB_SYSTEM_INPUT FA   // Fatturazione attiva
+#SUB_SYSTEM_INPUT BD   // Budget Vendite e acquisti
+#SUB_SYSTEM_INPUT DI   // Gestione log
+#SUB_SYSTEM_INPUT QC   // Qualita cicli di ispezione
+
+#SUB_SYSTEM_INPUT *ALL*
+#SUB_SYSTEM_INPUT AN AT BD CF CG CO DA DB DG DI DJ DK DM DS DW FA FB FC FD FE FG FI FK FM FR FS FU FY GT HE HO IC IN LE MA MP MT MV MU OC OF OM OS PC PL PM QC QF RE RM RT SA SC SE SH SK SM SO ST TB TS UT UX VA VM
+
+# Tipi oggetto da considerare
+#OBJECT_TYPE_PGM_COBOL *ALL*  
+OBJECT_TYPE_PGM_COBOL *SINGLE* ANFMFMR
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UTSABAR
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UTSABVR
+
+# Oggetti da escludere fra quelli considerati
+EXCLUDE_OBJECT_NAME mauro 
+EXCLUDE_OBJECT_NAME MASAK0BTEST
+#EXCLUDE_OBJECT_NAME_RANGE pgmnameA pgmnameZ
+#EXCLUDE_CLEAR 
+
+# Stati validi oggetti da considerare
+INPUT_OBJECTS_STATUS_ALL
+#INPUT_OBJECTS_TO_BE_ANALYZED
+#INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS
+#INPUT_OBJECTS_ANALYZED_WITH_ERRORS
+#INPUT_OBJECTS_ANALYZED_WITH_EXCEPTION
+#INPUT_OBJECTS_PROCESSED_WITH_NO_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_EXCEPTION
+
+# Opzioni generali per generazione tracciati copy e where used campi di copy
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_ENABLED
+OPT_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni generali per FORZATURA rianalisi e scrittura tracciato copy
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni specifiche FORZATURA rianalisi e generazione copy su db
+#COPY_TO_FORCE_RE_ANALYSIS    ANCOH4B
+#COPY_TO_FORCE_RE_BUILD_ON_DB ANCOH4B
+#COPY_TO_FORCE_RE_BUILD_ON_DB xxxxxxxx yyyyyyyy ....
+#COPY_TO_FORCE_RE_ANALYSIS    xxxxxxxx yyyyyyyy ....
+
+# Elaborazioni da effettuare per ogni programma
+OPT_UPDATE_DB_ENABLED
+OPT_GRAPH_CREATION_ENABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_LIGHT_ENABLED 
+OPT_SOLVE_DML_SQL_ENABLED
+OPT_DETECT_DEAD_CODE_ENABLED
+OPT_SOLVE_DML_SQL_ENABLED
+OPT_METRICS_ALL_DISABLED        	        
+OPT_METRICS_PGM_DETAIL_ON_DB_ENABLED   
+OPT_METRICS_BASIC_ENABLED               
+OPT_METRICS_DETAIL_ENABLED             
+OPT_METRICS_MCCABE_ENABLED 
+OPT_METRICS_HALSTEAD_ENABLED 
+OPT_METRICS_DETECT_VIOLATIONS_ENABLED
+OPT_METRICS_COMPLEXITY_STRUCTURE_DISABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_DISABLED       
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED 
+
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 	 
+START
+
+
+# Compliance 
+#OPT_IBM_DB2_MAINFRAME_V10_COMPLIANCE_ENABLED
+#OPT_IBM_DB2_AIX_V9_COMPLIANCE_ENABLED
+
+# VN-AN/AT/BD/....
+#SYSTEM_INPUT VN
+#SUB_SYSTEM_INPUT *ALL*
+#SUB_SYSTEM_INPUT UT GT
+#SUB_SYSTEM_INPUT AN AT BD CF CG CO DA DB DG DI DJ DK DM DS DW FA FB FC FD FE FG FI FK FM FR FS FU FY GT HE HO IC IN LE MA MP MT MV MU OC OF OM OS PC PL PM QC QF RE RM RT SA SC SE SH SK SM SO ST TB TS UT UX VA VM
+
+# Info per user exit a fronte di oggetti inseriti/aggiornati/..
+#SYSTEM_VALUE VN
+#SUB_SYSTEM_TO_CLEAR *ALL*
+#SUB_SYSTEM_VALUE
+#SYSTEM_ON_NAME
+#SYSTEM_BY_EXIT
+#SUB_SYSTEM_BY_EXIT
+#SUB_SYSTEM_ON_NAME
+
+# Tipi oggetto da considerare
+#OBJECT_TYPE_COPY_COBOL_DATA  *ALL*  
+#OBJECT_TYPE_COPY_COBOL_PROC  *ALL*		 
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* GTSVBFC 
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* UTSATBEC   
+#OBJECT_TYPE_COPY_COBOL_PROC *SINGLE* xxxxxxxx yyyyyyyy ....
+
+# Info per user exit a fronte di oggetti inseriti/aggiornati/..
+#SYSTEM_VALUE VN
+#SUB_SYSTEM_TO_CLEAR *ALL*
+#SUB_SYSTEM_VALUE
+#SYSTEM_ON_NAME
+#SYSTEM_BY_EXIT
+#SUB_SYSTEM_BY_EXIT
+#SUB_SYSTEM_ON_NAME
+
+# Filtri oggetti da analizzare (SCAN LIBRARY)
+#FILTER_BY_EXIT                    			// Filtro sul nome sorgente come restituito da exit class
+#FILTER_ON_OBJECT_NAME  bbbb                // Pos inizio caratteri di filtro nel nome source/oggetto + valore di match
+#FILTER_ON_OBJECT_NAME_RANGE            	// Obj type From o *, Obj name From o *, Obj type To o *, Obj Name To o *, Relationships o *
+#FILTER_DISABLED                    		// Filtro sul nome sorgente/oggetto disabilitato
+#FILTER_CLEAR                      			// Valori filtro immessi precedentemente eliminati
+
+# Opzioni misurazioni e metriche non di base (incluse nell'analisi)
+#OPT_METRICS_ALL_DISABLED           	        
+#OPT_METRICS_PGM_DETAIL_ON_DB_ENABLED               
+#OPT_METRICS_BASIC_ENABLED               
+#OPT_METRICS_DETAIL_ENABLED               
+#OPT_METRICS_MCCABE_ENABLED 
+#OPT_METRICS_HALSTEAD_ENABLED 
+#OPT_METRICS_COMPLEXITY_STRUCTURE_ENABLED      
+#OPT_METRICS_COMPLEXITY_FUNCTION_ENABLED       
+#OPT_METRICS_FUNCTION_POINT_DISABLED		 
+#OPT_METRICS_REHOSTING_DISABLED 
+#OPT_METRICS_DETECT_VIOLATIONS_ENABLED
+
+
+# Stati validi oggetti da considerare
+#INPUT_OBJECTS_STATUS_ALL
+#INPUT_OBJECTS_TO_BE_ANALYZED
+#INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS
+#INPUT_OBJECTS_ANALYZED_WITH_ERRORS
+#INPUT_OBJECTS_ANALYZED_WITH_EXCEPTION
+#INPUT_OBJECTS_PROCESSED_WITH_NO_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_EXCEPTION
+
+#OBJECT_TYPE_COPY_COBOL_ID  *ALL*
+#OBJECT_TYPE_COPY_COBOL_ENV *ALL*
+
+
+#Programmi in errore
+#MASAINP VMIDNUMI not defined
+#MASAKBP copy GTSATFR assente
+#SOSAFAP Mappa SOSAFAM non definita o copy non presente
+#SOSASOD Copy GTSATFR non dichiarato, tutti i campi non definiti
+#SOSAWLP 88 MESI-GG31                 VALUE 01,03,05,07,08,  10,12 Token: 01,03,05,07,08  Da riga: 235  Pos: 15  A riga: 236  Pos: 55
+#DBSAKEP Parentesi non bilanciate in condizione di search EXEC SQL  DECLARE PREN_CUR2 CURSOR FOR SELECT SUBSTR (OCCORDN, 1, 2) AS SIGL.....
+#SHSA11D
+#SHSA82D
+#SHSAKSD
+#SHXMLTIS
+#SHSAAPP java.util.NoSuchElementException
+#SHSACLP Paragrafi FUNCTION-SH12 non trovati e sourceInstr in ObjectAnalysisError troppo piccolo (exception)
+#OFSACOP
+#OFSAG1D
+#OFSASOD
+#OFVBORB
+#OFSAMFP exception
+
+# Sources analizzati:352  Con errori:6  In exception:30
+# sorgenti analizzati terminati con exception
+#OCSAF3P
+#OCSAKLD
+#OCSASEP
+#OCSASOD
+#OCSAZZB
+#OCXMLTIS
+# Elenco sorgenti analizzati terminati con exception
+#OCSAK4R VAMPVRT VAMPGRQ VAMPDAT VAMPDCA VAOCCLA non trovati ma esistenti e next exception in ins relation

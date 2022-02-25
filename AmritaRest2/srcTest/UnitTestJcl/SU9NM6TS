@@ -1,0 +1,36 @@
+//SU9NM6TS JOB AFOC000N7,'I.T.T.',CLASS=B,MSGCLASS=K,REGION=0M,
+//       SCHENV=NOTFOUND
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//*
+//*ITTSPAZIO
+//*
+//     SET JOBN=U9NM6TS,LIBITT=LOPS0.INPUT.ITT,
+//         EMEITT=LOBS0.INPUT.ITT,
+//         CENN=1,CEN=O,CENSOC=S,BANCA=S,MQ=NOTFOUND
+//*
+//*    GESTIONE BUSTA
+//*
+//   EXEC SOOGET,TID='C'
+//*
+//*    SMISTATORE
+//*
+//P1 EXEC SOOONN
+//     EXEC SOOGS0,
+//          ITTINP='U9.TS0M0.RAP.ESTRATTI.U9NM6.THEMA',
+//          FASE=U9NM6TS1
+//*
+//***************************************
+//*PROSTART
+//* DESCRIZIONE    : I.T.T.
+//*
+//* -----------
+//* VINCOLI TP   : NO
+//* SCHEDULAZIONE: TRIGGERATO DA UTENTE
+//* -----------
+//* DUMP         : IN CASO DI RET. CODE > 04 SU STEP SPZSMIST
+//*                 RILANCIARE DALL'INIZIO. NEGLI ALTRI CASI SOSPENDERE
+//*                 E SEGN.
+//*PROSEND
+//***************************************

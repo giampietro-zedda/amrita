@@ -1,0 +1,24 @@
+//SQV00XI JOB AMQV000N3,'FTP',CLASS=B,MSGCLASS=K,REGION=0M,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//*
+//FTP EXEC Y6FTPABC,CEN=O,CENN=1
+//REXX.SEND DD DSN=DOP0QV.TSBG0.QVGDOM01.QVR8522.QVAB1,
+//             DISP=SHR
+//REXX.INPUT DD *
+OUTPUT: /datastage/data/cdmz0/ITT/in/QVGDOM01.01025.PRE
+NEWNAME: /datastage/data/cdmz0/ITT/in/QVGDOM01.01025
+//*****************************************************************
+//*PROSTART
+//*DESCRIZIONE   : INVIO FLUSSO A DIPARTIMENTALI CON FTP
+//*-----------
+//*SCHEDULAZIONE : TRIGGER DA FASE CREANTE
+//*-------------
+//*VINCOLO TP    : NO
+//*----------
+//*DUMP          : RESTART DA STEP IN DUMP. SE PERSISTE SOSPENDERE
+//*----
+//*PROSEND
+//*****************************************************************

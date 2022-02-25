@@ -1,0 +1,45 @@
+#--------------------------------------------------------------------
+# Pilot di Clear Database valbruna
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+
+FILE_OUTPUT FileSourcesDetected2.txt
+USER_EXIT_CLASS UserExit
+
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#-STD-COPY          AN    BD CF CG    DA DB DG DI DJ DK DM DS DW FA    FC                FM    FS       GT       IC IN LE MA MP MT MV    OC OF OM OS PC PL PM QC    RE RM RT    SC    SH SK    SO ST TB TS UT 
+#-STD-BMS           AN    BD             DB          DK          FA                      FM                      IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT          SH SK    SO ST TB    UT 
+#-STD-COB           AN    BD             DB          DK          FA FB    FD FE          FM FR    FU FY    HE    IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT          SH SK    SO ST TB    UT 
+#-STD-SQL           AN    BD CF       DA DB    DI DJ    DM    DW FA                      FM                      IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT    SC    SH SK    SO ST TB    UT 
+#-PER-COPY          AN    BD       CO    DB                      FA    FC          FI FK FM    FS    FY GT       IC IN    MA MP    MV MU OC OF       PC       QC QF RE RM    SA SC    SH SK    SO    TB TS UT 
+#-PER-BMS           AN                   DB                      FA                      FM                      IC       MA MP    MV    OC OF                         RM             SH SK    SO          UT UX    VM
+#-PER-COB           AN             CO    DB                      FA       FD FE FG       FM    FS FU FY    HE    IC       MA MP    MV    OC OF       PC PL PM QC       RM RT SA SC    SH SK SM SO    TB    UT    VA VM
+#-PER-SQL   
+#-PVN-COPY          AN AT          CO    DB    DI                FA    FC                               GT    HO IC IN    MA       MV    OC OF                         RM RT    SC SE SH SK    SO    TB TS UT    VA VM 
+#-PVN-BMS           AN                   DB                      FA                                              IC       MA             OC OF                         RM             SH SK SM             UT    VA VM
+#-PVN-COB       AG  AN             CO    DB                      FA                      FM                      IC       MA       MV    OC OF OM          PM          RM RT          SH SK SM SO    TB    UT    VA VM
+#-PVN-SQL           AN                                           FA                      FM                         IN    MA       MV                                  RM                                  UT    VA 
+
+
+SYSTEM_TO_CLEAR     VN
+#UB_SYSTEM_TO_CLEAR AN AT BD CF CG CO DA DB DG DI DJ DK DM DS DW FA FB FC FD FE FG FI FK FM FR FS FU FY GT HE HO IC IN LE MA MP MT MV MU OC OF OM OS PC PL PM QC QF RE RM RT SA SC SE SH SK SM SO ST TB TS UT UX VA VM
+SUB_SYSTEM_TO_CLEAR *ALL*
+
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_CLEAR_DB	 	 
+START

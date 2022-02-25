@@ -1,0 +1,125 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>Object Analysis Metrics Violation Information</title>
+<link rel="stylesheet" type="text/css" href="ViewerMetricViolation.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+  <div id="objectMetricViolationDiv"> </div>   
+	<table class='clsForm' id='objectMetricViolationTable'>
+	  <tr>
+	    <th colspan='2'>Metrics Violations Key</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>System</td>
+	    <td class='clsFormC2MetrVio'><div id="system"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>SubSystem</td>
+	    <td class='clsFormC2MetrVio' id='subSystem'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Id Object</td>
+	    <td class='clsFormC2MetrVio' id='idObject'></td>
+	  </tr>
+	  <tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Type Object</td>
+	    <td class='clsFormC2MetrVio' id='typeObject'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Section</td>
+	    <td class='clsFormC2MetrVio' id='section'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Type Violation</td>
+	    <td class='clsFormC2MetrVio' id='typeViolation'></td>
+	  </tr>
+	</table>
+
+	<table class='clsForm' id='objectMetricViolationTable'>
+	  <tr>
+	    <th colspan='2'>Metrics Violations Data</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Severity</td>
+	    <td class='clsFormC2MetrVio' id='severityViolation'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Violation Origin Rows</td>
+	    <td class='clsFormC2MetrVio' id='originViolationRows'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Violation Origin Rows in Copy Book</td>
+	    <td class='clsFormC2MetrVio' id='originViolationRowsCopy'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Violations count</td>
+	    <td class='clsFormC2MetrVio' id='cntViolations'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Violation Value</td>
+	    <td class='clsFormC2MetrVio' id='value'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Remediation Cost</td>
+	    <td class='clsFormC2MetrVio' id='remediationCost'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Remediation Unit</td>
+	    <td class='clsFormC2MetrVio' id='remediationUnit'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrVio'>Quality Characteristic</td>
+	    <td class='clsFormC2MetrVio' id='qualityCharacteristic'></td>
+	  </tr>
+	</table>	
+	
+</body>
+
+<script type="text/javascript">
+"use strict";
+var objJson = null;
+var winOpener = null;
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+       winOpener=window.opener;
+	   objJson=winOpener.getjsonObjectMetricViolation();
+	   loadTable(objJson);
+	}
+
+function loadTable(obj) {
+	   document.getElementById('system').innerHTML = obj[0].sys; 
+	   document.getElementById('subSystem').innerHTML = obj[0].subSystem;
+	   document.getElementById('idObject').innerHTML = obj[0].idObject;
+	   document.getElementById('typeObject').innerHTML = obj[0].typeObject;
+	   document.getElementById('section').innerHTML = obj[0].section;
+	   document.getElementById('typeViolation').innerHTML = obj[0].typeViolation;
+	   
+	   document.getElementById('severityViolation').innerHTML = obj[0].severityViolation;
+	   document.getElementById('originViolationRows').innerHTML = obj[0].originViolationRows;
+	   document.getElementById('originViolationRowsCopy').innerHTML = obj[0].originViolationRowsCopy;
+	   document.getElementById('cntViolations').innerHTML = obj[0].cntViolations;
+	   document.getElementById('value').innerHTML = obj[0].value;
+	   document.getElementById('remediationCost').innerHTML = obj[0].remediationCost;
+	   document.getElementById('remediationUnit').innerHTML = obj[0].remediationUnit;
+	   document.getElementById('qualityCharacteristic').innerHTML = obj[0].qualityCharacteristic;
+	}
+
+</script>
+
+</html>

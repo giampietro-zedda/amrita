@@ -1,0 +1,233 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerMetricViolations.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div  id="divSectionsTable">   	
+      <table class='header'><tr>
+                 <td id='Sections'>Sections Violations</td> 
+                 <td class='counter' id='CountSections'>0</td>     
+             </tr>  
+      </table> 
+      <div id="sectionsTable"></div> 
+</div>
+
+<div id="divMetricViolation">   	
+    <div class='header2' tabindex='0'>Violation Detail</div>
+   	<iframe class='iframeMetricViolation' id='iframeMetricViolation' name='iframeMetricViolation'  style="height:55%;width:100%;border:none;overflow:hidden;"></iframe> 
+</div>
+   	
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+var baseurl = 'http://localhost:8080/AmritaRest2/rest';
+var urlMetricViolationGET = 'metricViolation'
+
+var winOpenViewer=null;      // Viewer reference
+var objConfig = null;        // Configurator Object
+var objSelRow=null;          // Object row selected in viewer
+var jsonArray = null;        // Contains relations
+var objects=[];              // JsonArray   
+var jsonObjectMetricViolation=null;   // Json Object to Pass to Open Window
+
+
+//To manage error list
+var arMetricSectionRow = [];      		// Rows objects    
+var objMetricSectionSelRow=null;        		// Info relation selected row  
+var iSelMetricSection=0;
+var iSelMetricSectionOld=0;
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+  winOpenViewer=window.opener;
+  objConfig=winOpenViewer.getConfig();
+  objSelRow=winOpenViewer.getObjSelRow();
+  loadMetricSections();
+}
+
+function loadMetricSections() {
+	getJsonResponseMetricSectionsGET(); 
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function getJsonResponseMetricSectionsGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlMetricViolationGET + "/" + objConfig.user + "/" + objSelRow.sys + "/" + objSelRow.subSys + "/*" + "/" + objSelRow.idObject + "/" + objSelRow.typeObjectN + "/" + "*"  + "/" + "*";
+
+	document.getElementById("CountSections").innerHTML = "Database fetching ...";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseMetricSections(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseMetricSections(xmlhttp, jsonArray) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+		   arMetricSectionRow = new Array(MetricSectionRow);
+	       
+	       var tbltop = "<table class='clsListEntity' id='listSections'>"
+		 	          +    "<tr>"
+		              +      "<th>scope</th>"	              
+		              +      "<th>idObject</th>"		             
+		              +      "<th>section</th>"
+		              +      "<th>Violation</th>"	
+		              +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	     	         +    "<td id='scope_"                  + i + "' onclick='onclick_metricSectionRow(this.id);'>" + objects[i].scope                  + "</td>" 
+	     	         +    "<td id='idObject_"               + i + "' onclick='onclick_metricSectionRow(this.id);'>" + objects[i].idObject               + "</td>" 
+	     	         +    "<td id='section_"                + i + "' onclick='onclick_metricSectionRow(this.id);'>" + objects[i].section                + "</td>" 
+	     	         +    "<td id='typeViolation_"          + i + "' onclick='onclick_metricSectionRow(this.id);'>" + objects[i].typeViolation          + "</td>" 
+	     	         +  "</tr>"
+	     	         
+	  	     	   var objMetricSectionRow = new MetricSectionRow(
+									                             objects[i].sys	 
+									                            ,objects[i].subSystem	  
+									                            ,objects[i].scope	
+									                            ,objects[i].idObject                           
+									                            ,objects[i].typeObject  
+									                            ,objects[i].section 
+									                            ,objects[i].typeViolation    
+									                            ,objects[i].scopeOrdinal 									                            
+									                            ,objects[i].typeObjectOrdinal 
+									                            ,objects[i].typeViolationOrdinal 
+                                                                 );
+                   arMetricSectionRow.push(objMetricSectionRow);                                        
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		  
+	       document.getElementById('sectionsTable').innerHTML = tbl;
+		   document.getElementById("CountSections").innerHTML = objects.length;
+    }	
+}
+
+
+function onclick_metricSectionRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelMetricSection = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelMetricSection != iSelMetricSectionOld && iSelMetricSectionOld >= 0) {
+		document.getElementById("scope_"+iSelMetricSectionOld).classList.remove("selected"); 
+		document.getElementById("idObject_"+iSelMetricSectionOld).classList.remove("selected"); 
+		document.getElementById("section_"+iSelMetricSectionOld).classList.remove("selected"); 
+		document.getElementById("typeViolation_"+iSelMetricSectionOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("scope_"+iSelMetricSection).classList.add("selected"); 
+		document.getElementById("idObject_"+iSelMetricSection).classList.add("selected"); 
+		document.getElementById("section_"+iSelMetricSection).classList.add("selected"); 
+		document.getElementById("typeViolation_"+iSelMetricSection).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelMetricSectionOld=iSelMetricSection;
+    
+    // Database access and loading
+    objMetricSectionSelRow =arMetricSectionRow[iSelMetricSection+1];	// Element 0 contains var names
+    getJsonResponseMetricViolationGET(); 
+} 
+
+function getJsonResponseMetricViolationGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlMetricViolationGET + "/"+ objConfig.user + "/" + objSelRow.sys + "/" + objSelRow.subSys + "/" + objMetricSectionSelRow.scopeN + "/" + objSelRow.idObject + "/" + objSelRow.typeObjectN + "/" + objMetricSectionSelRow.section + "/" + objMetricSectionSelRow.typeViolationN ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseMetricViolation(xmlhttp);};
+}
+
+function handleJsonResponseMetricViolation(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   jsonObjectMetricViolation=JSON.parse(xmlhttp.responseText);
+       window.open('ViewerMetricViolation.html', 'iframeMetricViolation', "width=800,height=60%"); 
+ 	}
+}
+
+
+/* called by ObjectMetricViolation.html to get the Json object */
+function getjsonObjectMetricViolation(){
+   return jsonObjectMetricViolation;
+}
+
+// Custom objects for section row row
+function MetricSectionRow(		
+		  sys 
+		, subSys 
+		, scope
+		, idObject 
+		, typeObject
+		, section
+		, typeViolation
+		, scopeN
+		, typeObjectN		
+		, typeViolationN
+)  {
+   this.sys = sys;  
+   this.subSys = subSys;    
+   this.scope = scope;   
+   this.idObject = idObject;
+   this.typeObject = typeObject;
+   this.section = section;
+   this.typeViolation = typeViolation;
+   this.scopeN = scopeN;
+   this.typeObjectN = typeObjectN;  
+   this.typeViolationN = typeViolationN;
+}
+
+</script>
+
+</html>

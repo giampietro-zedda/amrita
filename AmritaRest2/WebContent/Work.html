@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="Work.css"/>
+<style>  
+</style>  
+</head>
+<body>
+
+<div> 
+  test source viewer
+</div>
+
+<form id='myForm' name='myForm' method='POST' action='http://localhost:8080/AmritaRest2/rest/testArray'>
+  <input name="rowPilot" type="text" value='1'/>
+  <input name="rowPilot" type="text" value='2' />
+  <input name="rowPilot" type="text" value='3' />
+  <input name="rowPilot" type="text" value='4' />
+  <input name="rowPilot" type="text" value='5' />
+  <input type="submit" id="submit2" value="upload">
+</form>
+<input type="button" id="submit2" onclick="submitform();">
+
+</body>
+<script type="text/javascript">
+
+function submitform(){
+	document.getElementById("myForm").submit();
+}
+
+function _sendData(arPilot) {
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	const XHR = new XMLHttpRequest();
+	
+	// Turn the data object into an array of URL-encoded key/value pairs.
+	for (var i = 0; i < arPilot.length; i++) {
+	   urlEncodedDataPairs.push( encodeURIComponent( "rowPilot" ) + '=' + encodeURIComponent( arPilot[i] ) );
+	}
+	   
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	// Define what happens on successful data submission
+	XHR.addEventListener( 'load', function(event) {
+	                                                alert( 'Yeah! Data sent and response loaded.' );
+	                                                alert( event.target.responseText);
+	                                              } 
+	                    );
+	
+	// Define what happens in case of error
+	XHR.addEventListener( 'error', function(event) {
+	                                                 alert( 'Oops! Something went wrong.' );
+	                                                 alert( event.target.responseText);
+	                                               } 
+	                    );
+	
+	// Set up our request
+	XHR.open( 'POST', baseurl + "/" + "testArray" );
+	   
+	// Add the required HTTP header for form data POST requests
+	XHR.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+	
+	// Finally, send our data.
+	XHR.send( urlEncodedData );
+}
+
+
+function _onclick_btnSave(clicked_id) {
+	var htmlForm="";
+	var oForm=null;
+	pushPilotArrayFromHtml(); // Create Array
+	htmlForm = "<form id='formRows' name='myForm' method='POST' action='" + baseurl + "/" + "testArray" + "'>"	
+	for (var i = 0; i < arPilot.length; i++) {
+		htmlForm += "<input name='rowPilot'  type='text' + value='" + arPilot[i] + "'/>" ;
+	}
+	document.getElementById("divPilot").innerHTML=htmlForm;
+	oForm=document.getElementById("formRows");
+ 	oForm.submit();
+ 	sendFileToServer();
+
+} 
+</script>
+
+
+</html>

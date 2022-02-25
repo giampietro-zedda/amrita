@@ -1,0 +1,1178 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache">
+<meta http-Equiv="Pragma"    Content="no-cache">
+<meta http-Equiv="Expires"    Content="0">
+<title>Analyzer</title>
+<link rel="stylesheet" type="text/css" href="Analyzer.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>	
+
+	<table id='mainTable'>  
+	  <!-- First Header Row -->
+      <tr id='tr1'>
+         <td colspan='2'>
+			  <table id='headerLineTable'>
+			   <tr id='tr1'>
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Analyzer</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id='linkMain'  align="right"><a href="AmritaHomePage.html">Home page</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+			   </tr>
+			  </table>
+	 </table>		  
+			  
+	<table id='mainTable2'>  
+
+	  <tr id='tr2'>
+	  
+	    <td id='td21'>  
+	    
+	      	 <div class=divHeader>PROCESSES </div> 	
+	      	 <table class='tbBtnProcesses'> 
+	      	    <tr>
+      	           <td><input class='btnProcesses' type="button" id='btnSetup'          value="Setup"           onclick='onclick_btnSetup(this.id);' /> </td>
+      	           <td><input class='btnProcesses' type="button" id='btnStatusAnalysis' value="Status Analysis" onclick='onclick_btnStatusAnalysis(this.id);' /> </td>
+	      	    </tr>
+	      	 </table>  	      	 
+	      	 <table id=tbProcesses>
+	      	    <tr><td><input type="radio" id="procLibraryScan" name="typeProcess"      value="LSCAN"    onclick='onclick_btnRadio(this.id);' >
+	      	            <label for="procLibraryScan">Library Scan</label>
+	      	        </td></tr>
+	      	    <tr><td><input type="radio" id="procAnalysisSources" name="typeProcess" value="ACPYD"    onclick='onclick_btnRadio(this.id);' > 
+	      	            <label for="procAnalysisCopyData">Analysis Sources</label><br>
+	      	         </td></tr>
+	      	         
+		      	    <tr><td id="procAnalysisCopyData"      >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy Data Division</td></tr>
+		      	    <tr><td id="procAnalysisCopyProc"      >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy Procedure Division</td></tr>
+		      	    <tr><td id="procAnalysisPgm"           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cobol Programs</td></tr>
+		      	    <tr><td id="procAnalysisBms"           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Cics Bms Map</td></tr>
+		      	    <tr><td id="procAnalysisPct"           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Cics Pct</td></tr>
+		      	    <tr><td id="procAnalysisPpt"           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Cics Ppt</td></tr>
+		      	    <tr><td id="procAnalysisFct"           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Cics Fct</td></tr>
+		      	    <tr><td id="procAnalysisJclIbmJob"     >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Jcl Job</td></tr>
+		      	    <tr><td id="procAnalysisJclIbmProc"    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Jcl Procedure</td></tr>
+		      	    <tr><td id="procAnalysisJclIbmInclude" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IBM Jcl Include</td></tr>
+		      	    <tr><td id="analysysDdlSql" 	  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DDL Sql</td></tr>
+	      	    <tr><td><input type="radio" id="proProcessPgmLevel" name="typeProcess" value="PLPGM"      onclick='onclick_btnRadio(this.id);' > 
+	      	            <label for="proProcessPgmLevel">Process Pgm Level</label><br>
+	      	        </td>
+	      	    </tr>
+	      	    <tr><td><input type="radio" id="procProcessSystemLevel" name="typeProcess" value="PSLVL"  onclick='onclick_btnRadio(this.id);' > 
+	      	         <label for="procProcessSystemLevel">Process System Level</label><br>
+	      	        </td>
+	      	    </tr>
+	      	    <tr><td><input type="radio" id="procClearDb" name="typeProcess" value="CLRDB"             onclick='onclick_btnRadio(this.id);' > 
+	      	         <label for="procClearDb">Clear Db at Subsystem Level</label><br> 
+	      	        </td>
+	      	    </tr>
+	      	 </table>	     	      	                      
+ 	    </td>
+ 	    
+	    <td id='td22'>  
+	           <div class=divHeader id='idDivHeader'>PROCESS PILOTS</div>                
+               <div id='divProcessPilots' >   
+	               <table id='tbPilotsObjectsSources'>
+	                    <tr><td id='td221'>  
+						       <table class='tbBtnProcesses'> 
+					      	     <tr>
+				      	            <td><input class='btnProcesses' type="button" id='btnNewPilot'     value="New Pilot"   onclick='onclick_btnNewPilot(this.id);' />   </td>
+				      	            <td><input class='btnProcesses' type="button" id='btnRefreshPilot' value="Refresh"     onclick='onclick_btnRefreshPilot(this.id);' /> </td>
+					      	     </tr>
+					      	   </table>  	      	 
+	                    	   <div id='divTbPilotList'></div> 
+		                     </td>
+	                         <td id='td222'> 
+		      	                 <input class='btnProcessPilot' type="button" id='btnConfigurator' value="Configurator" onclick='onclick_btnConfigurator(this.id);' /> 
+		                         <div id='divTbPilotSource'></div> 
+	                        </td>
+	                         <td id='td223'> 
+		      	                 <input class='btnProcessPilot' type="button" id='btnNewPilot' value="Refresh" onclick='onclick_btnRefreshObjects(this.id);' />
+					             <table class='countTable' id='countTbInError'>
+					                    <tr><td class='lblCountSources' id='lblCountSources'>Count:</td>
+					                        <td class='countSources' id='countSources'>0</td>
+					                    </tr>
+					             </table>
+	                 	         <div id='divtbSourcesToProcess'></div>    
+	                         </td>
+	                    </tr>
+	               </table>  
+         </div> 
+         <div id='divIframeConfig'> <iframe id='iframeConfig' name='iframeConfig' title="configurator"></iframe> </div>
+ 	  </tr>
+    </table>
+    
+	<table id='mainTable3'>  
+	  
+	  <tr id='tr3'>
+	  
+	    <td id='td31'> 
+	    	 <div class=divHeader>PROGRESS</div>   
+	    	 <div id='divTbProcessLog'></div>        
+ 	    </td>
+ 	    
+	    <td id='td32'>  
+               <table id=tb321>
+                   <tr id=tr321>
+                   	    <td id='td321'> 
+                   	        <div class=divHeader>ELAPSED</div>  
+			 	    	    <table id='tbElapsedTime'>
+				    	      <tr>
+				    	      	 <td>Max Lasting</td>
+				    	      	 <td id='execMsMax'         class='elapsed' >mm:ss</td>
+			    	      	     <td id='execMsMaxIdObject' class='elapsed'> </td>
+				    	      </tr>
+				    	      <tr>
+				    	      	 <td>Min Lasting</td>
+				    	      	 <td id='execMsMin'         class='elapsed'>mm:ss</td>
+			    	      	     <td id='execMsMinIdObject' class='elapsed'> </td>
+				    	      </tr>
+				    	      <tr>
+				    	      	 <td>Avg Lasting</td>
+				    	      	 <td id='execMsAvg'    class='elapsed'>ms</td>
+			    	      	     <td id='execMsAvgFmt' class='elapsed'>sec</td>
+				    	      </tr>
+				    	      <tr>
+				    	      	 <td>Expected Overall Process End  </td>
+				    	      	 <td id='execMsAllExpectedEnd'  class='elapsed' >ms</td>
+				    	      	 <td id='execMsAllExpectedEndFmt'  class='elapsed'>min</td>
+					    	   </tr>
+				    	      <tr>
+				    	      	 <td>Processing Overall Time  </td>
+				    	      	 <td id='execMsAllElapsed'  class='elapsed'></td>
+				    	      	 <td id='execMsAllElapsedFmt'  class='elapsed'></td>
+				    	      </tr>
+				    	      <tr>
+				    	      	 <td>Processed Count In Error</td>
+				    	      	 <td id='execCntObjectProcessedError'  class='elapsed' colspan='2'></td>
+				    	      </tr>
+				    	      <tr>
+				    	      	 <td>Processed Count In Exception</td>
+				    	      	 <td id='execCntObjectProcessedExcp'  class='elapsed'colspan='2'></td>
+				    	      </tr>
+				    	    </table>
+ 	                    </td>
+ 	                     
+                   	    <td id='td322'>  
+                   	        <div class=divHeader>EXECUTION ON SERVER </div> 
+                   	        <div id='divTbExecution'>                       
+	                            <table id='tbExecution'>
+		                              <tr>
+			                              <td id='tdStartStop'>
+			                                 <table id='tbStartStop' border=1 >
+			                                    <tr>
+			                                       <td> <input class='btnStartStop' type="button" id='btnStart' value="Start" onclick='onclick_btnStart(this.id);' /> </td>
+			                                    </tr>
+			                                    <tr>
+			                                       <td> <input class='btnStartStop' type="button" id='btnStop' value="Annull" onclick='onclick_btnStop(this.id);' /> </td>
+			                                    </tr>
+			                                 </table>
+			                              </td>                              
+			                              <td id='tdRunningStopped'>
+			                                 <table id='tbRunningStopped' border=1>
+				                                <tr>
+			                                       <td id='hdrSeverStatus'>Server Status</td>
+			                                       <td id='statusExec' colspan=3>Stopped</td>
+			                                    </tr>
+			                                    <tr>
+			                                       <td id='hdrCounters'>Processing	</td>
+			                                       <td id='execCntObjectProcessed'>0</td>
+			                                       <td id='slash'>Of</td>
+			                                       <td id='execTotObjectToProcess'>0</td>
+			                                    </tr>
+			                                    <tr>
+			                                       <td id='hdrPgmActive'>Active Object</td>
+			                                       <td id='execCurIdObject' colspan=3></td>
+			                                    </tr>
+			                                 </table>
+			                              </td>
+		                              </tr>
+	                            </table>
+                            </div>  
+                            <div id='divProgrBar'> 
+                              <div id="progrBar">0%</div>
+                            </div>
+ 	                     </td>                  
+                   </tr>
+               </table>     
+ 	    </td>
+	    
+	    
+	  </tr>
+	  
+	</table>
+</body>
+
+<script type="text/javascript">
+"use strict";
+const ACTIVE_IFRAME_PROCESS_PILOTS="P";
+const ACTIVE_IFRAME_STATUS_ANALYSYS="S";
+const ACTIVE_IFRAME_USER="U";
+const PROCESS_ANALYZE_SOURCES = "PROCESS_ANALYZE_SOURCES";
+const PROCESS_ANALYZE_COPY_DATA = "PROCESS_ANALYZE_COPY_DATA";
+const PROCESS_ANALYZE_COPY_PROC = "PROCESS_ANALYZE_COPY_PROC";
+const PROCESS_ANALYZE_PGM = "PROCESS_ANALYZE_PGM";
+const PROCESS_ANALYZE_CICS_BMS_MAP = "PROCESS_ANALYZE_CICS_BMS_MAP";
+const PROCESS_ANALYZE_IBM_JCL = "PROCESS_ANALYZE_IBM_JCL";
+const PROCESS_ANALYZE_DDL_SQL = "PROCESS_ANALYZE_DDL_SQL";
+const PROCESS_PGM_LEVEL = "PROCESS_PGM_LEVEL";
+const PROCESS_SYSTEM_LEVEL = "PROCESS_SYSTEM_LEVEL";
+const FUNCTION_CLEAR_DB = "FUNCTION_CLEAR_DB";
+const FUNCTION_LIBRARY_SCAN = "FUNCTION_LIBRARY_SCAN";
+
+var activeIframe=ACTIVE_IFRAME_PROCESS_PILOTS;
+var activeProcess="*";				 // From radio check box, to qualify process, not used
+var activeProcessExec="*";		     // From constants above
+
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest'; // Replaced then with actual value
+var urlUserGET = 'user';                         		// Lettura table User
+var urlPilotListGET = 'pilotList';               		// lettura elenco pilot
+var urlPilotSourceGET = 'pilotSource';			 		// Recupero pilot da file system
+var urlExecutionWebPUT = 'executionWebStart';    		// Attivazione processi server di analisi
+var urlExecutionWebStopPUT = 'executionWebStop'; 		// Invio richiesta di stop servizi di analisi al server
+var urlExecutionInfoGET = 'executionInfo';       		// Informazioni stato esecuzione
+var urlProcessLogGET = 'processLog'	;            		// Lettura tabella ProcessLog
+var urlListSourcesToProcessGET = 'listSourcesToProcess';// Elenco oggetti da analizzare a partire dal file di pilot
+var winConfiguratorUser = null;
+var objConfig=null; 		// Object Config
+var userInp="amrita";       // Replaced by storageSession variable
+var jsonArray = null;       // Service
+var objects=[];             // JsonArray  
+var arPilotRows=[];         // To be passed to AnalyzerConfiguratorDirectives
+var arPilotNames=[];        //
+var arSourcesNames=[];      // Related the selected pilot source
+var pilotNameSelected="";   // 
+var iSelPilot = 0;          // Current pilot row selected
+var iSelPilotOld = 0;       // Current pilot row selected previous
+var btnClicked="";          // btnNewPilot or btnConfigurator
+var isActivePr
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+
+	}
+}
+
+function afterLoaded() {
+	document.getElementById('procAnalysisSources').checked=true;
+    document.getElementById("divIframeConfig").style.visibility="none";
+	document.getElementById("divIframeConfig").style.width="0";	
+	document.getElementById("divIframeConfig").style.height="0";
+	
+	userInp = localStorage.getItem("user");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");		
+	
+	/* Get config and start processes */
+	loadUserObjectConfig();   // --> objConfig
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function loadUserObjectConfig() {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlUserGET + "/"+ userInp 
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseUser(xmlhttp);};
+} 
+
+function handleJsonResponseUser(xmlhttp) {
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   var objects=JSON.parse(xmlhttp.responseText);
+	   
+	   if (objects.length == 0) {	
+			  alert("User not found on database");
+			  return;
+	   }
+	   
+	   objConfig = new Config(
+                                 objects[0].user
+                               , objects[0].pwd  
+                  			   , objects[0].companyCode    // sys VN
+                  			   , ""     				   // subSys
+                  			   , baseUrl
+                               , objects[0].companyCode 
+                               , objects[0].company 
+                               , objects[0].userType  
+                               , objects[0].userStatus  
+                               , objects[0].language  
+                               , objects[0].country  
+                               , objects[0].mail  
+                               , objects[0].mailInfo  
+                               , objects[0].phone  
+                               , objects[0].referManager  
+                               , objects[0].referTech  
+                               , objects[0].analyzerEnabled  
+                               , objects[0].viewerEnabled 
+                               , objects[0].inspectorEnabled  
+                               , objects[0].assesmentEnabled  
+                               , objects[0].countLogin   			
+                               , objects[0].dtActivation  
+                               , objects[0].tmActivation  
+                               , objects[0].dtExpiration  
+                               , objects[0].tmExpiration  
+                               , objects[0].dtFirstLogin  
+                               , objects[0].dtFirstLogin  
+                               , objects[0].dtLastLogin  
+                               , objects[0].tmLastLogin  
+                               , objects[0].pathConfigFile  
+                               , objects[0].pathRoot  
+                               , objects[0].pathUser  
+                               , objects[0].pathPilot  
+                  			   // Directories relative a root o WEB-INF da file di configurazione generale
+                               , objects[0].dirResources  
+                               , objects[0].dirWork  
+                               , objects[0].dirDatabase       
+                               , objects[0].dirJclInput  
+                               , objects[0].dirCobolSrcPgmInput  
+                               , objects[0].dirCobolSrcCopyInput  
+                               , objects[0].dirCobolPgm  
+                               , objects[0].dirCobolCopy  
+                               , objects[0].dirJcl  
+                               , objects[0].dirSqlScript  	 
+                               , objects[0].dirCobolGraph  
+                               , objects[0].dirPilot  
+                               , objects[0].dirLog  
+                               , objects[0].dirOutput  
+                  			   // Ottimizzazione processi ed elaborazioni,  allocazione di arrays,  collections, map
+                               , objects[0].limitMaxLinesScanFindingSourceType 
+                               , objects[0].limitMaxSources  
+                               , objects[0].limitMaxSourcesInput  
+                               , objects[0].limitMaxSourcesToProcess  
+                               , objects[0].limitMaxObjects  
+                               , objects[0].limitMaxObjectsInput 
+                               , objects[0].limitMaxObjectsToProcess 
+                               , objects[0].debugThresholdMemoryGarbage  
+                               , objects[0].debugSourcesDetectedFreqGarbage  
+                               , objects[0].debugActive  
+                               , objects[0].logVerbose  
+                               , objects[0].preferredVisitMethod  
+                               , objects[0].preferredCachingLevel  
+                               , objects[0].preferredCachingSupport  
+                  			   //  Database
+                               , objects[0].dataBaseType  
+                               , objects[0].dataBaseName  
+                               , objects[0].dataBaseUser  
+                               , objects[0].dataBasePwd  
+                               , objects[0].dataBaseDriver  
+                               , objects[0].dataBaseAccessType  
+                               , objects[0].dataBaseUrl  
+                               , objects[0].dataBaseMaxConn  
+                               , objects[0].dataBaseCommitBlockUpdates  
+                               , objects[0].dataBaseLogAnySql 
+                  			   // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+                               , objects[0].pilotDefaultSource  
+                               , objects[0].pilotDefaultProcess  
+                               , objects[0].userExitClass
+                               , objects[0].userTypeOrdinal 
+                               , objects[0].userStatusOrdinal                                                
+ 	     	  					 );
+	   
+	   
+	    onclick_btnRefreshPilot();
+	    onclick_btnRadio();
+	    refreshExecInfo();
+	}
+	   
+}
+
+function loadPilotTable(clicked_id) {
+	getJsonResponsePilotListGET();
+}
+
+function loadPilotSourceTable(clicked_id) {
+	getJsonResponsePilotSourceGET();
+}
+
+function loadTbProcessLog(clicked_id) {
+	getJsonResponseTbProcessLogGET();
+}
+
+function refreshExecInfo()  {
+	loadExecutionInfo();
+	loadTbProcessLog();
+	return "OK";
+}
+
+function loadExecutionInfo()  {
+	getJsonResponseExecutionInfoGET();
+}
+
+function getJsonResponsePilotListGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlPilotListGET + "/"+ userInp + "/" + activeProcess ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponsePilotList(xmlhttp);};
+}  
+
+function handleJsonResponsePilotList(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+	       arPilotNames = new Array();
+		   
+	       var tbltop = "<table id='tbPilotList'>"
+		 	          +    "<tr><th>Execution Pilots</th></tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           
+	    	   main  += "<tr>"  
+	     	         +    "<td id='pilot_" + i + "' onclick='onclick_PilotName(this.id);'>" + objects[i].pilotName + "</td>" 
+	     	         +  "</tr>"
+	     	         
+	     	   arPilotNames.push(objects[i].pilotName);                                        
+
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+	       document.getElementById('divTbPilotList').innerHTML = tbl;	
+    }	
+}
+
+function getJsonResponsePilotSourceGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlPilotSourceGET + "/"+ userInp + "/" + pilotNameSelected ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponsePilotSource(xmlhttp);};
+}  
+
+function handleJsonResponsePilotSource(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   objects=JSON.parse(xmlhttp.responseText);
+		   arPilotRows=[];
+	       var tbltop = "<table id='tbPilotSource'>"
+		 	          +    "<tr><th>Pilot Source File</th></tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   if (objects[i].pilotRow.substring(0,1) != "#") {
+		    	   arPilotRows.push(objects[i].pilotRow);
+			   }
+	    	   main  += "<tr>"  
+	     	         +    "<td>" + objects[i].pilotRow + "</td>" 
+	     	         +  "</tr>"
+	     	         
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+	       document.getElementById('divTbPilotSource').innerHTML = tbl;	
+    }	
+}
+
+function getJsonResponseTbProcessLogGET()  {	
+	var xmlhttp;
+	var d = new Date();
+	var mm = "";
+	var dd = "";
+	mm = "0"+String(d.getMonth()+1);
+	dd = "0"+String(d.getDate());
+	var dtStartProcess = String(d.getFullYear()) + mm.substr(mm.length -2) + dd.substr(dd.length -2);
+	var tmStartProcess = "999999";
+	
+	// Ajax server request to get Objects
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlProcessLogGET + "/" + userInp + "/"+ objConfig.sys + "/" + "*" + "/" + "*" + "/" +  dtStartProcess+ "/" +  tmStartProcess;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseTbProcessLog(xmlhttp);};
+ }
+
+function handleJsonResponseTbProcessLog(xmlhttp) {
+    var dtStartProcess="";
+    var tmStartProcess="";
+    var msDuration=0;
+    var typeObject="";
+    
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+           var i;
+	       
+	       var tbltop = "<table class='tbProcessLog' id='tbProcessLog'>"		   
+		          +      "<tr>"
+	              +        "<th>Sub</th>"
+	              +        "<th>IdObject</th>"
+	              +        "<th>Type</th>"
+	              +        "<th>DtStart</th>"
+	              +        "<th>TmStart</th>"
+	              +        "<th>Elapsed</th>"
+	              +        "<th>Status</th>"
+	              +        "<th>Error</th>"
+	              +      "</tr>"
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+	    	    dtStartProcess = objects[i].dtStartProcess.substr(6,2) + "/" + objects[i].dtStartProcess.substr(4,2) + "/" + objects[i].dtStartProcess.substr(0,4);     	         
+	    	    tmStartProcess = objects[i].tmStartProcess.substr(0,2) + ":" + objects[i].tmStartProcess.substr(2,2) + ":" + objects[i].tmStartProcess.substr(4,2);	     	         
+	    	    msDuration = objects[i].msDuration + "ms";
+	    	    typeObject=objects[i].typeObject;
+	    	    if (typeObject.substr(0,7) == "OBJECT_") {
+	    	    	typeObject=typeObject.substr(7);
+				}
+	    	    main = main
+		    	      +  "<tr>"
+	      	          +    "<td id='subSystem_"      + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].subSystem      + "</td>" 
+	      	          +    "<td id='idObject_"       + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].idObject       + "</td>" 
+	      	          +    "<td id='typeObject_"     + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + typeObject     			+ "</td>" 
+	      	          +    "<td id='dtStartProcess_" + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + dtStartProcess            + "</td>" 
+	      	          +    "<td id='tmStartProcess_" + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + tmStartProcess            + "</td>" 
+	      	          +    "<td id='msDuration_"     + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + msDuration                + "</td>" 
+	      	          +    "<td id='statusProcess_"  + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].statusProcess  + "</td>" 
+	      	          +    "<td id='msgError_"       + i + "' onclick='onclick_idObject(this.id, idTbStatus)'>"  + objects[i].msgError       + "</td>" 
+	     	          +  "</tr>"
+
+	       } 
+	       if (objects.length == 0) {
+	    	    main  = main
+		    	      + "<tr>"
+	      	          +    "<td id='subSystem_"      + i + ">..</td>" 
+	      	          +    "<td id='idObject_"       + i + ">........</td>" 
+	      	          +    "<td id='typeObject_"     + i + ">.........</td>" 
+	      	          +    "<td id='dtStartProcess_" + i + ">aaaa/mm/gg</td>" 
+	      	          +    "<td id='tmStartProcess_" + i + ">hh:mm:ss</td>" 
+	      	          +    "<td id='msDuration_"     + i + ">00ms</td>" 
+	      	          +    "<td id='statusProcess_"  + i + ">...</td>" 
+	      	          +    "<td id='msgError_"       + i + "></td>" 
+	     	          +  "</tr>"
+		   }
+	       
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById("divTbProcessLog").innerHTML = tbl;
+     }	
+}
+
+function getJsonResponseExecutionInfoGET() {
+	var xmlhttp;
+	var d = new Date();
+	var dtStartProcess = String(d.getFullYear()) + String(d.getMonth()+1) + String(d.getDate());
+	
+	// Ajax server request to get Objects
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlExecutionInfoGET + "/" + userInp;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseExecutionInfo(xmlhttp);};
+}
+
+function handleJsonResponseExecutionInfo(xmlhttp) {
+    var dtStartProcess="";
+    var tmStartProcess="";
+    var msDuration=0;
+    var step = 0;
+    var progrBar;
+    var width = 0;
+    
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var obj=JSON.parse(xmlhttp.responseText);
+		   var ms = 0;
+		   var min = 0;
+		   var sec = 0;
+		   
+		   // Elapsed
+		   document.getElementById("execMsAvg").innerHTML = obj.execMsAvg + "ms";
+		   ms = obj.execMsAvg;
+		   sec = Math.floor(ms / 1000);
+		   document.getElementById("execMsAvgFmt").innerHTML = sec + "sec";
+		   document.getElementById("execMsMax").innerHTML = obj.execMsMax + "ms";
+		   document.getElementById("execMsMaxIdObject").innerHTML = obj.execMsMaxIdObject;
+		   document.getElementById("execMsMin").innerHTML = obj.execMsMin + "ms";
+		   document.getElementById("execMsMinIdObject").innerHTML = obj.execMsMinIdObject;
+		   document.getElementById("execMsAllExpectedEnd").innerHTML = obj.execMsAllExpectedEnd + "ms";
+		   ms = obj.execMsAvg * (obj.execTotObjectToProcess - obj.execCntObjectProcessed);
+		   min = Math.floor(ms / 60000);
+		   if (min == 0) {
+			   sec = ms / 1000;
+		   } else {
+			   sec = min%60;
+		   }
+		   document.getElementById("execMsAllExpectedEndFmt").innerHTML = String(min) + "min " + String(sec) + "sec";
+		   document.getElementById("execMsAllElapsed").innerHTML = obj.execMsAllElapsed + "ms";
+		   ms = obj.execMsAvg * obj.execCntObjectProcessed;
+		   min = Math.floor(ms / 60000);
+		   if (min == 0) {
+			   sec = ms / 1000;
+		   } else {
+			   sec = min%60;
+		   }
+		   document.getElementById("execMsAllElapsedFmt").innerHTML = String(min) + "min " + String(sec) + "sec";
+		   
+		   // Counters
+		   document.getElementById("execCntObjectProcessedError").innerHTML = obj.execCntObjectProcessedError;
+		   document.getElementById("execCntObjectProcessedExcp").innerHTML = obj.execCntObjectProcessedExcp;
+		   document.getElementById("execCntObjectProcessed").innerHTML = obj.execCntObjectProcessed;
+		   document.getElementById("execTotObjectToProcess").innerHTML = obj.execTotObjectToProcess;
+		   document.getElementById("execCurIdObject").innerHTML = obj.execCurIdObject;
+           
+		   // Status
+		   if (obj.execProcessRunning) {
+			   document.getElementById("statusExec").innerHTML = "Running";
+			   document.getElementById("statusExec").style.color = "green";
+		   } else {
+			   document.getElementById("statusExec").innerHTML = "Stopped";
+			   document.getElementById("statusExec").style.color = "red";
+		   }
+		   
+		   // Progress bar
+		   step = 100 / obj.execTotObjectToProcess;
+		   progrBar = document.getElementById("progrBar");
+		   width =  Math.floor(step * obj.execCntObjectProcessed);		   
+	       if (obj.execCntObjectProcessed == obj.execTotObjectToProcess) { width = 100;}
+	       progrBar.style.width = width + "%";
+	       progrBar.innerHTML = width  + "%";
+    }	
+}
+
+/*
+	  activeProcess = document.getElementById('procAnalysisCopyData').value;
+	  activeProcess = document.getElementById('procAnalysisCopyProc').value;
+	  activeProcess = document.getElementById('procAnalysisPgm').value;
+	  activeProcess = document.getElementById('procAnalysisBms').value;
+	  activeProcess = document.getElementById('procAnalysisJclIbm').value
+	  activeProcess = document.getElementById('analysysDdlSql').value;
+*/
+function onclick_btnRadio(clicked_id) {
+	  
+	if (document.getElementById('procLibraryScan').checked) {
+	   activeProcess = document.getElementById('procLibraryScan').value;
+	   activeProcessExec = FUNCTION_LIBRARY_SCAN;
+     }	else if (document.getElementById('procAnalysisSources').checked) {
+	  activeProcessExec = PROCESS_ANALYZE_SOURCES;
+	 }	else if (document.getElementById('proProcessPgmLevel').checked) {
+	  activeProcess = document.getElementById('proProcessPgmLevel').value;
+	  activeProcessExec = PROCESS_PGM_LEVEL;
+	 }	else if (document.getElementById('procProcessSystemLevel').checked) {
+	  activeProcess = document.getElementById('procProcessSystemLevel').value;
+	  activeProcessExec = PROCESS_SYSTEM_LEVEL;
+	 }	else if (document.getElementById('procClearDb').checked) {
+	  activeProcess = document.getElementById('procClearDb').value;
+	  activeProcessExec = FUNCTION_CLEAR_DB;
+	 }	  
+}  
+
+// Called by AnalyzerConfiguratorDirectives
+function getActiveProcessExec() {
+	return activeProcessExec;
+}
+
+function onclick_btnRefreshPilot(clicked_id) {
+	loadPilotTable();
+}
+
+function onclick_btnSetup(clicked_id) {
+	// Hide Process Pilots & Display Iframe
+	document.getElementById("divProcessPilots").style.display="none";
+	
+	// Display Iframe
+	document.getElementById("divIframeConfig").style.display="block";
+ 	document.getElementById("divIframeConfig").style.width="100%";	
+ 	document.getElementById("divIframeConfig").style.height="100%";	
+ 	
+	activeIframe=ACTIVE_IFRAME_USER;
+	document.getElementById("idDivHeader").innerHTML="CONFIGURATION";
+	winConfiguratorUser=window.open('AnalyzerConfiguratorUser.html', 'iframeConfig', 'width=100% height=100%');
+}   
+
+function onclick_btnStatusAnalysis(clicked_id) {
+	// Hide Process Pilots & Display Iframe
+	document.getElementById("divProcessPilots").style.display="none";
+	// Display Iframe
+	document.getElementById("divIframeConfig").style.display="block";
+ 	document.getElementById("divIframeConfig").style.width="100%";	
+ 	document.getElementById("divIframeConfig").style.height="100%";	
+ 	
+ 	switch (activeIframe) {
+		case ACTIVE_IFRAME_PROCESS_PILOTS:
+			activeIframe=ACTIVE_IFRAME_STATUS_ANALYSYS;
+		 	document.getElementById("idDivHeader").innerHTML="ANALYSIS OBJECTS STATUS";
+			document.getElementById(clicked_id).value="Process Pilots";
+
+//			window.frames['some_frame_id'].location.href.reload();
+			document.getElementById('iframeConfig').src = document.getElementById('iframeConfig').src;
+            document.getElementById('iframeConfig').src = null;
+			window.open('AnalyzerStatusAnalysis2.html', 'iframeConfig', 'width=100% height=100%');
+			break;
+		case ACTIVE_IFRAME_STATUS_ANALYSYS:
+			activeIframe=ACTIVE_IFRAME_PROCESS_PILOTS;
+			document.getElementById("idDivHeader").innerHTML="PROCESS PILOTS";
+			document.getElementById(clicked_id).value="Status Analysis";
+			document.getElementById("divIframeConfig").style.display="none";
+			document.getElementById("divIframeConfig").style.width="0";	
+			document.getElementById("divIframeConfig").style.height="0";
+			document.getElementById("divProcessPilots").style.display="block";		
+			break;
+		case ACTIVE_IFRAME_USER:
+			activeIframe=ACTIVE_IFRAME_PROCESS_PILOTS;
+			document.getElementById("idDivHeader").innerHTML="PROCESS PILOTS";
+			document.getElementById(clicked_id).value="Status Analysis";
+			document.getElementById("divIframeConfig").style.display="none";
+			document.getElementById("divIframeConfig").style.width="0";	
+			document.getElementById("divIframeConfig").style.height="0";
+			document.getElementById("divProcessPilots").style.display="block";		
+			break;
+		default:
+			break;
+	}
+	
+} 
+
+function onclick_PilotName(clicked_id) {
+    var i = clicked_id.indexOf("_");   
+    iSelPilot = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelPilot != iSelPilotOld && iSelPilotOld >= 0) {
+		document.getElementById("pilot_"+iSelPilotOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("pilot_"+iSelPilot).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelPilotOld=iSelPilot;    
+    
+    pilotNameSelected=arPilotNames[iSelPilot];
+    loadPilotSourceTable(); 
+    
+    onclick_btnRefreshObjects();
+}
+
+function onclick_btnNewPilot(clicked_id) {
+	document.getElementById("divProcessPilots").style.display="none";
+	document.getElementById("divIframeConfig").style.display="block";
+ 	document.getElementById("divIframeConfig").style.width="100%";	
+ 	document.getElementById("divIframeConfig").style.height="100%";	
+ 	btnClicked="btnNewPilot";
+	window.open('AnalyzerConfiguratorDirectives.html', 'iframeConfig', 'width=100% height=100%'); 
+}   
+
+function onclick_btnConfigurator(clicked_id) {
+	document.getElementById("divProcessPilots").style.display="none";
+	document.getElementById("divIframeConfig").style.display="block";
+ 	document.getElementById("divIframeConfig").style.width="100%";	
+ 	document.getElementById("divIframeConfig").style.height="100%";	
+ 	btnClicked="btnConfigurator";
+ 	
+ /*
+	document.getElementById('iframeConfig').src = document.getElementById('iframeConfig').src;
+	document.getElementById('iframeConfig').src = null;
+    window.iframeCenter.location.href=window.parent.iframeConfig.location.href;
+    window.iframeConfig.history.go(0);
+    window.frames[0].location.reload();
+*/ 
+	// Per forzare l'aggiornamento del frame l'unico che funziona
+    document.getElementById('iframeConfig').innerHTML = null;
+	window.open('AnalyzerConfiguratorDirectives.html', 'iframeConfig', 'width=100% height=100%'); 
+}   
+
+// Called from AnalyzerConfiguratorDirectives
+function getBtnClicked() {
+	return btnClicked;
+}
+
+// Start execution on backend  
+function onclick_btnStart() {
+	var xmlhttp;
+    var progrBar;
+    var retFunc;
+	
+	// Reset Progress bar
+	progrBar = document.getElementById("progrBar");
+    progrBar.style.width = "0%";
+    progrBar.innerHTML = "0%";
+ 	retFunc = setInterval(refreshExecInfo, 5000);
+//  document.getElementById("divExecMsg").innerHTML="Processing ...";
+ 	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlExecutionWebPUT + "/"+ userInp + "/" + pilotNameSelected ;
+
+	xmlhttp.open("PUT", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseExecution(xmlhttp);};
+}
+
+function handleJsonResponseExecution(xmlhttp) {
+    var ret = "";
+    var retFunc = "";
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   ret = xmlhttp.responseText;
+    }	
+}
+
+function  onclick_btnStop() {
+	var xmlhttp;
+	
+ // document.getElementById("divExecMsg").innerHTML="Stop Request Sent To The Server";
+ 	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlExecutionWebStopPUT + "/"+ userInp;
+
+	xmlhttp.open("PUT", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseExecutionStop(xmlhttp);};
+}
+function handleJsonResponseExecutionStop(xmlhttp) {
+    var ret = "";
+    var retFunc = "";
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   ret = xmlhttp.responseText;
+	//	   document.getElementById("divExecMsg").innerHTML="Process Stopping Activated";
+		   
+    }	
+}
+
+
+function onclick_btnRefreshObjects () {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlListSourcesToProcessGET + "/"+ userInp + "/" + pilotNameSelected ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	document.getElementById("countSources").innerHTML = "Fetching ...";	
+	xmlhttp.onreadystatechange = function() {handleJsonResponseListSources(xmlhttp);};
+}
+
+function handleJsonResponseListSources(xmlhttp) {
+    var ret = "";
+    var retFunc = "";
+    var typeObject = "";
+    var i = 0;
+    
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   ret = xmlhttp.responseText;
+           if (ret.substr(0,2) == "KO") {
+			  alert("Internal Error - " + ret.substr(2));
+			  return;
+		   }
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+	       
+	       var tbltop = "<table class='tbSourcesToProcess' id='tbSourcesToProcess'>"		   
+		          +      "<tr>"
+	              +        "<th>Name</th>"
+	              +        "<th>Type</th>"
+	              +      "</tr>"
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+	    	    typeObject=objects[i].typeObject;
+	    	    if (typeObject.substr(0,7) == "OBJECT_") {
+	    	    	typeObject=typeObject.substr(7);
+				}
+	    	    main = main
+		    	      +  "<tr>"
+	      	          +    "<td id='idObject_"      + i + "' onclick='onclick_idSourceToProcess(this.id)'>"   + objects[i].idObject     + "</td>" 
+	      	          +    "<td id='typeObject_"    + i + "' onclick='onclick_idSourceToProcess(this.id)'>"   + typeObject     		   + "</td>" 
+	     	          +  "</tr>"
+	       }
+	       
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById("divtbSourcesToProcess").innerHTML = tbl;	
+		   document.getElementById("countSources").innerHTML = objects.length;	
+    }	
+}
+
+/* Da implementare se necessario */
+function onclick_idSourceToProcess(id) {
+}
+
+// Colled by AnalyzerConfiguratorDirectives/AnalyzerConfiguratoUser
+function restoreFromConfigurator(calledBy) {
+	activeIframe=ACTIVE_IFRAME_PROCESS_PILOTS;
+	document.getElementById("idDivHeader").innerHTML="PROCESS PILOTS";
+	document.getElementById("divIframeConfig").style.display="none";
+	document.getElementById("divIframeConfig").style.width="0";	
+	document.getElementById("divIframeConfig").style.height="0";
+	document.getElementById("divProcessPilots").style.display="block";
+}   
+
+function getPilotInfo() {
+	var obj=new Object();
+	obj.pilotName=pilotNameSelected;
+	obj.arPilotRows=arPilotRows;
+	return obj;
+}
+
+
+function getConfig() {
+	return objConfig();
+}
+
+
+/**
+ * Coomon definitions for all pages
+ */
+//Defines Object configuration data available to all pages
+function Config( 
+		      user
+	         ,pwd  
+			 ,sys 
+			 ,subSys
+			 ,baseUrl
+			 
+             ,companyCode 
+             ,company 
+             ,userType  
+             ,userStatus  
+             ,language  
+             ,country  
+             ,mail  
+             ,mailInfo  
+             ,phone  
+             ,referManager  
+             ,referTech  
+             ,analyzerEnabled  
+             ,viewerEnabled 
+             ,inspectorEnabled  
+             ,assesmentEnabled  
+             ,countLogin   			
+             ,dtActivation  
+             ,tmActivation  
+             ,dtExpiration  
+             ,tmExpiration  
+             ,dtFirstLogin  
+             ,tmFirstLogin  
+             ,dtLastLogin  
+             ,tmLastLogin  
+
+             ,pathConfigFile  
+             ,pathRoot  
+             ,pathUser  
+             ,pathPilot  
+	
+			 // Directories relative a root o WEB-INF da file di configurazione generale
+             ,dirResources  
+             ,dirWork  
+             ,dirDatabase       
+             ,dirJclInput  
+             ,dirCobolSrcPgmInput  
+             ,dirCobolSrcCopyInput  
+             ,dirCobolPgm  
+             ,dirCobolCopy  
+             ,dirJcl  
+             ,dirSqlScript  	 
+             ,dirCobolGraph  
+             ,dirPilot  
+             ,dirLog  
+             ,dirOutput  
+
+			 // Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+             ,limitMaxLinesScanFindingSourceType 
+             ,limitMaxSources  
+             ,limitMaxSourcesInput  
+             ,limitMaxSourcesToProcess  
+             ,limitMaxObjects  
+             ,limitMaxObjectsInput 
+             ,limitMaxObjectsToProcess 
+             ,debugThresholdMemoryGarbage  
+             ,debugSourcesDetectedFreqGarbage  
+             ,debugActive  
+             ,logVerbose  
+             ,preferredVisitMethod  
+             ,preferredCachingLevel  
+             ,preferredCachingSupport  
+
+			 //  Database
+             ,dataBaseType  
+             ,dataBaseName  
+             ,dataBaseUser  
+             ,dataBasePwd  
+             ,dataBaseDriver  
+             ,dataBaseAccessType  
+             ,dataBaseUrl  
+             ,dataBaseMaxConn  
+             ,dataBaseCommitBlockUpdates  
+             ,dataBaseLogAnySql 
+	
+			 // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+             ,pilotDefaultSource  
+             ,pilotDefaultProcess  
+             ,userExitClass
+             
+             ,userTypeOrdinal 
+             ,userStatusOrdinal 
+				)  {
+	
+	    this.user = user;  
+		this.pwd = pwd;          								 	 // Password
+	    this.sys = sys;  
+	    this.subSys = subSys; 
+	    this.baseUrl = baseUrl;
+	    
+		// User Data
+		this.companyCode = companyCode; 							 // Codice societa 
+		this.company = company; 									 // Descrizione societa 
+		this.userType = userType;            			     		 // Tipologia utente forward (T052)
+		this.userStatus = userStatus;            	 				 // Stato utente forward (T051)
+		this.language = language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+		this.country = country; 									 // Country IT, .. 
+		this.mail = mail; 											 // Mail principale  
+		this.mailInfo = mailInfo; 									 // Mail per info anomali  
+		this.phone = phone; 										 // Telefono di riferimento  
+		this.referManager = referManager; 							 // Riferimento manager 
+		this.referTech = referTech; 								 // Riferimento tecnico 
+		this.analyzerEnabled = analyzerEnabled; 					 // True user can view Analyzer 
+		this.viewerEnabled = viewerEnabled; 						 // True user can view Viewer 
+		this.inspectorEnabled = inspectorEnabled; 					 // True user can view Inspector 
+		this.assesmentEnabled = assesmentEnabled; 					 // True user can view Assesment 
+		this.countLogin =countLogin; 								 // Counter login effettuati       			
+		this.dtActivation = dtActivation;  							 // Data attivazione AAAAMMGG'
+		this.tmActivation = tmActivation;  						     // Ora  attivazione HHMMSSCC'
+		this.dtExpiration = dtExpiration;  							 // Data disattivazione AAAAMMGG'
+		this.tmExpiration = tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+		this.dtFirstLogin = dtFirstLogin;  							 // Data primo login AAAAMMGG'
+		this.tmFirstLogin = tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+		this.dtLastLogin = dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+		this.tmLastLogin = tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	    this.pathConfigFile = pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+	    this.pathRoot = pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+	    this.pathUser = pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+	    this.pathPilot = pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+	 	
+		// Directories relative a root o WEB-INF da file di configurazione generale
+		this.dirResources = dirResources;                            //Resource'
+		this.dirWork = dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+		this.dirDatabase = dirDatabase;                              // Database'		              
+		this.dirJclInput = dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+		this.dirCobolSrcPgmInput = dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+		this.dirCobolSrcCopyInput = dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+		this.dirCobolPgm = dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+		this.dirCobolCopy = dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+		this.dirJcl = dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcethis.X =  .jclIncludethis.X =  .jclProc)'		 
+		this.dirSqlScript = dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+		this.dirCobolGraph = dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+		this.dirPilot = dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+		this.dirLog = dirLog;                                  		 // Log
+		this.dirOutput = dirOutput;                              	 // Output per funzioni che producono text'
+
+		// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+		this.limitMaxLinesScanFindingSourceType = limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+		this.limitMaxSources =  limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+		this.limitMaxSourcesInput = limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+		this.limitMaxSourcesToProcess = limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+		this.limitMaxObjects =  limitMaxObjects;                   	 	// Abilitazione limitazione agli oggetti processati'
+		this.limitMaxObjectsInput = limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+		this.limitMaxObjectsToProcess = limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+		this.debugThresholdMemoryGarbage = debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+		this.debugSourcesDetectedFreqGarbage = debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+		this.debugActive = debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+		this.logVerbose = logVerbose;                               	// Dettaglio log operazioni Sql e informative'
+		this.preferredVisitMethod = preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+		this.preferredCachingLevel = preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+		this.preferredCachingSupport = preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+		//  Database
+		this.dataBaseType = dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+		this.dataBaseName = dataBaseName;                            // Nome database (DbAmrita)'
+		this.dataBaseUser = dataBaseUser;                            // User (GZEDDA)'
+		this.dataBasePwd = dataBasePwd;                              // Pwd (giampietro4)'
+		this.dataBaseDriver = dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+		this.dataBaseAccessType = dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+		this.dataBaseUrl = dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+		this.dataBaseMaxConn = dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+		this.dataBaseCommitBlockUpdates = dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+		this.dataBaseLogAnySql = dataBaseLogAnySql;                 // Log istruzioni Sql come messaggi informativi'
+	    	
+		// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+		this.pilotDefaultSource = pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+		this.pilotDefaultProcess = pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+		this.userExitClass = userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+		// Ordinal
+		this.userTypeOrdinal = userTypeOrdinal;            			  // Tipologia utente forward (T052)
+		this.userStatusOrdinal = userStatusOrdinal;            	 	  // Stato utente forward (T051)
+}
+
+function getConfig() {
+	return objConfig;
+}
+		
+</script>
+
+</html>
+

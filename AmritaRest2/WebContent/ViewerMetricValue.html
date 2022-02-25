@@ -1,0 +1,1045 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>Object Analysis Metric Values</title>
+<link rel="stylesheet" type="text/css" href="ViewerMetricValue.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+  <div id="MetricValueDiv"> </div>   
+ 
+	<table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Object Key Identification</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>System</td>
+	    <td class='clsFormC2MetrValue'><div id="system"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>SubSystem</td>
+	    <td class='clsFormC2MetrValue' id='subSystem'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Metric Scope</td>
+	    <td class='clsFormC2MetrValue' id='scope'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Id Object</td>
+	    <td class='clsFormC2MetrValue' id='idObject'></td>
+	  </tr>
+	  <tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Type Object</td>
+	    <td class='clsFormC2MetrValue' id='typeObject'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program Section</td>
+	    <td class='clsFormC2MetrValue' id='section'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program Section Thru</td>
+	    <td class='clsFormC2MetrValue' id='sectionThru'></td>
+	  </tr>
+	</table>
+
+
+	<table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Sources Counters</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Pgms Analyzed</td>
+	    <td class='clsFormC2MetrValue'><div id="cntPgmAnalyzed"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Pgms Called By Cics Link/Xctl/Batch Exec</td>
+	    <td class='clsFormC2MetrValue'><div id="cntPgmExecuted"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Subprograms Analyzed</td>
+	    <td class='clsFormC2MetrValue'><div id="cntSubPgmAnalyzed"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Subprograms Executed By Call</td>
+	    <td class='clsFormC2MetrValue'><div id="cntSubPgmExecuted"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Copy Defined</td>
+	    <td class='clsFormC2MetrValue'><div id="cntCopyDefined"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Sources Containing Jcl Jobs</td>
+	    <td class='clsFormC2MetrValue'><div id="cntJclJob"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Sources Containing Jcl Include</td>
+	    <td class='clsFormC2MetrValue'><div id="cntJclInclude"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Sources Containing Jcl Proc</td>
+	    <td class='clsFormC2MetrValue'><div id="cntJclProc"></div></td>
+	  </tr>
+
+	</table>
+	
+    <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Sources Dimensional Counters</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Logical Code lines, no comments no blank</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesCodeLogical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Phisical Code lines, yes comments yes blank</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesCodePhisical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Blank Code Lines</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesBlank"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Blank Code Lines in Procedure Division</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesBlankProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Blank Code Lines in Data Division</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesBlankData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Comment Code Lines</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesComment"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Comment Code Lines in Procedure Division</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesCommentProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Comment Code Lines in Data Division</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeLinesCommentData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Procedure Division Instructions</td>
+	    <td class='clsFormC2MetrValue'><div id="sizeInstr"></div></td>
+	  </tr>
+	</table>	
+
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Estimated Development Time</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Estimated Function Point</td>
+	    <td class='clsFormC2MetrValue'><div id="backFiredFunctionPoint"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Estimated Dev Days By Avg Productivity</td>
+	    <td class='clsFormC2MetrValue'><div id="timeDevelopment"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Data Definition Measures</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Fields Defined</td>
+	    <td class='clsFormC2MetrValue'><div id="defFields"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Fields defined Hidden In Copy Books</td>
+	    <td class='clsFormC2MetrValue'><div id="defFieldsInCopy"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Literals Found in Instructions</td>
+	    <td class='clsFormC2MetrValue'><div id="defLiterals"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Documentation Data</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Comm % Based On Logical Sources Instr Rows</td>
+	    <td class='clsFormC2MetrValue'><div id="percComByLogical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Comm % Based On Phisical Sources Instr Rows</td>
+	    <td class='clsFormC2MetrValue'><div id="percComByPhisical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Comm % By Instruction</td>
+	    <td class='clsFormC2MetrValue'><div id="percComByInstruction"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Blank Rows % Based On Phisical Sources Instr Rows</td>
+	    <td class='clsFormC2MetrValue'><div id="percBlankByPhisical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Blank Rows % By Instruction</td>
+	    <td class='clsFormC2MetrValue'><div id="percBlankByInstruction"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Dynamic Code Information</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Pgms With Dynamic Code</td>
+	    <td class='clsFormC2MetrValue'><div id="dynamicPgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Dynamic Instructions</td>
+	    <td class='clsFormC2MetrValue'><div id="dynamicInstr"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Dynamic Instructions Light (With Value)</td>
+	    <td class='clsFormC2MetrValue'><div id="dynamicInstrLight"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Percent Dynamic Instructions</td>
+	    <td class='clsFormC2MetrValue'><div id="percDynamicInstr"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Percent Dynamic Instructions Light</td>
+	    <td class='clsFormC2MetrValue'><div id="percDynamicInstrLight"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Violations Detected </th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Violations Detected</td>
+	    <td class='clsFormC2MetrValue'><div id="violations"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Violations % Detected Based On Logical Instr</td>
+	    <td class='clsFormC2MetrValue'><div id="percViolationsByLogical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Violation % Detected Based On Phisical Instr</td>
+	    <td class='clsFormC2MetrValue'><div id="percViolationsByPhisical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Violations % By Instruction</td>
+	    <td class='clsFormC2MetrValue'><div id="percViolationsByInstruction"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Dead Code Measures </th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Unused Data Fields Defined</td>
+	    <td class='clsFormC2MetrValue'><div id="deadFields"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Unreferenced Procedures</td>
+	    <td class='clsFormC2MetrValue'><div id="deadSubGraph"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Dead Instructions Never Reached</td>
+	    <td class='clsFormC2MetrValue'><div id="deadInstr"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Unreferenced Labels</td>
+	    <td class='clsFormC2MetrValue'><div id="deadLabels"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Unreferenced Copy Books in Data Div</td>
+	    <td class='clsFormC2MetrValue'><div id="deadCopyData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Unreferenced Copy Books in Proc Div</td>
+	    <td class='clsFormC2MetrValue'><div id="deadCopyProc"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Jcl Counters</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>DD defined </td>
+	    <td class='clsFormC2MetrValue'><div id="jclDD"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Steps Of Execution</td>
+	    <td class='clsFormC2MetrValue'><div id="jclStepDefined"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>TSteps In Update</td>
+	    <td class='clsFormC2MetrValue'><div id="jclStepUpdate"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Dsname Declared</td>
+	    <td class='clsFormC2MetrValue'><div id="jclDsname"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Dsname Referenced</td>
+	    <td class='clsFormC2MetrValue'><div id="jclDsnameReferenced"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Dsname UnReferenced</td>
+	    <td class='clsFormC2MetrValue'><div id="jclDsnameUnReferenced"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Jcl Include</td>
+	    <td class='clsFormC2MetrValue'><div id="jclIncludeCalled"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Jcl Proc Called</td>
+	    <td class='clsFormC2MetrValue'><div id="jclProcCalled"></div></td>
+	  </tr>
+	</table>	
+				
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Structural And Functional Complexity</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Fan-In Pgms Called By</td>
+	    <td class='clsFormC2MetrValue'><div id="structFanIn"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Fan-Out Pgms Called</td>
+	    <td class='clsFormC2MetrValue'><div id="structFanOut"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Cobol Procedure Sections</td>
+	    <td class='clsFormC2MetrValue'><div id="structSections"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Cobol Procedure Paragraph</td>
+	    <td class='clsFormC2MetrValue'><div id="structParagraphs"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Generic Functional Complexity</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Objects</td>
+	    <td class='clsFormC2MetrValue'><div id="funcObjects"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Relations Between Objects</td>
+	    <td class='clsFormC2MetrValue'><div id="funcRelations"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Internal Cics Trnids By Cics Start/Return Transid</td>
+	    <td class='clsFormC2MetrValue'><div id="funcTranInternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>External Cics Trnids By Cics Start/Return Transid</td>
+	    <td class='clsFormC2MetrValue'><div id="funcTranExternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Screens (Cics Bms)</td>
+	    <td class='clsFormC2MetrValue'><div id="funcMap"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Procedure Calls To Internal Modules</td>
+	    <td class='clsFormC2MetrValue'><div id="funcCallInternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Procedure Calls To External Modules</td>
+	    <td class='clsFormC2MetrValue'><div id="funcCallExternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Db Internal Table Accesses</td>
+	    <td class='clsFormC2MetrValue'><div id="funcAccEntityInternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Db External Table Accesses</td>
+	    <td class='clsFormC2MetrValue'><div id="funcAccEntityExternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Internal Vsam/Seq File System  Accesses</td>
+	    <td class='clsFormC2MetrValue'><div id="funcAccMediaInternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total External Vsam/Seq File System  Accesses</td>
+	    <td class='clsFormC2MetrValue'><div id="funcAccMediaExternal"></div></td>
+	  </tr>
+	</table>	
+
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Function Points Functional Complexity</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>External Tables/files Output</td>
+	    <td class='clsFormC2MetrValue'><div id="fpExternalOutputEO"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Internal Tables/Files Input</td>
+	    <td class='clsFormC2MetrValue'><div id="fpExternalInputEI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>External Tables/Files Inquiry (By ILF, EIF)</td>
+	    <td class='clsFormC2MetrValue'><div id="fpExternalInquiryEQ"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Internal Tables/Files Accesses (ILF)</td>
+	    <td class='clsFormC2MetrValue'><div id="fpInternalLogicalFileILF"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>External Tables/Files Accesses (EIF)</td>
+	    <td class='clsFormC2MetrValue'><div id="fpExternalInterfaceFileEIF"></div></td>
+	  </tr>
+	</table>	
+				
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Rehosting  Functional/Technical Complexity</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rate Objects/Relations</td>
+	    <td class='clsFormC2MetrValue'><div id="rhRateObjectRelation"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Objects internal to Scope</td>
+	    <td class='clsFormC2MetrValue'><div id="rhObjectsInternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Total Objects External to Scope</td>
+	    <td class='clsFormC2MetrValue'><div id="rhObjectsExternal"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Not Portable Objects (Asm, PL/1, Load Module,..)</td>
+	    <td class='clsFormC2MetrValue'><div id="rhObjectsUnportable"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Binary Files</td>
+	    <td class='clsFormC2MetrValue'><div id="rhFilesBynary"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Cyclomatic Complexity</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Arcs Number</td>
+	    <td class='clsFormC2MetrValue'><div id="mcCabeArcs"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Nodes Number</td>
+	    <td class='clsFormC2MetrValue'><div id="mcCabeNodes"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Connected Subgraphs (Cobol Section/paragraph)</td>
+	    <td class='clsFormC2MetrValue'><div id="mcCabeGraphConn"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Conditional Operators OR AND</td>
+	    <td class='clsFormC2MetrValue'><div id="mcCabeOperatorsOrAnd"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Halstead Complexity (Software Science)</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Distinct Program Operators (n1)</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadOperators"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Distinct Program Operands (n2)</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadOperands"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Operators Occurrences (N1)</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadOperatorsOcc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Operands Occurrences (N2)</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadOperandsOcc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program Length</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadLengthPgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program Vocabulary</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadVocabularyPgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program Volume</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadVolumePgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program difficulty</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadDifficultPgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Program Effort</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadEffortPgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Estimated Writing Time (sec)</td>
+	    <td class='clsFormC2MetrValue'><div id="halsteadTimeWriting"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Total Complexity/Maintenance/Testability Indexes (sum internal procedures)</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Maintenability (By Oman and Hagemeister 1991)</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMITot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Function Points</td>
+	    <td class='clsFormC2MetrValue'><div id="idxFPTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>McCabe Cyclomatic Complexity</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMcCabeTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rehosting Effort</td>
+	    <td class='clsFormC2MetrValue'><div id="idxReHostingTot"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Max Complexity/Maintenance/Testability Indexes</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Maintenability (By Oman and Hagemeister 1991)</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMIHigh"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Function Points</td>
+	    <td class='clsFormC2MetrValue'><div id="idxFPHigh"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>McCabe Cyclomatic Complexity</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMcCabeHigh"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rehosting Effort</td>
+	    <td class='clsFormC2MetrValue'><div id="idxReHostingHigh"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Min Complexity/Maintenance/Testability Indexes</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Maintenability (By Oman and Hagemeister 1991)</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMILow"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Function Points</td>
+	    <td class='clsFormC2MetrValue'><div id="idxFPLow"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>McCabe Cyclomatic Complexity</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMcCabeLow"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rehosting Effort</td>
+	    <td class='clsFormC2MetrValue'><div id="idxReHostingLow"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>Avg Complexity/Maintenance/Testability Indexes</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Maintenability (By Oman and Hagemeister 1991)</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMIAvg"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Function Points</td>
+	    <td class='clsFormC2MetrValue'><div id="idxFPAvg"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>McCabe Cyclomatic Complexity</td>
+	    <td class='clsFormC2MetrValue'><div id="idxMcCabeAvg"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rehosting Effort</td>
+	    <td class='clsFormC2MetrValue'><div id="idxReHostingAvg"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE Violations Counters by category and severity</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Blocking </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleViolationsBlocker"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Critical</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleViolationsCritical"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Major</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleViolationsMajor"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Minor</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleViolationsMinor"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Info</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleViolationsInfo"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE General Values</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rating Level A-E</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSSRL"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rating Value (SQI/Estimated Dev Time)</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSSRI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Rule Compliance</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSSCI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>Absolute Remediation Cost (SQTI+SQRI+..SQPI)</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSSQI"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE Absolute Indexs Detail Values SSQI SQxI</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQTI)Testability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQTI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQRI)Reliability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQRI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQCI)Changeability</td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQCI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQEI)Efficiency </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQEI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQSI)Security </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQSI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQMI)Maintenability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQMI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SQPI)Portability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSQPI"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE Consolidated Index Detail Values SCxI</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCTI)Testability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCTI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCRI)Reliability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCRI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCCI)Changeability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCCI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCEI)Efficiency </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCEI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCSI)Security </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCSI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCMI)Maintenability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCMI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCPI)Portability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSCPI"></div></td>
+	  </tr>
+	</table>	
+
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE Density Index Detail Values SDxI</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SDTI)Testability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDTI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SDRI)Reliability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDRI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SDCI)Changeability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDCI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCEI)Efficiency </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDEI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SCEI)Security </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDSI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SDMI)Maintenability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDMI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SDPI)Portability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSDPI"></div></td>
+	  </tr>
+	</table>
+				
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE Rating Index Detail Values SRxI</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRTI)Testability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRTI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRRI)Reliability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRRI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRCI)Changeability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRCI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SREI)Efficiency </td>
+	    <td class='clsFormC2MetrValue'><div id=squaleSREI></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRSI)Security </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRSI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRMI)Maintenability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRMI"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRPI)Portability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRPI"></div></td>
+	  </tr>
+	</table>	
+		
+   <table class='clsForm' id='ObjectMetricValueTable'>
+	  <tr>
+	    <th colspan='2'>SQUALE Level Detail Values SRxL (Rating Level A-E)</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRTL)Testability </td>
+	    <td class='clsFormC2MetrValue'><div id='squaleSRTL'></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRRL)Reliability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRRL"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRCL)Changeability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRCL"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SREL)Efficiency </td>
+	    <td class='clsFormC2MetrValue'><div id='squaleSREL'></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRSL)Security </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRSL"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRML)Maintenability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRML"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1MetrValue'>(SRPL)Portability </td>
+	    <td class='clsFormC2MetrValue'><div id="squaleSRPL"></div></td>
+	  </tr>
+	</table>	  
+		
+</body>
+
+<script type="text/javascript">
+"use strict";
+var objJson = null;
+var winOpener = null;
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+    winOpener=window.opener;
+	objJson=winOpener.getJsonObjectMetricValue();
+	loadTable(objJson);
+}
+
+function loadTable(obj) {
+	// Primary key
+    document.getElementById('system').innerHTML = obj[0].sys; 
+    document.getElementById('subSystem').innerHTML = obj[0].subSystem;
+    document.getElementById('scope').innerHTML = obj[0].scope;
+    document.getElementById('idObject').innerHTML = obj[0].idObject;
+    document.getElementById('typeObject').innerHTML = obj[0].typeObject;
+    document.getElementById('section').innerHTML = obj[0].section;
+    document.getElementById('sectionThru').innerHTML = obj[0].sectionThru;
+ 	
+    // Sources Counters
+    document.getElementById('cntPgmAnalyzed').innerHTML = obj[0].cntPgmAnalyzed;      
+    document.getElementById('cntPgmExecuted').innerHTML = obj[0].cntPgmExecuted;           
+    document.getElementById('cntSubPgmAnalyzed').innerHTML = obj[0].cntSubPgmAnalyzed;        
+    document.getElementById('cntSubPgmExecuted').innerHTML = obj[0].cntSubPgmExecuted;        
+    document.getElementById('cntCopyDefined').innerHTML = obj[0].cntCopyDefined;           
+    document.getElementById('cntJclJob').innerHTML = obj[0].cntJclJob;                
+    document.getElementById('cntJclInclude').innerHTML = obj[0].cntJclInclude;            
+  	document.getElementById('cntJclProc').innerHTML = obj[0].cntJclProc;               
+     
+	// Sources Dimensional Counters
+ 	document.getElementById('sizeLinesCodeLogical').innerHTML = obj[0].sizeLinesCodeLogical;     	 
+ 	document.getElementById('sizeLinesCodePhisical').innerHTML = obj[0].sizeLinesCodePhisical;     
+ 	document.getElementById('sizeLinesBlank').innerHTML = obj[0].sizeLinesBlank;            
+	document.getElementById('sizeLinesBlankProc').innerHTML = obj[0].sizeLinesBlankProc;        
+	document.getElementById('sizeLinesBlankData').innerHTML = obj[0].sizeLinesBlankData;        
+	document.getElementById('sizeLinesComment').innerHTML = obj[0].sizeLinesComment;          
+	document.getElementById('sizeLinesCommentProc').innerHTML = obj[0].sizeLinesCommentProc;     	 
+	document.getElementById('sizeLinesCommentData').innerHTML = obj[0].sizeLinesCommentData;      
+	document.getElementById('sizeInstr').innerHTML = obj[0].sizeInstr;                	 
+
+	// Estimated Development Time
+	document.getElementById('backFiredFunctionPoint').innerHTML = obj[0].backFiredFunctionPoint;    
+	document.getElementById('timeDevelopment').innerHTML = obj[0].timeDevelopment;           
+
+	// Data Definition Measures
+	document.getElementById('defFields').innerHTML = obj[0].defFields;                 
+	document.getElementById('defFieldsInCopy').innerHTML = obj[0].defFieldsInCopy;           
+	document.getElementById('defLiterals').innerHTML = obj[0].defLiterals;               
+
+	// Documentation Data
+	document.getElementById('percComByLogical').innerHTML = obj[0].percComByLogical;          	 
+	document.getElementById('percComByPhisical').innerHTML = obj[0].percComByPhisical;          
+	document.getElementById('percComByInstruction').innerHTML = obj[0].percComByInstruction;      
+	document.getElementById('percBlankByPhisical').innerHTML = obj[0].percBlankByPhisical;       	 
+	document.getElementById('percBlankByInstruction').innerHTML = obj[0].percBlankByInstruction;    	 
+
+	// Dynamic Code Information
+	document.getElementById('dynamicPgm').innerHTML = obj[0].dynamicPgm;                 	 
+	document.getElementById('dynamicInstr').innerHTML = obj[0].dynamicInstr;               	 
+	document.getElementById('dynamicInstrLight').innerHTML = obj[0].dynamicInstrLight;          	 
+	document.getElementById('percDynamicInstr').innerHTML = obj[0].percDynamicInstr;          	 
+	document.getElementById('percDynamicInstrLight').innerHTML = obj[0].percDynamicInstrLight;     	 
+	
+	// Violations Detected (dettagliate solo per Squale)
+	document.getElementById('violations').innerHTML = obj[0].violations;              	 	 
+	document.getElementById('percViolationsByLogical').innerHTML = obj[0].percViolationsByLogical;   	 
+	document.getElementById('percViolationsByPhisical').innerHTML = obj[0].percViolationsByPhisical;   	 
+	document.getElementById('percViolationsByInstruction').innerHTML = obj[0].percViolationsByInstruction;  
+
+	// Dead Code Measures
+	document.getElementById('deadFields').innerHTML = obj[0].deadFields;              
+	document.getElementById('deadSubGraph').innerHTML = obj[0].deadSubGraph;              
+	document.getElementById('deadInstr').innerHTML = obj[0].deadInstr;                
+	document.getElementById('deadLabels').innerHTML = obj[0].deadLabels;               	 
+	document.getElementById('deadCopyData').innerHTML = obj[0].deadCopyData;            
+	document.getElementById('deadCopyProc').innerHTML = obj[0].deadCopyProc;             
+	
+	// Jcl Counters
+	document.getElementById('jclDD').innerHTML = obj[0].jclDD;                    	 
+	document.getElementById('jclStepDefined').innerHTML = obj[0].jclStepDefined;           	 
+	document.getElementById('jclStepUpdate').innerHTML = obj[0].jclStepUpdate;            	 
+	document.getElementById('jclDsname').innerHTML = obj[0].jclDsname;                	 
+	document.getElementById('jclDsnameReferenced').innerHTML = obj[0].jclDsnameReferenced;      	 
+	document.getElementById('jclDsnameUnReferenced').innerHTML = obj[0].jclDsnameUnReferenced;     
+	document.getElementById('jclIncludeCalled').innerHTML = obj[0].jclIncludeCalled;         	 
+	document.getElementById('jclProcCalled').innerHTML = obj[0].jclProcCalled;             
+	
+
+	// Structural And Functional Complexity
+	document.getElementById('structFanIn').innerHTML = obj[0].structFanIn;               
+	document.getElementById('structFanOut').innerHTML = obj[0].structFanOut;              
+	document.getElementById('structSections').innerHTML = obj[0].structSections;           	 
+	document.getElementById('structParagraphs').innerHTML = obj[0].structParagraphs;         	 
+	
+	// Generic Functional Complexity
+	document.getElementById('funcObjects').innerHTML = obj[0].funcObjects;               
+	document.getElementById('funcRelations').innerHTML = obj[0].funcRelations;            	 
+	document.getElementById('funcTranInternal').innerHTML = obj[0].funcTranInternal;          
+	document.getElementById('funcTranExternal').innerHTML = obj[0].funcTranExternal;         
+	document.getElementById('funcMap').innerHTML = obj[0].funcMap;                  	 
+	document.getElementById('funcCallInternal').innerHTML = obj[0].funcCallInternal;         	 
+	document.getElementById('funcCallExternal').innerHTML = obj[0].funcCallExternal;          
+	document.getElementById('funcAccEntityInternal').innerHTML = obj[0].funcAccEntityInternal;    	 
+	document.getElementById('funcAccEntityExternal').innerHTML = obj[0].funcAccEntityExternal;    	 
+	document.getElementById('funcAccMediaInternal').innerHTML = obj[0].funcAccMediaInternal;     	 
+	document.getElementById('funcAccMediaExternal').innerHTML = obj[0].funcAccMediaExternal;      
+
+	// Function Points Functional Complexity
+	document.getElementById('fpExternalOutputEO').innerHTML = obj[0].fpExternalOutputEO;        	 
+	document.getElementById('fpExternalInputEI').innerHTML = obj[0].fpExternalInputEI;         	 
+	document.getElementById('fpExternalInquiryEQ').innerHTML = obj[0].fpExternalInquiryEQ;       	 
+	document.getElementById('fpInternalLogicalFileILF').innerHTML = obj[0].fpInternalLogicalFileILF;  	 
+	document.getElementById('fpExternalInterfaceFileEIF').innerHTML = obj[0].fpExternalInterfaceFileEIF; 	 
+
+	// Rehosting  Functional/Technical Complexity
+	document.getElementById('rhRateObjectRelation').innerHTML = obj[0].rhRateObjectRelation;      	 
+	document.getElementById('rhObjectsInternal').innerHTML = obj[0].rhObjectsInternal;         	 
+	document.getElementById('rhObjectsExternal').innerHTML = obj[0].rhObjectsExternal;      	 
+	document.getElementById('rhObjectsUnportable').innerHTML = obj[0].rhObjectsUnportable;       	 
+	document.getElementById('rhFilesBynary').innerHTML = obj[0].rhFilesBynary;      
+	
+	// Cyclomatic Complexity
+	document.getElementById('mcCabeArcs').innerHTML = obj[0].mcCabeArcs;                	 
+ 	document.getElementById('mcCabeNodes').innerHTML = obj[0].mcCabeNodes;         	 
+	document.getElementById('mcCabeGraphConn').innerHTML = obj[0].mcCabeGraphConn;         	 	 
+	document.getElementById('mcCabeOperatorsOrAnd').innerHTML = obj[0].mcCabeOperatorsOrAnd;      	 
+
+	// Halstead Complexity (Software Science)
+	document.getElementById('halsteadOperators').innerHTML = obj[0].halsteadOperators;         	 
+	document.getElementById('halsteadOperands').innerHTML = obj[0].halsteadOperands;          	 
+	document.getElementById('halsteadOperatorsOcc').innerHTML = obj[0].halsteadOperatorsOcc;      	 
+	document.getElementById('halsteadOperandsOcc').innerHTML = obj[0].halsteadOperandsOcc;       	 
+	document.getElementById('halsteadLengthPgm').innerHTML = obj[0].halsteadLengthPgm;         	 
+	document.getElementById('halsteadVocabularyPgm').innerHTML = obj[0].halsteadVocabularyPgm;     	 
+	document.getElementById('halsteadVolumePgm').innerHTML = obj[0].halsteadVolumePgm;         	 
+	document.getElementById('halsteadDifficultPgm').innerHTML = obj[0].halsteadDifficultPgm;      	 
+	document.getElementById('halsteadEffortPgm').innerHTML = obj[0].halsteadEffortPgm;         	 
+	document.getElementById('halsteadTimeWriting').innerHTML = obj[0].halsteadTimeWriting;        	 
+
+	// Total Complexity/Maintenance/Testability Indexes (sum internal procedures)
+	document.getElementById('idxMITot').innerHTML = obj[0].idxMITot;                  	 
+	document.getElementById('idxFPTot').innerHTML = obj[0].idxFPTot;                  	 
+	document.getElementById('idxMcCabeTot').innerHTML = obj[0].idxMcCabeTot;              	 
+	document.getElementById('idxReHostingTot').innerHTML = obj[0].idxReHostingTot;   
+	
+	// Max Complexity/Maintenance/Testability Indexes
+ 	document.getElementById('idxMIHigh').innerHTML = obj[0].idxMIHigh;  Error
+	document.getElementById('idxFPHigh').innerHTML = obj[0].idxFPHigh;  
+
+
+	document.getElementById('idxMcCabeHigh').innerHTML = obj[0].idxMcCabeHigh;             	 
+	document.getElementById('idxReHostingHigh').innerHTML = obj[0].idxReHostingHigh;          	 
+	
+	// Min Complexity/Maintenance/Testability Indexes
+	document.getElementById('idxMILow').innerHTML = obj[0].idxMILow;                  	 
+	document.getElementById('idxFPLow').innerHTML = obj[0].idxFPLow;                  	 
+	document.getElementById('idxMcCabeLow').innerHTML = obj[0].idxMcCabeLow;              	 
+	document.getElementById('idxReHostingLow').innerHTML = obj[0].idxReHostingLow;           	 
+	
+	// Avg Complexity/Maintenance/Testability Indexes
+	document.getElementById('idxMIAvg').innerHTML = obj[0].idxMIAvg;                  	 
+	document.getElementById('idxFPAvg').innerHTML = obj[0].idxFPAvg;                  	 
+	document.getElementById('idxMcCabeAvg').innerHTML = obj[0].idxMcCabeAvg;              	 
+	document.getElementById('idxReHostingAvg').innerHTML = obj[0].idxReHostingAvg; 
+	
+	// SQUALE Violations Counters by category and severity
+	document.getElementById('squaleViolationsBlocker').innerHTML = obj[0].squaleViolationsBlocker;     	 
+	document.getElementById('squaleViolationsCritical').innerHTML = obj[0].squaleViolationsCritical;    	 
+	document.getElementById('squaleViolationsMajor').innerHTML = obj[0].squaleViolationsMajor;    		 
+	document.getElementById('squaleViolationsMinor').innerHTML = obj[0].squaleViolationsMinor;    		 
+	document.getElementById('squaleViolationsInfo').innerHTML = obj[0].squaleViolationsInfo;    		 
+
+	// SQUALE General Values
+	document.getElementById('squaleSSRL').innerHTML = obj[0].squaleSSRL;     // Livello A-E valore di rating     	 	    
+	document.getElementById('squaleSSRI').innerHTML = obj[0].squaleSSRI;         	 	    
+	document.getElementById('squaleSSCI').innerHTML = obj[0].squaleSSCI;         			 
+	document.getElementById('squaleSSQI').innerHTML = obj[0].squaleSSQI; 				 
+	
+	// SQUALE Absolute Indexs Detail Values SSQI SQxI
+	document.getElementById('squaleSQTI').innerHTML = obj[0].squaleSQTI; 					 
+	document.getElementById('squaleSQRI').innerHTML = obj[0].squaleSQRI; 					 
+	document.getElementById('squaleSQCI').innerHTML = obj[0].squaleSQCI; 					 
+	document.getElementById('squaleSQEI').innerHTML = obj[0].squaleSQEI; 					 
+	document.getElementById('squaleSQSI').innerHTML = obj[0].squaleSQSI; 					 
+	document.getElementById('squaleSQMI').innerHTML = obj[0].squaleSQMI; 					 
+	document.getElementById('squaleSQPI').innerHTML = obj[0].squaleSQPI; 					 
+
+	// SQUALE Consolidated Index Detail Values SCxI
+	document.getElementById('squaleSCTI').innerHTML = obj[0].squaleSCTI; 					 
+	document.getElementById('squaleSCRI').innerHTML = obj[0].squaleSCRI; 					 
+	document.getElementById('squaleSCCI').innerHTML = obj[0].squaleSCCI; 					 
+	document.getElementById('squaleSCEI').innerHTML = obj[0].squaleSCEI; 					 
+	document.getElementById('squaleSCSI').innerHTML = obj[0].squaleSCSI; 					 
+	document.getElementById('squaleSCMI').innerHTML = obj[0].squaleSCMI; 					 
+	document.getElementById('squaleSCPI').innerHTML = obj[0].squaleSCPI; 					 
+
+	// SQUALE Density Index Detail Values SDxI
+	document.getElementById('squaleSDTI').innerHTML = obj[0].squaleSDTI; 				 
+	document.getElementById('squaleSDRI').innerHTML = obj[0].squaleSDRI; 		 
+	document.getElementById('squaleSDCI').innerHTML = obj[0].squaleSDCI; 				 
+	document.getElementById('squaleSDEI').innerHTML = obj[0].squaleSDEI; 				 
+	document.getElementById('squaleSDSI').innerHTML = obj[0].squaleSDSI; 					 
+	document.getElementById('squaleSDMI').innerHTML = obj[0].squaleSDMI; 				 
+	document.getElementById('squaleSDPI').innerHTML = obj[0].squaleSDPI; 				 
+
+	// SQUALE Rating Index Detail Values SRxI
+	document.getElementById('squaleSRTI').innerHTML = obj[0].squaleSRTI; 				 
+	document.getElementById('squaleSRRI').innerHTML = obj[0].squaleSRRI; 			 
+	document.getElementById('squaleSRCI').innerHTML = obj[0].squaleSRCI; 			 
+	document.getElementById('squaleSREI').innerHTML = obj[0].squaleSREI; 				 
+	document.getElementById('squaleSRSI').innerHTML = obj[0].squaleSRSI; 				 
+	document.getElementById('squaleSRMI').innerHTML = obj[0].squaleSRMI; 				 
+	document.getElementById('squaleSRPI').innerHTML = obj[0].squaleSRPI; 				 
+
+	// SQUALE Level Detail Values SRxL (Rating Level A-E) 
+	document.getElementById('squaleSRTL').innerHTML = obj[0].squaleSRTL; 		
+	document.getElementById('squaleSRRL').innerHTML = obj[0].squaleSRRL; 
+	document.getElementById('squaleSRCL').innerHTML = obj[0].squaleSRCL; 
+	document.getElementById('squaleSREL').innerHTML = obj[0].squaleSREL; 
+	document.getElementById('squaleSRSL').innerHTML = obj[0].squaleSRSL; 
+	document.getElementById('squaleSRML').innerHTML = obj[0].squaleSRML; 
+	document.getElementById('squaleSRPL').innerHTML = obj[0].squaleSRPL; 
+	
+ }
+
+
+</script>
+
+</html>

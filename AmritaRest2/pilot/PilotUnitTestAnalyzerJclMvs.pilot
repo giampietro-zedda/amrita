@@ -1,0 +1,60 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test analizzatore Cobol
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY TESTJCL E:\Amrita\Amrita-Java\AmritaFramework\UnitTestJcl\
+LIBRARY_SOURCE_SEARCH TESTJCL
+
+
+#--------------------------------------------------------------------------
+# Identificazione oggetti da analizzare
+#--------------------------------------------------------------------------
+
+SYSTEM_VALUE Z
+SUB_SYSTEM_VALUE ZZ
+FILTER_ON_OBJECT_NAME 1 JCL
+
+OBJECT_TYPE_JCL_MVS_JOB *ALL*  
+OBJECT_TYPE_JCL_MVS_PROC *ALL*  
+OBJECT_TYPE_JCL_MVS_INCLUDE *ALL*  
+#OBJECT_TYPE_JCL_MVS_JOB *SINGLE* JCLTST01
+#OBJECT_TYPE_JCL_MVS_PROC *SINGLE* JCLTST03
+#OBJECT_TYPE_JCL_MVS_INCLUDE *SINGLE* JCLTST02
+#OBJECT_TYPE_JCL_MVS_INCLUDE *SINGLE* JCLTST04
+
+#--------------------------------------------------------------------------
+# Opzioni e direttive specifiche di processo
+#--------------------------------------------------------------------------
+
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 	 
+START

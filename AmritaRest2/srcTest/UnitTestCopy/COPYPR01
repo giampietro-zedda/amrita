@@ -1,0 +1,25 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance
+      *      Integrated
+      *        Tecnology 
+      *          Application
+      *
+      *================================================================
+      *==============================================================
+      *  Descrizione	: Unit test richiasmo copy di procedure  
+      *  Scritto il    	: 16-09-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================
+       
+ 
+       ERROR-DEBUG.
+           MOVE ZERO  TO G02.
+           DIVIDE TALLY INTO TALLY.
+       ERROR-DEBUG-EXIT.  EXIT.
+           
+  

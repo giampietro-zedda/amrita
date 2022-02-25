@@ -1,0 +1,172 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>Object Analysis Error Information</title>
+<link rel="stylesheet" type="text/css" href="ViewerAnalysisError.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+  <div id="objectAnalysisErrorDiv"> </div>   
+	<table class='clsForm' id='objectAnalysisErrorTable'>
+	  <tr>
+	    <th colspan='2'>Analysis Error Information</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>System</td>
+	    <td class='clsFormC2Err'><div id="system"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>SubSystem</td>
+	    <td class='clsFormC2Err' id='subSystem'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Id Object</td>
+	    <td class='clsFormC2Err' id='idObject'></td>
+	  </tr>
+	  <tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Type Object</td>
+	    <td class='clsFormC2Err' id='typeObject'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Type Source</td>
+	    <td class='clsFormC2Err' id='typeSource'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Type Process Analysis</td>
+	    <td class='clsFormC2Err' id='typeProcessAnalysis'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Active Cobol Division</td>
+	    <td class='clsFormC2Err' id='activeCobolDivision'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Active Cobol Section</td>
+	    <td class='clsFormC2Err' id='activeCobolSection'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Type Instruction</td>
+	    <td class='clsFormC2Err' id='typeInstr'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Under Copy</td>
+	    <td class='clsFormC2Err' id='copyName'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Instruction Number</td>
+	    <td class='clsFormC2Err' id='numInstr'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Row Number Start</td>
+	    <td class='clsFormC2Err' id='rowNumInstrBegin'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Row Number End</td>
+	    <td class='clsFormC2Err' id='rowNumInstrFinal'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Source Instruction</td>
+	    <td class='clsFormC2Err' id='sourceInstr'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Token in Error</td>
+	    <td class='clsFormC2Err' id='tokenError'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Message Type</td>
+	    <td class='clsFormC2Err' id='msgType'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Message Code</td>
+	    <td class='clsFormC2Err' id='msgCode'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Message Text</td>
+	    <td class='clsFormC2Err' id='msgText'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Java Stack Trace</td>
+	    <td class='clsFormC2Err' id='stackTrace'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Java Exception Description</td>
+	    <td class='clsFormC2Err' id='excpDescription'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Is Java Exception On Copy</td>
+	    <td class='clsFormC2Err' id='excpWhenCopyAnalysis'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Is Java Exception</td>
+	    <td class='clsFormC2Err' id='excp'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Is Parsing error</td>
+	    <td class='clsFormC2Err' id='parsingError'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Is Semantic Error</td>
+	    <td class='clsFormC2Err' id='semanticError'></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Err'>Is Warning</td>
+	    <td class='clsFormC2Err' id='warning'></td>
+	  </tr>
+	</table>
+</body>
+
+<script type="text/javascript">
+"use strict";
+var objJson = null;
+var winOpener = null;
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+	   winOpener=window.opener;
+	   objJson=winOpener.getJsonObjectAnalysisError();
+	   loadTable(objJson);
+	}	
+
+function loadTable(obj) {
+   document.getElementById('system').innerHTML = obj[0].sys; 
+   document.getElementById('subSystem').innerHTML = obj[0].subSystem;
+   document.getElementById('idObject').innerHTML = obj[0].idObject;
+   document.getElementById('typeObject').innerHTML = obj[0].typeObject;
+   document.getElementById('typeSource').innerHTML = obj[0].typeSource;
+   document.getElementById('typeProcessAnalysis').innerHTML = obj[0].typeProcessAnalysis;
+   document.getElementById('activeCobolDivision').innerHTML = obj[0].activeCobolDivision;
+   document.getElementById('activeCobolSection').innerHTML = obj[0].activeCobolSection;
+   document.getElementById('typeInstr').innerHTML = obj[0].typeInstr;
+   document.getElementById('copyName').innerHTML = obj[0].copyName;
+   document.getElementById('numInstr').innerHTML = obj[0].numInstr;
+   document.getElementById('rowNumInstrBegin').innerHTML = obj[0].rowNumInstrBegin;
+   document.getElementById('rowNumInstrFinal').innerHTML = obj[0].rowNumInstrFinal;
+   document.getElementById('sourceInstr').innerHTML = obj[0].sourceInstr;
+   document.getElementById('tokenError').innerHTML = obj[0].tokenError;
+   document.getElementById('msgType').innerHTML = obj[0].msgType;
+   document.getElementById('msgCode').innerHTML = obj[0].msgCode;
+   document.getElementById('msgText').innerHTML = obj[0].msgText;
+   document.getElementById('stackTrace').innerHTML = obj[0].stackTrace;
+   document.getElementById('excpDescription').innerHTML = obj[0].excpDescription;
+   document.getElementById('excpWhenCopyAnalysis').innerHTML = obj[0].excpWhenCopyAnalysis;
+   document.getElementById('excp').innerHTML = obj[0].excp;
+   document.getElementById('parsingError').innerHTML = obj[0].parsingError;
+   document.getElementById('semanticError').innerHTML = obj[0].semanticError;
+   document.getElementById('warning').innerHTML = obj[0].warning;	    
+}
+
+</script>
+
+</html>

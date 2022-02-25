@@ -1,0 +1,7 @@
+//********************** INIZIO PROC. ABEND  **************************
+//         PROC GIRO=''
+//P1       EXEC PGM=YL00401,PARM='ABMSGEND &GIRO'                       00000010
+//STEPLIB  DD DSN=L&CEN.P0Y.TBAN0000.LOADBATC,DISP=SHR
+//         DD DSN=Y&CENN.00LE37.PE000.SCEERUN,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//********************** FINE   PROC. ABEND  **************************

@@ -1,0 +1,50 @@
+//SA9A50Y  JOB AMA00000,'CAD',MSGCLASS=K,CLASS=B,REGION=0M,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//* OLD NAME=A9DPE0Y
+//*-----------------------------------------------------------------------------
+//*                     PROCEDURA AREA FINANZA
+//*  STAMPE CADERR E CADPRT RELATIVE AL JOB A9DPE
+//*-----------------------------------------------------------------------------
+//A9DPEY5      EXEC PGM=IDCAMS,COND=(8,LT)
+//SYSPRINT DD SYSOUT=F
+//SYSIN    DD DSN=LOPS0.DMSDEL(A9DPEY5),DISP=SHR
+//*----------------------------------------------------------------
+//*   ALLUNGO LA LUNGHEZZA DEL FILE A 206
+//*----------------------------------------------------------------
+//A9DPEY7     EXEC PGM=IGHRCO00
+//SYSOUT    DD SYSOUT=*
+//SORTIN    DD DSN=DOP0A9.ST0O0.A9DPE.CADERR.CAD,DISP=SHR
+//          DD DSN=DOP0A9.ST0O0.A9DPE.CADSIG.CAD,DISP=SHR
+//SORTOUT   DD DSN=DOP0A9.ST0O0.A9DPE.CADERRSG.CAD,
+//             DISP=(NEW,CATLG,DELETE),
+//             SPACE=(CYL,(002,10)),
+//             VOL=(,,,30),DATACLAS=PSEXTC,
+//             DSORG=PS,LRECL=0206,RECFM=FB
+//SYSIN    DD DSN=LOPS0.INPUT(A9CADY7),DISP=SHR
+//*
+//A9DPEY8   EXEC PGM=IEBGENER
+//SYSPRINT  DD SYSOUT=*
+//SYSUT1    DD DSN=DOP0A9.ST0O0.A9DPE.CADERRSG.CAD,DISP=SHR
+//          DD DSN=DOP0A9.ST0O0.A9DPE.CADPRT.CAD,DISP=SHR
+//SYSUT2   DD DSN=DOP0A9.ST0O0.A9DPEM00,
+//            DISP=(NEW,CATLG,DELETE),
+//            SPACE=(CYL,(002,10)),
+//            VOL=(,,,30),DATACLAS=PSEXTC,
+//            DSORG=PS,LRECL=0206,RECFM=FB
+//SYSIN     DD DUMMY
+//*-----------------------------------------------------------------------------
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE   : IMPIANTO CAD CARDINE
+//*-------------
+//*SCHEDULAZIONE : IMPIANTO
+//*-------------
+//*VINCOLI TP    : NO
+//*-------------
+//*DUMP          : AVVISARE IL PROGRAMMATORE REPERIBILE
+//*-------------
+//*PROSEND
+//************************************************************

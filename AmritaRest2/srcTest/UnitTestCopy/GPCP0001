@@ -1,0 +1,27 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance
+      *      Integrated
+      *        Tecnology 
+      *          Application
+      *
+      *================================================================
+      *==============================================================
+      *  Descrizione	: Unit test copy cobol.
+      *                 : Copy semplice senza ricorsivita per Z/GP
+      *                 :  
+      *  Scritto il    	: 16-08-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================
+       
+       
+      * Area di prova
+0      01  COPYGPCP0001-GRP99.
+1          05 COPYGPCP0001-INIZIO  PIC 99.
+2          05 FILLER PIC X(78).
+3          05 COPYGPCP0001-FINE PIC XXX.
+   

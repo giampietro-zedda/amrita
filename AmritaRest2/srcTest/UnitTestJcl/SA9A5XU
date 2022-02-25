@@ -1,0 +1,26 @@
+//SA9A5XU JOB ABDH000N3,'DEMSTA',MSGCLASS=K,CLASS=B,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//* OLD NAME=A9DSTXU
+//*------------------------------------------------------------
+//*      'PIF BATCH PER TWS'
+//*       ESEGUE ADD SU TWS CENTRO STAMPE
+//*------------------------------------------------------------
+//P1    EXEC Y6TWSAD,CENTRO=SK
+//ADD.SYSIN DD *
+ APPL(SA9DST00#000)
+//*
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE : ADD SU ALTRO TWS
+//*-----------
+//*SCHEDULAZIONE : DIPENDENZA CON FASE CREANTE
+//*-----------
+//*VINCOLI TP : NO
+//*-----------
+//*DUMP : SOSPENDERE
+//*-----------
+//*PROSEND
+//************************************************************

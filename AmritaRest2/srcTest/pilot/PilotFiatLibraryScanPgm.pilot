@@ -1,0 +1,53 @@
+#--------------------------------------------------------------------
+# Pilot di Test funzione di SourceDetect su unit test pgm cobol
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_DETECT_SOURCE_TYPE_ENABLED
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+OPT_SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+OPT_UPDATE_DB_ENABLED
+
+
+CUSTOMER_CODE FIAT
+CUSTOMER_INFO SRC-PGM
+
+SYSTEM_BY_EXIT
+SUB_SYSTEM_BY_EXIT
+
+LIBRARY FIAT-CPY      F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy\
+LIBRARY FIAT-CPY-SGM  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy_sgm\
+LIBRARY FIAT-CPY-SQB  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy_sqb\
+
+LIBRARY FIAT-SRC-CICS F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\src_cics\
+LIBRARY FIAT-SRC-BAT  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\src_bat\
+LIBRARY FIAT-SRC-SORT F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\sort\
+#OBJECT_TYPE_INCLUDE_ALL
+
+OBJECT_TYPE_PGM_COBOL
+OBJECT_TYPE_COPY_COBOL_ID
+OBJECT_TYPE_COPY_COBOL_ENV
+OBJECT_TYPE_COPY_COBOL_DATA
+OBJECT_TYPE_COPY_COBOL_PROC
+
+#FILE_PATH E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\COBTST01
+
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_LIBRARY_SCAN		 	 
+START

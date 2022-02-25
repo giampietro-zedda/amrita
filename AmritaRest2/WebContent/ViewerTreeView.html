@@ -1,0 +1,1216 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="ViewerTreeView.css"/>  
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div class='divHeader' id='divHeader'>System Tree View</div> 	
+
+<div id='divSubsys'>
+	<table id="tbSubSys">
+		<tr>
+			<td id="tdSubSys">Application Sub System </td>
+			<td> <select id="objSubSysSel" name="objSubSysSel"  onChange="onChangeSubSys()"></select> </td>
+		</tr>
+		</table> 
+</div>
+
+<div id='divTreeContainer'>
+ 	<table id="tbTree">
+       <tr> 
+          <td id='tdTree'> 
+             <div id='divTree'></div>
+          </td>
+          <td id='tdOriginFieldsWhereUsed'>
+               <div class='divDataHeader' id='divDataHeader'>Relation Origin </div>
+               <div id='divRelationOrigin'></div> 
+               <div class='divDataHeader'>Fields/Columns List </div>
+               <div id='divFields'></div> 
+	           <div class='divDataHeader'>Item Where Used </div> 
+	           <div id='divWhereUsed'></div>
+          </td>  
+        </tr>
+    </table>
+</div> 	
+
+<iframe id='iframeSource' name='iframeSource' title="source"></iframe> 
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+
+const OBJECT_PGM_COBOL="1";	  			        // 01 Sorgenti Cobol
+const OBJECT_COPY_COBOL_PROC="9";	  			// 09 Sorgenti Copy Cobol Procedure Division
+const OBJECT_COPY_COBOL_DATA="10";		        // 10 Sorgenti Copy Cobol Data Division
+const OBJECT_ENTITY_SQL = "15";                 // 15 Tabelle SQL
+
+var userInp="amrita";        // Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+
+var urlEnumGET = 'enum';                                 // To get EnumObject
+var urlSubSysGET = 'subsys';                             // Sottosistemi definiti
+var urlObjectGET = 'object'                              // Objects
+var urlRelationsGroupedGET = 'treeViewRelationsGrouped'; // Only object relations type
+var urlRelationGET = 'relation';                         // All object relations of a specific type
+var urlRelationOriginGET = 'relationOrigin'              // Relation Origin
+var urlCopyEntityGET = 'copyEntityDefinition'
+var urlWhereUsedGET = 'whereUsed'
+
+// To manage tree
+var arTree = [];                   // Tree elements
+var objTree = {};				   // Tree element object
+var idxTree = 0;              	   // Counter generale elementi inseriti
+
+var sysCur = "";
+var subSysCur = "-";
+var idObjectCur = "";
+var typeObjectCur = "";
+var subSysCurSel = ""; 
+
+// To manage relation list
+var objects=[];              		// JsonArray
+var arWhereUsedOriginRow = [];      // Rows objects
+var objWhereUsedOriginSelRow=null;  // Info relationOriginselected row  
+var iSelWhereUsedOrigin=0;
+var iSelWhereUsedOriginOld=0;       // Info relationOriginselected row  
+
+//To manage fields list
+var arFieldsColsRow = [];      		// Rows objects 
+var objFieldsColsSelRow={};         // Info relation selected row  
+var iSelFieldsCols=0;
+var iSelFieldsColsOld=0;
+
+// To manage relationOrigin list
+var arRelationOriginRow = [];       // Rows Relation Origin
+var iSelRelationOrigin=0;
+var iSelRelationOriginOld=0;
+
+var winOpenViewer=null;      // Viewer reference
+var winOpenInspector=null;   // Inspector reference
+
+var curIdObjClicked = "";    // Per selezione/deselezione nome oggetto
+var oldIdObjClicked = "";    // Per selezione/deselezione nome oggetto
+
+var divTreeHeightT = "";     // To adjust layout after source show
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+ 	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+	 userInp = localStorage.getItem("user");		
+	 hostName = localStorage.getItem("hostName");		
+	 baseUrl = localStorage.getItem("baseUrl");		
+	 sysCur = localStorage.getItem("filterObjSys");
+	 arTree = new Array();
+ 	 loadSubSys();
+  	 winOpenViewer=window.opener;          // Viewer
+	 if (winOpenViewer != null) {
+	 	  adjustLayout();
+	      loadTreeFirstLevel();
+	 }   
+}
+
+ 
+// Caricamento combo sottosistemi
+function loadSubSys() {
+	var xmlhttp;
+	var listSubSys = [];
+	var url = baseUrl + "/" + urlSubSysGET + "/" + userInp;
+	
+	// Dati da richiedere al server
+	xmlhttp = createRequest(); 
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var listSubSys=JSON.parse(xmlhttp.responseText);
+			loadSelectSpecific(objSubSysSel, listSubSys);
+	    }		 
+	};
+}
+
+function loadSelectSpecific(oSelect, listSubSys) {
+	oSelect.disable=true;
+	while (oSelect.length != 0) {
+		oSelect.remove(0);		
+	}
+	for (var i=0; i < listSubSys.length; i++) {
+		   var value = listSubSys[i].idObject;
+		   oSelect.add(new Option(value, value));
+	}
+	oSelect.disable=false;	
+}
+
+function onChangeSubSys() {
+	idxTree = 0;
+	arTree=[];
+	subSysCur = objSubSysSel.value;
+	localStorage.setItem("filterObjSubSys", objSubSysSel.value);  
+	document.getElementById('divTree').innerHTML = null;
+	loadTreeFirstLevel();
+} 
+ 
+/*
+ * Caricamento primo livello
+   Lista tipi oggetto principali considerati
+ */
+function loadTreeFirstLevel() {
+	var xmlhttp;	
+    var tbltop = "";
+    var main = "";
+	var tblBottom = "";
+	var tbl = "";	
+    var enums = "";
+    var value = "";
+    var typeObject = "";
+    
+	// Richiesta dati al server
+	xmlhttp=createRequest();
+  	var url = baseUrl + "/" + urlEnumGET + "/" + userInp + "/" + "EnumObject";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+			if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+			var enums=JSON.parse(xmlhttp.responseText);
+		
+		    tbltop = "<table id='objTable'>";
+		    
+		    for (var i=0; i < enums.length; i++) { 
+		    	 value = enums[i].value;
+		    	 typeObject = enums[i].ordinal;
+		    	 
+		         if (value.indexOf("FREE") >= 0) 	{continue;}
+		         if (value.indexOf("JAVA") > 0) 	{continue;}
+		         if (value.indexOf("ASSIGNED") > 0) {continue;}
+		         if (value.indexOf("GENERIC") > 0) {continue;}
+		         if (value.indexOf("ASM") > 0) 		{continue;}
+		         if (value.indexOf("PL1") > 0) 		{continue;}
+		         if (value.indexOf("ADABAS") > 0) 	{continue;}
+		         if (value.indexOf("DL1") > 0) 		{continue;}
+		         if (value.indexOf("AS400") > 0) 	{continue;}
+		         if (value.indexOf("GLOBAL") > 0) 	{continue;}
+		         if (value.indexOf("SYS_") > 0) 	{continue;}
+		         
+		         value = value.substr(7);
+		         
+		 		 objTree = createObjTree();		 		 
+		 		 objTree.prefix="EH";
+		 		 objTree.idxTree=idxTree;
+		 		 objTree.typeObjectDesc=value;
+		 		 objTree.typeObject=typeObject;
+		 		 
+		 		 main +=  "<tr> <td class='expandTypeObj' id='EH#" + idxTree + "##'" +  "onclick='onclick_treeView(this.id)'>+</td>"
+		 		      +       " <td class='typeObj'>" + value + "</td> <tr>"
+		 		      +   "<tr> <td class='divObjRel' colspan='2'> <div class='divObjRel' id='D#" + idxTree + "' > </div> </td> <tr>"; 
+		 		 
+		 		 arTree.push(objTree);
+		 		 
+		 		 idxTree++;
+		    } 
+		    
+		    idxTree--;
+			tblBottom = '</table>';
+			tbl = tbltop + main + tblBottom;	
+			document.getElementById('divTree').innerHTML = tbl;   
+		  }
+}
+
+// Object tree creation
+function createObjTree() {
+  var objTree = {};
+  objTree = new Object();
+  objTree.prefix="";
+  objTree.idxTree=0;
+  objTree.idxTreeParent=-1;
+  objTree.subSys="";
+  objTree.subSysOwner="";
+  objTree.idObject = "";
+  objTree.typeObject = "";
+  objTree.typeObjectDesc = "";
+  objTree.idObjectA = "";
+  objTree.typeObjectA = "";
+  objTree.rel = "";
+  objTree.relDesc = "";
+  objTree.idObjectB = "";
+  objTree.typeObjectB = "";  
+  objTree.isDirect = "Y";
+  return objTree;
+}
+
+/*
+ * Gestione click su expand/nome oggetto/relazione
+ */
+function onclick_treeView(clicked_id) {
+  var arId = [];
+  var objTreeSel = {};  // Selected
+  var objTreeParent = {};
+  var prefix = "";      // H/EH/EO/ER/EO/D
+  var typeObjA = "";    // Tipo oggetto 
+  var idObjA = "";      // Nome oggetto
+  var idObjB = "";      // Nome oggetto
+  var rel = "";         // Relazione codificata
+  var idRelDesc = "";   // Id relazione codificata
+  var relDesc = "";     // Descrizione relazione
+  var typeObjB = "";    // Tipo oggetto 
+  var iRow = "";        // numero riga
+  var expand = "";      // + -
+  var idDiv = "";       //
+  var isRevRelation = false;
+  var isDirectNew = "";
+  var i = 0;
+  var i2 = 0;
+  
+  arId = clicked_id.split("#");
+  prefix =arId[0];
+  i = arId[1];
+  objTreeSel = arTree[i];
+  if (objTreeSel.idxTreeParent > -1) {
+	  objTreeParent = arTree[objTreeSel.idxTreeParent];
+  }  
+  
+  // Gestione expand/contract tipo oggetto primo livello
+  if (prefix == "EH") {
+	 document.getElementById("divRelationOrigin").innerHTML = "";
+	 document.getElementById("divFields").innerHTML = "";
+	 document.getElementById("divWhereUsed").innerHTML = "";
+	 expand = document.getElementById(clicked_id).innerHTML;
+	 idDiv = "D#"+ objTreeSel.idxTree;
+	 // Contrazione
+	 if (expand == "-") {
+        document.getElementById(clicked_id).innerHTML = "+";
+        document.getElementById(idDiv).style.display="none";
+        resetSelections();
+        return;
+	 }
+	 // Espansione
+	 document.getElementById(clicked_id).innerHTML = "-";
+	 loadDivObjNamesLevel0(idDiv, objTreeSel.typeObject, objTreeSel.idxTree);
+	 document.getElementById(idDiv).style.display="block";
+	 return;
+   }
+
+  // Gestione expand/contract nome oggetto
+  if (prefix == "EO") {
+	 expand = document.getElementById(clicked_id).innerHTML;
+	 idDiv = "D#" + objTreeSel.idxTree;
+	 // Contrazione
+	 if (expand == "-") {
+        document.getElementById(clicked_id).innerHTML = "+";
+        document.getElementById(idDiv).style.display="none";
+        return;
+	 }
+	 // Espansione
+	 document.getElementById(clicked_id).innerHTML = "-";
+	 if (objTreeSel.isDirect == "Y") {
+		isDirectNew = "Y";
+	 } else {
+		isDirectNew = "Y";
+	 }
+	 loadDivRelationsGrouped(idDiv, objTreeSel.subSysOwner, objTreeSel.typeObject, objTreeSel.idObject, objTreeSel.idxTree, isDirectNew);
+	 // Visualizza Solo se div valorizzato
+	 if (document.getElementById(idDiv) != null) {
+		 document.getElementById(idDiv).style.display="block";
+	 }
+	 return;
+  }
+  
+  // Gestione click su nome oggetto
+  if (prefix == "O") {
+	 gestSelectIdObject(clicked_id);
+	 document.getElementById("divFields").innerHTML = "";
+	 document.getElementById("divWhereUsed").innerHTML = "";	 
+	
+     // Caricamento origine relazione
+     if (objTreeParent.rel != "") {
+	   	 loadRelationOrigin(objTreeSel, objTreeParent);
+     }
+     
+	 // Caricamento tabella campi copy/colonne da definizione owner
+	 if (objTreeSel.typeObject == OBJECT_COPY_COBOL_DATA  
+	 ||  objTreeSel.typeObject == OBJECT_ENTITY_SQL) {
+		 loadCopyEntityFields(objTreeSel.subSysOwner, objTreeSel.typeObject, objTreeSel.idObject);
+	 }   
+     return;
+  }	 
+
+  // Gestione expand/contract relazione 
+  if (prefix == "ER") {
+	 expand = document.getElementById(clicked_id).innerHTML;
+	 idDiv = "D#" + objTreeSel.idxTree;
+	 // Contrazione
+	 if (expand == "-") {
+        document.getElementById(clicked_id).innerHTML = "+";
+        document.getElementById(idDiv).style.display="none";
+        return;
+	 }
+	 // Espansione
+	 document.getElementById(clicked_id).innerHTML = "-";
+	 idRelDesc = "R" + clicked_id.substr(2);
+	 relDesc = document.getElementById(idRelDesc).innerHTML;
+	 // Se Necessario estrarre relazioni inverse
+	 isRevRelation = false;
+	 if (relDesc == "PGM_CALLER_PGM") {isRevRelation = true;}
+	 loadDivObjNamesLevelX(idDiv, objTreeSel, isRevRelation);
+	 document.getElementById(idDiv).style.display="block";
+	 return;
+  }
+  
+} 
+
+// selezione/Deselezione
+function gestSelectIdObject(clicked_id) {
+   var control = null;
+   if (clicked_id != oldIdObjClicked) {
+	  if (oldIdObjClicked != "") {
+		  control = document.getElementById(oldIdObjClicked);
+		  if (control != null) {
+			  document.getElementById(oldIdObjClicked).classList.remove("selected"); 
+		  }
+	  }
+	  
+	  document.getElementById(clicked_id).classList.add("selected"); 
+	  oldIdObjClicked = clicked_id;
+   }
+ }
+function resetSelections() {
+	curIdObjClicked = "";
+	oldIdObjClicked = ""; 
+	iSelWhereUsedOrigin=0;
+	iSelWhereUsedOriginOld=0; 
+}
+
+// Rimozione eventuale parentesi (subSys)
+function removeParIfAny(id) {
+	var i = 0;
+	i = id.indexOf("(");
+	if (i > 0) {
+		return id.substr(0, i);
+	}
+	return id;
+}
+
+// Caricamento nomi oggetti	a livello 0 direttamente da Object 
+function loadDivObjNamesLevel0(idDiv, typeObject, idxTreeParent) {
+	sysCur = localStorage.getItem("filterObjSys");
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlObjectGET + "/" +  userInp + "/" + sysCur + "/" + subSysCur + "/" + typeObject + "/"+ "*" + "/*" + "/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+   	if (xmlhttp.status!=200){
+   	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+   	}   
+   };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectsLevel0Get(xmlhttp, idDiv, typeObject, idxTreeParent);}; 	
+};
+  
+function handleJsonResponseObjectsLevel0Get(xmlhttp, idDiv, typeObject, idxTreeParent) {
+	var objTree = {};
+	var idObj = "";	
+	
+   	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+			
+   	objects=JSON.parse(xmlhttp.responseText);
+     
+  	var tbltop = "<table class='tbObj'>"
+  	var main = "";                    
+   	for (var i=0; i < objects.length; i++) {
+   		idObj = objects[i].idObject;
+   	
+       	if (objects[i].subSystemOwner != objects[i].subSystem) {
+       		if (objects[i].subSystem != objects[i].subSystemOwner && objects[i].subSystemOwner != "") {
+       			idObj = idObj + "("+ objects[i].subSystemOwner + ")";
+			}
+		}
+       	
+    	idxTree++;   	
+       	objTree = createObjTree();
+      	objTree.prefix =  "EO";
+     	objTree.idxTreeParent =  idxTreeParent;
+     	objTree.idxTree =  idxTree;
+      	objTree.subSys =  objects[i].subSystem;
+      	objTree.subSysOwner =  objects[i].subSystemOwner;
+      	// Non dovrebbe succedere, va controllato in fase di analisi
+      	if (objTree.subSysOwner == "") {
+      		objTree.subSysOwner = objTree.subSys;
+		}
+      	objTree.idObject = objects[i].idObject;
+       	objTree.typeObjectDesc = objects[i].typeObject;
+       	objTree.typeObject = objects[i].typeObjectOrdinal;
+       	objTree.isDirect = "Y";
+       	arTree.push(objTree);
+       	
+ 	    main  += "<tr> <td class='expandIdObj' id='EO#" + idxTree + "#"  + idxTreeParent + "#" + objects[i].idObject  + "' onclick='onclick_treeView(this.id)'> + </td>"
+ 	          +       "<td class='idObj'       id='O#"  + idxTree + "#"  + idxTreeParent + "#" + objects[i].idObject  + "' onclick='onclick_treeView(this.id)'>" +idObj + "</td> "
+ 	          +  "<tr>"
+              +  "<tr> <td colspan='2'> <div class='divObjRel' id='" + "D#" + idxTree + "'> </div> </td> <tr>"
+   }         
+   var tblBottom = '</table>'
+   var tbl = tbltop + main + tblBottom;
+   
+   document.getElementById(idDiv).innerHTML = tbl;
+}
+	    
+// idDiv, objTreeSel,  objTreeSel.subSysOwner, objTreeSel.typeObjectA, objTreeSel.idObjectA, objTreeSel.rel, objTreeSel.typeObjectB, isRevRelation, objTreeSel.idxTree	 	  
+// Caricamento nomi oggetti	a partire dalla relazione 
+function loadDivObjNamesLevelX(idDiv, objTreeSel, isRevRelation) {
+	var xmlhttp;
+	var url = "";
+	var subSysOwner = "";
+	var typeObjectA = "";
+	var idObjectA = "";
+	var relation = "";
+	var typeObjectB = "";
+	var idxTreeCur = "";
+	
+	subSysOwner = objTreeSel.subSysOwner;
+	idObjectA = objTreeSel.idObjectA;
+	typeObjectA = objTreeSel.typeObjectA;
+	relation = objTreeSel.rel;
+	typeObjectB = objTreeSel.typeObjectB;
+	idxTreeCur = objTreeSel.idxTree;
+	
+	if (!isRevRelation) {
+		url = baseUrl + "/" + urlRelationGET + "/" + userInp + "/" + sysCur + "/" + subSysOwner + "/" + idObjectA  + "/" +  typeObjectA + "/*/" + relation + "/" + "*" + "/" + typeObjectB + "/*";
+	} else {
+		url = baseUrl + "/" + urlRelationGET + "/" + userInp + "/" + sysCur + "/" + subSysOwner + "/" + "*"  + "/" +  "*" + "/*/" + relation + "/" + idObjectA + "/" + typeObjectB + "/*";
+	}
+
+	xmlhttp=createRequest();
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+	   	if (xmlhttp.status!=200){
+	   	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+	   	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectsLevelXGet(xmlhttp, idDiv, typeObjectA, idObjectA, relation, isRevRelation, idxTreeCur);};
+	
+};
+ 
+function handleJsonResponseObjectsLevelXGet(xmlhttp, idDiv, typeObjectA, idObjectA, relation, isRevRelation, idxTreeCur) {
+	var idObject = "";
+	var typeObject = "";
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+			
+    objects=JSON.parse(xmlhttp.responseText);
+    
+    var tbltop = "<table class='tbObj'>"
+    var main = "";                    
+    for (var i=0; i < objects.length; i++) {
+    	idxTree++;   	
+       	objTree = createObjTree();
+      	objTree.prefix =  "EO";
+     	objTree.idxTreeParent =  idxTreeCur;
+     	objTree.idxTree =  idxTree;
+      	objTree.subSys =  objects[i].subSystem;
+      	objTree.subSysOwner =  objects[i].subSysOwner;
+      	// Per ENTITY senza DDL analizzata con subSysOwner space
+      	if (objTree.subSysOwner == "") {
+      		objTree.subSysOwner = objTree.subSys;
+		}
+    	if (!isRevRelation) {
+     	   idObject = objects[i].idObjectB;
+     	   typeObject = objects[i].typeObjectBOrdinal;
+		   objTree.idObject = objects[i].idObjectB;
+		   objTree.typeObject = objects[i].typeObjectBOrdinal;
+     	   objTree.typeObjectDesc = objects[i].typeObjectB;
+		} else {
+		   idObject = objects[i].idObjectA;
+		   typeObject = objects[i].typeObjectAOrdinal;
+		   objTree.idObject = objects[i].idObjectA;
+		   objTree.typeObject = objects[i].typeObjectAOrdinal;
+		   objTree.typeObjectDesc = objects[i].typeObjectA;
+		}	   	
+       	arTree.push(objTree);
+
+ 	    main  += "<tr> <td class='expandIdObj' id='EO#" + idxTree + "#" + idxTreeCur + "' onclick='onclick_treeView(this.id)'>" + "+"      + "</td>"
+ 	          +       "<td class='idObj'       id='O#"  + idxTree + "#" + idxTreeCur + "' onclick='onclick_treeView(this.id)'>" + idObject + "</td> "
+ 	          +  "<tr>"
+              +  "<tr> <td colspan='2'> <div class='divObjRel' id='" + "D#" + idxTree + "'> </div> </td> <tr>"
+   }         
+   var tblBottom = '</table>'
+   var tbl = tbltop + main + tblBottom;
+   document.getElementById(idDiv).innerHTML = tbl;
+   
+   // Pulizia where used
+   document.getElementById("divWhereUsed").innerHTML = "";
+}
+
+
+// Caricamento relazioni di uno specifico oggetto  
+function loadDivRelationsGrouped(idDiv, subSysOwner, typeObjectA, idObjectA, idxTreeParent, isDirect) {
+	var xmlhttp;
+	
+	var url = baseUrl + "/" + urlRelationsGroupedGET + "/" + userInp + "/" + sysCur + "/" + subSysOwner + "/" + typeObjectA  + "/" + idObjectA + "/" + isDirect;
+
+	xmlhttp=createRequest();
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+	   	if (xmlhttp.status!=200){
+	   	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+	   	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelationsGroupedGet(xmlhttp, idDiv, subSysOwner, typeObjectA, idObjectA, idxTreeParent, isDirect);};	
+}
+
+function handleJsonResponseRelationsGroupedGet(xmlhttp, idDiv, subSysOwner, typeObjectA, idObjectA, idxTreeParent, isDirect) {
+   var tbl = "";
+   var tbltop = "";
+   var main = "";
+   var tblBottom = "";
+   var rel = "";
+   var relOrdinal = "";
+   var typeObjectB = "";
+	
+   if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+			
+   objects=JSON.parse(xmlhttp.responseText);
+   
+   tbltop = "<table class='tbRel'>"
+   main = "";                    
+   for (var i=0; i < objects.length; i++) {
+  	   rel = objects[i].relation;  	
+  	   relOrdinal = objects[i].relationOrdinal; 
+  	   typeObjectB = objects[i].typeObjectB; 
+  
+	   idxTree++;   	
+	   objTree = createObjTree();
+	   objTree.prefix =  "ER";
+	   objTree.idxTreeParent =  idxTreeParent;
+	   objTree.idxTree =  idxTree;
+	   objTree.subSys = subSysCur;
+	   objTree.subSysOwner = subSysOwner;
+	   objTree.idObject = idObjectA; 
+	   objTree.idObjectA = idObjectA; 
+	   objTree.typeObjectA = typeObjectA; 
+	   objTree.rel = objects[i].relationOrdinal;
+	   objTree.relDesc = objects[i].relation;
+	   objTree.typeObjectB = objects[i].typeObjectB; 
+	   arTree.push(objTree);
+  	   
+  	   main  += "<tr> <td class='expandRelObj' id='ER#" + idxTree + "#" + idxTreeParent  + "#" + relOrdinal + "#" + typeObjectB + "' onclick='onclick_treeView(this.id)'> + </td>"
+ 	         +  "     <td class='idRel'        id='R#"  + idxTree + "#" + idxTreeParent  + "#" + relOrdinal + "#" + typeObjectB + "' onclick='onclick_treeView(this.id)'>" + rel + "</td> "
+ 	         +  "<tr>"
+             +  "<tr> <td colspan='2'> <div class='divObjRel' id='" + "D#" + idxTree  + "'> </div> </td> <tr>";
+      
+       // PGM_CALLED_PGM: inserimento entry supplementare PGM_CALLER_PGM non presente sul database
+       if (objTree.relDesc == "PGM_CALLED_PGM") {
+    	  idxTree++;
+	   	  objTree = createObjTree();
+		  objTree.prefix =  "ER";
+		  objTree.idxTreeParent =  idxTreeParent;
+		  objTree.idxTree =  idxTree;
+		  objTree.subSys = subSysCur;
+		  objTree.subSysOwner = subSysOwner;
+		  objTree.idObject = idObjectA; 
+		  objTree.idObjectA = idObjectA; 
+		  objTree.typeObjectA = typeObjectA; 
+		  objTree.rel = objects[i].relationOrdinal;
+		  objTree.relDesc = "PGM_CALLER_PGM";
+		  objTree.typeObjectB = objects[i].typeObjectB; 
+		  arTree.push(objTree);		  
+		  rel = "PGM_CALLER_PGM";
+		  
+	  	  main  += "<tr> <td class='expandRelObj' id='ER#" + idxTree + "#" + typeObjectA  + "#" + relOrdinal + "#" + typeObjectB + "#" + idxTree + "' onclick='onclick_treeView(this.id)'> + </td>"
+ 	            +  "     <td class='idRel'        id='R#"  + idxTree + "#" + typeObjectA  + "#" + relOrdinal + "#" + typeObjectB + "#"  + idxTree + "' onclick='onclick_treeView(this.id)'>" + rel + "</td> "
+ 	            +  "<tr>"
+                +  "<tr> <td colspan='2'> <div class='divObjRel' id='" + "D#" + idxTree + "'> </div> </td> <tr>";
+	   }
+   }         
+   tblBottom = '</table>'
+   tbl = tbltop + main + tblBottom;
+ 
+   document.getElementById(idDiv).innerHTML = tbl;
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+    
+ // Per funzionare si è dovuto duplicare createRequest ed eliminare la parentesi graffa finale
+ // ????????????????? Problema NON RISOLTO
+/* set properties not working just with CSS */
+function adjustLayout() {
+	var divHeader = "";
+	var heightHeader = 0;
+	var widthHeader = 0;
+	var widthHeaderT = "";
+	var tdTree = "";
+	var tdTreeHeight = "";
+	var newHeightN = "";
+	var newHeightT = "";
+	var newHeightN1 = "";
+	var newHeightT1 = "";
+	var newHeightN2 = "";
+	var newHeightT2 = "";
+	var newHeightN3 = 0;
+	var newHeightT3 = "";
+	
+	divHeader = document.getElementById("divDataHeader");
+	heightHeader = divHeader.offsetHeight;
+	widthHeader = divHeader.offsetWidth;
+	widthHeaderT = widthHeader + "px";
+
+	// Pgm structure box
+	tdTree = document.getElementById("tdTree");
+	tdTreeHeight = tdTree.clientHeight;
+    // Height Totale
+	newHeightN = parseInt(tdTreeHeight) - 19;
+	newHeightT = newHeightN.toString() + "px";
+    
+	// Height Relation Origin
+	newHeightN1 = newHeightN * 0.30 - heightHeader;
+	newHeightT1 = newHeightN1.toString() + "px";
+	
+	// Height Fields
+	newHeightN2 = newHeightN * 0.40 - heightHeader;
+	newHeightT2 = newHeightN2.toString() + "px";
+
+	// Height where used
+	newHeightN3 = newHeightN - newHeightN1 - newHeightN2 - 2 * heightHeader;
+	newHeightT3 = newHeightN3.toString() + "px";
+
+	document.getElementById ( "divTree" ).style.height = newHeightT;
+	document.getElementById ( "divTree" ).style.maxHeight = newHeightT;
+	
+	document.getElementById ( "divRelationOrigin" ).style.maxHeight = newHeightT1;	 
+	document.getElementById ( "divRelationOrigin" ).style.maxWidth = widthHeaderT;
+	document.getElementById ( "divFields" ).style.maxHeight = newHeightT2;	
+	document.getElementById ( "divWhereUsed" ).style.maxHeight = newHeightT3;	
+}
+function loadRelationOrigin(objTreeSel, objTreeParent) {
+    var subSys = "";
+    var typeObjA = "";
+    var idObjA = "";
+    var rel = "";
+    var typeObjB = "";
+    var idObjB = "";
+
+    subSys = objTreeSel.subSys;
+    typeObjA = objTreeParent.typeObjectA;
+    idObjA = objTreeParent.idObjectA;
+    rel = objTreeParent.rel;
+    typeObjB = objTreeSel.typeObject;
+    idObjB = objTreeSel.idObject;
+
+	
+	getJsonResponseRelationOriginGET(subSys, typeObjA, idObjA, rel, typeObjB, idObjB); 
+}
+ 
+function loadCopyEntityFields(subSysSel, typeObjectCur, idObjectCur) {
+  getJsonResponseCopyEntityFieldsGET(subSysSel, typeObjectCur, idObjectCur); 
+}
+
+/* Fields */
+function getJsonResponseCopyEntityFieldsGET(subSysSel, typeObject, idObject) {
+	var xmlhttp;
+	
+	var url = baseUrl + "/" + urlCopyEntityGET + "/"+ userInp + "/" + sysCur + "/" + subSysSel + "/" + idObject +  "/" + typeObject  ;
+
+	xmlhttp=createRequest();
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseCopyEntityFields(xmlhttp);};
+}
+function handleJsonResponseCopyEntityFields(xmlhttp) {
+	 if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+    
+	 objects=JSON.parse(xmlhttp.responseText);
+    
+	 arFieldsColsRow = new Array();
+ 
+     var tbltop = "<table class='tbFieldsWhereUsed' id='tbFields'>"
+	            +    "<tr>"
+	            +     "<th>#</th>"
+	            +      "<th>Field</th>"
+	            +      "<th>Lvl</th>"
+	            +      "<th>Lng</th>"
+	            +      "<th>Pos</th>"
+	            +      "<th>Int</th>"
+	            +      "<th>Dec</th>"
+	            +    "</tr>"
+      var main = "";                    
+      for (var i=0; i < objects.length; i++) {
+  	       main  += "<tr>"
+    	         +    "<td id='numSeq_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numSeq       + "</td>" 
+    	         +    "<td id='idField_"       + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].idField      + "</td>" 
+    	         +    "<td id='level_"         + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].level        + "</td>" 
+    	         +    "<td id='lngBytes_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].lngBytes     + "</td>" 
+    	         +    "<td id='pos_"           + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].lngBytes     + "</td>" 
+    	         +    "<td id='numInt_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numInt       + "</td>" 
+    	         +    "<td id='numDec_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numDec       + "</td>" 
+     	         +  "</tr>"
+    	       
+           arFieldsColsRow.push(objects[i]);                                        
+      } 
+      
+      var tblBottom = '</table>'
+      var tbl = tbltop + main + tblBottom;
+  
+      if (objects.length == 0) {
+   	     tbl = "";
+      }
+      document.getElementById('divFields').innerHTML = tbl;
+
+}
+function onclick_fldColumnRow(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    
+    iSelFieldsCols = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelFieldsCols != iSelFieldsColsOld && iSelFieldsColsOld >= 0) {
+		document.getElementById("numSeq_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("idField_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("level_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("lngBytes_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("pos_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numInt_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numDec_"+iSelFieldsColsOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("numSeq_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("idField_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("level_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("lngBytes_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("pos_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numInt_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numDec_"+iSelFieldsCols).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelFieldsColsOld=iSelFieldsCols;
+    
+    // Attivazione whhere used
+    objFieldsColsSelRow =arFieldsColsRow[iSelFieldsCols];	// Element 0 contains var names
+	loadWhereUsedOrigin(objFieldsColsSelRow);
+} 
+
+/* Relation Origin */
+function getJsonResponseRelationOriginGET(subSys, typeObjA, idObjA, rel, typeObjB, idObjB) {
+	var xmlhttp;
+	
+	var url = baseUrl + "/" + urlRelationOriginGET + "/" + userInp + "/" + sysCur + "/" + subSys + "/" + idObjA + "/" + typeObjA + "/*/" + rel + "/" + idObjB + "/" + typeObjB + "/*" ;
+
+	xmlhttp=createRequest();
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelationOriginGET(xmlhttp);};
+}
+function handleJsonResponseRelationOriginGET(xmlhttp) {
+	 if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+    
+	 objects=JSON.parse(xmlhttp.responseText);
+    
+	 arRelationOriginRow = new Array();
+ 
+     var tbltop  = "<table class='tbFieldsWhereUsed' id='tbRelationOrigin'>"
+		         +    "<tr>"
+		         +      "<th>Pgm</th>"
+		         +      "<th>I</th>"
+		         +      "<th>RStart</th>"
+		         +      "<th>REnd</th>"
+		         +      "<th>Pgm Area</th>"
+		         +      "<th>Category</th>"
+		         +      "<th>Source</th>"
+		         +      "<th>Precompiler</th>"
+		         +      "<th>InCopy</th>"
+		         +      "<th>RStart</th>"
+		         +      "<th>REnd</th>"
+		         +    "</tr>"
+     var main = "";                 
+     for (var i=0; i < objects.length; i++) {
+  	   main  += "<tr>"
+	         +    "<td id='pgmOrigin_"             + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].idObjectOrigin            + "</td>" 
+	         +    "<td id='numInstrOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].numInstrOrigin       + "</td>" 
+	         +    "<td id='rowStartOrigin_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowStartOrigin       + "</td>" 
+	         +    "<td id='rowEndOrigin_"          + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowEndOrigin         + "</td>" 
+	         +    "<td id='instrProgramArea_"      + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].instrProgramArea     + "</td>" 
+	         +    "<td id='instrCategory_"         + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].instrCategory        + "</td>" 
+	         +    "<td id='relationSource_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].relationSource       + "</td>" 
+	         +    "<td id='instrTypePrecompiler_"  + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].instrTypePrecompiler + "</td>" 
+	         +    "<td id='copyOrigin_"  		   + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].copyOrigin           + "</td>" 
+	         +    "<td id='rowStartInCopy_"        + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowStartInCopy       + "</td>" 
+	         +    "<td id='rowEndInCopy_"          + i + "' onclick='onclick_relOriginRow(this.id);'"       + ">" + objects[i].rowEndInCopy         + "</td>" 
+	         +  "</tr>"
+	         
+              arRelationOriginRow.push(objects[i]);         
+	  } 
+      
+      var tblBottom = '</table>'
+      var tbl = tbltop + main + tblBottom;
+ 
+      if (objects.length == 0) {
+   	   tbl = "";
+      }
+
+      document.getElementById('divRelationOrigin').innerHTML = tbl;
+
+}
+function onclick_relOriginRow(clicked_id) {
+	var objRelOriginSelRow = {};
+    var i = clicked_id.indexOf("_");
+    var id = "";
+    var relOriginArea = "";
+     
+    iSelRelationOrigin = parseInt(clicked_id.substr(i+1));
+    id = clicked_id.substr(0, i);
+
+    // Unselect selected row
+    if (iSelRelationOrigin != iSelRelationOriginOld && iSelRelationOriginOld >= 0) {
+		document.getElementById("pgmOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("numInstrOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrProgramArea_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrCategory_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("relationSource_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("instrTypePrecompiler_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("copyOrigin_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelRelationOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelRelationOriginOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("pgmOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("numInstrOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowStartOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowEndOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrProgramArea_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrCategory_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("relationSource_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("instrTypePrecompiler_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("copyOrigin_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelRelationOrigin).classList.add("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelRelationOrigin).classList.add("selected"); 
+    }
+    
+    // For next selection
+    iSelRelationOriginOld=iSelRelationOrigin;
+    
+    // Database access and loading
+    objRelOriginSelRow = arRelationOriginRow[iSelRelationOrigin];				 
+
+    relOriginArea = document.getElementById("instrProgramArea_"+iSelRelationOrigin).innerHTML;
+    relOriginArea = relOriginArea.substr(0,1);
+    
+    // Inspector activation
+    if (id == "numInstrOrigin") { 
+    	// Specific inspector parameters
+    	localStorage.setItem("sourceSubSys_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.subSystem);
+     	localStorage.setItem("sourceIdObject_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.idObjectOrigin);
+       	localStorage.setItem("sourceTypeObject_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.typeObjectOrigin);  
+       	localStorage.setItem("sourceTypeObjectN_" + objRelOriginSelRow.idObjectOrigin, objRelOriginSelRow.typeObjectOriginOrdinal);  
+        localStorage.setItem("sourceNumInstr_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("numInstrOrigin_"+iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceRowStart_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("rowStartOrigin_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd_" + objRelOriginSelRow.idObjectOrigin,   document.getElementById("rowEndOrigin_"  +iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceUnderCopy_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceUnderCopyRowStart_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceUnderCopyRowEnd_" + objRelOriginSelRow.idObjectOrigin, document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceOriginArea_" + objRelOriginSelRow.idObjectOrigin, relOriginArea);
+        // Load inspector in a new page
+    	winOpenInspector = window.open("Inspector.html", "_blank");
+    	winOpenInspector.name=objRelOriginSelRow.idObjectOrigin;
+     	return;
+	}
+    
+    // Show copy
+    if ((id == "copyOrigin" || id == "rowStartInCopy" || id == "rowEndInCopy" ) 
+    &&  (document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML != "")) {
+     	localStorage.setItem("sourceIdObject", document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML);
+        // Relazione PGM-related-XXX
+        if (objRelOriginSelRow.typeObjectAN == OBJECT_PGM_COBOL ) {
+          	localStorage.setItem("sourceTypeObject", "OBJECT_COPY_COBOL_PROC");
+           	localStorage.setItem("sourceTypeObjectN", OBJECT_COPY_COBOL_PROC); 
+        }
+        // Puo' essere solo COPY-CALL-COPY
+        else {
+          	localStorage.setItem("sourceTypeObject", "OBJECT_COPY_COBOL_DATA");
+           	localStorage.setItem("sourceTypeObjectN", OBJECT_COPY_COBOL_PROC);   
+        } 
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML);    
+        localStorage.setItem("sourceIsShowPgm", "false");
+        localStorage.setItem("sourceIsIdxFileToGet", "false");
+     // Show programma
+	} else {
+	    // Standard parameters for source
+	    localStorage.setItem("sourceCaller", "ViewerTreeView");
+	    localStorage.setItem("sourceSubSys", objRelOriginSelRow.subSystem);
+	 	localStorage.setItem("sourceIdObject", objRelOriginSelRow.idObjectOrigin);
+	   	localStorage.setItem("sourceTypeObject", objRelOriginSelRow.typeObjectOrigin);  
+	   	localStorage.setItem("sourceTypeObjectN", objRelOriginSelRow.typeObjectOriginOrdinal);  
+//	    localStorage.setItem("sourceNumInstr", document.getElementById("numInstrOrigin_"+iSelRelationOrigin).innerHTML);
+	    localStorage.setItem("sourceRowStart", document.getElementById("rowStartOrigin_"+iSelRelationOrigin).innerHTML);
+	    localStorage.setItem("sourceRowEnd",   document.getElementById("rowEndOrigin_"  +iSelRelationOrigin).innerHTML);    
+	    localStorage.setItem("sourceUnderCopy", document.getElementById("copyOrigin_"+iSelRelationOrigin).innerHTML);
+	    localStorage.setItem("sourceUnderCopyRowStart", document.getElementById("rowStartInCopy_"+iSelRelationOrigin).innerHTML);
+	    localStorage.setItem("sourceUnderCopyRowEnd", document.getElementById("rowEndInCopy_"+iSelRelationOrigin).innerHTML);
+	    localStorage.setItem("sourceOriginArea", relOriginArea);
+        localStorage.setItem("sourceIsShowPgm", "true");
+        localStorage.setItem("sourceIsIdxFileToGet", "true");
+	}
+
+    // Hide sections     
+	document.getElementById("divHeader").style.display="none";
+	document.getElementById("divSubsys").style.display="none";
+	document.getElementById("divTreeContainer").style.display="none";
+	
+	// Show only source
+    document.getElementById("iframeSource").style.display="block";
+	document.getElementById("iframeSource").style.height = "100%";
+	document.getElementById("iframeSource").style.width = "99%";
+	
+	window.open('ViewerSourceViewer.html', 'iframeSource'); 
+
+} 
+
+function loadWhereUsedOrigin(objFieldsColsSelRow) {
+	getJsonResponseWhereUsedOriginGET(objFieldsColsSelRow);  
+}
+
+function getJsonResponseWhereUsedOriginGET(objFieldSel) {
+	var xmlhttp;
+	var idObject = "";
+    var typeObjectN = "";
+    var idField = "";
+    var numSeq = "";
+	var url = "";
+	
+	idObject = objFieldSel.idObject;
+	typeObjectN = objFieldSel.typeObjectOrdinal;
+	idField = objFieldSel.idField;
+	numSeq = objFieldSel.numSeq;
+	
+	url = baseUrl + "/" + urlWhereUsedGET + "/" + userInp + "/" + sysCur + "/" + "*" + "/" + idObject + "/" + typeObjectN + "/" + idField + "/" + numSeq ;
+    
+	xmlhttp=createRequest();
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseWhereUsedOrigin(xmlhttp);};
+}  
+
+function handleJsonResponseWhereUsedOrigin(xmlhttp) {
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){
+		return;
+    }	
+    objects=JSON.parse(xmlhttp.responseText);
+    arWhereUsedOriginRow = new Array();
+   
+    var tbltop = "<table class='tbFieldsWhereUsed' id='tbWhereUsed'>"
+   	             +    "<tr>"
+                 +      "<th>sub</th>"
+                 +      "<th>Pgm</th>"
+                 +      "<th>I</th>"
+                 +      "<th>RStart</th>"
+                 +      "<th>REnd</th>"
+                 +      "<th>InCopy</th>"
+                 +      "<th>RStart</th>"
+                 +      "<th>REnd</th>"
+                 +    "</tr>"
+     var main = "";                    
+     for (var i=0; i < objects.length; i++) {
+ 	           
+   	       main  += "<tr>"
+    	         +    "<td id='subSys_"           + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].subSystem     + "</td>" 
+    	         +    "<td id='idObjectRefer_"    + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].idObjectRefer + "</td>" 
+    	         +    "<td id='numInstrRefer_"    + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].numInstrRefer + "</td>" 
+    	         +    "<td id='rowStart_"         + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowStart      + "</td>" 
+    	         +    "<td id='rowEnd_"           + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowEnd        + "</td>" 
+    	         +    "<td id='idObjectCopy_"     + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].idObjectCopy  + "</td>" 
+    	         +    "<td id='rowStartInCopy_"   + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowStartInCopy+ "</td>" 
+    	         +    "<td id='rowEndInCopy_"     + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowEndInCopy  + "</td>"      	         
+    	         +  "</tr>"
+    	         
+           arWhereUsedOriginRow.push(objects[i]);                                        
+      }         
+      var tblBottom = '</table>'
+      var tbl = tbltop + main + tblBottom;
+      
+      if (objects.length == 0) {
+   	     tbl = "";
+      }
+      document.getElementById('divWhereUsed').innerHTML = tbl;	 			
+}
+function onclick_whereUsedOriginRow(clicked_id) {
+	var winOpenInspector = null;
+	var idFieldSel = "";
+    var i = clicked_id.indexOf("_");
+    var idProgram = "";
+    var isCopyToShow = false;
+    
+    iSelWhereUsedOrigin = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelWhereUsedOrigin != iSelWhereUsedOriginOld && iSelWhereUsedOriginOld >= 0) {
+		document.getElementById("subSys_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("idObjectRefer_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("numInstrRefer_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStart_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEnd_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("idObjectCopy_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelWhereUsedOriginOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("subSys_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("numInstrRefer_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowStart_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowEnd_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("idObjectCopy_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowStartInCopy_"+iSelWhereUsedOrigin).classList.add("selected"); 
+		document.getElementById("rowEndInCopy_"+iSelWhereUsedOrigin).classList.add("selected"); 
+    }
+	
+    // Info origin
+    objWhereUsedOriginSelRow =arWhereUsedOriginRow[iSelWhereUsedOrigin];	 
+    idFieldSel = clicked_id.substr(0, i);
+    idProgram = document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).innerHTML;
+	
+    // Click on instruction, Inspector activation
+    if (idFieldSel == "numInstrRefer") {
+    	// Impostazione parametri
+    	localStorage.setItem("sourceCaller", "ViewerTreeView");
+        localStorage.setItem("sourceIdObject_" + idProgram, document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceSubSys_" + idProgram, objWhereUsedOriginSelRow.subSystem);
+        localStorage.setItem("sourceTypeObject_" + idProgram, objWhereUsedOriginSelRow.typeObjectRefer);
+        localStorage.setItem("sourceTypeObjectN_" + idProgram, objWhereUsedOriginSelRow.typeObjectReferOrdinal);
+        localStorage.setItem("sourceNumInstr_" + idProgram, document.getElementById("numInstrRefer_"+iSelWhereUsedOrigin).innerHTML);       
+        localStorage.setItem("sourceRowStart_" + idProgram, document.getElementById("rowStart_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd_" + idProgram, document.getElementById("rowEnd_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceUnderCopy_" + idProgram, objWhereUsedOriginSelRow.underCopy);
+        localStorage.setItem("sourceUnderCopyRowStart_" + idProgram, objWhereUsedOriginSelRow.underCopyRowStart);
+        localStorage.setItem("sourceUnderCopyRowEnd_" + idProgram, objWhereUsedOriginSelRow.underCopyRowEnd); 
+        localStorage.setItem("sourceOriginArea_" + idProgram, "P"); 
+     	winOpenInspector = window.open("Inspector.html", "_blank");
+    	winOpenInspector.name=idProgram;
+    	return;
+	}
+    
+    // Show source parameters  
+    localStorage.setItem("sourceCaller", "ViewerTreeView");
+    localStorage.setItem("sourceNumInstr", document.getElementById("numInstrRefer_"+iSelWhereUsedOrigin).innerHTML);
+    localStorage.setItem("sourceSubSys", objWhereUsedOriginSelRow.subSystem);
+
+    // Show copy 
+    if ((clicked_id == "idObjectCopy_"+iSelWhereUsedOrigin && document.getElementById("idObjectCopy_"+iSelWhereUsedOrigin).innerHTML != "")
+	||  (clicked_id == "rowStartInCopy_"+iSelWhereUsedOrigin && document.getElementById("rowStartInCopy_"+iSelWhereUsedOrigin).innerHTML != "")
+	||  (clicked_id == "rowEndInCopy_"+iSelWhereUsedOrigin && document.getElementById("rowEndInCopy_"+iSelWhereUsedOrigin).innerHTML != "")
+        ) {
+    	localStorage.setItem("sourceIdObject", document.getElementById("idObjectCopy_"+iSelWhereUsedOrigin).innerHTML);
+       	localStorage.setItem("sourceTypeObject", objWhereUsedOriginSelRow.typeObjectRefer);
+       	localStorage.setItem("sourceTypeObjectN", objWhereUsedOriginSelRow.typeObjectReferOrdinal);
+        localStorage.setItem("sourceIsShowPgm", "false");
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStartInCopy_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEndInCopy_"+iSelWhereUsedOrigin).innerHTML);    
+    //Show programma
+	} else {
+        localStorage.setItem("sourceIdObject", document.getElementById("idObjectRefer_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceTypeObject", objWhereUsedOriginSelRow.typeObjectRefer);
+        localStorage.setItem("sourceTypeObjectN", objWhereUsedOriginSelRow.typeObjectReferOrdinal);
+        localStorage.setItem("sourceRowStart", document.getElementById("rowStart_"+iSelWhereUsedOrigin).innerHTML);
+        localStorage.setItem("sourceRowEnd", document.getElementById("rowEnd_"+iSelWhereUsedOrigin).innerHTML);
+		localStorage.setItem("sourceIsShowPgm", "true");
+	}
+	localStorage.setItem("sourceIsIdxFileToGet", "true");
+	
+    // For next selection
+    iSelWhereUsedOriginOld=iSelWhereUsedOrigin;
+     
+    // Hide sections 
+	document.getElementById("divHeader").style.display="none";
+	document.getElementById("divSubsys").style.display="none";
+	document.getElementById("divTreeContainer").style.display="none";
+	
+ 	// Show only source
+ 	var oIframe = document.getElementById("iframeSource");
+ 	if (oIframe != null) {
+ 	 	document.getElementById("iframeSource").style.display="block";
+ 		document.getElementById("iframeSource").style.height = "100%";
+ 		document.getElementById("iframeSource").style.width = "99%";
+ 	} 
+	window.open('ViewerSourceViewer.html', 'iframeSource'); 
+} 
+function hideSource(){
+
+	// Hide
+	document.getElementById("divHeader").style.display="none";
+	document.getElementById("divSubsys").style.display="none";
+	document.getElementById("divTreeContainer").style.display="none";
+
+	// Show
+	document.getElementById("divSubsys").style.display="block";
+	document.getElementById("divTreeContainer").style.display="block";
+	document.getElementById( "divTree" ).style.height = divTreeHeightT;
+	document.getElementById( "divTree" ).style.maxHeight = divTreeHeightT;
+}
+
+function getWinViewer() {
+	return winOpenViewer;
+}
+
+
+</script>
+
+
+</html>

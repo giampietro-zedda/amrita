@@ -1,0 +1,2335 @@
+<html>
+<head>
+<title>Impact</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="Impact.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<table  id='mainTable'>
+
+    <!-- Prima riga con testata -->
+    <tr id='mainTableRowHeader'>
+       <td colspan="2"> 
+          <div>
+			  <table id='headerLineTable'>
+				   <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Impact</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id=logout>logout</td>
+					             <td id='linkMain'  align="right"><a href="AmritaSite/pages/index.html">Info</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+				   </tr>
+			  </table>          
+          </div>
+       </td>
+    </tr>
+    
+    <!-- Seconda riga --> 
+    <tr id='trMainTableBody'>
+       <!-- Sezione a sinistra con What If e selezione operazioni -->
+       <td id='tdWhatIf'> 
+          <div id='divWhatIf'>            
+            <table id='tbWhatIf'>
+               <tr>
+                  <td id='tdHeaderWhatIf' colspan="3">WHAT IF </td>
+               </tr>
+                <tr>
+                  <td  id="tdIdImpactPlan">
+                     <select id="selIdImpactPlan" name="selIdImpactPlan"  onChange="onChangeSelIdImpactPlan()"></select>
+                  </td>
+                  <td id='tdSubSysCur'>
+                  </td>
+                  <td id='tdSubSys'>
+                     <select id="selSubSys" name="selSubSys"  onChange="onChangeSelSubSys()"></select>
+                  </td>
+               <tr id='trTypeObjectOrigin'> 
+                  <td id='tdSelTypeObjectOrigin'><select id="selTypeObjectOrigin" name="selTypeObjectOrigin"  onChange="onChangeSelTypeObjectOrigin()"></select> </td>
+                  <td id='tdSelIdObjectOrigin'><select   id="selIdObjectOrigin" name="selIdObjectOrigin"  onChange="onChangeselIdObjectOrigin()"></select></td>
+                  <td id="tdselTypImpactChange"> <select id="selTypImpactChange" name="selTypImpactChange"  onChange="onChangeselTypImpactChange()"></select> </td> 
+               </tr>
+               <tr>
+                  <td colspan="3">
+		             <div id='divSpecificInfo'>
+		                <table id='tbParmWhatIf'>
+		                  <tr>
+		                     <td class='parmHeader' id='parmFieldColHeader'>Field/Column:</td>
+		                     <td class='parmValue'  colspan="3"><input id='parmFieldColValue' type="text" class='parmDefaultValue' ></input></td>
+		                     
+		                     <td class='parmHeader' id='lengthFromHeader'>From/To Length:</td>		                     
+		                     <td class='parmValueFrom'><input id='lengthFromValue' type="number" class='parmNumValueFrom'></input></td>
+		                     <td class='parmHeaderTo' id='lengthToHeader'>/</td>
+		                     <td class='parmValueTo'><input id='lengthToValue' type="number" class='parmNumValueTo'></input></td>
+		                     	
+		                     <td class='parmHeader' id='lengthFromHeader'>From/To Default:</td>		                     
+		                     <td class='parmValueFrom'><input id='defaultFromValue' type="text" class='parmDefaultValue'></input></td>
+		                     <td class='parmHeaderTo' id='lengthToHeader'>/</td>
+		                     <td class='parmValueTo'><input id='defaultToValue' type="text" class='parmDefaultValue'></input></td>
+		                     		                     
+		                     <td rowspan="3" id='parmPlus' colspan="12" onclick='onclick_parmPlus(this.id);'>+</td>
+ 		                  </tr>
+		                  <tr>
+		                     <td class='parmHeader' id='integerFromHeader'>From/To Int:</td>
+		                     <td class='parmValueFrom'><input id='integerFromValue' type="number" class='parmNumValueFrom'></input></td>
+		                     <td class='parmHeaderTo' id='integerToHeader'>/</td>
+		                     <td class='parmValueTo' ><input id='integerToValue' type="number" class='parmNumValueTo'></input></td>
+		                     <td class='parmHeader' id='decimalFromHeader'>From/To Dec:</td>
+		                     <td class='parmValueFrom' ><input id='decimalFromValue' type="number" class='parmNumValueFrom'></input></td>
+		                     <td class='parmHeaderTo' id='decimalToHeader'>/</td>
+		                     <td class='parmValueTo' ><input id='decimalToValue' type="number" class='parmNumValueTo'></input></td>		                     
+		                     <td class='parmHeader' id='dataTypeHeader'>From/To Type:</td>
+		                     <td class='parmValueFrom'><input id='fromDataTypeValue' type="text" class='parmFormatFromValue' ></input></td>
+		                     <td class='parmHeaderTo' id='formatToHeader'>/</td>
+		                     <td class='parmValueTo'><input id='toDataTypeValue' type="text" class='parmFormatToValue'></input> </td>
+		                  </tr>
+			           </table>
+		             </div>
+                  </td>               
+               </tr>
+            </table>
+          </div> 
+          <div id='divIframeMap'>
+             <iframe id='iframeMap' name='iframeMap'></iframe>  
+          </div>         
+          <div id='divWhatIfSelection'>         
+          </div>            
+       </td> 
+      
+       <!-- Sezione a destra con impatto operazioni selezionate, oggetti e stime -->
+       <td id='tdImpact'>
+          <div class='headerImpact' id='divHeaderImpact1'>CHANGE OPERATIONS SUMMARY </div>
+          <div id='divImpact1'>
+             <table id='tbOp' class='tbOp'>
+ 			    <tr>
+			       <th>Op</th><th>Type Operation</th><th>Field/Column</th><th>D</th>
+			    </tr>  			                
+                <tr>
+                  <td class='tdOpNum tdOp'>'</td>
+                  <td class='tdOpDesc tdOp'>'</td>
+                  <td class='tdOpFieldCol tdOp'>.</td>
+                  <td class='tdOpMinus tdOp'><input class='btnOpDel' type="button" /></td>
+                </tr>
+             </table>
+          </div>  
+          
+          <div id='divImpact2'>
+            <table id=tbImpact2>
+               <tr>
+                 <td id='tdImpact21'>
+			         <div id='headerImpact21'>Objects Involved </div>
+		             <table class='countTable'>
+		                    <tr><td class='lblCountObjects' id='lblCountObjectInvolved'>Count:</td>
+		                        <td class='countObjects' id='countObjectInvolved'>0</td>
+		                    </tr>
+		             </table>
+			         <div id='divImpact21'>
+			           <table id='tbObj' class='tbObj'>
+			              <tr>
+			                <th>Op</th><th>Name</th><th>Type Object</th><th>T</th><th>P</th><th>P</th>
+			              </tr>  			                
+			              <tr>
+	                          <td class='tdObjOp tdObj'>'</td>
+		                      <td class='tdObjPgm tdObj'>'</td>
+			                  <td class='tdObjType tdObj'>'</td>
+	                          <td class='tdObjLightDeep tdObj'>'</td>
+	                          <td class='tdObjProcessed tdObj'>'</td>
+	                          <td class='tdObjToProcess tdObj'><input type="checkbox" class='cbxObjToProcess' value= "0" id='cbxObjToProcess'></td>
+			              </tr>
+			           </table>
+			          </div>  
+                 </td>
+                 <td id='tdImpact22'>
+ 			         <div id='headerImpact22'>Where Used At </div>
+		             <table class='countTable'>
+		                    <tr><td class='lblCountObjects' id='lblCountToBeChangedAt'>Count:</td>
+		                        <td class='countObjects' id='countToBeChangedAt'>0</td>
+		                    </tr>
+		             </table>
+			         <div id='divImpact22'>
+			           <table id='tbNumRow' class='tbNumRow'>
+			              <tr>
+			                <th>R.Start</th><th>R.End</th><th>Instr</th>
+			              </tr>  			                
+			              <tr><td class='tdNumRowStart'>.</td><td class='tdNumRowEnd'>.</td><td class='tdNumInstr'>.</td> </tr> <tr>
+				        </table>
+			          </div>  
+                 </td>
+                 <td id='tdImpact23'>
+ 			         <div id='headerImpact23'>Pgms To Recompile </div>
+		             <table class='countTable'>
+		                    <tr><td class='lblCountObjects' id='lblCountPgmsToRecompile'>Count:</td>
+		                        <td class='countObjects' id='countPgmsToRecompile'>0</td>
+		                    </tr>
+		             </table>
+			         <div id='divImpact23'>
+			           <table id='tbPgmsToRecompile' class='tbPgmsToRecompile'>
+			              <tr>
+			                <th>Name</th>
+			              </tr>  			                
+			              <tr><td>.</td><tr>
+				        </table>
+			          </div>  
+                 </td>
+               </tr>
+            </table>
+          </div> 
+                                
+          <div id='divImpact3'>  
+            <table id=tbImpact3>
+               <tr>
+                 <td id='tdImpact31'>
+			         <div id='headerImpact31'>Estimated Activity Time </div>
+			         <div id='divImpact31'>
+			           <table id='tbTime' class='tbTime'>
+			              <tr>
+			                <td class='tdTimeLeft'>Editing</td>
+		                    <td class='tdTimeRightValue'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeLeft'>Checking</td>
+		                    <td class='tdTimeRightValue'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeLeft'>Test</td>
+		                    <td class='tdTimeRightValue'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeLeft'>Deploy</td>
+		                    <td class='tdTimeRightValue'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeLeft'>Documentation</td>
+		                    <td class='tdTimeRightValue'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeTotal'>Total Objects</td>
+		                    <td class='tdTimeTotalValue' id='tdTimeTotalObjects'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeTotalReferences'>Total References</td>
+		                    <td class='tdTimeTotalValue' id='tdTimeTotalReferences'>nd</td>
+				          </tr>
+			              <tr>
+			                <td class='tdTimeTotalActivity'>Total Activity Time</td>
+		                    <td class='tdTimeTotalValue' id='tdTimeTotalActivity'>nd</td>
+				          </tr>
+			            </table>
+			          </div>  
+                 </td>
+                 <td id='tdImpact32'>
+ 			         <div id='headerImpact32'>Save Plan And Execution On Server</div>
+			         <div id='divImpact32'>
+			           <table id='tbExec' class='tbExec'>
+			              <tr id='trExecSave'>
+		                     <td id='tdBtnSave'>
+		                       <input type="button" class='btnSave' id='btnSave' value='Save'  onclick='onclick_btnSave(this.id);' />
+		                     </td> 
+		                     <td id='tdBtnSaveAs'> 
+		                       <input type="button" class='btnSave' id='btnSaveAs' value='Save As'  onclick='onclick_btnSaveAs(this.id);' />
+		                     </td>
+		                     <td id='tdPlan'>  
+		                      <input type="text"  id='idImpactPlan' value=' '  />
+			                </td>
+			                <td id='tdBtnDel'>
+			                   <input type="button" class='btnSave' id='btnDel' value='Del'  onclick='onclick_btnDel(this.id);' />
+		                    </td>
+				          </tr>
+				          <tr><td colspan="4"><div  class='divExecLine'></div></td></tr>
+			              <tr id='trExecProcessImpactPlanLight'>
+		                     <td id='tdExecBtnProcessImpactPlanLight' colspan="4">
+		                       <input type="button" class='btnExec' id='btnProcessImpactPlanLight' value='Light Impact Plan'  onclick='onclick_btnProcessImpactPlanLight(this.id);' />
+		                     </td> 
+		                  </tr>
+			              <tr id='trProcessImpactPlanDeep'>
+		                     <td id='tdProcessImpactPlanDeep' colspan="4">
+		                       <input type="button" class='btnExec' id='btnProcessImpactPlanDeep' value='Deep Impact Plan '  onclick='onclick_btnProcessImpactPlanDeep(this.id);' />
+		                     </td> 
+		                  </tr>
+				          <tr><td colspan="4"><div  class='divExecLine'></div></td></tr>
+		                  <tr><td id='tdExecStatus' colspan="4">Stopped </td></tr>
+				          <tr><td colspan="4"><div  class='divExecLine'></div></td></tr>
+				          <tr id='trMsgSave'>
+				             <td id='tdMsgSave' colspan="4">.</td>
+				          </tr>				       				          
+				          <tr><td colspan="4"><div  class='divExecLine'></div></td></tr>
+			              <tr id='trExecProgress'>
+			                <td id='tdExecProgress' colspan="4">
+			                    <table id='tbExecProgress'>
+			                      <tr>
+			                         <td id='tdExecObjCur'>.</td>
+			                         <td id='tdExecCountCur' class='tdExecCount'>0</td>
+			                         <td id='tdExecSlash'>Of</td>
+			                         <td id='tdExecCountOf'  class='tdExecCount'>0</td>
+			                      </tr>
+			                    </table>
+			                </td>
+				          </tr>				          				          
+			              <tr id='trExecProgBar'>
+				            <td id='tdExecProgBar' colspan="4">
+				              <div id='divExecProgrBar'> 
+                                <div id="execProgrBar">0%</div>
+                              </div>
+				            </td>				          				          
+			           </table>			         
+			         </div>  
+                 </td>
+               </tr>
+            </table>          
+         </div>     
+       </td>
+    </tr>     
+</table>
+
+
+<script type="text/javascript">
+"use strict";
+
+// Tipi chamge impact
+const COPY_FIELD_CHANGE = 1;	 
+const COPY_FIELD_DELETE = 2	;
+const COPY_FIELD_NEW = 3;	 
+const COPY_DELETE = 4;
+const TABLE_COLUMN_CHANGE = 5;	 
+const TABLE_COLUMN_DELETE = 6; 
+const TABLE_COLUMN_NEW = 7;	 
+const TABLE_DELETE = 8;
+const MAP_FIELD_CHANGE = 9;	 
+const MAP_FIELD_DELETE = 10; 
+const MAP_FIELD_NEW = 11;	 
+const MAP_DELETE = 12;
+const JCL_JOB_DELETE = 13;
+const JCL_DDNAME_CHANGE = 14;
+const JCL_DDNAME_DELETE = 15;
+const CL_PROC_DELETE = 16;
+const JCL_PROC_CHANGE = 17;
+const JCL_INCLUDE_DELETE = 18;
+const JCL_INCLUDE_CHANGE = 19;
+
+// Relazioni X pgms to recompile
+const PGM_COPY = 6;                      		 
+const PGM_COPY_SQL_INCLUDE = 9;    
+const PGM_ENTITY = 10;  
+const PGM_CICS_MAP = 64; 
+const PGM_JCL_JOB = 51; 
+
+// Tipi oggeetto da considerare per l'impatto
+const PGM_COBOL = 1;
+const COPY_COBOL_DATA = 10;
+const COPY_COBOL_ENV = 11;
+const COPY_COBOL_ID = 12;
+const ENTITY_SQL = 15; 
+const ENTITY_VSAM = 18;
+const KSDS_FILE = 26;
+const ESDS_FILE = 27;
+const RRDS_FILE = 28;
+const SEQ_FILE = 29;
+const JCL_JOB = 54;
+const JCL_PROC = 55;
+const JCL_INCLUDE = 56;
+const JCL_JOBNAME = 57;
+const JCL_DDNAME = 58;
+const CICS_TRANSID = 66;
+const CICS_MAP = 68;
+const CICS_MAPSET = 69;
+const CICS_BMS_SOURCE = 70;
+const CICS_TS_QUEUE = 71;
+const CICS_TD_QUEUE = 72;
+const CICS_MQ_QUEUE = 73;
+
+const msgSaveOK="Impact Plan Succesfully Saved";
+const msgSaveKO="Impact Plan Saved With Errors";
+const msgDeleteOK="Impact Plan Succesfully Deleted";
+const msgDeleteKO="Impact Plan Deleted With Errors";
+
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  			// Replaced then with actual value
+var urlImpactPlanGET = 'impactPlan';          						// Impact plan di dettaglio
+var urlImpactObjectGET = 'impactObject';          					// Impact plan oggetti 
+var urlImpactPgmPgmToRecompileGET = 'impactPgmToRecompile';         // Impact plan pgm da ricompilare 
+var urlImpactPlanGroupedGET = 'impactPlanGrouped';          		// Impact plan definiti nel sistema
+var urlSubSysGET = 'subsys';                                		// Sottosistemi definiti nel sistema
+var urlObjectGET = 'objectShort';                           		// Oggetti 
+var urlCopyEntityGET = 'copyEntityDefinition';              		// Tracciato copy/colonne tabella sql
+var urlWhereUsedGET = 'whereUsed';                          		// WhereUsed di un campo 
+var urlRelationGET = 'relation'                             		// Relazioni X pgms to recompile
+var urlEnumGET = 'enum';                                    		// Enumerazioni
+
+var urlDeleteImpactPlanDELETE = 'deleteImpactPlan';         		// Delete impact plan elenco operazioni di cui verificare l'impatto
+var urlCreateImpactPlanPOST = 'createImpactPlan';            		// Create impact plan
+var urlCreateImpactObjectPOST = 'createImpactObject';        		// Create impact Object dettaglio impatto nei sorgenti
+var urlCreateImpactCompilePOST = 'createImpactCompile';   			// Create impact Compile pgm da compilare
+var urlImpactPlanObjectGET = 'impactObject';					    // Pgm to recompile due impact plan, including those to change
+var urlImpactPlanPgmToRecompilePOST = 'impactPlanPgmToRecompile';   // Pgm to recompile due impact plan, including those to change
+
+var urlImpactPlanPgmListPOST = 'impactPlanPgmList';   	    		// Detect the List of pgms where there are where used of field
+var urlExecutionImpactStartPUT  = 'executionImpactStart';           // Attivazione processo impact plan deep sul server
+var urlExecutionWebStopPUT = 'executionImpactStop'; 				// Invio richiesta di stop processo impact plan deep sul server
+var urlExecutionInfoGET = 'executionImpactInfo'; 				    // Richiesta info stato di esecuzione
+
+var userInp="";
+var sys = "";
+var subSys = "";
+var subSysPlan = "";                        // Sottosistema dell'impact plan
+var subSysOwner = "";
+var company = "";
+var typeObject = "";                        // Tipo oggetto selezionato
+var idImpactPlan = "";                      // Nome impact plan
+var idObject = "";                          // Nome oggetto da modificare selezionato
+var typeOperation = "";                     // Operazione selezionata
+
+var aridImpactPlan = [];    	        	// Impact plan definiti
+var arSubSys = [];    	        			// Sottosistemi del sistema  
+var arTypeObject = [];                      // Tipo oggetto
+var arSubSysOwner = [];                     // In coppia con comboBox selIdObjectOrigin
+
+var arObject = [];                          // Oggetto
+var arTypeOperation = [];    	        	// Operazioni selezionate da EnumImpactType
+var arFieldsCols = [];                      // Campi copy o colonne tabella Sql
+
+var arImpactPlan = [];                      // Operazioni selezionate di cui valutare e l'impatto
+var arImpactObjectInvolved = [];            // Oggetti individuati su cui valutare l'impatto 
+var arImpactPgmToRecompile = [];            // Oggetti da ricompilare (pgm, map,..) a fronte dell'impact plan
+var arWhereUsed = [];                       // Riga start/end num instr di riga Objects involved selezionata
+
+var objScreenLayout = null;                 // To manage callBack of map field selected
+var isActiveInsertMode = true;              // False = update mode
+var retSetInterval = null;					// Per richiesta informazioni al server
+var curTimeTotalReferences = 0;             // Totale whereused per tutti i programmi
+
+var iSelFieldsCols=0;
+var iSelFieldsColsOld=-1;
+var iSelOp=0;
+var iSelOpOld=-1;
+var iSelObjInvolved=0;
+var iSelObjInvolvedOld=-1;
+var iSelWhereUsedOriginRow = 0;
+var iSelWhereUsedOriginRowOld = -1;
+var iSelPgmToRecompile = 0;
+var iSelPgmToRecompileOld = -1;
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    afterLoaded();
+	}
+}
+
+
+function afterLoaded() {
+// 	adjustLayout();
+	userInp = localStorage.getItem("user");		
+	sys = localStorage.getItem("sys");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");	
+	company = localStorage.getItem("company");	
+//	document.getElementById("companyDesc").innerHTML = company;
+    // Hide Iframe map
+	document.getElementById("divIframeMap").style.display="none";
+
+  	loadSelSubSys(afterLoadSelSubSys);
+ 	loadselIdImpactPlan();
+} 
+
+/* Completamento caricamento comboBox quando il subSys è disponibile */
+function afterLoadSelSubSys () {
+	loadselTypeObjectOrigin();
+	loadselTypImpactChange();
+}
+
+/* Caricameto combo id impactPlan definiti */
+function loadselIdImpactPlan() {
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlImpactPlanGroupedGET + "/" + userInp + "/" + sys; 
+
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseImpactPlanGrouped(xmlhttp);};
+}
+
+function handleJsonResponseImpactPlanGrouped(xmlhttp) {
+	var objects = null;
+	var value = "";
+    var subSysDesc = "";
+    var subSysFirst = "";
+    var ar = [];
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	aridImpactPlan = objects;
+	selIdImpactPlan.disable=true;
+	while (selIdImpactPlan.length != 0) {
+		selIdImpactPlan.remove(0);		
+	}
+	for (i=0; i < objects.length; i++) {
+        
+        value = objects[i].impactPlan;
+        selIdImpactPlan.add(new Option(value, value));
+		
+	}
+	selIdImpactPlan.disable=false;
+	
+	// Nessun piano ancora definito
+	if (objects.length == 0) {
+		// Insert mode
+		isActiveInsertMode = true;
+		return;
+	}
+	isActiveInsertMode = false;
+	onChangeSelIdImpactPlan();
+}
+
+/* Caricameto combo sottosistemi definiti */
+function loadSelSubSys(afterLoadSelSubSys) {	
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlSubSysGET + "/"+ userInp 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSubSystems(xmlhttp, afterLoadSelSubSys);};
+}
+
+function handleJsonResponseSubSystems(xmlhttp, afterLoadSelSubSys) {
+	var objects = null;
+	var value = "";
+    var subSysDesc = "";
+    var subSysFirst = "";
+    var ar = [];
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arSubSys = objects;
+	selSubSys.disable=true;
+	while (selSubSys.length != 0) {
+		selSubSys.remove(0);		
+	}
+	for (i=0; i < objects.length; i++) {
+		
+        subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+        value = subSysDesc.trim();
+        
+        if (value == "") {continue;}
+        
+        value = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+
+		selSubSys.add(new Option(value, value));
+		
+		if (subSysFirst == "") {
+			subSysFirst = value;
+		}
+	}
+	selSubSys.disable=false;
+	
+	// Estrae subsys
+	ar = subSysFirst.split(" ");
+	subSys = ar[0];	
+	
+	// Completamento caricamento comboBox
+	afterLoadSelSubSys();
+	
+}
+
+function onChangeSelSubSys() {
+    var subSysFull = "";
+    var ar = [];
+   
+	// Estrae subsys
+	subSysFull = selSubSys.value;
+	ar = subSysFull.split(" ");
+	subSys = ar[0];
+	
+	loadSelIdObjectOrigin("");
+	
+	localStorage.setItem("filterObjSubSys", subSys);
+
+}
+
+function onChangeSelTypeObjectOrigin() {
+    var selTypeObjectOriginFull = "";
+    var ar = [];
+   
+	// Estrae typeObject
+	selTypeObjectOriginFull = selTypeObjectOrigin.value;
+	ar = selTypeObjectOriginFull.split(" ");
+	typeObject = ar[0];
+	
+	loadSelIdObjectOrigin("");
+	
+	localStorage.setItem("filterObjType", typeObject);	
+}
+
+/* Caricameto combo tipo operazioni definite da EnumImpactOperation */
+function loadselTypeObjectOrigin() {
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = url = baseUrl + "/" + urlEnumGET + "/" + userInp + "/" + "EnumObject";
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseTypeObject(xmlhttp);};
+	
+}
+
+function handleJsonResponseTypeObject(xmlhttp) {
+
+	var objects = null;
+	var value = "";
+	var typeObjectFirst = "";
+    var ar = [];
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arTypeObject = objects;
+	
+	selTypeObjectOrigin.disable=true;	
+	while (selTypeObjectOrigin.length != 0) {
+		selTypeObjectOrigin.remove(0);		
+	}
+	
+	for (i=0; i < objects.length; i++) {
+		
+        if (objects[i].value.indexOf("FREE") > 0) {continue;}
+        if (objects[i].ordinal == '0' ) {continue;}
+        if (isTypeObjectToDeal(objects[i].ordinal) == false) {continue;}
+                
+        value = objects[i].value;
+        if (value.substr(0, 7) == "OBJECT_") {
+			value = value.substr(7);
+		}
+        value = objects[i].ordinal + " " + value;
+        arTypeObject[i].valueFull = value;
+
+        selTypeObjectOrigin.add(new Option(value, value));
+		
+		if (typeObjectFirst == "") {
+			typeObjectFirst = value;
+		}
+	}
+	selTypeObjectOrigin.disable=false;
+	
+	// Estrae tipo oggetto
+	ar = typeObjectFirst.split(" ");
+	typeObject = ar[0];
+	
+	// Load combobox oggetti
+	loadSelIdObjectOrigin("");
+	
+	// Clear area selezione field/column
+	document.getElementById("divIframeMap").style.display="none";
+ 	document.getElementById("divWhatIfSelection").style.display="block";
+ 	document.getElementById("divWhatIfSelection").innerHTML = "";	
+}
+
+/* Caricameto combo oggetti type operation selezionata */
+function loadSelIdObjectOrigin(idObject) {
+	var xmlhttp = null;
+	var url = "";
+    var statusObject = "*";
+    	
+	// Ajax server request to get Objects
+	xmlhttp;
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlObjectGET + "/" +  userInp + "/" + sys + "/" + subSys + "/" + typeObject + "/"+ statusObject;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObject(xmlhttp, idObject);};	
+}
+
+function handleJsonResponseObject(xmlhttp, idObject) {
+	var objects = {};
+	var value = "";
+	var typeObject="";
+	var i;
+		
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+		 
+	objects=JSON.parse(xmlhttp.responseText);
+	arObject = objects;
+	
+	// Clear selIdObjectOrigin
+	selIdObjectOrigin.disable=true;	
+	while (selIdObjectOrigin.length != 0) {
+		selIdObjectOrigin.remove(0);		
+	}
+	arSubSysOwner = [];
+	
+	// Nessun tipo oggetto disponibile per il sottosistema
+	if (arObject.length == 0) {
+		// Clear area selezione campo/colonna
+		document.getElementById("divIframeMap").style.display="none";
+	 	document.getElementById("divWhatIfSelection").style.display="block";
+	 	document.getElementById("divWhatIfSelection").innerHTML = "";
+		return;
+	}
+
+	// Scan oggetti origine
+	for (i=0; i < objects.length; i++) {
+
+		value = objects[i].idObject;
+        selIdObjectOrigin.add(new Option(value, value));        
+        arSubSysOwner.push(objects[i].subSystemOwner)		
+	}
+	selIdObjectOrigin.disable=false;
+	
+	// Posizionamento se nome oggetto specificato
+	if (idObject != "") {
+		selIdObjectOrigin.value=idObject;
+		subSysOwner = arSubSysOwner[0];
+	}
+	
+	onChangeselIdObjectOrigin();
+}
+
+function onChangeselIdObjectOrigin() {
+	var idx = 0;
+	
+	idx = selIdObjectOrigin.selectedIndex;
+	idObject = selIdObjectOrigin.value;
+	subSysOwner = arSubSysOwner[idx];
+	
+	// Copy o Sql table
+	if (typeObject == COPY_COBOL_DATA
+	|| 	typeObject == ENTITY_SQL) {
+	    // Display Iframe
+		document.getElementById("divIframeMap").style.display="none";
+	 	document.getElementById("divWhatIfSelection").style.display="block";
+	 	loadCopyEntityFields();
+		return;
+	}
+	
+	// Map
+	if (typeObject == CICS_MAP) {
+		// Hide div
+		document.getElementById("divWhatIfSelection").style.display="none";
+		
+	    // Display Iframe
+		document.getElementById("divIframeMap").style.display="block";	
+	 	document.getElementById("iframeMap").style.width="100%";	
+	 	document.getElementById("iframeMap").style.height="100%";	
+	 	
+		
+	 	localStorage.setItem("filterObjSys", sys);
+	 	localStorage.setItem("filterObjSubSys", subSys);
+	 	localStorage.setItem("screenMap", idObject);
+		localStorage.setItem("screenTypeObject", "Cics Map");
+		localStorage.setItem("screenTypeObjectN", CICS_MAP);
+		localStorage.setItem("screenCaller", "impact");
+ 	    window.frames[0].location.reload();
+ 	    var iframe = document.getElementById("iframeMap");
+	    iframe.src = iframe.src; 
+	    objScreenLayout = window.open('ViewerScreenLayout.html', 'iframeMap'); 
+		return;
+	}		
+}
+
+/*
+ * 
+ */
+function getselectedField(fieldSelected, lng)  {
+	
+	document.getElementById("parmFieldColValue").value = fieldSelected;
+	document.getElementById("lengthFromValue").value = lng;
+	document.getElementById("lengthToValue").value = lng;
+	document.getElementById("integerFromValue").value = "0";
+	document.getElementById("integerToValue").value = 0;
+	document.getElementById("decimalFromValue").value = "0";
+	document.getElementById("decimalToValue").value = 0;
+}
+ 
+/* Caricameto combo tipo operazioni definite da EnumImpactOperation */
+function loadselTypImpactChange() {
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = url = baseUrl + "/" + urlEnumGET + "/" + userInp + "/" + "EnumImpactType";
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseTypeOperation(xmlhttp);};
+}
+
+function handleJsonResponseTypeOperation(xmlhttp, loadSelIdObjectOrigin) {
+
+	var objects = null;
+	var value = "";
+	var typeOperationFirst = "";
+    var ar = [];
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arTypeOperation = objects;
+	
+	selTypImpactChange.disable=true;	
+	while (selTypImpactChange.length != 0) {
+		selTypImpactChange.remove(0);		
+	}
+	
+	for (i=0; i < objects.length; i++) {
+		
+        if (objects[i].value.indexOf("FREE") > 0) {continue;}
+        if (objects[i].ordinal == '0') {continue;}
+        
+        value = objects[i].ordinal + " " + objects[i].value;
+        arTypeOperation[i].valueFull = value;
+
+        selTypImpactChange.add(new Option(value, value));
+		
+		if (typeOperationFirst == "") {
+			typeOperationFirst = value;
+		}
+	}
+	selTypImpactChange.disable=false;
+	
+	// Estrae tipo operazione
+	ar = typeOperationFirst.split(" ");
+	typeOperation = ar[0];
+}
+
+function onChangeselTypImpactChange() {
+	// TODO
+}
+
+function loadCopyEntityFields() {
+	  getJsonResponseCopyEntityFieldsGET(); 
+}
+
+/* Fields */
+function getJsonResponseCopyEntityFieldsGET() {
+	var xmlhttp;	
+	var url = baseUrl + "/" + urlCopyEntityGET + "/"+ userInp + "/" + sys + "/" + subSysOwner + "/" + idObject +  "/" + typeObject  ;
+
+	xmlhttp=createRequest();
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseCopyEntityFields(xmlhttp);};
+}
+
+function handleJsonResponseCopyEntityFields(xmlhttp) {
+	var objects = {};    
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+   	objects=JSON.parse(xmlhttp.responseText);
+    arFieldsCols = objects;
+      
+    var tbltop = "<table class='tbFieldColumn' id='tbFieldColumn'>"
+            +    "<tr>"
+            +      "<th>Copy</th>"
+            +      "<th>#</th>"
+            +      "<th>Field</th>"
+            +      "<th>Lvl</th>"
+            +      "<th>Occ</th>"
+            +      "<th>Lng</th>"
+            +      "<th>Pos</th>"
+            +      "<th>Int</th>"
+            +      "<th>Dec</th>"
+            +      "<th>Sign</th>"
+            +      "<th>Grp</th>"
+            +      "<th>ItemLang</th>"
+            +      "<th>ItemType</th>"
+            +      "<th>Digit</th>"
+            +      "<th>Scale</th>"
+            +      "<th>NotNull</th>"
+            +      "<th>WithDflt</th>"
+            +      "<th>Dflt</th>"
+            +    "</tr>"
+    var main = "";                    
+    for (var i=0; i < objects.length; i++) {
+  	       main  += "<tr>"
+    	         +    "<td id='idObject_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].idObject     + "</td>"
+    	         +    "<td id='numSeq_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numSeq       + "</td>" 
+    	         +    "<td id='idField_"       + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].idField      + "</td>" 
+    	         +    "<td id='level_"         + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].level        + "</td>" 
+    	         +    "<td id='occurs_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].occurs       + "</td>" 
+    	         +    "<td id='lngBytes_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].lngBytes     + "</td>" 
+    	         +    "<td id='pos_"           + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].pos          + "</td>" 
+    	         +    "<td id='numInt_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numInt       + "</td>" 
+    	         +    "<td id='numDec_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numDec       + "</td>" 
+    	         +    "<td id='signed_"        + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].signed       + "</td>" 
+    	         +    "<td id='groupField_"    + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].groupField   + "</td>" 
+    	         +    "<td id='itemLang_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].itemLang     + "</td>" 
+    	         +    "<td id='itemType_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].itemType     + "</td>" 
+    	         +    "<td id='numDigit_"      + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].numDigit     + "</td>" 
+    	         +    "<td id='scale_"         + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].scale        + "</td>" 
+    	         +    "<td id='notNull_"       + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].notNull      + "</td>" 
+    	         +    "<td id='withDefault_"   + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].withDefault  + "</td>" 
+    	         +    "<td id='defaultValue_"  + i + "' onclick='onclick_fldColumnRow(this.id);'>" + objects[i].defaultValue + "</td>" 
+    	         +  "</tr>"
+    	                                               
+    }         
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;		  
+	document.getElementById('divWhatIfSelection').innerHTML = tbl;   
+	iSelFieldsColsOld = -1;
+}
+
+function onclick_fldColumnRow (clicked_id) {
+    var i = clicked_id.indexOf("_");
+    var idObject = "";
+    var idField = "";
+    var lngBytes = "";
+    var numInt = "";
+    var numDec = "";
+    var signed = "";
+    var defaultValue = "";
+   
+    iSelFieldsCols = parseInt(clicked_id.substr(i+1));
+    
+    // Unselect selected row
+    if (iSelFieldsCols != iSelFieldsColsOld && iSelFieldsColsOld >= 0) {
+		document.getElementById("idObject_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numSeq_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("idField_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("level_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("occurs_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("lngBytes_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("pos_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numInt_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numDec_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("signed_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("groupField_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("itemLang_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("itemType_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("numDigit_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("scale_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("notNull_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("withDefault_"+iSelFieldsColsOld).classList.remove("selected"); 
+		document.getElementById("defaultValue_"+iSelFieldsColsOld).classList.remove("selected"); 
+	}
+    
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 2) {
+		document.getElementById("idObject_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numSeq_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("idField_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("level_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("occurs_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("lngBytes_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("pos_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numInt_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numDec_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("signed_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("groupField_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("itemLang_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("itemType_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("numDigit_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("scale_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("notNull_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("withDefault_"+iSelFieldsCols).classList.add("selected"); 
+		document.getElementById("defaultValue_"+iSelFieldsCols).classList.add("selected"); 
+    }
+    
+    // Impostazione info selezionate
+    
+    idObject = arFieldsCols[iSelFieldsCols].idObject;
+    idField = arFieldsCols[iSelFieldsCols].idField;
+    lngBytes = arFieldsCols[iSelFieldsCols].lngBytes;
+    numInt = arFieldsCols[iSelFieldsCols].numInt;
+    numDec = arFieldsCols[iSelFieldsCols].numDec;
+    signed = arFieldsCols[iSelFieldsCols].signed;
+    defaultValue = arFieldsCols[iSelFieldsCols].defaultValue;  
+    
+    document.getElementById("parmFieldColValue").value = idField;
+    document.getElementById("lengthFromValue").value = lngBytes;
+    document.getElementById("lengthToValue").value = lngBytes;
+    document.getElementById("integerFromValue").value = numInt;
+    document.getElementById("integerToValue").value = numInt;
+    document.getElementById("decimalFromValue").value = numDec;
+    document.getElementById("decimalToValue").value = numDec;
+    document.getElementById("defaultFromValue").value = defaultValue;
+    document.getElementById("defaultToValue").value = defaultValue;
+//  document.getElementById("signedFromValue").value = signed;
+    
+    // For next selection
+    iSelFieldsColsOld=iSelFieldsCols;	    	
+}
+
+/* Caricamento operazione e rigenerazione tabella */
+function onclick_parmPlus(clicked_id) {
+	var objImpactPlan = {};
+	var arWrk = [];
+	
+	objImpactPlan = new Object();	
+	objImpactPlan.idObjectOrigin = document.getElementById("selIdObjectOrigin").value;
+	objImpactPlan.numOp = arImpactPlan.length + 1;
+	arWrk = document.getElementById("selTypeObjectOrigin").value.split(" ");
+	objImpactPlan.typeObjectOriginOrdinal = arWrk[0];
+	objImpactPlan.typeObjectOrigin = arWrk[1];
+	objImpactPlan.fieldColumn = document.getElementById("parmFieldColValue").value;
+	arWrk = document.getElementById("selTypImpactChange").value.split(" ");
+	objImpactPlan.typeImpactChangeOrdinal = arWrk[0];
+	objImpactPlan.typeImpactChange = arWrk[1];
+	if (objImpactPlan.typeImpactChangeOrdinal == MAP_FIELD_CHANGE
+	||  objImpactPlan.typeImpactChangeOrdinal == MAP_FIELD_DELETE) {
+		objImpactPlan.fieldColumn = objImpactPlan.fieldColumn + "I";
+	}
+	objImpactPlan.fromLength = document.getElementById("lengthFromValue").value;
+	objImpactPlan.toLength = document.getElementById("lengthToValue").value;
+	objImpactPlan.fromInt = document.getElementById("integerFromValue").value;
+	objImpactPlan.toInt = document.getElementById("integerToValue").value;
+	objImpactPlan.fromDec = document.getElementById("decimalFromValue").value;
+	objImpactPlan.toDec = document.getElementById("decimalToValue").value;
+	objImpactPlan.fromDataType = document.getElementById("fromDataTypeValue").value;                   
+	objImpactPlan.fromDataTypeOrdinal = "0";
+	objImpactPlan.toDataType = document.getElementById("toDataTypeValue").value;                      
+	objImpactPlan.toDataTypeOrdinal = "0";
+	objImpactPlan.fromDefault = document.getElementById("defaultFromValue").value;
+	objImpactPlan.toDefault = document.getElementById("defaultToValue").value;
+	objImpactPlan.fromSign = "0";
+	objImpactPlan.toSign = "0";
+	arImpactPlan.push(objImpactPlan);
+	
+	// Change a campo di mappa, si inserisce anche il campo in output
+	if (objImpactPlan.typeImpactChangeOrdinal == MAP_FIELD_CHANGE
+    ||  objImpactPlan.typeImpactChangeOrdinal == MAP_FIELD_DELETE) {
+		objImpactPlan = new Object();		
+		objImpactPlan.idObjectOrigin = document.getElementById("selIdObjectOrigin").value;
+		objImpactPlan.numOp = arImpactPlan.length + 1;
+		arWrk = document.getElementById("selTypeObjectOrigin").value.split(" ");
+		objImpactPlan.typeObjectOriginOrdinal = arWrk[0];
+		objImpactPlan.typeObjectOrigin = arWrk[1];
+		objImpactPlan.fieldColumn = document.getElementById("parmFieldColValue").value;
+		objImpactPlan.fieldColumn = objImpactPlan.fieldColumn + "O";
+		arWrk = document.getElementById("selTypImpactChange").value.split(" ");
+		objImpactPlan.typeImpactChangeOrdinal = arWrk[0];
+		objImpactPlan.typeImpactChange = arWrk[1];
+		objImpactPlan.fromLength = document.getElementById("lengthFromValue").value;
+		objImpactPlan.toLength = document.getElementById("lengthToValue").value;
+		objImpactPlan.fromInt = document.getElementById("integerFromValue").value;
+		objImpactPlan.toInt = document.getElementById("integerToValue").value;
+		objImpactPlan.fromDec = document.getElementById("decimalFromValue").value;
+		objImpactPlan.toDec = document.getElementById("decimalToValue").value;
+		objImpactPlan.fromDataType = document.getElementById("fromDataTypeValue").value;                   
+		objImpactPlan.fromDataTypeOrdinal = "0";
+		objImpactPlan.toDataType = document.getElementById("toDataTypeValue").value;                      
+		objImpactPlan.toDataTypeOrdinal = "0";
+		objImpactPlan.fromDefault = document.getElementById("defaultFromValue").value;
+		objImpactPlan.toDefault = document.getElementById("defaultToValue").value;
+		objImpactPlan.fromSign = "0";
+		objImpactPlan.toSign = "0";
+		arImpactPlan.push(objImpactPlan);
+	}
+	
+	
+	loadTableOperation(objImpactPlan);
+	
+ }
+
+/* Caricamento tabella operazioni da struttura */
+function loadTableOperation() {
+	var objImpactPlan = {};
+    var tbltop = "<table id='tbOp' class='tbOp'>"
+        +    "<tr>"
+        +       "<th>Op</th>"
+        +       "<th>Field/Column</th>"
+        +       "<th>Type Operation</th>"
+        +       "<th>D</th>"
+        +    "</tr>"
+	 var main = "";                    
+	 for (var i=0; i < arImpactPlan.length; i++) {
+		objImpactPlan = arImpactPlan[i];
+        main  += "<tr>"
+              +      "<td class='tdOpNum tdOp' id='opNum_" + i            + "' onclick='onclick_operation(this.id);'>" + objImpactPlan.numOp + "</td>"
+              +      "<td class='tdOpFieldCol tdOp' id='opFieldCol_"  + i + "' onclick='onclick_operation(this.id);'>" + objImpactPlan.fieldColumn + "</td>"
+               +     "<td class='tdOpDesc tdOp' id='opDesc_"  + i         + "' onclick='onclick_operation(this.id);'>" + objImpactPlan.typeImpactChange + "</td>"
+              +      "<td class='tdOpMinus tdOp'><input class='btnOpDel' type='button' id='btnOpDel_" + i + "' onclick='onclick_btnOpDel(this.id);'</td>"
+              +  "</tr>"
+              ;
+	 }         
+	 var tblBottom = '</table>'
+	 var tbl = tbltop + main + tblBottom;		  
+	 document.getElementById('divImpact1').innerHTML = tbl;  	
+}
+
+/* Caricamento tabella oggetti coinvolti da struttura array*/
+function loadTableObjectsInvolved() {
+	var numOp = "";
+	var pgm = "";
+	var typeObjectPgm = "";
+
+	var tbl = "";
+	var tbltop = "";
+	var main = "";
+	var tblBottom = "";
+
+    var tbltop = "<table id='tbObj' class='tbObj'>"
+        +    "<tr>"
+        +      "<th>Op</th>"
+        +      "<th>Name</th>"
+        +      "<th>Type Object</th>"
+        +      "<th>T</th>"
+        +      "<th>P</th>"
+        +      "<th>P</th>"
+        +    "</tr>"
+        ;
+ 
+	// scan pgms con i where used
+	for (var i = 0; i < arImpactObjectInvolved.length; i++) {
+		numOp = arImpactObjectInvolved[i].numOp;
+		pgm = arImpactObjectInvolved[i].pgm;
+		typeObjectPgm = arImpactObjectInvolved[i].typeObjectPgm;
+		if (typeObjectPgm.substr(0,7) == 'OBJECT_') {
+			typeObjectPgm = typeObjectPgm.substr(7);
+		}
+		main = main + "<tr>"
+	             +   "<td class='tdObjOp tdObj'   id='objNumOp_"      		+ i + "' onclick='onclick_objInvolved(this.id);'>" + numOp 	         + "</td>"
+	             +   "<td class='tdObjPgm tdObj'  id='objPgm_"       		+ i + "' onclick='onclick_objInvolved(this.id);'>" + pgm             + "</td>"
+	             +   "<td class='tdObjType tdObj' id='objType_"       		+ i + "' onclick='onclick_objInvolved(this.id);'>" + typeObjectPgm   + "</td>"
+	             +   "<td class='tdObjLightDeep tdObj'   id='objLightDeep_"  + i                                         + "'>" + "L"             + "</td>"
+	             +   "<td class='tdObjProcessed tdObj'   id='objProcessed_"  + i                                         + "'>" + "Y" 			 + "</td>"
+	             +   "<td class='tdObjToProcess tdObj'   id='objToProcess_"  + i + "'>" + "<input type='checkbox' class='cbxObjToProcess' checked id='cbxObjToProcess_" + i + "'></td>"
+	 	;			                
+	}
+	
+	tblBottom = "</table>"
+	tbl = tbltop + main + tblBottom;	
+	document.getElementById("divImpact21").innerHTML = tbl;		 		  
+	document.getElementById("countObjectInvolved").innerHTML = arImpactObjectInvolved.length;
+}
+
+/* Caricamento tabella pgm da ricompilare da struttura */
+function loadTablePgmsToRecompile() {
+	var tbl = "";
+	var tbltop = "";
+	var main = "";
+	var tblBottom = "";
+
+    tbltop = "<table id='tbPgmsToRecompile' class='tbPgmsToRecompile'>"
+	       +    "<tr>"  
+	       +      "<th>Name</th>"
+	       +    "</tr>"
+
+	for (var i=0; i < arImpactPgmToRecompile.length; i++) {	   	  
+		main  += "<tr>"
+	     	  +    "<td id='idPgmToRecompile_" + i + "' onclick='onclick_pgmToRecompile(this.id);'>" + arImpactPgmToRecompile[i].pgmName + "</td>"
+	     	  +  "</tr>"	                  
+	}  
+        
+	tblBottom = '</table>'
+	tbl = tbltop + main + tblBottom;		  
+	document.getElementById('divImpact23').innerHTML = tbl;  
+	document.getElementById("countPgmsToRecompile").innerHTML = arImpactPgmToRecompile.length;
+	iSelPgmToRecompile = -1;	
+}
+
+
+
+/* Delete riga operazioni */
+function onclick_btnOpDel(clicked_id) {	
+	var objImpactPlan = {};
+	var arImpactPlanNew = [];
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = parseInt(clicked_id.substr(i+1));
+	
+	for (var j = 0; j < arImpactPlan.length; j++) {
+		
+		if (j == i) {continue;}
+		
+		arImpactPlanNew.push(arImpactPlan[j])
+	}
+	
+	arImpactPlan = arImpactPlanNew;
+	
+	loadTableOperation();
+}
+
+/* Load informaztioni in finestra di modifica */ 
+function onclick_operation (clicked_id) {
+	var objImpactPlan = {};
+	var typeObjectOrigin = "";
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = parseInt(clicked_id.substr(i+1));	
+	
+	objImpactPlan = arImpactPlan[i];	
+	typeObjectOrigin = objImpactPlan.typeObjectOrigin;
+	if (typeObjectOrigin.substr(0, 7) == "OBJECT_") {
+		typeObjectOrigin = typeObjectOrigin.substr(7);
+	}
+	typeObject = objImpactPlan.typeObjectOriginOrdinal;
+	idObject = objImpactPlan.idObjectOrigin;  // X posizionamento combobox
+	loadSelIdObjectOrigin(idObject);
+
+	document.getElementById("selIdObjectOrigin").value = objImpactPlan.idObjectOrigin;			
+	document.getElementById("selTypeObjectOrigin").value = objImpactPlan.typeObjectOriginOrdinal + " " + typeObjectOrigin;
+	document.getElementById("selIdObjectOrigin").value = objImpactPlan.idObjectOrigin;
+	document.getElementById("selTypImpactChange").value = objImpactPlan.typeImpactChangeOrdinal + " " + objImpactPlan.typeImpactChange;		
+	document.getElementById("parmFieldColValue").value = objImpactPlan.fieldColumn;	
+	document.getElementById("lengthFromValue").value = objImpactPlan.fromLength;
+	document.getElementById("lengthToValue").value = objImpactPlan.toLength;
+	document.getElementById("integerFromValue").value = objImpactPlan.fromInt;
+	document.getElementById("integerToValue").value = objImpactPlan.toInt;
+	document.getElementById("decimalFromValue").value = objImpactPlan.fromDec;
+	document.getElementById("decimalToValue").value = objImpactPlan.toDec;	
+    document.getElementById("defaultFromValue").value = objImpactPlan.fromDefault;    
+ 	document.getElementById("defaultToValue").value = objImpactPlan.toDefault;		   
+	document.getElementById("fromDataTypeValue").value = objImpactPlan.fromDataType;   
+	document.getElementById("toDataTypeValue").value = objImpactPlan.toDataType;	
+	
+	iSelOp = i;
+	
+	// Unselect selected row
+	if (iSelOp != iSelOpOld && iSelOpOld >= 0) {
+//		document.getElementById("opNum_"+iSelOpOld).classList.remove("selected"); 
+		document.getElementById("opFieldCol_"+iSelOpOld).classList.remove("selected"); 
+		document.getElementById("opDesc_"+iSelOpOld).classList.remove("selected"); 
+	}
+	 
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 3) {
+//    	document.getElementById("opNum_"+iSelOp).classList.add("selected"); 
+    	document.getElementById("opFieldCol_"+iSelOp).classList.add("selected"); 
+    	document.getElementById("opDesc_"+iSelOp).classList.add("selected"); 
+    }
+			
+    // For next selection
+    iSelFieldsColsOld = -1;
+    iSelOpOld=iSelOp;	    	
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+// Restituisce true se tipo oggetto è quello fornito
+function isTypeObjectToDeal (typeObject) {
+	if (typeObject == PGM_COBOL
+	||  typeObject ==  COPY_COBOL_DATA 
+	||  typeObject ==  COPY_COBOL_ENV 
+	||  typeObject ==  COPY_COBOL_ID 
+	||  typeObject ==  ENTITY_SQL 
+	||  typeObject ==  ENTITY_VSAM 
+	||  typeObject ==  KSDS_FILE 
+	||  typeObject ==  ESDS_FILE 
+	||  typeObject ==  RRDS_FILE 
+	||  typeObject ==  SEQ_FILE 
+	||  typeObject ==  JCL_JOB 
+	||  typeObject ==  JCL_PROC 
+	||  typeObject ==  JCL_INCLUDE 
+	||  typeObject ==  JCL_JOBNAME 
+	||  typeObject ==  JCL_DDNAME 
+	||  typeObject ==  CICS_TRANSID 
+	||  typeObject ==  CICS_MAP 
+	||  typeObject ==  CICS_MAPSET 
+	||  typeObject ==  CICS_BMS_SOURCE 
+	||  typeObject ==  CICS_TS_QUEUE 
+	||  typeObject ==  CICS_TD_QUEUE 
+	||  typeObject ==  CICS_MQ_QUEUE) {
+		return true;
+	}
+	return false;
+}
+
+function createImpactPlan()  {
+	var xmlhttp;
+	var url = "";
+	var urlEncodedData = ""; 
+	var urlEncodedData2 = ""; 
+	var urlEncodedData3 = ""; 
+
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlCreateImpactPlanPOST + "/" + userInp  + "/" + sys  + "/" + subSys + "/" + idImpactPlan;
+
+	urlEncodedData = getImpactPlanUrlEncodedDataPairs();
+	 
+	// Define what happens in case of error
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error creating impact plan \n ResponseText=" + event.target.responseText);} );
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	   alert("Processing Error - Status=" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);   	   
+    	}   
+    };
+ 	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+		document.getElementById("tdMsgSave").innerHTML = "Impact Plan Succesfully Saved";
+		document.getElementById("tdMsgSave").style.color = "green";
+ 		createImpactObject();
+  		createImpactPgmsToRecompile();
+ 		loadselIdImpactPlan();                   // refresh combobox	
+	};	 
+}
+
+function createImpactObject() {
+	var xmlhttp;
+	var url = "";
+	var urlEncodedData = ""; 	
+	
+ 	urlEncodedData = getImpactObjectUrlEncodedDataPairs();
+
+	// Nessuna riga da inserire
+	if (urlEncodedData == "") {
+		return;
+	}
+	
+	xmlhttp=createRequest();
+ 	url = baseUrl + "/" + urlCreateImpactObjectPOST + "/" + userInp  + "/" + sys  + "/" + subSys + "/" + idImpactPlan;
+	
+	// Define what happens in case of error
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error creating impact plan \n ResponseText=" + event.target.responseText);} );
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	   alert("Processing Error - Status=" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);   	   
+    	}   
+    };
+	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+		idImpactPlan = document.getElementById("idImpactPlan").value = "";
+	};	 	
+}
+
+function createImpactPgmsToRecompile() {
+	var url = "";
+	var xmlhttp;
+	var urlEncodedData = ""; 	
+	
+	urlEncodedData = getImpactCompileUrlEncodedDataPairs();
+	
+	// Nessuna riga da inserire
+	if (urlEncodedData == "") {
+		return;
+	}
+	
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlCreateImpactCompilePOST + "/" + userInp  + "/" + sys  + "/" + subSys + "/" + idImpactPlan;
+	
+	// Define what happens in case of error
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error creating impact plan \n ResponseText=" + event.target.responseText);} );
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	   alert("Processing Error - Status=" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);   	   
+    	}   
+    };
+	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+		document.getElementById("tdMsgSave").innerHTML = "Impact Plan Succesfully Saved";
+	};	 
+	
+}
+
+
+/* Composizione coppie nome valore da passare al web service per ImpactPlan */
+function getImpactPlanUrlEncodedDataPairs()  {
+	var objImpactPlan = {};
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	var liRowZipped = "";
+	var fieldSeparator = "";
+		
+	// Turn the data object into an array of URL-encoded key/value pairs.
+ 
+	// Scan 
+	for (var i = 0; i < arImpactPlan.length; i++) {
+
+		objImpactPlan = arImpactPlan[i];
+		liRowZipped = "";
+		fieldSeparator = "";
+		
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.numOp;
+		fieldSeparator = ":";
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.idObjectOrigin;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.typeObjectOrigin;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.typeObjectOriginOrdinal;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.typeImpactChange;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.typeImpactChangeOrdinal;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fieldColumn;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromLength;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toLength;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromInt;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toInt;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromDec;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toDec;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromDataType;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromDataTypeOrdinal;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toDataType;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toDataTypeOrdinal;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromDefault;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toDefault;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fromSign;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.toSign;
+		
+		urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+	}
+		
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	return urlEncodedData;
+}
+
+/* Composizione coppie nome valore da passare al web service per ImpactObject */
+function getImpactObjectUrlEncodedDataPairs()  {
+	var objImpactPlan = {};
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	var liRowZipped = "";
+	var fieldSeparator = "";
+	
+	// Turn the data object into an array of URL-encoded key/value pairs.
+
+	// Scan impact plan con operazioni su oggetto/campo
+	for (var i = 0; i < arImpactPlan.length; i++) {
+		
+		objImpactPlan = arImpactPlan[i];
+		liRowZipped = "";
+		fieldSeparator = "";
+		
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.numOp;
+		fieldSeparator = ":";
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.typeObjectOriginOrdinal;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.idObjectOrigin;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fieldColumn;
+
+		urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+	}
+	
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	return urlEncodedData;
+}
+
+/* Composizione coppie nome valore da passare al web service per ImpactCompile */
+function getImpactCompileUrlEncodedDataPairs()  {
+	var objImpactCompile = {};
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	var liRowZipped = "";
+	var fieldSeparator = "";
+
+	// Turn the data object into an array of URL-encoded key/value pairs.
+	
+	// Scan 
+	for (var i = 0; i < arImpactPgmToRecompile.length; i++) {
+		objImpactCompile = arImpactPgmToRecompile[i];
+		liRowZipped = "";
+		fieldSeparator = "";
+
+		liRowZipped = liRowZipped + fieldSeparator + PGM_COBOL;
+		fieldSeparator = ":";
+		liRowZipped = liRowZipped + fieldSeparator + objImpactCompile.pgmName;
+		
+		urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+	}
+			
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	return urlEncodedData;
+}
+
+/* Gestione Save con nuovo plan */
+function onclick_btnSaveAs()  {
+	idImpactPlan = document.getElementById("idImpactPlan").value;
+	idImpactPlan = idImpactPlan.trim();	
+	onclick_btnSaveCommon(idImpactPlan);
+}
+
+/* Gestione Save/Update plan */
+function onclick_btnSave()  {
+	onclick_btnSaveCommon(idImpactPlan);
+}
+
+/* Gestione Save/Update plan */
+function onclick_btnSaveCommon(idImpactPlanInput)  {
+	var url = "";
+	var xmlhttp;
+	
+	idImpactPlan = idImpactPlanInput;
+
+	
+	// Id plan deve esserci
+	document.getElementById("tdMsgSave").innerHTML = "";
+	if (idImpactPlan == "") {
+		document.getElementById("tdMsgSave").innerHTML = "Impact Plan Id Required ...";
+		document.getElementById("tdMsgSave").style.color = "red";
+		return;
+	}
+	
+	// Delete impact plan 
+ 	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlDeleteImpactPlanDELETE + "/" + userInp  + "/" + sys  + "/" + subSys + "/" + idImpactPlan;	
+	
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error deleting impact plan \n ResponseText=" + event.target.responseText);} );	
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+    xmlhttp.open("DELETE", url, true);
+	xmlhttp.send(null);	
+	xmlhttp.onreadystatechange = function() {	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	    createImpactPlan();	                          // Delete plan effettuato, si procede con la creazione			
+	};			
+}
+
+/* Gestione delete plan */
+function onclick_btnDel()  {
+	var url = "";
+	var xmlhttp;
+	
+	idImpactPlan = document.getElementById("idImpactPlan").value;
+	idImpactPlan = idImpactPlan.trim();
+	
+	// Id plan deve esserci
+	document.getElementById("tdMsgSave").innerHTML = "";
+	if (idImpactPlan == "") {
+		document.getElementById("tdMsgSave").innerHTML = "Impact Plan Id Required ...";
+		document.getElementById("tdMsgSave").style.color = "red";
+		return;
+	}
+	
+	// Delete impact plan 
+ 	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlDeleteImpactPlanDELETE + "/" + userInp  + "/" + sys  + "/" + subSys + "/" + idImpactPlan;	
+	
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error deleting impact plan \n ResponseText=" + event.target.responseText);} );	
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+    xmlhttp.open("DELETE", url, true);
+	xmlhttp.send(null);	
+	xmlhttp.onreadystatechange = function() {	
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}	
+		    loadselIdImpactPlan();                   // refresh combobox		
+			document.getElementById("tdMsgSave").innerHTML = "Impact Plan Succesfully Deleted ...";
+			document.getElementById("tdMsgSave").style.color = "green";	    		
+	};	
+}
+
+function onChangeSelIdImpactPlan() {
+	var objects = [];
+	var objImpactPlan = {};
+	idImpactPlan = document.getElementById("selIdImpactPlan").value;
+	
+	// Load Change Operation Summary Box
+	var xmlhttp;
+	var url = "";
+	var urlEncodedData = "";
+	var selTypeObjectOriginValue = "";
+
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlImpactPlanGET + "/" + userInp  + "/" + sys  + "/" + "*" + "/" + idImpactPlan + "/" + "*" + "/" + "*" + "/" + "*" + "/" + "*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+     	}   
+    };
+ 	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		objects=JSON.parse(xmlhttp.responseText);
+		arImpactPlan=[];
+		if (objects.length > 0) {
+			// Rebuild array with impact plan
+			for (var i = 0; i < objects.length; i++) {
+				objImpactPlan = new Object();
+				fillObjImpactPlan(objects, i, objImpactPlan);
+				arImpactPlan.push(objImpactPlan);
+			}	
+			subSys = arImpactPlan[0].subSystem;
+			subSysPlan = subSys;
+			document.getElementById("tdSubSysCur").innerHTML = subSys;
+			// Posizionamento selSubSys sul subSys del piano selezionato
+			for (var i = 0; i < selSubSys.length; i++) {
+				selSubSys.selectedIndex = i;
+				var ar = selSubSys.value.split(" ");
+				if (subSys == ar[0]) {
+					break;
+				}		
+			}
+
+			// Caricamento summary modifiche
+			loadTableOperation();                     // summary modifiche direttamente da struttura array
+			loadImpactObjects() ;                     // Da tabella impactObject            
+			loadImpactPgms() ;                        // da tabella impactPgm
+			
+			// Clear area di selezione
+			clearSelectionArea();
+		}		
+	}	
+}
+
+
+/* Caricamento programmi da ricompilare da table impactPgm */
+function loadImpactObjects () {
+	var xmlhttp;
+	var url = "";
+	var objects = [];
+	var objImpactObjectInvolved = {};
+	var pgmOld = "";
+	
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlImpactPlanObjectGET + "/" + userInp  + "/" + sys  + "/" + idImpactPlan + "/" + "*" + "/" + "*" + "/" + "*" + "/" + "*"+ "/" + "*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+     	}   
+    };
+ 	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		objects=JSON.parse(xmlhttp.responseText);
+		curTimeTotalReferences = objects.length;
+		arImpactObjectInvolved=[];
+        for (var i = 0; i < objects.length; i++) {
+        	objImpactObjectInvolved = new Object();
+        	if (pgmOld != "" && pgmOld == objects[i].idObjectTarget) {continue;}
+        	pgmOld = objects[i].idObjectTarget;
+        	
+        	objImpactObjectInvolved.numOp = objects[i].numOp
+        	objImpactObjectInvolved.typeObjectPgm = objects[i].typeObjectTarget;
+        	objImpactObjectInvolved.pgm = objects[i].idObjectTarget;
+        	
+        	arImpactObjectInvolved.push(objImpactObjectInvolved);        		
+		}
+        loadTableObjectsInvolved();				  // Oggetti coinvolti nell'impact plan  
+        setEstimatedActivityBox();                // Contatori
+	}		
+}
+
+/* Caricamento programmi da ricompilare del piano di impatti */
+function loadImpactPgms() {
+	var xmlhttp;
+	var url = "";
+	var objects = [];
+	var objImpactPgmToRecompile = {};
+	
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlImpactPgmPgmToRecompileGET + "/" + userInp  + "/" + sys  + "/" + idImpactPlan;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+     	}   
+    };
+ 	xmlhttp.send(null);
+ 	
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		objects=JSON.parse(xmlhttp.responseText);
+		arImpactPgmToRecompile=[];
+        for (var i = 0; i < objects.length; i++) {
+        	objImpactPgmToRecompile = new Object();	        	
+        	objImpactPgmToRecompile.pgmName = objects[i].idObjectCompile	        	
+        	arImpactPgmToRecompile.push(objImpactPgmToRecompile);       		
+		}
+		loadTablePgmsToRecompile();				  // Programmi da ricompilare
+	}		
+}
+
+/* Return an object with the impact plan row */
+function fillObjImpactPlan(objects, i, objImpactPlan) {
+
+	objImpactPlan.sys = objects[i].sys;
+	objImpactPlan.subSystem = objects[i].subSystem;
+	objImpactPlan.idObjectOrigin = objects[i].idObjectOrigin;
+	objImpactPlan.numOp = objects[i].numOp;
+	objImpactPlan.typeObjectOrigin = objects[i].typeObjectOrigin;
+	objImpactPlan.typeObjectOriginOrdinal = objects[i].typeObjectOriginOrdinal;
+	objImpactPlan.typeImpactChange = objects[i].typeImpactChange;
+	objImpactPlan.typeImpactChangeOrdinal = objects[i].typeImpactChangeOrdinal;
+	objImpactPlan.fieldColumn = objects[i].fieldColumn;
+	objImpactPlan.fromLength = objects[i].fromLength;
+	objImpactPlan.toLength = objects[i].toLength;
+	objImpactPlan.fromInt = objects[i].fromInt;
+	objImpactPlan.toInt = objects[i].toInt;
+	objImpactPlan.fromDec = objects[i].fromDec;
+	objImpactPlan.toDec = objects[i].toDec;
+	objImpactPlan.fromDataType = objects[i].fromDataType;                   
+	objImpactPlan.toDataType = objects[i].toDataType;                   
+	objImpactPlan.fromDataTypeOrdinal = objects[i].fromDataTypeOrdinal;
+	objImpactPlan.toDataTypeOrdinal = objects[i].toDataTypeOrdinal;
+	objImpactPlan.fromDefault = objects[i].fromDefaultValue;
+	objImpactPlan.toDefault = objects[i].toDefaultValue;
+	objImpactPlan.fromSign = objects[i].fromSign;
+	objImpactPlan.toSign = objects[i].toSign;
+	
+	return;
+}
+
+/* Clear combo object, area campi/map e singoli parametri di selezione */
+function clearSelectionArea() {
+    
+	// Clear area selezione field/column
+	document.getElementById("divIframeMap").style.display="none";
+ 	document.getElementById("divWhatIfSelection").style.display="block";
+ 	document.getElementById("divWhatIfSelection").innerHTML = "";	
+
+    // Clear singoli valori del piano di modifiche
+ 	document.getElementById("parmFieldColValue").value = "";	
+	document.getElementById("lengthFromValue").value = "";
+	document.getElementById("lengthToValue").value = "";
+	document.getElementById("integerFromValue").value = "";
+	document.getElementById("integerToValue").value = "";
+	document.getElementById("decimalFromValue").value = "";
+	document.getElementById("decimalToValue").value = "";
+//  document.getElementById("defaultFromValue").value ="";   		// TODO
+//	document.getElementById("defaultToValue").value = "";		  	// TODO
+	document.getElementById("fromDataTypeValue").value = ""; 
+	document.getElementById("toDataTypeValue").value = "";
+ 	
+}
+
+
+/* Gestione elaborazione preliminare impact plan */
+function onclick_btnProcessImpactPlanLight()  {
+	var objects = {}; 
+	var xmlhttp;
+	var url = "";
+	var urlEncodedData = ""; 
+	var idPlanNotUsed = "*";
+	
+	loadPgmsToRecompile();                       // Programmi da ricompilare in base alle sole relazioni
+	
+	// Caricamento programmi/oggetti interessati dall'impact plan
+	
+	xmlhttp=createRequest();
+
+	url = baseUrl + "/" + urlImpactPlanPgmListPOST + "/" + userInp  + "/" + sys  + "/" + idPlanNotUsed ;	
+	urlEncodedData = getImpactPlanPgmListUrlEncodedDataPairs();
+
+	document.getElementById("countObjectInvolved").innerHTML = "Fetching ...";
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+     	}   
+    };
+ 	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() {
+		
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}		
+		arImpactObjectInvolved=JSON.parse(xmlhttp.responseText);
+		
+		loadTableObjectsInvolved ();			// Tabella HTML programmi coinvolti      
+    }
+}
+
+/* Gestione selezion/Deselezione, load tabellla where used */
+function onclick_objInvolved(clicked_id) {
+    var i = 0;
+    var numOp = "";
+    var idObjectOrigin = "";      // Copy/Entity/..
+    var typeObjectOrigin = "";      // Copy/Entity/..
+    var idField = "";
+    var subSys = "";
+    var pgm = "";
+    var lightDeep = "";
+    var objProcessed = "";
+    var objToProcess = "";
+    
+    i = clicked_id.indexOf("_");
+    iSelObjInvolved = parseInt(clicked_id.substr(i+1));
+
+    // Unselect selected row
+    if (iSelObjInvolved != iSelObjInvolvedOld && iSelObjInvolvedOld >= 0) {
+		document.getElementById("objType_"+iSelObjInvolvedOld).classList.remove("selected"); 
+		document.getElementById("objPgm_"+iSelObjInvolvedOld).classList.remove("selected"); 
+		document.getElementById("objLightDeep_"+iSelObjInvolvedOld).classList.remove("selected"); 
+		document.getElementById("objProcessed_"+iSelObjInvolvedOld).classList.remove("selected"); 
+    }
+    
+    // Select row
+     if (document.getElementById(clicked_id).classList.length < 3) {
+		document.getElementById("objType_"+iSelObjInvolved).classList.add("selected"); 
+		document.getElementById("objPgm_"+iSelObjInvolved).classList.add("selected"); 
+		document.getElementById("objLightDeep_"+iSelObjInvolved).classList.add("selected"); 
+		document.getElementById("objProcessed_"+iSelObjInvolved).classList.add("selected"); 
+    }
+    
+    // Impostazione info selezionate
+        
+    // For next selection
+    iSelObjInvolvedOld=iSelObjInvolved;	  
+    
+    // Caricamento where used del programma selezionato
+    numOp = arImpactObjectInvolved[iSelObjInvolved].numOp; 
+    i = numOp - 1;
+    subSys = arImpactObjectInvolved[iSelObjInvolved].subSys;      // Non usato
+    idObjectOrigin = arImpactPlan[i].idObjectOrigin
+    typeObjectOrigin = arImpactPlan[i].typeObjectOriginOrdinal
+    idField = arImpactPlan[i].fieldColumn
+    pgm = arImpactObjectInvolved[iSelObjInvolved].pgm;
+    loadWhereUsedAt(idObjectOrigin, typeObjectOrigin, idField, pgm);
+        
+}
+
+/* Caricamento where used del campo selezionato dall'operazione */
+function loadWhereUsedAt(idObject, typeObject, idField, pgm) {
+	var objects = {};
+	var xmlhttp;
+	var subSys = '*';           // Sottosistema dove è stato generato il where used
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlWhereUsedGET + "/" + userInp + "/" + sys + "/" + subSys + "/" + idObject + "/" + typeObject + "/" + idField + "/" + pgm ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		 if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		 objects=JSON.parse(xmlhttp.responseText);
+	     arWhereUsed = objects;
+		 
+	     var tbltop = "<table id='tbNumRow' class='tbNumRow'>"
+ 	           +    "<tr>"
+               +      "<th>R.Start</th>"
+               +      "<th>R.End</th>"
+               +      "<th>Instr</th>"
+               +    "</tr>"	
+  		 var main = "";                    
+  	     for (var i=0; i < objects.length; i++) {
+     	           
+  	    	   main  += "<tr>"
+  	     	         +    "<td class='tdNumRowStart' id='rowStart_"  + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowStart      + "</td>" 
+  	     	         +    "<td class='tdNumRowEnd'   id='rowEnd_"    + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].rowEnd        + "</td>" 
+  	     	         +    "<td class='tdNumInstr'    id='numInstr_"  + i + "' onclick='onclick_whereUsedOriginRow(this.id);'>" + objects[i].numInstrRefer + "</td>" 
+	     	         +  "</tr>"
+  	     }
+	     	         
+		 var tblBottom = '</table>'
+		 var tbl = tbltop + main + tblBottom;
+	     document.getElementById('divImpact22').innerHTML = tbl;
+	     document.getElementById("countToBeChangedAt").innerHTML = objects.length;	
+	
+	}
+}
+
+/* Gestione selezion/Deselezione, Attivazione inspector/viewer */
+function onclick_whereUsedOriginRow(clicked_id)	 {
+	var winOpenInspector = null;
+    var i = 0;
+    var subSys = "";
+    var idProgram = "";
+    var typeObjectPgm = "";
+    var typeObjectPgmOrdinal = "";
+    var rowStart = "";
+    var rowEnd = "";
+    var rowStartInCopy = "";
+    var rowEndInCopy = "";
+    var idObjectCopy = "";
+    var numInstr = "";
+    
+    i = clicked_id.indexOf("_");
+    iSelWhereUsedOriginRow = parseInt(clicked_id.substr(i+1));
+
+    // Unselect selected row
+    if (iSelWhereUsedOriginRow != iSelWhereUsedOriginRowOld && iSelWhereUsedOriginRowOld >= 0) {
+		document.getElementById("rowStart_"+iSelWhereUsedOriginRowOld).classList.remove("selected"); 
+		document.getElementById("rowEnd_"+iSelWhereUsedOriginRowOld).classList.remove("selected"); 
+		document.getElementById("numInstr_"+iSelWhereUsedOriginRowOld).classList.remove("selected"); 
+    }
+
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 3) {
+		document.getElementById("rowStart_"+iSelWhereUsedOriginRow).classList.add("selected"); 
+		document.getElementById("rowEnd_"+iSelWhereUsedOriginRow).classList.add("selected"); 
+		document.getElementById("numInstr_"+iSelWhereUsedOriginRow).classList.add("selected"); 
+   }
+
+    // For next selection
+    iSelWhereUsedOriginRowOld=iSelWhereUsedOriginRow;	  
+
+    // Riga selezionata
+    rowStart = document.getElementById("rowStart_"+iSelWhereUsedOriginRow).innerHTML;
+    rowEnd = document.getElementById("rowEnd_"+iSelWhereUsedOriginRow).innerHTML;
+    rowStartInCopy = arWhereUsed[iSelWhereUsedOriginRow].rowStartInCopy;
+    rowEndInCopy = arWhereUsed[iSelWhereUsedOriginRow].rowEndInCopy;
+    idObjectCopy = arWhereUsed[iSelWhereUsedOriginRow].idObjectCopy;   
+    numInstr = document.getElementById("numInstr_"+iSelWhereUsedOriginRow).innerHTML;
+    idProgram = arWhereUsed[iSelWhereUsedOriginRow].idObjectRefer;
+    typeObjectPgm = arWhereUsed[iSelWhereUsedOriginRow].typeObjectRefer;
+    typeObjectPgmOrdinal = arWhereUsed[iSelWhereUsedOriginRow].typeObjectReferOrdinal;
+    subSys = arWhereUsed[iSelWhereUsedOriginRow].subSystem;
+    
+    // Attivazione Inspector
+    if (clicked_id.substr(0, 8) == 'numInstr') {
+    	// Impostazione parametri
+    	localStorage.setItem("sourceCaller", "Impact");
+        localStorage.setItem("sourceIdObject_" + idProgram, idProgram);
+        localStorage.setItem("sourceSubSys_" + idProgram, subSys);
+        localStorage.setItem("sourceTypeObject_" + idProgram, typeObjectPgm);
+        localStorage.setItem("sourceTypeObjectN_" + idProgram, typeObjectPgmOrdinal);
+        localStorage.setItem("sourceNumInstr_" + idProgram, numInstr);       
+        localStorage.setItem("sourceRowStart_" + idProgram, rowStart);
+        localStorage.setItem("sourceRowEnd_" + idProgram, rowEnd);
+        localStorage.setItem("sourceUnderCopy_" + idProgram, idObjectCopy);
+        localStorage.setItem("sourceUnderCopyRowStart_" + idProgram, rowStartInCopy);
+        localStorage.setItem("sourceUnderCopyRowEnd_" + idProgram, rowEndInCopy);
+    	winOpenInspector = window.open("Inspector.html", "_blank");
+    	winOpenInspector.name=idProgram;
+    	return;
+	}
+    
+   // Attivazione Viewer
+
+   // TODO
+}
+	
+/* Caricamento tabella programmi da ricompilare */
+function loadPgmsToRecompile()  {
+	var xmlhttp;
+	var url = "";	
+	
+	var objImpactPlan = {};
+	
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	var liRowZipped = "";
+	var fieldSeparator = "";
+	
+	var subSys = "";
+	var relation = "";
+	var typeImpactChangeOrdinal = "";
+	var typeObjectB = "";
+	var idObjectB = "";
+	
+	var tbl = "";
+	var tbltop = "";
+	var main = "";
+	var tblBottom = "";
+	
+	// Scan change operation summary
+	for (var i = 0; i < arImpactPlan.length; i++) {
+		objImpactPlan = arImpactPlan[i];
+		
+		liRowZipped = "";
+		fieldSeparator = "";
+		subSys = objImpactPlan.subSystem;
+		typeImpactChangeOrdinal = objImpactPlan.typeImpactChangeOrdinal;
+		relation = "";
+		idObjectB = objImpactPlan.idObjectOrigin;
+		typeObjectB = objImpactPlan.typeObjectOriginOrdinal;
+		
+		// PGM_COPY
+		// PGM_COPY_SQL_INCLUDE
+		if (typeImpactChangeOrdinal == COPY_FIELD_CHANGE
+		||	typeImpactChangeOrdinal == COPY_FIELD_DELETE	
+		||	typeImpactChangeOrdinal == COPY_FIELD_NEW	
+		||	typeImpactChangeOrdinal == COPY_DELETE) {
+			relation = PGM_COPY;
+			liRowZipped = "";
+			fieldSeparator = "";
+			liRowZipped = liRowZipped + fieldSeparator + subSys;
+			fieldSeparator = ":";
+			liRowZipped = liRowZipped + fieldSeparator + relation;
+			liRowZipped = liRowZipped + fieldSeparator + idObjectB;
+			liRowZipped = liRowZipped + fieldSeparator + typeObjectB;
+			urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+			relation = PGM_COPY_SQL_INCLUDE;
+			liRowZipped = "";
+			fieldSeparator = "";
+			liRowZipped = liRowZipped + fieldSeparator + subSys;
+			fieldSeparator = ":";
+			liRowZipped = liRowZipped + fieldSeparator + relation;
+			liRowZipped = liRowZipped + fieldSeparator + idObjectB;
+			liRowZipped = liRowZipped + fieldSeparator + typeObjectB;
+			urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+		}
+				
+		// PGM_ENTITY
+		if (typeImpactChangeOrdinal == TABLE_COLUMN_CHANGE
+		||	typeImpactChangeOrdinal == TABLE_COLUMN_DELETE	
+		||	typeImpactChangeOrdinal == TABLE_COLUMN_NEW	
+		||	typeImpactChangeOrdinal == TABLE_DELETE) {
+			relation = PGM_ENTITY;
+			liRowZipped = "";
+			fieldSeparator = "";
+			liRowZipped = liRowZipped + fieldSeparator + subSys;
+			fieldSeparator = ":";
+			liRowZipped = liRowZipped + fieldSeparator + relation;
+			liRowZipped = liRowZipped + fieldSeparator + idObjectB;
+			liRowZipped = liRowZipped + fieldSeparator + typeObjectB;
+			urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+		}
+
+		// PGM_CICS_MAP
+		if (typeImpactChangeOrdinal == MAP_FIELD_CHANGE
+		||	typeImpactChangeOrdinal == MAP_FIELD_DELETE	
+		||	typeImpactChangeOrdinal == MAP_FIELD_NEW	
+		||	typeImpactChangeOrdinal == MAP_DELETE) {
+			relation = PGM_CICS_MAP;
+			liRowZipped = "";
+			fieldSeparator = "";
+			liRowZipped = liRowZipped + fieldSeparator + subSys;
+			fieldSeparator = ":";
+			liRowZipped = liRowZipped + fieldSeparator + relation;
+			liRowZipped = liRowZipped + fieldSeparator + idObjectB;
+			liRowZipped = liRowZipped + fieldSeparator + typeObjectB;
+			urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+		}
+
+		// PGM_JCL_JOB
+		if (typeImpactChangeOrdinal == JCL_DDNAME_CHANGE
+		||	typeImpactChangeOrdinal == JCL_DDNAME_DELETE	
+		||	typeImpactChangeOrdinal == JCL_INCLUDE_DELETE	
+		||	typeImpactChangeOrdinal == JCL_INCLUDE_CHANGE	
+		||	typeImpactChangeOrdinal == JCL_JOB_DELETE) {
+			relation = PGM_CICS_MAP;
+			liRowZipped = "";
+			fieldSeparator = "";
+			liRowZipped = liRowZipped + fieldSeparator + subSys;
+			fieldSeparator = ":";
+			liRowZipped = liRowZipped + fieldSeparator + relation;
+			liRowZipped = liRowZipped + fieldSeparator + idObjectB;
+			liRowZipped = liRowZipped + fieldSeparator + typeObjectB;
+			urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+		}
+
+		// TODO X altre relazioni		
+	}
+
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+		
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlImpactPlanPgmToRecompilePOST + "/" + userInp  + "/" + sys+ "/";
+
+	document.getElementById("countPgmsToRecompile").innerHTML = "Fetching ...";
+	
+	// Define what happens in case of error
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error creating impact plan \n ResponseText=" + event.target.responseText);} );
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);
+    	   return;
+    	}   
+    };
+ 	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+		
+		arImpactPgmToRecompile=JSON.parse(xmlhttp.responseText);
+		loadTablePgmsToRecompile();	                    // Caricamento tabella HTML
+	};	 
+	
+}	
+
+function onclick_pgmToRecompile(clicked_id)  {
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = parseInt(clicked_id.substr(i+1));	
+
+	iSelPgmToRecompile = i;
+	
+	// Unselect selected row
+	if (iSelPgmToRecompile != iSelPgmToRecompileOld && iSelPgmToRecompileOld >= 0) {
+		document.getElementById("idPgmToRecompile_"+iSelPgmToRecompileOld).classList.remove("selected"); 
+	}
+	 
+    // Select row
+    if (document.getElementById(clicked_id).classList.length < 3) {
+    	document.getElementById("idPgmToRecompile_"+iSelPgmToRecompile).classList.add("selected"); 
+    }
+			
+    // For next selection
+    iSelPgmToRecompileOld = i;
+	 	
+}
+
+/* Composizione coppie nome valore da passare al web service per ImpactPlanPgmList */
+function getImpactPlanPgmListUrlEncodedDataPairs()  {
+	var objImpactPlan = {};
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	var liRowZipped = "";
+	var fieldSeparator = "";
+		
+	// Turn the data object into an array of URL-encoded key/value pairs.
+ 
+	// Scan 
+	for (var i = 0; i < arImpactPlan.length; i++) {
+
+		objImpactPlan = arImpactPlan[i];
+		liRowZipped = "";
+		fieldSeparator = "";
+		
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.numOp;
+		fieldSeparator = ":";
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.idObjectOrigin;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.typeObjectOriginOrdinal;
+		liRowZipped = liRowZipped + fieldSeparator + objImpactPlan.fieldColumn;
+		
+		urlEncodedDataPairs.push( encodeURIComponent( "liRow" )   + '=' + liRowZipped) ;
+	}
+		
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	return urlEncodedData;
+}
+
+/* Gestione Start/Stop processo su server */
+function onclick_btnProcessImpactPlanDeep()  {
+	var execProgrBar = null;	
+	var objects = [];
+	var objImpactPlan = {};
+	
+	idImpactPlan = document.getElementById("selIdImpactPlan").value;
+	
+	
+	// Reset Progress bar
+	execProgrBar = document.getElementById("execProgrBar");
+    execProgrBar.style.width = "0%";
+    execProgrBar.innerHTML = "0%";
+    retSetInterval = setInterval(refreshExecInfo, 5000);	
+    
+ 	// Imposto a running
+    document.getElementById("tdExecStatus").innerHTML = "Running";
+    document.getElementById("tdExecStatus").style.color = "green";
+ 	
+	// Start deep process
+	var xmlhttp;
+	var url = "";
+	var selTypeObjectOriginValue = "";
+
+	xmlhttp=createRequest();
+	url = baseUrl + "/" + urlExecutionImpactStartPUT + "/" + userInp  + "/" + sys + "/" + idImpactPlan ;
+	xmlhttp.open("PUT", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+     	}   
+    };
+ 	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+		objects=JSON.parse(xmlhttp.responseText);     
+	}		
+		
+}
+
+/* Refresh informazioni di elaborazione correnti */
+function refreshExecInfo()  {
+	var objExecStatus = {};
+    var step = 0;
+    var execProgrBar;
+    var width = 0;
+	var xmlhttp;
+	var d = new Date();
+	var dtStartProcess = String(d.getFullYear()) + String(d.getMonth()+1) + String(d.getDate());
+	
+	// Ajax server request to get Objects
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlExecutionInfoGET + "/" + userInp;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		   if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};
+	
+		   objExecStatus=JSON.parse(xmlhttp.responseText);
+		   
+		   // Counters
+		   document.getElementById("tdExecObjCur").innerHTML = objExecStatus.execCurIdObject;
+		   document.getElementById("tdExecCountCur").innerHTML = objExecStatus.execCntObjectProcessed;
+		   document.getElementById("tdExecCountOf").innerHTML = objExecStatus.execTotObjectToProcess;
+	          
+		   // Status
+		   if (objExecStatus.execProcessRunning) {
+			   document.getElementById("tdExecStatus").innerHTML = "Running";
+			   document.getElementById("tdExecStatus").style.color = "green";
+		   } else {
+			   document.getElementById("tdExecStatus").innerHTML = "Stopped";
+			   document.getElementById("tdExecStatus").style.color = "red";
+			   clearInterval(retSetInterval);
+		   }
+		   
+		   // Progress bar
+		   step = 100 / objExecStatus.execTotObjectToProcess;
+		   execProgrBar = document.getElementById("execProgrBar");
+		   width =  Math.floor(step * objExecStatus.execCntObjectProcessed);		   
+	       if (objExecStatus.execCntObjectProcessed == objExecStatus.execTotObjectToProcess) { width = 100;}
+	       execProgrBar.style.width = width + "%";
+	       execProgrBar.innerHTML = width  + "%";	
+	};
+}
+
+/* Impostazione tabella tempi stimati */
+function setEstimatedActivityBox() {
+	
+	document.getElementById("tdTimeTotalObjects").innerHTML = arImpactObjectInvolved.length;
+	document.getElementById("tdTimeTotalReferences").innerHTML = curTimeTotalReferences;
+	document.getElementById("tdTimeTotalActivity").innerHTML = "0";
+}
+ 
+/* set properties not working just with CSS */
+function adjustLayout() {
+	var maxHeight = "";
+	var maxHeightN = "";
+	var div1 = "";
+	var div1Height = "";
+	var div1HeightN = 0;
+	var div2 = "";
+	var div2Height = "";
+	var div2HeightN = 0;
+	var div3 = "";
+	var div3Height = "";
+	var div3HeightN = 0;
+	var div4 = "";
+	var div4Height = "";
+	var div4HeightN = 0;
+	var div5 = "";
+	var div5Height = "";
+	var div5HeightN = 0;
+	
+	var newHeightN = "";
+	var newHeightT = "";
+	var x = 0;
+	var y = 0;
+
+	maxHeight = document.getElementById("mainTable").clientHeight;
+	maxHeightN = parseInt(maxHeight);
+	
+	// Pgm structure box
+	div1 = document.getElementById("mainTableRowHeader");
+	div1Height = div1.clientHeight;
+	div1HeightN = parseInt(div1Height)
+	div2 = document.getElementById("headerSystem");
+	div2Height = div2.offsetHeight;
+	div2HeightN = parseInt(div2Height)
+	div3 = document.getElementById("divLeftTop");
+	div3Height = div3.offsetHeight;
+	div3HeightN = parseInt(div3Height)
+	div4 = document.getElementById("divMenu");
+	div4Height = div4.offsetHeight;
+	div4HeightN = parseInt(div4Height)
+	div5 = document.getElementById("countObjectsShared");
+	div5Height = div5.offsetHeight;
+	div5HeightN = parseInt(div5Height)
+	
+	newHeightN = maxHeightN - div1HeightN - div2HeightN
+	newHeightT = newHeightN.toString() + "px";
+	
+ 	document.getElementById ( "divLeftTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divCenterTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divRightTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdLeftArrow" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdRightArrow" ).style.maxHeight = newHeightT;	
+
+	newHeightN = maxHeightN - div1HeightN - div2HeightN - div4HeightN - div5HeightN;
+	newHeightT = newHeightN.toString() + "px";
+	
+	document.getElementById ( "divObjList" ).style.maxHeight = newHeightT;	
+
+}
+
+
+</script>
+</body>
+</html>

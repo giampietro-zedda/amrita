@@ -1,0 +1,113 @@
+Piano dal 13/05/2021
+
+LOGIC MANAGER
+01)DONE Test campo in pgm chiamanti in DFHCOMMAREA
+02)DONE Test campo in pgm chiamanti in LINKAGE con pointer in parametro passato in using
+03)DONE Test campo in pgm chiamanti in LINKAGE con pointer in parametro passato in DFHCOMMAREA
+04)DONE test valori da + programmi chiamanti stesso livello in LogicSpreadedPgm
+05)DONE Sistemazione aggiornamento stato programma a fine elaborazione
+06)DONE test dati esterni da CICS READ  VSAM durante analisi
+07)DONE test dati esterni da CICS READ  VSAM dopo analisi con logiche spread
+08)DONE Anomalia dati esterni da CICS READ VSAM dopo analisi con logiche spread senza dati NON mette stato in waiting for external data
+09)DONE Anomalia update flag solved|waitingForExternalData in tabelle DynamicFieldSub e DynamicFieldSubSetting a fronte di logiche spreaded
+10)DONE test dati esterni da tabella SQL
+11)DONE test dati esterni da READ cobol file (da testare meglio quando arrivano i collegamenti con il JCL)
+12)TODO test campo passato da + chiamanti con trasformazioni (using poi DFHCOMMAREA etc) (in parte già testato)
+13)TODO test campo composto con sottocampi risolti a più livelli anche da dati esterni (test + completo da effettuare)
+14)TODO Error LOGIC001 istr 131 OK LOGIC002 LOGIC003 ma si trovano anche READVAL2 READVAL3 (dovuto a PGMNAMEW e chain da scartare se non in path valido)
+15)TODO Error LOGIC001 istr 194 Non sono memorizzati i valori su db per il campo ma ci sono le relazioni (LOGITR01,LOGITR02,LOGITR03,LOGITR04)
+16)TODO Error LOGIC001 istr 194 Attivando Tracking comaiono i valori (LOGITR01,LOGITR02,LOGITR03,LOGITR04) ma NON il FILLER value 'LOGI'
+17)TODO Error LOGIC001 istr 210 214 218 222 Spreaded Parm1 commarea Linkage NON compaiono le assegnazioni dei pgm chiamanti 
+18)TODO Error LOGIC001 istr 210 Spreaded USING-P1-02 NON restituisce LOGICP12 ma lo calcola correttamente 
+
+MODULI NUOVI dal 19/05/2021
+1) DONE MAP-OVERVIEW impostare interfaccia simil grafica, colori, schema a blocchi, connessioni fra sottosistemi, oggetti condivisi, menù 
+2) DONE IMPACT impostare interfaccia completa con colori, dati di test interfaccia
+3) DONE LOGIC Impostare interfaccia completa simil grafica con colori e dati di prova
+4) TODO HEALTH Verificare necessità prodotti grafici open, impostare interfaccia
+5) DONE MAP-OVERVIEW scrivere web-services e java script di supporto
+        Error - raddoppia elenco sottosistemi (query errata)
+6) DONE IMPACT scrivere web-services e java script di supporto
+7) DONE LOGIC  scrivere web-services e java script di supporto
+7) DONE LOGIC  Porting da Inspector e completamento interfaccia + test 99%
+
+ANALYZER
+0) TODO In library scan devono essere inseriti gli oggetti SUBSYS (92) con sys valorizzato e subSys * e idObject=subSys.
+1) TODO new analizzatore PCT
+2) TODO new analizzatore PPT
+3) TODO new analizzatore FCT
+4) DONE new show Status sottosistema visualizzazione programmi "waiting for pgm callers" in base a ultime last_set
+5) TODO new parametrizzazione Violazione/QUALE (Quality)
+6) TODO Migliorare CSS
+7) TODO Anomalia load Analyzer.html se server down
+8) TODO Disattivare richiesta ProgressLog a fine elaborazione con STOP
+9) TODO Sotto Web new Instance con Reflection UserExit NON funziona
+10)TODO FMCNTRSO FMROUTN son COBOL_PROC ma in realtà sono PGM
+11)TODO Inserire displacement campo in InstructionDataItem 
+12)TODO Error Delete pilot NON deleta
+
+INSPECTOR
+0) TODO Anomalia non mostra callers con Link LOGIC001 non mostra caller LOGIC401 (Perchè con Cics Link)
+1) TODO Mettere in alto a sinistra selezione di sottosistema/programma
+2) TODO Anomalia a volte selezione XREF campi path da errore in remove class
+3) TODO Gestione selezione/deselezione in modo generale per avere sempre una sola riga selezionata
+4) TODO Su click barra LINKAGE toggle su FD e gestire il posizionamento corretto per pgm batch
+5) TODO Gestire allargamento dinamico finestre 
+6) TODO Anomalia su area istruzioni dinamiche selezionando campo singolo non aggiorna sempre trasformazioni e valori
+
+VIEWER
+1) PROG new PGM Summary 80% fatto e testato manca show screen/Violazioni/Dynamic code da sistemare e export pagina
+2) TODO Normalizzazione header/colori per ogni funzione
+3) TODO In filtri oggetti aggiungere opzione per "tutti gli oggetti di una transazione" in perimetro o esterni
+4) TODO Anomalia tree-view su - (da +) di expandRel(ER) ripulire RelationOrign, Fields e columns
+5) TODO Anomalia tree-view compaiono due ENTITY_SQL ANFMDID
+6) TODO Implementare CRUD matrix per esposizione anche di (VSM) (SEQ) oltre che di (SQL)
+
+FUNZIONI SYSTEM LEVEL
+1) TODO Scrivere  funzione per estrarre le relazioni indirette, quando c'è una Call Using parm dove in parm c'è un campo
+        modificato dai pgm chiamati a sua volta usato in una Call using pgmname-set-by-called
+        Esempio VALBRUNA è UTSASTAR
+2) TODO Scrivere funzione di normalizzazione metriche (valori da 1 a 5 per ogni tipo di metrica e SQUALE) 1=valore peggiore e 5=valore migliore
+3) TODO Scrivere funzione di aggregazione metriche normalizzate o query che le aggreghi, a livello sistema/sottosistema/programma/paragrafo
+
+OTTIMIZZAZIONE
+1) TODO Analyzer Ottimizzazione aggiornamenti, eliminazione data referencial integrity
+2) TODO Analyzer Implementare analisi parallele pgm/copy con aggiornamento parametri di configurazione
+3) TODO Analyzer Implementare Cache di moduli copy
+4) TODO Analyzer Ottimizzare new Analizzatori a livello User. Reference a analizzatori a livello user
+5) TODO Analyzer Ottimizzare Serializzazione/Deserializzazione con utilizzo libreria specifica
+6) TODO Analyzer Verificare prestazioni DELETE investigare uso di Stored Procedure (Su ANFMFMR)
+
+ALTRO
+1) TODO Scrivere gestione User in login/sign-on
+2) TODO Normalizzare layout Analyzer/Viewer/Inspector
+
+BETA TEST MASSIVO
+1) TODO Creare user VALBRUNA + db VALBRUNA (AmritaTest / AmritaTest)
+2) TODO Analizzare tutti i copy
+3) TODO Analizzare tutti i pgmù
+4) TODO Analizzare tutto il resto
+5) TODO Verifica dati e correzione anomalie di analisi
+6) TODO Verifica soluzione istruzioni dinamiche su dati massivi
+
+PACCHETTIZZAZIONE
+1) DONE Generare un WAR di progetto da installare su un Tomcat
+2) DONE Test export java+mysql su XAMPP (funziona tutto, testata anche analisi programmi)
+3) TODO Generare un JAR di progetto da eseguire via batch
+
+
+
+ON FLY
+
+
+
+
+
+
+
+
+
+
+
+
+

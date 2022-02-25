@@ -1,0 +1,69 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test Logic Manager da programma COBTST02
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_UPDATE_DB_ENABLED
+
+# Librerie sorgenti programmi e copy e search copy included
+LIBRARY PGMCOB  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+LIBRARY COPYCOB E:\Amrita\Amrita-Java\AmritaFramework\UnitTestCopy\
+LIBRARY_SOURCE_SEARCH COPYCOB
+
+
+# Identificazione oggetti da analizzare
+SYSTEM_VALUE Z
+SUB_SYSTEM_VALUE ZZ
+FILTER_ON_OBJECT_NAME 1 CO
+#OBJECT_TYPE_COPY_COBOL_DATA *ALL*  
+#OBJECT_TYPE_PGM_COBOL *ALL*  
+OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST02
+
+# Elaborazioni da effettuare per ogni programma
+OPT_GRAPH_CREATION_ENABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_LIGHT_DISABLED  
+OPT_SOLVE_DML_SQL_ENABLED
+OPT_DETECT_DEAD_CODE_ENABLED
+OPT_METRICS_ALL_DISABLED           	        
+OPT_METRICS_PGM_DETAIL_ON_DB_ENABLED               
+OPT_METRICS_MCCABE_ENABLED 
+OPT_METRICS_HALSTEAD_DISABLED 
+OPT_METRICS_COMPLEXITY_STRUCTURE_ENABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_DISABLED       
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED 
+OPT_METRICS_DETECT_VIOLATIONS_ENABLED
+
+# Opzioni particolari per metriche, violazioni e controlli via exit esterna          	 	 
+OPT_CTRL_COB_NAME_PGM_ENABLED                 
+OPT_CTRL_COB_NAME_FIELD_ENABLED                
+OPT_CTRL_COB_NAME_SECTION_ENABLED              
+OPT_CTRL_COB_NAME_PARAGRAPH_ENABLED            
+OPT_CTRL_COB_NAME_LABEL_ENABLED               
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_PGM_LEVEL	 
+START

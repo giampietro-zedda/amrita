@@ -1,0 +1,977 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance     
+      *      Reverse
+      *       Integrated
+      *         Tecnology 
+      *           Application
+      *
+      *================================================================
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.     COBTST03.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: Unit test esaustivo logiche spreaded.
+      *                 : Lo scopo è di testare tutti i casi di valori
+      *                 : dinamici risolti in programmi chiamanti.
+      *                 : I programmi chiamanti possono valorizzare
+      *                 : non solo i campi completi ma anche singole
+      *                 : porzioni dei sottocampi.
+      *                 : Questo programma richiama COBTST02 e testa
+      *                 : due condizioni:
+      *                 : 1) Individuazione di valori spreaded 
+      *                 :    per sottocampi di istruzioni dinamiche
+      *                 :    presenti nel pgm chiamato COBTST02
+      *                 : 2) Funzione di program passthru, ovvero
+      *                 :    di interfaccia, per sottocampi presenti
+      *                 :    nel pgm chiamato COBTST02.
+      *                 :    In questo caso i valori vengono risolti
+      *                 :    nel programma chiamante questo programma
+      *                 :    ovvero in COBTST04
+      *                 : La sequenza di chiamata è pertanto:
+      *                 :    COBTST04
+      *                 :      COBTST03
+      *                 :         COBTST02
+      *                 : COBTST02 testa in modo esaustivo le logiche
+      *                 : stesso programma.
+      *                 : 
+      *                 :  
+      *  Scritto il    	: 07-04-2011
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================       
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+ 
+       DATA DIVISION.
+       FILE SECTION.
+       WORKING-STORAGE SECTION.
+       
+       01 FILLER.
+      * Nome programma, file ...
+          05 TXXX-COBTST02                PIC X(8) VALUE 'COBTST02'.
+          05 TXXX-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T036-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T037-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T038-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T042-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T040-FLD-SINGLE              PIC X(8) VALUE SPACE.
+  
+      * Campi di servizio e trasformazione specifici per test
+          05 T040-FLDX8                   PIC X(8).
+
+
+      * Campi per test T037
+          05 T037-DYNAMIC-SPREADED.
+             07 T037-FILE-NAME           PIC X(08).
+             07 T037-PGM-NAME            PIC X(8).
+             07 T037-PGM-NAME2           PIC X(8).
+                   
+      * Campi per test T038
+          05 T038-DYNAMIC-SPREADED.
+             07 T038-FILE-NAME           PIC X(08).
+             07 T038-PGM-NAME            PIC X(8).
+             07 T038-PGM-NAME2           PIC X(8).
+  
+      * Campi per test passasggio da numerico ad alfanumerico e redefines
+          05 TXXX-X8.
+             07 TXXX-98                    PIC 9(8).
+             07 TXXX-98X REDEFINES TXXX-98 PIC X(8).
+          05 TXXX-X2.
+             07 FILLER                     PIC XX.
+          05 TXXX-X9 REDEFINES TXXX-X2     PIC 99.
+          05 TXXX-X2-RED REDEFINES TXXX-X2 PIC XX.
+          
+      * Campi di servizio vari e trasformazione generici
+          05 T002-FLD01                   PIC X(8) VALUE 'TEST'.
+          05 TXXX-KEY                     PIC X(10).
+          05 TXXX-IOAREA                  PIC X(100).
+          05 TXXX-FLDX1                   PIC X.
+          05 TXXX-FLDX2                   PIC X(2).
+          05 TXXX-FLDX3                   PIC X(3).
+          05 TXXX-FLDX4                   PIC X(4).
+          05 TXXX-FLDX5                   PIC X(5).
+          05 TXXX-FLDX6                   PIC X(6).
+          05 TXXX-FLDX7                   PIC X(7).
+          05 TXXX-FLDX8                   PIC X(8).
+          05 TXXX-FLDX82                  PIC X(8).
+          05 TXXX-FLDN1                   PIC 9(3).
+          05 TXXX-FLDN2                   PIC 9(7)  COMP-3.
+          05 TXXX-FLDN3                   COMP.
+          05 TXXX-SPACE                   PIC X(4) VALUE SPACE.
+          05 TXXX-ZERO                    PIC X(2) VALUE ZEROES.
+          05 TXXX-A                       PIC X    VALUE 'A'.
+          05 TXXX-ZZ                      PIC XX   VALUE 'ZZ'.
+          05 TXXX-88                      PIC X    VALUE SPACE.
+	          88 TXXX-88-A VALUE 'A'. 
+	          88 TXXX-88-B VALUE 'B'. 
+	          88 TXXX-88-C VALUE 'C'. 
+	          88 TXXX-88-D VALUE 'D'. 
+ 
+          
+      * Campi per gestione test T029-T030-T031
+      * Ioarea lng=100
+        01 T0XX-IOAREA.
+	         05 T0XX-TIPO-REC                PIC X.     
+	         05 T0XX-FLD01                   PIC X(8).     
+	         05 T0XX-FLD02                   PIC 9(5).     
+	         05 T0XX-FILE-NAME               PIC X(8).     
+	         05 T0XX-PGM-NAME                PIC X(8).     
+	         05 T0XX-TS-NAME                 PIC X(8).     
+	         05 T0XX-PREFIX                  PIC XX.     
+	         05 T0XX-DATI                    PIC X(60).     
+          
+      * Campi per gestione test T040
+      * Ioarea lng=100
+        01 T040-IOAREA.
+	       05 T040-TIPO-REC                 PIC X.     
+	       05 T040-FLD01                    PIC X(8).     
+	       05 T040-FLD02                    PIC 9(5).     
+	       05 T040-FILE-NAME                PIC X(8).     
+	       05 T040-PGM-NAME                 PIC X(8).     
+	       05 T040-TS-NAME                  PIC X(8).     
+	       05 T040-PREFIX                   PIC XX.     
+	       05 T040-DATI                     PIC X(60).    
+
+
+      * Campi per gestione test T042
+        01 T042-DFHCOMMAREA.
+           05 T042-FILE-NAME                PIC X(8).
+           05 T042-FILE-NAME2               PIC X(8).
+           05 T042-TS-NAME                  PIC X(8).
+           05 T042-PGM-NAME                 PIC X(8).
+           05 T042-PGM-NAME2                PIC X(8).
+           05 T042-MAP                      PIC X(8).
+           05 T042-MAPSET                   PIC X(8).
+           05 T042-TRANSID                  PIC X(4).
+ 
+      * Campi per gestione test T043
+        01 T043-DFHCOMMAREA.
+           05 FILLER                        PIC X(8).
+           05 T043-PGM-NAME                 PIC X(8).
+           05 T043-MAP                      PIC X(8).
+           05 T043-MAPSET                   PIC X(8).
+
+      * Tabella per gestione test T044
+       01 T044-TB-VALUES.
+          05 FILLER                         PIC X(4) VALUE 'ABCD'.
+          05 FILLER                         PIC X(4) VALUE 'EFGH'.
+          05 FILLER                         PIC X(4) VALUE 'IJKL'.
+          05 FILLER                         PIC X(4) VALUE 'MNOP'.
+          05 FILLER                         PIC X(4) VALUE 'QRST'.
+       01 T044-TB REDEFINES T044-TB-VALUES.
+          05 EL-TB-T044 OCCURS 5 PIC X(4).
+      
+          
+      * Campi per gestione test T045
+       01 T045-WS-SPREADED.
+          05 FILLER                         PIC X(8).
+          05 T045-WS-SPREADED-FILE          PIC X(8).
+      * Pos=17
+          05 T045-WS-SPREADED-PGM-NAME      PIC X(8).
+          05 T045-WS-SPREADED-MAP          PIC X(8).
+       01 T045-PGM-NAME                      PIC X(8).
+       01 T045-POINTER  USAGE POINTER.
+
+      * Campi per gestione test T046
+       01 T046-DFHCOMMAREA.
+           05 T046-FILE-NAME                PIC X(8).
+           05 T046-FILE-NAME2               PIC X(8).
+           05 T046-POINTER    USAGE POINTER.
+           05 FILLER                        PIC X(8).
+       01 T046-POINTER-WORK  USAGE POINTER.
+
+          
+      * Area working per test T046
+       01 T046-WS-SPREADED.
+          05 FILLER                      PIC X(8).
+          05 T046-WS-SPREADED-FILE       PIC X(8).
+      * Pos=17
+          05 T046-WS-SPREADED-PGM-NAME   PIC X(8).
+          05 T046-WS-SPREADED-MAP        PIC X(8).
+
+
+      * Campi per gestione test T047
+       01 T047-TWA.
+           05 T047-FILE-NAME                PIC X(8).
+           05 T047-FILE-NAME2               PIC X(8).
+           05 T047-POINTER    USAGE POINTER.
+           05 FILLER                        PIC X(8).
+       01 T047-POINTER-WORK  USAGE POINTER.
+
+          
+      * Area working per test T047
+       01 T047-WS-SPREADED.
+          05 FILLER                      PIC X(8).
+          05 T047-WS-SPREADED-FILE       PIC X(8).
+      * Pos=17
+          05 T047-WS-SPREADED-PGM-NAME   PIC X(8).
+          05 T047-WS-SPREADED-MAP        PIC X(8).
+
+      * Campi per gestione test T048
+       01 T048-WS-CSA.
+           05 T048-FILE-NAME                PIC X(8).
+           05 T048-FILE-NAME2               PIC X(8).
+           05 T048-POINTER    USAGE POINTER.
+           05 FILLER                        PIC X(8).
+       01 T048-POINTER-WORK  USAGE POINTER.
+
+          
+      * Area working per test T048
+       01 T048-WS-SPREADED.
+          05 FILLER                      PIC X(8).
+          05 T048-WS-SPREADED-FILE       PIC X(8).
+      * Pos=17
+          05 T048-WS-SPREADED-PGM-NAME   PIC X(8).
+          05 T048-WS-SPREADED-MAP        PIC X(8).
+
+      * Campi per gestione test T049
+        01 T049-DFHCOMMAREA.
+           05 T049-DFHCOMMAREA-FILE-NAME    PIC X(8).
+           05 T049-DFHCOMMAREA-FILE-NAME2   PIC X(8).
+           05 T049-DFHCOMMAREA-TS-NAME      PIC X(8).
+           05 T049-DFHCOMMAREA-PGM-NAME     PIC X(8).
+           05 T049-DFHCOMMAREA-PGM-NAME2    PIC X(8).
+           05 T049-DFHCOMMAREA-MAP          PIC X(8).
+           05 T049-DFHCOMMAREA-MAPSET       PIC X(8).
+           05 T049-DFHCOMMAREA-TRANSID      PIC X(4).
+           05 T049-DFHCOMMAREA-SUBFLD1      PIC X.
+           05 T049-DFHCOMMAREA-SUBFLD2      PIC X(3).
+           05 T049-DFHCOMMAREA-SUBFLD3      PIC X(2).
+           05 T049-DFHCOMMAREA-SUBFLD4      PIC X(2).
+          
+      * Info generiche di linkage (param 1)
+       01 WS-PARM.
+          05 WS-PARM-LUNG                   PIC S9(04) COMP.
+          05 WS-TIPO-ELAB                   PIC X(03).
+          05 WS-DATA-ELAB-MENO1             PIC X(06).
+          05 WS-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.
+          05 WS-PGM-SUFFIX                  PIC X.
+          
+      * Info per logiche spreaded in pgm chiamanti (param 2)
+       01 WS-DYNAMIC-SPREADED.
+          05 WS-SPREADED-FILE-NAME           PIC X(8).
+          05 WS-SPREADED-FILE-NAME2          PIC X(8).
+          05 WS-SPREADED-TS-NAME             PIC X(8). 
+          05 WS-SPREADED-TS-NAME2            PIC X(8). 
+          05 WS-SPREADED-PGM-NAME            PIC X(8).
+      * Pos=41
+          05 WS-SPREADED-PGM-PREFIX          PIC X(4).
+      * Pos=45
+          05 WS-SPREADED-PGM-ID              PIC X(3).
+      * Pos=48
+          05 WS-SPREADED-PGM-SUFFIX          PIC X.
+          05 WS-SPREADED-MAP                 PIC X(8).
+          05 WS-SPREADED-MAPSET              PIC X(8).
+          05 WS-SPREADED-TRANSID             PIC X(4).
+      * Pos=69
+          05 WS-SPREADED-PGM-PREFIX-T044     PIC X(4).
+      * Pos=73
+          05 WS-SPREADED-PGM-ID-T044         PIC X(3).
+      * Pos=76
+          05 WS-SPREADED-PGM-SUFFIX-T044     PIC X.
+	       
+	         
+       01 WS-DFHCOMMAREA                   PIC X(4096).  
+ 
+ 
+       LINKAGE SECTION.
+      * Info generiche di linkage (param 1)
+       01 LK-PARM.
+          05 LK-PARM-LUNG                PIC S9(04) COMP.
+          05 LK-TIPO-ELAB                PIC X(03).
+          05 LK-DATA-ELAB-MENO1          PIC X(06).
+          05 LK-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.
+          05 LK-SPREADED-PGM-SUFFIX-0    PIC X.
+          
+      * Info per logiche spreaded in pgm chiamanti (param 2)
+       01 LK-DYNAMIC-SPREADED.
+          05 LK-SPREADED-FILE-NAME           PIC X(8).
+          05 LK-SPREADED-FILE-NAME2          PIC X(8).
+          05 LK-SPREADED-TS-NAME             PIC X(8). 
+          05 LK-SPREADED-TS-NAME2            PIC X(8). 
+          05 LK-SPREADED-PGM-NAME            PIC X(8).
+          05 LK-SPREADED-PGM-PREFIX          PIC X(4).
+          05 LK-SPREADED-PGM-ID              PIC X(3).
+          05 LK-SPREADED-PGM-SUFFIX          PIC X.
+          05 LK-SPREADED-MAP                 PIC X(8).
+          05 LK-SPREADED-MAPSET              PIC X(8).
+          05 LK-SPREADED-TRANSID             PIC X(4).
+      * Pos=69
+          05 LK-SPREADED-PGM-PREFIX-T044     PIC X(4).
+      * Pos=73
+          05 LK-SPREADED-PGM-ID-T044         PIC X(3).
+      * Pos=76
+          05 LK-SPREADED-PGM-SUFFIX-T044     PIC X.
+      *
+
+      * Info per logiche spreaded in pgm chiamanti (param 3)
+       01 LK-DYNAMIC-BY-SET-ADDRESS.
+          05 LK-BY-SET-FILE-NAME         PIC X(8).
+          05 LK-BY-SET-FILE-NAME2        PIC X(8).
+          05 LK-BY-SET-TS-NAME           PIC X(8).
+          05 LK-BY-SET-PGM-NAME          PIC X(8).
+          05 LK-BY-SET-PGM-PREFIX        PIC X(4).
+          05 LK-BY-SET-PGM-ID            PIC X(3).
+          05 LK-BY-SET-PGM-SUFFIX        PIC X.
+          05 LK-BY-SET-MAP               PIC X(8).
+          05 LK-BY-SET-MAPSET            PIC X(8).
+          05 LK-BY-SET-TRANSID           PIC X(4).
+
+      * Dfhcommarea Cics
+       01 DFHCOMMAREA                    PIC X(4096).
+       01 WS-TWA                         PIC X(2000).
+       01 WS-CSA                         PIC X(2000).
+       
+      * Per test T047 T048 T049          
+       01 POINTER-TWA USAGE POINTER.         
+       01 POINTER-CSA USAGE POINTER.         
+     
+      * TWA Cics
+       01 TWA-AREA.
+       
+      * Campi per gestione test T039
+          05 T039-TWA.
+             07 FILLER                   PIC X(20).
+             07 T039-TWA-PGM-NAME        PIC X(8).
+             
+      * Campi per gestione test T040
+          05 T040-TWA.
+             07 T040-TWA-FILE-NAME       PIC X(8).
+             07 T040-TWA-PGM-NAME        PIC X(8).
+
+      * Campi per gestione test T049
+          05 T049-TWA.
+             07 T049-TWA-FILE-NAME            PIC X(8).
+             07 T049-TWA-FILE-NAME2           PIC X(8).
+             07 T049-TWA-POINTER    USAGE POINTER.
+             07 FILLER                        PIC X(8).
+             07 T049-TWA-SUBFLD1              PIC X.
+             07 T049-TWA-SUBFLD2              PIC X(3).
+             07 T049-TWA-SUBFLD3              PIC X(2).
+             07 T049-TWA-SUBFLD4              PIC X(2).
+         
+
+      * CSA Cics
+       01 CSA-AREA                            PIC X(2000).
+       01 CSA-AREA-RED REDEFINES CSA-AREA.
+       
+      * Campi per gestione test T041
+          05 T041-CSA.
+             07 T041-CSA-COD                  PIC X.
+             07 T041-CSA-FILE-NAME            PIC X(8).
+             07 T041-CSA-FILE-NAME2           PIC X(8).
+              
+      * Campi per gestione test T048
+          05 T048-CSA.
+             07 T048-CSA-FILE-NAME            PIC X(8).
+             07 T048-CSA-FILE-NAME2           PIC X(8).
+             07 T048-CSA-POINTER    USAGE POINTER.
+             
+      * Campi per gestione test T049
+          05 T049-CSA.
+             07 FILLER                        PIC X(8).
+             07 T049-CSA-SUBFLD1              PIC X.
+             07 T049-CSA-SUBFLD2              PIC X(3).
+             07 T049-CSA-SUBFLD3              PIC X(2).
+             07 T049-CSA-SUBFLD4              PIC X(2).
+       
+       
+       PROCEDURE DIVISION USING LK-PARM, LK-DYNAMIC-SPREADED.
+      
+      *--------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati individuati nel pgm 
+      * attraverso assegnazioni dirette e/o indirette e/o parziali
+      *-------------------------------------------------------------------- 
+      
+      * TXXX Assegnazioni iniziali campi e sottocampi per i vari test
+           PERFORM TXXX-INITIAL-ASSIGN
+      
+      *------------------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati da individuare fuori dal pgm 
+      * in programmi chiamanti a fronte di Linkage/DFHCOMMAREA/TWA/CSA o Using Parm
+      * I valori effettivi saranno individuati in programmi diversi con
+      * la funzione LOGIC_SPREADED, da eseguire a valle di questa elaborazione.
+      *------------------------------------------------------------------------------
+           
+           
+      * T036 OK  Campo singolo completo con nome pgm in sottocampo parm in Using
+      *          Da sottocampo in Procedure division parm Using a campo finale
+           PERFORM T036-SPREADED-MOVE-FROM-USING
+           
+      * T037 OK  Campo singolo con Move da Linkage in Using
+      *          Da parametro di gruppo Using o sottocampo Using a campo finale
+           PERFORM T037-SPREADED-MOVE-FROM-USING
+ 
+      * T038 OK   Campo singolo con Move da Linkage in Using + passthru 
+           PERFORM T038-SPREADED-MOVE-FROM-USING-PASSTHRU
+      
+      * T039 OK   Campo singolo con Move da Cics TWA 
+           PERFORM T039-SPREADED-MOVE-FROM-CICS-TWA
+
+      * T040 OK   Campo singolo con Move da Cics TWA in caller (passthru)
+           PERFORM T040-SPREADED-MOVE-FROM-CICS-TWA
+           
+      * T041 OK   Campo singolo con Move da Cics CSA in caller (passthru)
+           PERFORM T041-SPREADED-MOVE-FROM-CICS-CSA
+          
+      * T042 OK  Campo singolo passato in commarea al chiamato con Cics Link
+           PERFORM T042-SPREADED-MOVE-FROM-DFHCOMMAREA
+            
+      * T043 OK  Campo singolo passato in commarea al chiamato con Cics Link
+           PERFORM T043-SPREADED-MOVE-FROM-DFHCOMMAREA
+                       
+      * T044 OK  Campo singolo con sottocampi con Move da Linkage in Using
+           PERFORM T044-SPREADED-MOVE-FROM-USING
+            
+      * T045 OK  Campo singolo con move da linkage indirizzata da pointer in Using
+           PERFORM T045-SPREADED-FROM-LINKAGE-POINTER-USING
+      
+      * T046 OK  Campo singolo con move da linkage indirizzata da pointer in DFHCOMMAREA       
+           PERFORM T046-SPREADED-FROM-LINKAGE-POINTER-COMM         
+ 
+      * T047 OK  Campo singolo con move da linkage indirizzata da pointer in CICS TWA       
+           PERFORM T047-SPREADED-FROM-LINKAGE-POINTER-TWA         
+ 
+      * T048 OK  Campo singolo con move da linkage indirizzata da pointer in CICS CSA       
+           PERFORM T048-SINGLE-FROM-LINKAGE-POINTER-CSA   
+                 
+      * T049 OK  Sottocampo passato a chiamato  in DFHCOMMAREA 
+      *          Sottocampo passato a chiamato  in TWA  
+      *          Sottocampo passato a chiamante in CSA (passthru) e risolto in COBTST04
+           PERFORM T049-SPREADED-GROUP-MIXED
+ 
+           STOP RUN.
+ 
+ 
+      *------------------------------------------------------------------
+      * Inizializzazione iniziale campi valida per tutti i test e path
+      *------------------------------------------------------------------
+       TXXX-INITIAL-ASSIGN.
+       
+      * Test T002 - Assegnazione campo con value programma
+           MOVE T002-FLD01 TO TXXX-FLD-SINGLE.
+        
+       TXXX-EX. EXIT.
+ 
+
+       
+      *-----------------------------------------------------------------------------------------
+      * T036 Campo singolo con Move da Linkage in Using
+      *      Da campo di working a sottocampo in Call Using  
+      *      Si testa la valorizzazione della stuttura di ultima assegnazione FROM_PARM_USING #2
+      *         utilizzata nel programma chiamato con logica spreaded
+      *         Il campo in COBTST02 è LK-SPREADED-PGM-NAME e si trova a pos 1-based 33 parm #2
+      *      Si testa la classica trasformazione da area di working a area di working parametro
+      *         in call using WS-SPREADED-PGM-NAME, pos 1-based 33 parm #2
+      * Valori attesi nel pgm chiamato: T036PGM1, T036PGM2, T036PGM3
+      *-----------------------------------------------------------------------------------------
+       T036-SPREADED-MOVE-FROM-USING.
+       
+      * Valore di default
+           MOVE 'T036PGM1' TO WS-SPREADED-PGM-NAME.
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T036PGM2' TO WS-SPREADED-PGM-NAME
+           END-IF   
+           
+           IF TXXX-FLDN1 = 3
+              MOVE 'T036PGM3' TO WS-SPREADED-PGM-NAME
+           END-IF   
+           
+           MOVE 2 TO TXXX-FLDN1.
+           
+      * Nome pgm in campo con value
+           CALL TXXX-COBTST02  USING WS-PARM, WS-DYNAMIC-SPREADED.
+
+       T036-EX. EXIT.
+
+
+      *-----------------------------------------------------------------------------------------
+      * T037 Campi singoli con Move da working a Using parm di call
+      *     Si testa la valorizzazione della stuttura di ultima assegnazione FROM_PARM_USING #2
+      *         da utilizzare nel programma chiamanto con logica spreaded
+      * Valori composti nel programma chiamato: T037P371, T037P372, T037P373, T037P374
+      *-----------------------------------------------------------------------------------------
+       T037-SPREADED-MOVE-FROM-USING.
+       
+      * Test con trasformazione di Move di gruppo da parametro
+           MOVE 'T037' TO  WS-SPREADED-PGM-PREFIX.
+           MOVE 'P37'  TO  WS-SPREADED-PGM-ID.
+           
+           IF TXXX-FLDN1 = 1
+              MOVE '1' TO WS-SPREADED-PGM-SUFFIX
+           END-IF   
+           
+           IF TXXX-FLDN1 = 2
+              MOVE '2' TO WS-SPREADED-PGM-SUFFIX
+           END-IF  
+            
+           IF TXXX-FLDN1 = 3
+              MOVE '3' TO WS-SPREADED-PGM-SUFFIX
+           END-IF   
+           
+           IF TXXX-FLDN1 = 4
+              MOVE '4' TO WS-SPREADED-PGM-SUFFIX
+           END-IF   
+           
+           CALL 'COBTST02' USING WS-PARM, WS-DYNAMIC-SPREADED.
+            
+       T037-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T038 Valorizzazione sottocampi in programmi chiamanti diversi
+      *      Si testa la valorizzazione di due sottocampi passati al pgm chiamato COBTST02
+      *        come campi del secondo parametro di call using.
+      *      Si testa il caso di programma passthru (COBTST03) per un sottocampo 
+      *         (WS-SPREADED-PGM-SUFFIX, ultimo nel primo parametro) da risolvere nel programma 
+      *         chiamante il chiamante  questo programma (COBTST04) 
+      *      Si testano due tipi di passthru, il primo dichiarando lo stesso parametro di
+      *         procedure division using di linkage, nella call a COBTST02,
+      *         il secondo dichiarando nella call a OBTST02 un'area di working, contenente
+      *         il campo in oggetto, valorizzato con trasformazioni semplici dal campo
+      *         di procedure division using (LK-SPREADED-PGM-SUFFIX-0)
+      *      Entrambi i tipi di passthru portano a identificare il programma in cui cercare
+      *          i valori in quello chiamante, COBTST04.
+      *
+      *      Con la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori generati per il sottocampo 1: 'T038'
+      * Valori generati per il sottocampo 2: 'P38'
+      * Valori generati per il sottocampo 3: nessuno, demandati al chiamante COBTST04
+      *-----------------------------------------------------------------------------------------
+       T038-SPREADED-MOVE-FROM-USING-PASSTHRU.
+           
+      * Valorizzazione locale dei primi due sottocampi
+           MOVE 'T038' TO  WS-SPREADED-PGM-PREFIX.
+           MOVE 'P38'  TO  WS-SPREADED-PGM-ID.
+           
+      * Passthru per il terzo sottocampo. 
+      * Viene valorizzato dal programma chiamante, COBTST04
+      * In questo programma subisce solo trasformazioni si assegnazione
+      * dal campo di linkage in using parm fino al campo di working del
+      * sottocampo in questione o nessuna trasformazione.
+      
+      * Passthru indiretto.
+      * Trasformazioni da linkage section a parametro in call
+           MOVE LK-SPREADED-PGM-SUFFIX-0 TO TXXX-FLDX5
+           MOVE TXXX-FLDX5 TO WS-SPREADED-PGM-SUFFIX
+           CALL 'COBTST02' USING WS-PARM, WS-DYNAMIC-SPREADED.
+ 
+      * Passthru esplicito.
+      * Stesso campo di linkage section passato in call.
+           CALL 'COBTST02' USING LK-PARM, WS-DYNAMIC-SPREADED.
+
+       T038-EX. EXIT.
+   
+      *---------------------------------------------------------------------------------
+      * T039 Valorizzazione sottocampo in Cics TWA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA 
+      *        Il campo di TWA viene valorizzato nel programma chiamante (COBTST03)
+      *      Si testa il corretto indirizzamento della TWA con individuazione 
+      *         ultima assegnazione.
+      *      Si testa che non venga inserito nessun valore di default
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST03
+      *            COBTST02 
+      *
+      * Valori attesi: T0390001, T0390002
+      *---------------------------------------------------------------------------------- 
+       T039-SPREADED-MOVE-FROM-CICS-TWA.
+           
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+      
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0390001' TO T039-TWA-PGM-NAME
+           END-IF   
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0390002' TO T039-TWA-PGM-NAME
+           END-IF   
+ 
+           EXEC CICS LINK 
+                PROGRAM('COBTST02') 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+           
+       T039-EX. EXIT.
+   
+      *---------------------------------------------------------------------------------
+      * T040 Valorizzazione sottocampo in Cics TWA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA 
+      *        Il campo di TWA viene valorizzato nel programma chiamante (COBTST04)
+      *      Si testa il corretto trattamento, per questo test, come passthru 
+      *         al chiamante COBTST04, dove avvengono le assegnazioni
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02 
+      *
+      * Valori attesi: T0400001, T0400002
+      *---------------------------------------------------------------------------------- 
+       T040-SPREADED-MOVE-FROM-CICS-TWA.
+           
+      * Nessuna operazione (passthru) per questo test
+           
+       T040-EX. EXIT.
+   
+      *---------------------------------------------------------------------------------
+      * T040 Valorizzazione sottocampo in Cics CSA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di CSA 
+      *        Il campo di CSA viene valorizzato nel programma chiamante (COBTST04)
+      *      Si testa il corretto trattamento, per questo test, come passthru 
+      *         al chiamante COBTST04, dove avvengono le assegnazioni
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02 
+      *
+      * Valori attesi: T0410001, T0410002
+      *---------------------------------------------------------------------------------- 
+       T041-SPREADED-MOVE-FROM-CICS-CSA.
+           
+      * Nessuna operazione (passthru) per questo test
+           
+       T041-EX. EXIT.
+   
+   
+      *-----------------------------------------------------------------------------------------
+      * T042 Campo singolo passato in commarea al chiamto con Cics Link.
+      *      Si testa l'arrivo dei valori al chiamato COBTST02 da DFHCOMMAREA
+      *         pos=25, lng=8 1-based
+      *         con la seguente sequenza di richiamo:
+      *         COBTST03 
+      *            COBTST02
+      *
+      * Valori generati: T042PGM1, T042PGM2, T042PGM3
+      *-----------------------------------------------------------------------------------------
+       T042-SPREADED-MOVE-FROM-DFHCOMMAREA.
+       
+      * Valore di default
+           MOVE 'T042PGM1' TO T042-PGM-NAME
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T042PGM2' TO T042-PGM-NAME
+           END-IF  
+            
+           IF TXXX-FLDN1 = 3
+              MOVE 'T042PGM3' TO T042-PGM-NAME
+           END-IF   
+           
+           
+      * Richiamo programma con campo di Dfhcommarea valorizzato       
+            EXEC CICS LINK
+                PROGRAM('COBTST02')
+                COMMAREA(T042-DFHCOMMAREA)
+           END-EXEC.
+
+       T042-EX. EXIT.
+  
+      *-----------------------------------------------------------------------------------------
+      * T043 Campo singolo passato in commarea al chiamto con Cics Link.
+      *      Si testa l'arrivo dei valori al chiamato COBTST02 da DFHCOMMAREA
+      *         pos=9, lng=8 1-based
+      *         con la seguente sequenza di richiamo:
+      *
+      *         COBTST03 
+      *            COBTST02
+      *
+      *      La commarea passata al chiamante NON è strutturata in campi.
+      *      Il campo passato al chiamato viene impostato con assegnazioni indirette.
+      *
+      * Valori generati: T043P431, T043P432
+      *-----------------------------------------------------------------------------------------
+       T043-SPREADED-MOVE-FROM-DFHCOMMAREA.
+       
+      * Valore di default
+           MOVE 'T043P431' TO T043-PGM-NAME
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T043P432' TO T043-PGM-NAME
+           END-IF  
+           
+      * Assegnazione commarea strutturata a generica area di commarea
+           MOVE T043-DFHCOMMAREA  TO WS-DFHCOMMAREA.
+            
+      * Richiamo programma con campo di Dfhcommarea valorizzato       
+            EXEC CICS LINK
+                PROGRAM('COBTST02')
+                COMMAREA(WS-DFHCOMMAREA)
+           END-EXEC.
+
+       T043-EX. EXIT.
+  
+      *-----------------------------------------------------------------------------------------
+      * T044 Campo singolo con sottocampi con Move da Linkage in Using
+      *     Si testa la valorizzazione della stuttura di ultima assegnazione FROM_PARM_USING #2
+      *         da utilizzare nel programma chiamanto con logica spreaded
+      * Valori composti nel programma chiamato: T044P44A, T044P44B, T044P44C
+      *                                         T044Q44A, T044Q44B, T044Q44C
+      *                                         T044R44A, T044R44B, T044R44C
+      *-----------------------------------------------------------------------------------------
+       T044-SPREADED-MOVE-FROM-USING.
+
+      * Valorizzazione locale prefix con reference modification
+           MOVE 'T'   TO  WS-SPREADED-PGM-PREFIX-T044(1:1).
+           MOVE '044' TO  WS-SPREADED-PGM-PREFIX-T044(2:3).
+           
+      * Valorizzazione locale primo crt pgm-id literal 'P'  
+           IF TXXX-FLDN1 = 1
+              MOVE 'P' TO WS-SPREADED-PGM-ID-T044(1:1)
+           END-IF  
+           
+      * Valorizzazione locale primo crt pgm-id literal 'Q'  
+           IF TXXX-FLDN1 = 2
+              MOVE 'Q' TO WS-SPREADED-PGM-ID-T044(1:1)
+           END-IF  
+           
+      * Valorizzazione locale primo crt pgm-id da elemento tabella 'R'  
+           IF TXXX-FLDN1 = 3
+              MOVE EL-TB-T044(5)(2:1) TO WS-SPREADED-PGM-ID-T044(1:1)
+           END-IF  
+           
+      * Valorizzazione locale incondizionata secondo e terzo crt pgm-id  
+           MOVE '44'  TO  WS-SPREADED-PGM-ID-T044(2:2)
+           
+      * Il suffisso viene risolto invece nel programma chiamante COBTST04
+           MOVE LK-SPREADED-PGM-SUFFIX-T044 
+             TO WS-SPREADED-PGM-SUFFIX-T044.
+           
+           CALL 'COBTST02' USING WS-PARM, WS-DYNAMIC-SPREADED.
+            
+       T044-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T045 Campo singolo con Move da Linkage e pointer in parm Using
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in working e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato in un parametro Using di procedure division.
+      *      Si verifica la corretta individuazione del pointer e l'indirizzamento
+      *         dell'area che lo contiene, che porta a individuare l'area di working
+      *         da trattare.
+      *
+      * Valori restituiti al pgm chiamato: T0450001, T0450002, T0450003
+      *-----------------------------------------------------------------------------------------
+       T045-SPREADED-FROM-LINKAGE-POINTER-USING.
+           
+      * Caricamento pointer in working con address di area working
+           SET T045-POINTER TO ADDRESS OF T045-WS-SPREADED.
+           
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0450001'  TO  T045-WS-SPREADED-PGM-NAME
+           END-IF
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0450002'  TO  T045-WS-SPREADED-PGM-NAME
+           END-IF
+           
+           IF TXXX-FLDN1 = 3
+              MOVE 'T0450003'  TO  T045-WS-SPREADED-PGM-NAME
+           END-IF
+           
+      * Trasformazione pointer in pointer in Parm#1 pos=11
+           SET WS-ADDRESS-DYN-AREA-POINTER TO T045-POINTER.
+           
+           CALL TXXX-COBTST02  USING WS-PARM, WS-DYNAMIC-SPREADED.
+            
+       T045-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T046 Campo singolo con Move da Linkage e pointer in DFHCOMMAREA
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato nella DFHCOMMAREA cics.
+      *      Si verifica la corretta individuazione del pointer e l'indirizzamento
+      *         dell'area che lo contiene, che porta a individuare l'area di working
+      *         da trattare.
+      *
+      * Valori restituiti al pgm chiamato: T046DFLT, T0460001, T0460002
+      *-----------------------------------------------------------------------------------------
+       T046-SPREADED-FROM-LINKAGE-POINTER-COMM.
+           
+      * Caricamento pointer in working con address di area working
+           SET T046-POINTER-WORK TO ADDRESS OF T046-WS-SPREADED.
+           
+           MOVE 'T046DFLT'  TO  T046-WS-SPREADED-PGM-NAME
+           
+      * Pos 17 
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0460001'  TO  T046-WS-SPREADED-PGM-NAME
+           END-IF
+           
+      * Pos 17     
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0460002'  TO  T046-WS-SPREADED-PGM-NAME
+           END-IF
+           
+           
+      * Trasformazione pointer in pointer in area indiretta di commarea
+           SET T046-POINTER TO T046-POINTER-WORK.
+           
+      * Contiene il pointer a pos 17
+           MOVE T046-DFHCOMMAREA  TO  WS-DFHCOMMAREA.
+           
+      * Richiamo programma con campo di Dfhcommarea valorizzato       
+           EXEC CICS LINK
+                PROGRAM('COBTST02')
+                COMMAREA(WS-DFHCOMMAREA)
+           END-EXEC.
+            
+       T046-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T047 Campo singolo con Move da Linkage e pointer in Cics TWA
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato nella TWA cics.
+      *      Si verifica la corretta individuazione del pointer e l'indirizzamento
+      *         dell'area che lo contiene, che porta a individuare l'area di working
+      *         da trattare.
+      *
+      * Valori restituiti al pgm chiamato: T047DFLT, T0470001, T0470002
+      *-----------------------------------------------------------------------------------------
+       T047-SPREADED-FROM-LINKAGE-POINTER-TWA.
+ 
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+           
+      * Caricamento pointer in working con address di area working
+           SET T047-POINTER-WORK TO ADDRESS OF T047-WS-SPREADED.
+           
+           MOVE 'T047DFLT'  TO  T047-WS-SPREADED-PGM-NAME
+           
+      * Pos 17 
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0470001'  TO  T047-WS-SPREADED-PGM-NAME
+           END-IF
+           
+      * Pos 17     
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0470002'  TO  T047-WS-SPREADED-PGM-NAME
+           END-IF
+           
+           
+      * Trasformazione pointer in pointer in area indiretta di TWA
+           SET T047-POINTER TO T047-POINTER-WORK.
+           
+      * Contiene il pointer a pos 17
+           MOVE T047-TWA  TO  TWA-AREA.
+           
+      * Richiamo programma con campo di Dfhcommarea valorizzato       
+           EXEC CICS LINK
+                PROGRAM('COBTST02')
+                COMMAREA(WS-DFHCOMMAREA)
+           END-EXEC.
+            
+       T047-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T048 Campo singolo con Move da Linkage e pointer in Cics CSA
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato nella CSA cics.
+      *      Si verifica la corretta individuazione del pointer e l'indirizzamento
+      *         dell'area che lo contiene, che porta a individuare l'area di working
+      *         da trattare.
+      *
+      * Valori restituiti al pgm chiamato: T048DFLT, T0480001, T0480002
+      *-----------------------------------------------------------------------------------------
+       T048-SINGLE-FROM-LINKAGE-POINTER-CSA.
+           
+      * Recupero indirizzo CSA da Cics
+      * Indirizzamento CSA con Api Cics
+           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF CSA-AREA) 
+                USING(POINTER-CSA)
+           END-EXEC
+           
+      * Caricamento pointer in working con address di area working
+           SET T048-POINTER-WORK TO ADDRESS OF T048-WS-SPREADED.
+           
+           MOVE 'T048DFLT'  TO  T048-WS-SPREADED-PGM-NAME
+           
+      * Pos 17 
+           IF TXXX-FLDN1 = 1
+              MOVE 'T0480001'  TO  T048-WS-SPREADED-PGM-NAME
+           END-IF
+           
+      * Pos 17     
+           IF TXXX-FLDN1 = 2
+              MOVE 'T0480002'  TO  T048-WS-SPREADED-PGM-NAME
+           END-IF
+           
+           
+      * Trasformazione pointer in pointer in area indiretta di CSA, pos 34
+           SET T048-POINTER TO T048-POINTER-WORK.
+           
+      * Contiene il pointer a pos 17
+           MOVE T048-WS-CSA  TO T048-CSA.
+           
+      * Richiamo programma con campo di Dfhcommarea valorizzato       
+           EXEC CICS LINK
+                PROGRAM('COBTST02')
+                COMMAREA(WS-DFHCOMMAREA)
+           END-EXEC.
+            
+       T048-EX. EXIT.
+
+
+      *-------------------------------------------------------------------- 
+      * T049 Sottocampi valorizzati e passati ai pgm chiamati
+      *      Si testa il caso di logiche spreaded relative a + sottocampi.
+      *      Si testa la valorizzazione di un sottocampo in DFHCOMMAREA
+      *      Si testa la valorizzazione di un sottocampo in TWA
+      *      Si testa il passaggio al chiamante di un sottocampo in CSA
+      *          
+      * Valori composti in pgm chiamato:T0493141,T0493142,T0493141,T0493142
+      *--------------------------------------------------------------------- 
+       T049-SPREADED-GROUP-MIXED.
+ 
+      * In Cics DFHCOMMAREA passata al chiamato COBTST02
+           MOVE '049'             TO  T049-DFHCOMMAREA-SUBFLD2 
+           MOVE T049-DFHCOMMAREA  TO  WS-DFHCOMMAREA 
+          
+      * In Cics TWA, passata al chiamato COBTST02
+           IF TXXX-FLDN1 = 1
+              MOVE '31'  TO          T049-TWA-SUBFLD3 
+           END-IF
+           
+           IF TXXX-FLDN1 = 2
+              MOVE '32'  TO          T049-TWA-SUBFLD3 
+           END-IF
+            
+      * In Cics CSA SUBFLD4 non valorizzato in questo pgm
+      * e impostato invece nel programma chiamante COBTST04
+
+           EXEC CICS LINK 
+                PROGRAM('COBTST02') 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+           
+       T049-EX. EXIT.
+   
+ 

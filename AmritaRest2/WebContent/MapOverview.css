@@ -1,0 +1,337 @@
+@charset "ISO-8859-1";
+
+html, body {
+  height:100%;
+  width:100%;  
+  margin:0;
+  padding:0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main table of the SPA Viewer application */
+#mainTable {
+  width: 100%;
+  height: 100%;
+  border: 1px,solid, black;
+  margin-top: 0;
+}
+#mainTableRowHeader {
+  vertical-align: top;  
+  width: 100%;
+  height: 30px;;
+}
+#headerSystem {
+  height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 150%;
+}	
+#mainTableRowBody {
+  vertical-align: top;  
+  width: 100%;
+  height:520;
+}
+#headerCellTh {
+  border: 1px solid black;  
+  font-size: xx-large;
+  height: 30px;
+}
+
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  border: 1px solid black;
+} 
+
+#containerTbluserLink{
+  border-collapse:collapse;	
+  margin: 0;
+  padding:0;
+}  
+
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+#headerRightTh{
+} 
+
+#tdMap {
+  width: 70%;
+  border: 0px solid black;
+} 
+
+#topTable {
+ width: 100%;
+} 
+#trTopTable {
+	height: 520;
+}	
+#tdLeftTop {
+	height:100%;
+}	
+/* Top Left Table */
+#divLeftTop {
+  overflow-Y: auto;
+  height:520;                                       /* Modificato con JavaScript */
+  width: fit-content;
+  border: 1px dashed;
+} 
+#leftTopTable {
+  margin-top: 0;	
+  margin-bottom: auto;	
+  border-spacing: 15px;
+  height: 520px;
+} 
+.leftTopSubSysR {
+  height: 50px;
+  text-align: center;
+} 
+#divHdrLeftTop  {
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center; 
+	margin-bottom: 3px; 	
+} 	
+.tdLeftTopSubSys {
+  background-color: black;
+  border: 1px solid fuchsia;
+  color: fuchsia;
+  font-weight: bold;
+  width: 200px;
+  height : 70px;  
+} 
+
+#tdLeftArrow  {
+	width: 10px;
+}
+#leftArrowTable	 {
+	width: 10px;
+}
+#divLeftArrow  {
+	height: 50px;
+	width: 90px;
+	font-size: 250%;
+	text-align: left;
+	background-color: yellow;
+	color: black;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 1px solid fuchsia;
+}
+
+#tdRightArrow  {
+	width: 10px;
+}
+#rightArrowTable	 {
+	width: 10px;	
+}
+
+#divRightArrow  {
+	height: 50px;
+	width: 90px;
+	font-size: 250%;
+	text-align: right;
+	background-color: yellow;
+	color: black;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 1px solid fuchsia;	
+}
+
+/* Center table */
+#centerTopTable {
+  border-spacing: 15px;
+} 
+.centerTypeObjR {
+  text-align: center;
+} 
+#divCenterTop {
+  overflow-Y: auto;
+  height:520;                                       /* Modificato con JavaScript */
+  width: fit-content;
+  border: 1px dashed;
+} 
+#divHdrCenterTop  {
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 3px;   
+} 		
+.tdCenterTypeObj {
+  background-color: purple;
+  border: 1px solid black;
+  color: white;
+  font-weight: bold;
+  width: 180px;
+  height: 65px; 
+} 
+
+/* Top right table */
+#rightTopTable {
+  border-spacing: 15px;
+} 
+/* Top Left Table */
+#divRightTop {
+  overflow-Y: auto;
+  height:520;                                       /* Modificato con JavaScript */
+  border: 1px dashed;
+  width: fit-content;
+} 
+.rightTopSubSysR {
+  height: 50px;
+  text-align: center;
+} 
+#divHdrRightTop  {
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 3px;    
+} 	
+
+.tdRightTopSubSys {
+  background-color: black;
+  border: 1px solid fuchsia;
+  color: fuchsia;
+  font-weight: bold;
+  width: 200px;
+  height : 70px;    
+} 
+
+#topTable {
+  border-collapse:collapse; 
+  width:100%;
+}
+#tdObjMenu {
+	width:100%;
+}
+
+
+#trListMenuTable  {
+	vertical-align: top;  
+}
+	
+
+#divMenu {
+  width: 100%;
+}	
+#menuTable {
+  margin:0px;
+  border: 1px solid black; 
+  border-collapse:collapse; 
+  width:100%;
+}
+
+
+#listObjMenuTable {
+  vertical-align: top;
+  border: 1px solid black; 
+  border-collapse:collapse; 
+  width:100%;
+}
+#trListObjMenuTable  {
+	vertical-align: top;  
+}
+	
+#divObjList  {
+  overflow-Y: auto;
+  height:268;                                       /* Modificato con JavaScript */
+  border: 1px solid black;  
+}
+
+#objListTable {
+  border-collapse:collapse;
+  border: 0px solid black;  
+}
+td.idObj{
+  border: 1px solid black; 		
+  font-size: 65%; 
+  font-family: Arial, Helvetica, sans-serif;	
+  font-weight: bold
+}
+td.objStatus{
+  border: 1px solid black; 		
+  font-size: 65%; 
+  font-family: Arial, Helvetica, sans-serif;	
+  width: 100%;
+}
+
+#tdMenu {
+  width: 100%;
+}	
+
+
+.btnFunction {
+  height: 35px;
+  width: 100%;
+  margin-top:0px;
+  margin-bottom:0px; 
+  margin-top:0px;
+  font-size: 110%;
+  font-weight: bold; 
+  font-family: Arial, Helvetica, sans-serif;}
+
+
+#rightMainTableCell {
+  border: 1px solid black;
+  vertical-align: top;
+  width: auto;
+  height:100%;  
+}
+
+
+#divRight {
+  text-align: center;
+}
+
+
+#logout:hover {
+  opacity: 0.8;
+  color: red;
+}
+
+.leftTopSubSysR:hover {
+  opacity: 0.4;
+  color: red;
+}
+
+.centerTypeObjR:hover {
+  opacity: 0.4;
+  color: red;
+}
+
+.rightTopSubSysR:hover {
+  opacity: 0.4;
+  color: red;
+}
+
+
+#countObjects {
+ color: green;
+ font-size: medium; 
+ font-weight: bold;
+ width: inherit;
+}
+
+.sysSelected {  
+  background-color: #9f9f9f;
+  border: 1px solid fuchsia;
+  color: fuchsia;
+  font-weight: bold;
+  width: 200px;
+  height : 70px;  
+}
+.selected {  
+  background-color: yellow;
+}

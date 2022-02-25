@@ -1,0 +1,3987 @@
+<html>
+<head>
+<title>Inspector</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="Inspector.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+    <!-- Header section -->
+	<table  id='headerTable'>
+	     <tr>
+         <td colspan='3'>
+			  <table id='headerLineTable'>
+				   <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Inspector</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id='linkMain'  align="right"><a href="AmritaHomePage.html">Home page</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+				   </tr>
+			  </table> 
+         </td>    
+      </tr>    
+     </table> 
+     
+     
+	<!-- Data Section -->
+	<table  id='dataTable'>	  
+	  <tr>	  
+		    <!-- 1 cell with Working -->
+		    <td class='cellTdData' id='cellTdWorking'>  
+		 	    <div class='divDataHeader'>WORKING </div> 	    
+		 	    <div id='divTbWorkingContainer'> </div> 	    
+		    </td>
+		    
+		    <!-- 1.1 cell with Working I/O -->
+		    <td class='cellTdData' id='cellTdWorkingIO'>  
+		 	    <div class='divDataHeader'>XREF </div> 	    
+		 	    <div id='divTbWorkingContainerIO'></div> 	    
+		    </td>
+		    
+		    <!-- 2 cell with Linkage -->
+		    <td class='cellTdData' id='cellTdLinkage'> 
+		 	    <div class='divDataHeader'>LINKAGE </div> 	    
+		 	    <div id='divTbLinkageContainer'></div> 
+		    </td>
+
+		    <!-- 3 cell with Linkage I/O -->
+		    <td class='cellTdData' id='cellTdLinkageIO'>  
+		 	    <div class='divDataHeader'>XREF </div> 	    
+		 	    <div id='divTbLinkageContainerIO'>
+		  	        
+		  	    </div> 	    
+		    </td>		    
+		    
+		     <!-- 4 cell with FD -->
+		    <td class='cellTdData' id='cellTdFd'>  
+		 	    <div class='divDataHeader'>FD </div> 	    
+		 	    <div id='divTbFdContainer'>
+		  	        
+		  	    </div> 
+	        </td>
+
+		    <!-- 5 cell with FD I/O -->
+		    <td class='cellTdData' id='cellTdFdIO'>  
+		 	    <div class='divDataHeader'>XREF </div> 	    
+		 	    <div id='divTbFdContainerIO'> </div> 	    
+		    </td>		    
+		    
+	    
+		    <!-- 6 cell with Copy -->
+		    <td class='cellTdData' id='cellTdCopy'> 
+		 	     <div id='divDataHeaderCopy' class='divDataHeader'>COPY </div> 	    
+		 	     <div id='divTbCopyContainer'></div> 
+	    	</td>
+	    
+		    <!-- 7 cell with sql include -->
+		    <td class='cellTdData' id='cellTdSqlInclude'>  
+		 	     <div id='divDataHeaderInclude' class='divDataHeader'>SQL INCLUDE </div> 	    
+		 	     <div id='divTbSqlIncludeContainer'></div> 
+	    	</td>   
+	  </tr>
+    </table> 
+     
+	<!-- Process Section -->
+	<table  id='processTable'>	  
+	  <tr>	  
+		    <!-- cell 1 with structure/labels&sections -->
+		    <td class='cellTdProcess' id='celltdPathStructure'>  
+		        <div class='divDataHeader'>PGM STRUCTURE</div> 	
+		 	    <div id='divStructureContainer'>
+		 	        <div id='divPgmStructureContainer'>
+		 	           	<div id='divTbPgmStructure'>		 	           	     
+		 	           	</div>
+		 	        </div>
+		 	        <div id='divPgmLabelContainer'>
+		 	           	<div id='divDataHeader' class='divDataHeader'>Label</div> 
+		 	           	<div id='divTbPgmLabel'>		 	           	    
+		 	           	</div>
+		 	        </div>
+		  	    </div> 
+		    </td>
+		    
+		    <!-- cell 2 with source pgm -->
+		    <td class='cellTdProcess' id='cellTdSource'> 
+		        <div class='divDataHeader' id='divDataHeaderSource'>SOURCE</div> 	
+		 	    <div id='divSourceContainer'>
+		 	      <div id='divSourceToolbar'> 
+		 	        <table id='tbSourceToolBar'><tr>
+		               <td class='tdSourceToolBar'> <input type="button" id='btnPaths'                      value="P"   onclick='onclick_btnPaths(this.id);' />  </td>
+		               <td class='tdSourceToolBar'> <select id="pathExpandSel" name="pathExpandSel"                     onChange="onChangePathExpand()" ></select> </td>
+			           <td class='tdSourceToolBar'> <input class='pathFromTo' type="text"   id='pathFrom'   value="0"   onclick='onClick_pathFrom(this.id);' />  </td>
+		               <td class='tdSourceToolBar'> <input class='pathFromTo' type="text"   id='pathTo'     value=""    onclick='onClick_pathTo(this.id);' />  </td>
+		               <td class='tdSourceToolBar'> <select id="pathSel" name="pathSel"                                 onChange="onChangePathSel()" ></select> </td>
+		               <td class='tdSourceToolBar'> <select id="deadCodeSel" name="deadCodeSel"                         onChange="onChangeDeadCode()" ></select> </td>
+		               <td class='tdSourceToolBar' id='pathMessage'> </td>
+		 	        </tr></table>
+		 	      </div>
+		 	      <div id='divTbSourceRows'> </div>		 	        		 	      
+		  	    </div> 
+		    </td>
+		    
+		     <!-- cell 3 with Execution paths / logic transformation -->
+		    <td class='cellTdProcess' id='cellTdExecution'>  
+		        <div class='divDataHeader'>EXECUTION</div> 
+		        <div id='divExecutionContainer'>	
+			  	  <div id='divPathsStructureContainer'>
+						  <div id='divTbPathsStructureContainer'>
+						     <table id='tbPathsStructure'> 	
+						       <tr id='trPathsStructure'>
+							      <td class='celltdPathStructure'>
+						            <div class='divDataHeader'>PATH STRUCTURE</div>
+						            <div id='divTbPathStructure'>   
+		                              <table id='tbPathParagraph'>
+		                                 <tr><td class='tdPathParagraphPerformNum'>.  </td><td class='tdPathParagraph'>.</td> </tr>
+			                           </table>
+						            </div>
+						         </td>
+						       </tr>
+						     </table>
+						  </div> 	
+						  <div id='divTbPathsIOContainer'>  		  
+		 				     <table id='tbPathsIO'> 	
+						       <tr>
+						         <td  class='cellTdPathsFieldIO'>
+						            <div class='divDataHeader'>FIELD I/O</div>
+		                            <div id='divPathsFieldIO'>  
+		                              <table id='tbPathsFieldIO'>
+		                                 <tr><td class='tdXrefPathField'>.</td> 
+		                                     <td class='tdXrefPathFieldSection'>.</td>                
+		                              </table>
+		                            </div>
+							     </td>
+						         <td  class='cellTdPathsFieldIOXref'>
+						            <div class='divDataHeader'>#</div>
+		                            <div id='divPathsFieldIOXref'>   
+		                              <table id='tbPathsFieldIOXref'>
+		                                 <tr><td class='tdPathsFieldXrefIO'>.</td>  
+		                                 	 <td class='tdPathsFieldXrefNumInstr'>.</td> 		                                 
+		                                 </tr>
+		                              </table>
+		                            </div>
+						         </td>
+						         <td  class='cellTdPathsCalled'>
+						            <div class='divDataHeader'>CALLED</div>
+		                            <div id='divPathsCalled'>   
+		                                <table id='tbPathsCalled'>
+		                                  <tr><td class='tdPathCalled'>.</td></tr>	                                  
+		                              </table>
+		                            </div>
+						         </td>
+						         <td  class='cellTdPathsCalledXref'>
+						            <div class='divDataHeader'>#</div>
+		                            <div id='divPathsCalledXref'>   
+		                                <table id='tbPathsCalledXref'>
+		                                  <tr><td class='tdPathsFieldXrefNumInstr'>.</td></tr>
+		                              </table>
+		                            </div>
+						         </td>
+						         
+							     <td  class='cellTdPathsCalled'>
+						            <div class='divDataHeader'>CALLER</div>
+		                            <div id='divPathsCaller'>   
+		                                <table id='tbPathsCaller'>
+		                                  <tr><td class='tdPathCalled'>.</td></tr>	                                  
+		                              </table>
+		                            </div>
+						         </td>
+						         <td  class='cellTdPathsCalledXref'>
+						            <div class='divDataHeader'>#</div>
+		                            <div id='divPathsCallerXref'>   
+		                                <table id='tbPathsCalledXref'>
+		                                  <tr><td class='tdPathsFieldXrefNumInstr'>.</td></tr>
+		                              </table>
+		                            </div>
+						         </td>
+							   </tr>
+						     </table>
+						  </div>		  		  	       
+			  	  </div> 
+		
+		 	      <div id='divDynamicCodeContainer'>
+		 	          <div class='divDataHeader'>DYNAMIC CODE</div> 
+				  	  <div id='divtbDynamicCodeContainer'>	
+				  	     <table id='tbDynamicCodeContainer'>
+				  	        <tr>
+				  	           <td class='tdDynInstr'>
+				  	              <div id='divDynInstrContainer'>
+				  	                 <div class='divDataHeader'>INSTRUCTIONS</div> 
+				  	                 <div id='divTbDynInstr'> 
+		                                <table id='tbDynInstr'>
+		                                  <tr><td class='dynNumInstr'>....</td></tr>
+		                              </table>
+				  	                 </div> 
+				  	              </div>	
+				  	              <div id='divDynFieldsContainer'>
+				  	                 <div class='divDataHeader'>FIELDS</div> 
+				  	                 <div id='divTbDynFields'> 
+			                            <table id='tbDynFields'>
+		                                  <tr><td class='dynFieldFS'>.</td>
+		                                      <td class='dynFieldName'>...</td>
+		                                  </tr>
+		                                </table>
+				  	                 </div>
+				  	              </div>	
+				  	              <div id='divDynValuesContainer'>
+				  	                 <div class='divDataHeader'>VALUES</div> 
+				  	                 <div id='divTbDynValues'> 
+		                                <table id='tbDynValues'>
+		                                  <tr><td class='dynValue'>.</td></tr>
+		                              </table>
+				  	                 </div> 
+				  	              </div>	
+				  	           </td>
+				  	           <td class='tdDynSetting'>
+				  	           	  <div id='divDynSettingContainer'>
+				  	           	     <div class='divDataHeader'>SUBFIELD SETTING</div> 
+				  	                 <div id='divTbDynSetting'> 
+		                                <table id='tbDynSetting'>
+		                                  <tr><td class='dynSettingPgm'>...</td> <td class='dynSettingNumInstr'>...</td> <td class='dynSettingSetMode'>...</td></tr>
+		                              </table>
+				  	                 </div> 
+				  	              </div>					  	           
+				  	           	  <div id='divDynSettingDetailContainer'>
+				  	           	     <div class='divDataHeader'>SETTING DETAIL</div> 
+				  	                 <div id='divTbDynSettingDetail'> 
+		                                <table id='tbDynSettingDetail'>
+		                                
+		                                  <tr><td class='dynSettingHeader' colspan='2'>FIELD/SUBFIELD ORIGIN</td> </tr>
+		                                  <tr><td class='dynSettingDetailId' id='FieldName'>Field Name</td> 
+		                                      <td class='dynSettingDetailValue' id='idFieldNameValue' onclick='onclick_posOnFieldName(this.id)'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='numField'>Field Definition</td> 
+		                                      <td class='dynSettingDetailValue' id='numFieldValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='idSubFieldName' >Subfield Name</td> 
+		                                      <td class='dynSettingDetailValue' id='idSubFieldNameValue' onclick='onclick_posOnFieldName(this.id)'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='numSubField'>Subfield Definition</td> 
+		                                      <td class='dynSettingDetailValue' id='numSubFieldValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='posInSubField'>Position in subfield (1-based) </td> 
+		                                      <td class='dynSettingDetailValue' id='posInSubFieldValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='lngInSubField'>Length in subfield   </td> 
+		                                      <td class='dynSettingDetailValue' id='lngInSubFieldValue'> </td>                                    
+		                                  </tr>
+		                                  
+		                                  
+		                                  <tr><td class='dynSettingDetailId' id='numInstrOriginSpreaded'> Caller Origin Instruction Number (Call/Xctl/Link)</td> 
+		                                      <td class='dynSettingDetailValue' id='numInstrOriginSpreadedValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='typeObjectPgmSet'>Assignment Object Program Type</td> 
+		                                      <td class='dynSettingDetailValue' id='typeObjectPgmSetValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='numPath'>Assignment Path Number</td> 
+		                                      <td class='dynSettingDetailValue' id='numPathValue'> </td>                                    
+		                                  </tr>
+		                                  
+		                                  <tr><td class='dynSettingHeader' colspan='2'>SENDER ASSIGNMENT</td> 
+		                                  <tr><td class='dynSettingDetailId' id='fieldSenderId'>Sender Field Name</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldSenderIdValue' onclick='onclick_posOnFieldName(this.id)'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='fieldSenderNum'>Sender Field Instruction Number Definition</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldSenderNumValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='fieldSenderPos'>Sender Field Position</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldSenderPosValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='fieldSenderLng'>Sender Field Length</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldSenderLngValue'> </td>                                    
+		                                  </tr>
+		                                  
+		                                  <tr><td class='dynSettingHeader' colspan='2'>RECEIVER ASSIGNMENT</td> 
+		                                  <tr><td class='dynSettingDetailId' id='fieldReceiverId'>Receiver Field Name</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldReceiverIdValue' onclick='onclick_posOnFieldName(this.id)'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='fieldReceiverNum'>Receiver Field Instruction Number Definition</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldReceiverNumValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='fieldReceiverPos'>Receiver Field Position</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldReceiverPosValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='fieldReceiverLng'>Receiver Field Length</td> 
+		                                      <td class='dynSettingDetailValue' id='fieldReceiverLngValue'> </td>                                    
+		                                  </tr>
+		                                  
+		                                  <tr><td class='dynSettingHeader' colspan='2'>LAST ASSIGNMENT SET</td> 
+		                                  <tr><td class='dynSettingDetailId' id='setMode'>Type</td> 
+		                                      <td class='dynSettingDetailValue' id='setModeValue'> </td>                                    
+		                                  </tr>		                                  
+		                                  <tr><td class='dynSettingDetailId' id='idObjExt'>Sql Table Name / File Name</td> 
+		                                      <td class='dynSettingDetailValue' id='idObjExtValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='objExtSqlTableName'>Sql Table Column Name</td> 
+		                                      <td class='dynSettingDetailValue' id='objExtSqlTableColumnValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='numUsingParm'>Using Parm Parameter Number</td> 
+		                                      <td class='dynSettingDetailValue' id='numUsingParmValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='dspFieldInUsingParm'>Using Parm Parameter Displacement</td> 
+		                                      <td class='dynSettingDetailValue' id='dspFieldInUsingParmValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='dspFieldInLinkageArea'>Linkage/TWA/CSA Field Displacement</td> 
+		                                      <td class='dynSettingDetailValue' id='dspFieldInLinkageAreaValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='typePointerArea'>Linkage Area Type Containing The Pointer</td> 
+		                                      <td class='dynSettingDetailValue' id='typePointerAreaValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='numUsingParmPointer'>Linkage Using Parameter Number With Pointer</td> 
+		                                      <td class='dynSettingDetailValue' id='numUsingParmPointerValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='dspPointerInUsingParm'>Linkage Pointer Displacement In Using Parm</td> 
+		                                      <td class='dynSettingDetailValue' id='dspPointerInUsingParmValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='dspPointerInLinkageArea'>Linkage Pointer Displacement </td> 
+		                                      <td class='dynSettingDetailValue' id='dspPointerInLinkageAreaValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='value'>Literal Or Explicit Assignment Value, Length Formatted</td> 
+		                                      <td class='dynSettingDetailValue' id='valueValue'> </td>                                    
+		                                  </tr>
+		                                  
+		                                  <tr><td class='dynSettingHeader' colspan='2'>EXTERNAL VALUE</td> 
+		                                  <tr><td class='dynSettingDetailId' id='typeObjExt'>External Source Type (Table, Phis. File, Cics Field,..)</td> 
+		                                      <td class='dynSettingDetailValue' id='typeObjExtValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='idObjExt'>External Object Name, Ts, Table, File Origin</td> 
+		                                      <td class='dynSettingDetailValue' id='idObjExtValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='objExtSystem'>Cics System Field Name (ie. EIBTRMID) </td> 
+		                                      <td class='dynSettingDetailValue' id='objExtSystemValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='objExtColField'>Field/Column Name</td> 
+		                                      <td class='dynSettingDetailValue' id='objExtColFieldValue'> </td>                                    
+		                                  </tr>
+			                                  <tr><td class='dynSettingDetailId' id='objExtIdCopy'>Copy Name</td> 
+		                                      <td class='dynSettingDetailValue' id='objExtIdCopyValue'> </td>                                    
+		                                  </tr>	                                  
+		                                  <tr><td class='dynSettingDetailId' id='objExtPosCol'>Record area/copy/TS/TD Col Pos (If No Definition)</td> 
+		                                      <td class='dynSettingDetailValue' id='objExtPosColValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='objExtLengthCol'>Record area/copy/TS/TD Col lng (If No Definition)</td> 
+		                                      <td class='dynSettingDetailValue' id='objExtLengthColValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='solvedObjExt'>True For TS, File etc. Solved For External Object</td> 
+		                                      <td class='dynSettingDetailValue' id='solvedObjExtValue'> </td>                                    
+		                                  </tr>
+		                                  <tr><td class='dynSettingDetailId' id='waitingForExternalData'>True When Waiting data For External Object</td> 
+		                                      <td class='dynSettingDetailValue' id='waitingForExternalDataValue'> </td>                                    
+		                                  </tr>
+		                              </table>
+				  	                 </div> 				  	              
+				  	              </div>					  	           
+				  	           </td>
+					  	    </tr>
+				  	     </table>
+				  	  </div> 		 	      
+			  	  </div>
+		  	    </div>
+	        </td>	    
+	  </tr>
+  </table> 
+</body>
+
+<script type="text/javascript">
+"use strict";
+/*
+    LOCAL SESSION PARAMETERS Used 
+*/
+const OBJECT_PGM_COBOL = "1";  	        		// 01 Sorgenti Cobol  
+const OBJECT_COPY_COBOL_PROC = "9";  	        // 09 Sorgenti Copy Cobol Procedure Division
+const OBJECT_COPY_COBOL_DATA = "10";	        // 10 Sorgenti Copy Cobol Data Division
+
+// Server urls
+var userInp="amrita";       // Replaced by localStorage  
+var hostName = "";          // Replaced by localStorage  
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlUserGET = 'user'
+var urlSourceGET = 'source';   
+var urlLabelsGET = 'programLabels'; 
+var urlStructureGET = 'programStructure';
+var urlIdxProgramGET = 'idxProgramInstr';                				// Index row/instr program with NO copy references
+var urlIdxProgramCopyGET = 'idxProgramCopyInstr';	     				// Index row/instr copy
+var UrlIdxDivisionSections = 'idxDivisionSections'; 	 				// Index start/end source/instr division/section 
+var urlProgramCopyName = 'programCopyName';              				// Get the copy name given the instruction copy number
+var urlProgramCopyInclude = 'programCopyInclude';        				// Get all copy/include of the program, in all divisions
+var urlProgramFieldXref = 'programFieldXref';            				// Get all I/O reference instructon numbers for a data item
+var urlProgramProcInstructionInfo = "programProcInstructionInfo";   	// Get information about procedure entry/instruction 
+var urlProgramDataInstructionInfo = "programDataInstructionInfo";   	// Get information about Data entry/instruction Working/Linkage/Fd
+var urlProgramPaths = "programPaths";   								// Get paths from instruction to instruction 
+var urlPogramPathShow = "programPathShow";   					// Get all fileds in I/O for selected path
+var urlProgramCalledCaller = "programCalledCaller";   					// Get all pgm called and callers with origin information (row and under copy)
+var urlProgramDeadCode = "programDeadCode";   				    		// Get all pgm dead code instructions
+var urlProgramDynamicInstr = "programDynamicInstr";   					// Get all pgm dynamic instruction
+var urlProgramDynamicSubFields = "programDynamicSubFields";   			// Get all pgm dynamic field/subfields of a dynamic instruction
+var urlProgramDynamicSubFieldSetting = "programDynamicSubFieldSetting";	// Get all pgm dynamic field/subfields of a dynamic instruction
+var urlProgramDynamicValues = "programDynamicValues";   		    	// Get all pgm dynamic values of a field/subfields
+
+// Json to be passed to pages by callback
+var objConfig=null;             // Contains Configuration parameters available to all pages
+
+// To manage the source AND PATHS
+var curPgmName = "";            	// Current program name showed
+var jsonArray = [];       			// Service
+var objects=[];             		// JsonArray from server
+var arPath = [];                	// Paths di esecuzione correntemente selezionati
+var arPathFieldIO = [];         	// Campi in I/O nel path correntemente selezionato
+var arSourceProgram = []; 			// Source rows 
+var arIdxProgram = []; 				// Index Program Instructions
+var arLabelRowNum = [];   	   	 	// Label/paragraph/Section row number in source
+var arStructureProgram = [];    	// Program structure array
+var arCopyIncludeProgram = [];  	// Struttura per gestione lista copy/include del programma 
+var arDeadDataProc = [];            // Info dead code
+var arCopy = [];                	// Cache for copy [idCopy, arIdxCopy[]]  (in gestione sorgente)
+var arCalledCaller = [];        	// Programmi chiamati/chiamanti con relative origini
+var arDynamicInstr = [];        	// Istruzioni/campi dinamici programma
+var arDynamicFieldSub = [];     	// Sottocampi dinamici istruzione
+var arDynamicFieldSubSetting = [];	// Sottocampi dinamici istruzione
+var iIdxProcedure = 0;          	// Pointer a procedure in arIdxProgram
+var iIdxProcedureEnd = 0;          	// Pointer a procedure in arIdxProgram
+var iIdxData = 0;          			// Pointer a Data in arIdxProgram
+var iIdxDataEnd = 0;          		// Pointer a Data in arIdxProgram
+var iSourceProcedure = 0;       	// Pointer a procedure in sorgente
+
+// Input parameters in LocalStorage
+var sourceCaller = "";
+var sourceSubSys = "";
+var sourceIdObject = "";
+var sourceTypeObject = "";
+var sourceTypeObjectN = "";
+var sourceNumInstr = "";
+var sourceRowStart = "";
+var sourceRowEnd = "";
+var sourceUnderCopy = "";
+var sourceUnderCopyRowStart = "";
+var sourceUnderCopyRowEnd = "";
+var sourceOriginArea = "";
+
+// Program identification from caller
+var idObject = "";
+var typeObjectN = ""; 
+
+// Selected source row & instruction number
+var curSelNumInstr = "";
+var curSelNumRow = "";
+
+// Selected path and paragraph in structure path
+var curSelPath = -1;
+var curSelPathParagraph = -1;
+var curSelPathParagraph = -1;
+
+// Selected path values
+var curSelTypeExpand = "S";             // S=Stack, P=Paragraph, D=Detail
+
+// Selected called/caller
+var curSelPgmCalled = "";
+var curSelPgmCaller = 0;            
+
+// Selected indexes
+var iSelRowLabel = 0;
+var iSelRowLabelOld = -1;
+var iSelRowSourceStart = 0; 
+var iSelRowSourceEnd = 0;
+var iSelRowSourceStartOld = -1;
+var iSelRowSourceEndOld = -1;
+var iSelRowWorkingStart = 0; 
+var iSelRowWorkingEnd = 0;
+var iSelRowWorkingStartOld = -1;
+var iSelRowWorkingEndOld = -1;
+var iSelRowLinkageStart = 0; 
+var iSelRowLinkageEnd = 0;
+var iSelRowLinkageStartOld = -1;
+var iSelRowLinkageEndOld = -1;
+var iSelRowFdStart = 0; 
+var iSelRowFdEnd = 0;
+var iSelRowFdStartOld = -1;
+var iSelRowFdEndOld = -1;
+var iSelRowStructure = 0;
+var iSelRowStructureOld = -1;
+var iSelPgmCalled = 0;
+var iSelPgmCalledOld = -1;
+var iSelPgmCalledXref = 0;
+var iSelPgmCalledXrefOld = -1;
+var iSelPgmCaller = 0;
+var iSelPgmCallerOld = -1;
+var iSelPgmCallerXref = 0;
+var iSelPgmCallerXrefOld = -1;
+var iSelWorkingXref = 0;
+var iSelWorkingXrefOld = -1;
+var iSelLinkageXref = 0;
+var iSelLinkageXrefOld = -1;
+var iSelFdXref = 0;
+var iSelFdXrefOld = -1;
+var iSelCopy = 0;
+var iSelCopyOld = -1;
+var iSelSqlInclude = 0;
+var iSelSqlIncludeOld = -1;
+var iSelFieldIO = 0;
+var iSelFieldIOOld = -1;
+var iSelFieldIOXref = 0;
+var iSelFieldIOXrefOld = -1;
+var iSelParagraph = 0;
+var iSelParagraphOld = -1;
+var iSelParagraphPerformNum = 0;
+var iSelParagraphPerformNumOld = -1;
+var iSelDynInstr = 0;
+var iSelDynInstrOld = -1;
+var iSelDynFieldType = 0;
+var iSelDynFieldTypeOld = -1;
+var iSelDynFieldName = 0;
+var iSelDynFieldNameOld = -1;
+var iSelDynValue = 0;
+var iSelDynValueOld = -1;
+
+// Division  start & end rows source numbers
+var iDivIdRowStart = -1;
+var iDivIdRowEnd = -1;
+var iDivEnvRowStart = -1;
+var iDivEnvRowEnd = -1;
+var iDivDataRowStart = -1;
+var iDivDataRowEnd = -1;
+var iDivProcRowStart = -1;
+var iDivProcRowEnd = -1;
+
+// Division & Sections  start index rows/instruction xref
+var iDivIdIdxStart = -1;
+var iDivIdIdxEnd = -1;
+var iDivEnvIdxStart = -1;
+var iDivEnvIdxEnd = -1;
+var iDivDataIdxStart = -1;
+var iDivDataIdxEnd = -1;
+var iDivProcIdxStart = -1;
+var iDivProcIdxEnd = -1;
+
+// Division  start & end rows instruction numbers
+var iDivIdInstrStart = -1;
+var iDivIdInstrEnd = -1;
+var iDivEnvInstrStart = -1;
+var iDivEnvInstrEnd = -1;
+var iDivDataInstrStart = -1;
+var iDivDataInstrEnd = -1;
+var iDivProcInstrStart = -1;
+var iDivProcInstrEnd = -1;
+
+// Sections start & end rows source numbers
+var iSecWorkingRowStart = -1;
+var iSecWorkingRowEnd = -1;
+var iSecLinkageRowStart = -1;
+var iSecLinkageRowEnd = -1;
+var iSecFileRowStart = -1;
+var iSecFileRowEnd = -1;
+
+// Sections start & end instruction numbers
+var iSecWorkingInstrStart = -1;
+var iSecWorkingInstrEnd = -1;
+var iSecLinkageInstrStart = -1;
+var iSecLinkageInstrEnd = -1;
+var iSecFileInstrStart = -1;
+var iSecFileInstrEnd = -1;
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+
+ 	adjustLayout();            					// Set dynamically css properties height and max-height when it needs
+ 	var myTimer = setTimeout(dummyTimer, 200);
+
+	userInp = localStorage.getItem("user");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");	
+    setSourceCallerParameters();   
+    idObject = sourceIdObject;
+    typeObjectN = sourceTypeObjectN;
+    curPgmName = idObject;
+    
+    // Sezione File Sectio inizialmente nascosta
+    document.getElementById("cellTdFd").style.display="none";
+    document.getElementById("cellTdFdIO").style.display="none";
+	
+    loadComboExpand();   
+    startProcessing();   
+}
+
+function dummyTimer() {
+}
+
+// Get parameters set by the caller
+function setSourceCallerParameters(){
+	var idProgram = "";
+
+	// Inspector activated by relations/where used/etc
+    // Necessary specific parameters
+    if (window.name != "") {
+    	idProgram = window.name;
+        sourceIdObject = localStorage.getItem("sourceIdObject_" + idProgram);
+     	idProgram = sourceIdObject;
+       	window.document.title = "Inspector-"+idProgram;
+       	document.getElementById('divDataHeaderSource').innerHTML = "SOURCE " + idProgram;
+        sourceSubSys = localStorage.getItem("sourceSubSys_" + idProgram);
+        sourceTypeObject = localStorage.getItem("sourceTypeObject_" + idProgram);
+        sourceTypeObjectN = localStorage.getItem("sourceTypeObjectN_" + idProgram);
+        sourceNumInstr = localStorage.getItem("sourceNumInstr_" + idProgram);
+        sourceRowStart = localStorage.getItem("sourceRowStart_" + idProgram);
+        sourceRowEnd = localStorage.getItem("sourceRowEnd_" + idProgram);
+        sourceUnderCopy = localStorage.getItem("sourceUnderCopy_" + idProgram);
+        sourceUnderCopyRowStart = localStorage.getItem("sourceUnderCopyRowStart_" + idProgram);
+        sourceUnderCopyRowEnd = localStorage.getItem("sourceUnderCopyRowEnd_" + idProgram);
+        sourceOriginArea = localStorage.getItem("sourceOriginArea_" + idProgram);
+	}
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating Ajax request object!");
+	return xmlhttp;
+}
+
+/* Processing is asyncronoues */
+function startProcessing() {
+	loadUserObjectConfig();   	// --> objConfig, loadIdxAndPgmsource() --> loadSource(); --> fillLayout()  
+}
+
+// Caricamento dati a fronte di Program sicuramente disponibile in cache
+function fillLayout() {	
+	loadProgramLabels();		// 
+   	loadProgramStructure();		 
+    loadProgramCopyIncludeList();		 
+    loadProgramWorkingLinkageFd();  // -> positionOnSourceDataInstruction()
+    loadProgramCalledCallers();
+	loadProgramDynamicInstr();	
+    loadComboDeadCode();
+}
+
+function loadProgramLabels() {
+	getJsonResponseLabelsGET(); 	
+}	
+function loadProgramStructure() {	
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlStructureGET + "/" + userInp + "/"  + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramStructure(xmlhttp, jsonArray);};
+}
+function handleJsonResponseProgramStructure(xmlhttp, jsonArray) {
+	var objects = null;
+	var objStructureProgram = {};
+	var idLabel = "";
+	var plus = "";
+	var levelNesting = 0;
+	var underIf = "";
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   alert("Error retrieving program structure - "+xmlhttp.responseText.substr(2));
+		   }
+		   objects=JSON.parse(xmlhttp.responseText);
+		   
+	       var tbltop = "<table id='tbPgmStructure'>"
+			          +      "<tr>"
+		              +        "<th class='thPgmStructure'>C</th>"
+		              +        "<th class='thPgmStructure'>Section/Paragraph</th>"
+		              +        "<th class='thPgmStructure'>Content</th>"
+		              +      "</tr>"
+		   var main = ""; 
+
+		   // Scan rows from server
+	       for (var i=0; i < objects.length; i++) {
+	    	       	   	    	   
+			   objStructureProgram = new Object();
+			   objStructureProgram.showText = objects[i].showText;
+			   objStructureProgram.isPerform = objects[i].isPerform;
+			   objStructureProgram.isPerformUnderIf = objects[i].isPerformUnderIf; 
+			   objStructureProgram.isParagraphSectionWithStopRun = objects[i].isParagraphSectionWithStopRun; 
+			   objStructureProgram.isFromSection = objects[i].isFromSection; 
+			   objStructureProgram.performFrom = objects[i].performFrom;
+			   objStructureProgram.performThru = objects[i].performThru;
+			   objStructureProgram.numInstrFrom = objects[i].numInstrFrom;
+			   objStructureProgram.numInstrThru = objects[i].numInstrThru;
+			   objStructureProgram.rowFrom = objects[i].rowFrom;
+			   objStructureProgram.rowThru = objects[i].rowThru;
+			   objStructureProgram.levelNesting = objects[i].levelNesting;
+			   objStructureProgram.isWithPerformsInside = objects[i].isWithPerformsInside;
+			   objStructureProgram.numInstr = objects[i].numInstr;
+			   objStructureProgram.rowNumStart = objects[i].rowNumStart;
+			   objStructureProgram.rowNumEnd = objects[i].rowNumEnd;
+			   objStructureProgram.inCopy = objects[i].inCopy;
+			   arStructureProgram.push(objStructureProgram);
+
+			   // Perform sotto condizione
+			   if (objStructureProgram.isPerformUnderIf) {
+				  underIf = "Y"
+			   } else {
+				  underIf = "N"
+			   }
+			   // Space till the first non space char   
+			   plus = "";
+			   idLabel = "";
+			   if (objects[i].isPerform) {
+				   levelNesting = objects[i].levelNesting;
+		    	   for (var i2 = 0; i2 < levelNesting; i2++) {
+		    		   plus = plus + "+"
+				   }
+			   }
+			   plus = "<span style='color:red'>" + plus +  "</span>";
+			   idLabel = plus + objects[i].performFrom;
+			   
+	    	   main  +=   "<tr>"
+	   	         	 +      "<td class='tdPgmStructureUnderIf'          id='pgmStructureUnderIf_"           + i  + "' onclick='onclick_sectionParagraph(this.id)'" + " tabindex='0' >"  + underIf                  + "</td>" 
+	   	         	 +      "<td class='tdPgmStructureLabelSectionName' id='pgmStructureLabelSectionName_"  + i  + "' onclick='onclick_sectionParagraph(this.id)'" + " tabindex='0' >"  + idLabel                  + "</td>" 
+	     	         +      "<td class='tdPgmStructureShowText'   		id='pgmStructureShowText_"          + i  + "' onclick='onclick_sectionParagraph(this.id)'" + " tabindex='0' >"  + objects[i].showText      + "</td>" 
+	     	         +    "</tr>"	
+ 	       }   
+	        
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;	 
+	       
+	       // Show source and position on first instruction row
+	       document.getElementById('divTbPgmStructure').innerHTML = tbl;
+    }	
+}
+
+function loadProgramCopyIncludeList() {	
+	var xmlhttp;
+	var division = "*";
+	var typeCopy = "C";
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramCopyInclude + "/" + userInp + "/"  + idObject + "/" + division + "/" + typeCopy  ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramCopyIncludeList(xmlhttp);};
+}  
+function handleJsonResponseProgramCopyIncludeList(xmlhttp) {
+	var objects = null;
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving Copy/Sql Include List - "+xmlhttp.responseText.substr(2));
+    }
+    objects=JSON.parse(xmlhttp.responseText);
+    
+    loadProgramCopyIncludeGeneric(objects, "C", "divTbCopyContainer",       "tbPgmCopy",       "onclick='onclick_pgmCopySqlInclude(this.id)'", "pgmCopyType",       "pgmCopyName") 
+    loadProgramCopyIncludeGeneric(objects, "I", "divTbSqlIncludeContainer", "tbPgmSqlInclude", "onclick='onclick_pgmCopySqlInclude(this.id)'", "pgmSqlIncludeType", "pgmSqlIncludeName") 
+
+}
+
+// Load generalizzato box copy o include
+function loadProgramCopyIncludeGeneric(objects, extractType, htmlDiv, tb, onClick, idType, idCopy) {	
+	var objCopyProgram = {};
+	var j = 0;
+	
+    var tbltop = "<table id='tbPgmCopy'>"
+	          +      "<tr>"
+              +        "<th class='thPgmCopyInclude'>D</th>"
+              +        "<th class='thPgmCopyInclude'>Name</th>"
+	          +      "</tr>"
+    var main = ""; 
+
+    // Scan rows from server
+    for (var i=0; i < objects.length; i++) {
+ 	   if (objects[i].type != extractType) {continue;} 	
+ 	   
+ 	   objCopyProgram = new Object();
+ 	   objCopyProgram.division = objects[i].division;
+ 	   objCopyProgram.type = objects[i].type;
+ 	   objCopyProgram.name = objects[i].name;
+ 	   objCopyProgram.numInstr = objects[i].numInstr; 
+ 	   objCopyProgram.rowStart = objects[i].rowStart; 
+ 	   objCopyProgram.rowEnd = objects[i].rowEnd;
+ 	   arCopyIncludeProgram.push(objCopyProgram);
+ 	   
+ 	   main  +=   "<tr>"
+	         +      "<td class='tdPgmCopyType' id='" + idType + "_"  + j  + "'" +  onClick + " tabindex='0' >"  + objCopyProgram.division  + "</td>" 
+	         +      "<td class='tdPgmCopyName' id='" + idCopy + "_"  + j  + "'" +  onClick + " tabindex='0' >"  + objCopyProgram.name      + "</td>" 
+  	         +    "</tr>";	
+  	         
+  	   j++;
+     }   
+     
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;	 
+    
+    // Show source and position on first instruction row
+    document.getElementById(htmlDiv).innerHTML = tbl;	
+}
+
+function onclick_pgmCopySqlInclude(clicked_id) {
+	var oCopyInclude = {};
+	var idClicked = "";
+	var idCopy = "";
+	var idCopyType = "";
+	var idCopyControl = "";
+	var idCopyTypeControl = "";
+	var numInstr = 0;
+	var rowStart = 0;
+	var	rowEnd = 0; 
+    var i = 0;
+    
+    i = clicked_id.indexOf("_");
+    i = clicked_id.substr(i+1);
+    if (clicked_id.substr(0, 7) == "pgmCopy") {
+       	idCopy = document.getElementById("pgmCopyName_" + i).innerHTML;
+       	idCopyType = document.getElementById("pgmCopyType_" + i).innerHTML;
+       	idCopyControl = "pgmCopyName_";
+       	idCopyTypeControl = "pgmCopyType_";
+	} else {
+       	idCopy = document.getElementById("pgmSqlIncludeName_" + i).innerHTML;
+      	idCopyType = document.getElementById("pgmSqlIncludeType_" + i).innerHTML;
+       	idCopyControl = "pgmSqlIncludeName_";
+       	idCopyTypeControl = "pgmSqlIncludeType_";
+	}
+    
+    // Recupero numero istruzione copy nel programma
+    for (var i = 0; i < arCopyIncludeProgram.length; i++) {
+    	oCopyInclude = arCopyIncludeProgram[i];
+    	if (oCopyInclude.name == idCopy) {
+    		numInstr = oCopyInclude.numInstr;
+       		rowStart = oCopyInclude.rowStart; 
+       		rowEnd = oCopyInclude.rowEnd; 
+       		break;
+		}
+	}
+    
+  	// Righe inizio fine istruzione copy in sorgente
+    iSelRowSourceStart = rowStart; 
+    iSelRowSourceEnd = rowEnd; 
+    
+    // Rimuove selezione attiva corrente se non è la prima volta
+    if (iSelRowSourceStartOld >= 0) {
+        for (var i = iSelRowSourceStartOld; i <= iSelRowSourceEndOld; i++) {
+    	    document.getElementById("Prow_" + i).classList.remove("selected"); 
+        }
+	}
+    
+ 	// Seleziona righe sorgente
+    for (var i = iSelRowSourceStart; i <= iSelRowSourceEnd; i++) {
+   	    document.getElementById("Prow_" + i).classList.add("selected"); 
+	}
+    // Focus su riga selezionata
+    document.getElementById('Prow_'  + iSelRowSourceStart).focus();
+    
+    // Imposta per nuova selezione
+    iSelRowSourceStartOld = iSelRowSourceStart;	
+    iSelRowSourceEndOld = iSelRowSourceEnd; 
+    
+	// Selezione/deselezione tipo copy/nome
+	if (clicked_id.substr(0, 7) == "pgmCopy") {
+	    i = clicked_id.indexOf("_");
+	    iSelCopy = clicked_id.substr(i+1);
+	    if (iSelCopy != iSelCopyOld && iSelCopyOld >= 0) {
+			document.getElementById(idCopyControl + iSelCopyOld).classList.remove("selected"); 
+			document.getElementById(idCopyTypeControl + iSelCopyOld).classList.remove("selected"); 
+		}   
+		iSelCopyOld=iSelCopy;	
+		if (document.getElementById(idCopyControl + iSelCopy).classList.length > 1) {
+			// Deseleziona label in box label
+			document.getElementById(idCopyControl + iSelCopy).classList.remove("selected"); 
+			document.getElementById(idCopyTypeControl + iSelCopy).classList.remove("selected"); 
+		} else {
+			document.getElementById(idCopyControl + iSelCopy).classList.add("selected"); 
+			document.getElementById(idCopyTypeControl + iSelCopy).classList.add("selected"); 
+		}
+	} else {
+	    i = clicked_id.indexOf("_");
+	    iSelSqlInclude = clicked_id.substr(i+1);
+	    if (iSelSqlInclude != iSelSqlIncludeOld && iSelSqlIncludeOld >= 0) {
+			document.getElementById(idCopyControl + iSelSqlIncludeOld).classList.remove("selected"); 
+			document.getElementById(idCopyTypeControl + iSelSqlIncludeOld).classList.remove("selected"); 
+		}   
+		iSelSqlIncludeOld=iSelSqlInclude;	
+		if (document.getElementById(idCopyControl + iSelSqlInclude).classList.length > 1) {
+			// Deseleziona label in box label
+			document.getElementById(idCopyControl + iSelSqlInclude).classList.remove("selected"); 
+			document.getElementById(idCopyTypeControl + iSelSqlInclude).classList.remove("selected"); 
+		} else {
+			document.getElementById(idCopyControl + iSelSqlInclude).classList.add("selected"); 
+			document.getElementById(idCopyTypeControl + iSelSqlInclude).classList.add("selected"); 
+		}
+	}
+}
+
+// Sorgente e indici per division e idx disponibili 
+function loadProgramWorkingLinkageFd() {	
+	var xmlhttp;
+ 
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + UrlIdxDivisionSections + "/" + userInp + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+	        var object = null;
+	        var numInstr = 0;
+			if (xmlhttp.readyState==4 && xmlhttp.status==200){
+				   if (xmlhttp.responseText.substr(0,2) == "KO") {
+					   return;
+				   } else {
+					   object=JSON.parse(xmlhttp.responseText);
+					   setDivSecRowInstrPointers(object);                          // Set on global variables
+					   loadProgramWorkingLinkageFdCommonRows("W", "divTbWorkingContainer", "tbSourceRowsWorking", "onclick='onclick_expandData(this.id)'",   "onclick='onclick_DataProcRow(this.id)'", iSecWorkingRowStart, iSecWorkingRowEnd);
+ 					   loadProgramWorkingLinkageFdCommonRows("L", "divTbLinkageContainer", "tbSourceRowsLinkage", "onclick='onclick_expandData(this.id)'",   "onclick='onclick_DataProcRow(this.id)'", iSecLinkageRowStart, iSecLinkageRowEnd );
+ 					   loadProgramWorkingLinkageFdCommonRows("F", "divTbFdContainer",      "tbSourceRowsFile",    "onclick='onclick_expandData(this.id)'",   "onclick='onclick_DataProcRow(this.id)'", iSecFileRowStart,    iSecFileRowEnd );
+	 				   // Posizionamento in Data division
+ 				       if (sourceOriginArea == "D") {
+  				 	       numInstr = localStorage.getItem("sourceNumInstr_" + idObject);
+ 				 	       positionOnSourceDataInstruction("*", numInstr);
+ 					   }			   
+ 				    }		   
+            }	
+	
+	};
+} 
+
+// Creazione tabella X working/linkage/file section
+// Creazione corrispondenti tabelle XREF
+function loadProgramWorkingLinkageFdCommonRows(section, htmlDiv, htmlTb, onClickExpand, onClickSel, iSecRowStart, iSecRowEnd) {	
+	var tbltop = "";
+	var rowStartIdx = 0;
+	var rowEndIdx = 0;
+	var arIdx = [];
+	var iIdx = 0;
+	var numInstr = 0;
+	var strng = "";
+	var division = "";         // I E D P
+	var expand = "";           // + if copy statement
+    var main = ""; 
+    var spaces="";
+    var iEnd=0;
+   
+    // Ahead per gestione numero istruzione programma
+    iIdx = iDivDataIdxStart;
+    strng = arIdxProgram[iIdx];
+    arIdx = strng.split(" ");
+    rowStartIdx = parseInt(arIdx[0]);
+    rowEndIdx = parseInt(arIdx[1]);
+    numInstr =  arIdx[2];   
+	division = arIdx[3];
+	expand = arIdx[4];		// - or copyName
+    iIdx = iIdx - 1;
+
+    tbltop = "<table id='" + htmlTb + "'>";
+    if (iSecRowStart > -1) {
+        // Scan rows from server		   
+        for (var i=iSecRowStart; i <= iSecRowEnd; i++) {
+
+    	   	   // Get proper Instruction number
+    	   	   while  (i > rowStartIdx) {
+    	   		   iIdx++;
+    			   strng = arIdxProgram[iIdx];
+    			   arIdx = strng.split(" ");
+    			   rowStartIdx = parseInt(arIdx[0]);
+    			   rowEndIdx = parseInt(arIdx[1]);
+    			   numInstr =  parseInt(arIdx[2]);
+    			   division = arIdx[3];
+    			   expand = arIdx[4];		// - or copyName
+    			   if (expand == "-") {
+    				   expand = "";
+    			   } else {
+    				   expand = "+";  
+    		       }
+    		   } 
+    	       
+        	   if (numInstr == 0) {
+    	    		  numInstr = "";
+    		   }
+    	   	   main  +=   "<tr class='trAll'       id=" + section + "r_"   		+ i  + "  tabindex='0' " + " >"
+    	         +          "<td class='nRow'      id=" + section + "nR_" 		+ i  + "  tabindex='0' >"  + i            + "</td>" 
+    	         +          "<td class='nInstr'    id=" + section + "nI_"  		+ i  + "  tabindex='0' >" + numInstr              + "</td>" 
+    	         +          "<td class='expand'    id=" + section + "expand_"   + i  + "  tabindex='0' "  + onClickExpand + " >"  + expand  + "</td>" 
+    	         +          "<td class='row'       id=" + section + "row_" 		+ i  + "  tabindex='0' "  + onClickSel    + " >" + "<pre>" + arSourceProgram[i].row  + "</pre>" + "</td>" 
+    	         +        "</tr>";
+    	     
+    	        // Expand indica copy da esplodere, con una riga con un TD e un DIV caricato a richiesta
+    	        if (expand != "+") {continue;}
+    		   
+    	        main  +=   "<tr class='trDiv' >" + "<td class='tdDiv' colspan='4'> <div id='" + section + "tdDiv" + "_" + i + "'></div></td>" + "</tr>";
+        }		
+   }
+	         
+   var tblBottom = '</table>'
+   var tbl = tbltop + main + tblBottom;	 
+      
+   // Show division source 
+   document.getElementById(htmlDiv).innerHTML = tbl;
+   
+   // Creazione tabella XREF di default vuota
+   tbltop = "<table id='" + "tb" + htmlTb.substring(12) + "Xref'>"
+          +      "<tr>"
+          +        "<th class='thXref'>T</th>"
+          +        "<th class='thXref'>#</th>"
+          +      "</tr>";
+ 
+    main  =   "<tr>"
+          +      "<td class='tdXrefIO'  id='" + section + "xrefIO_0"  + " tabindex='0' >"  + "."  + "</td>" 
+       	  +      "<td class='tdXrefNum' id='" + section + "xrefNum_0" + " tabindex='0' >"  + "."  + "</td>" 
+          +    "</tr>"
+      
+   tblBottom = '</table>';
+   tbl = tbltop + main + tblBottom;	
+   
+   // Show division source 
+   document.getElementById(htmlDiv+"IO").innerHTML = tbl;	   
+}	 
+
+// 1) Select item in Working/Linkage/File section (click su testo riga)
+//    Generazione xref in input/output
+// 2) Select riga in procedure division
+//    impostazione numero istruzione corrente (per paths)
+function onclick_DataProcRow(clicked_id) {
+	var xmlhttp;
+	var prefix = "";
+	var htmlDiv = "";
+	var htmlTbXref = "";
+	var v = "";
+    var i = clicked_id.indexOf("_");
+    var j = 0;
+    var numInstr = "";	
+    var numRow = "";	
+    var prefixCopy = "";
+    var idCopy = "";
+    
+    // Selezionato item dentro copy
+    if (clicked_id.substr(1,5) != "row_") {
+    	idCopy = clicked_id.substr(4, i - 4);
+	}
+
+    prefix = clicked_id.substr(0, 1);    
+    j = clicked_id.substr(i+1);
+    numInstr = document.getElementById(prefix + "nI" + idCopy + "_" + j).innerHTML;
+    numRow = document.getElementById(prefix   + "nR" + idCopy + "_" + j).innerHTML;
+
+	if (prefix == 'P') {
+//		onclick_rowProc(clicked_id);
+ 		curSelNumRow = numInstr;
+ 		curSelNumInstr = numInstr;
+ 	    v = document.getElementById("pathTo").value;
+ 	    if (v.trim() == "") {
+ 	    	document.getElementById('pathTo').value = curSelNumInstr;
+ 	    	document.getElementById("pathFrom").value = "0";
+ 		}
+		return;
+	}
+	    
+    // Numero istruzione a space, è un commento
+    if (numInstr.trim() == "") {return;}
+    
+    if (prefix == "W") {
+    	htmlDiv = "divTbWorkingContainerIO";
+    	htmlTbXref = "tbWorkingXref";
+	} else if (prefix == "L") {
+		htmlDiv = "divTbLinkageContainerIO";
+		htmlTbXref = "tbLinkageXref";
+	} else {
+		htmlDiv = "divTbFdContainerIO";
+		htmlTbXref = "tbFdXref";
+	}
+    
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramFieldXref + "/" + userInp + "/"  + idObject+ "/"  + numInstr ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseDataItemXref(xmlhttp, htmlDiv, htmlTbXref, prefix);};
+    
+}
+
+function handleJsonResponseDataItemXref(xmlhttp, htmlDiv, htmlTbXref, prefix) {
+	var objects = null;	
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving Copy/Sql Include List - "+xmlhttp.responseText.substr(2));
+    }
+    objects=JSON.parse(xmlhttp.responseText);
+	   
+    var tbltop = "<table id='" + htmlTbXref + "'>"
+	          +      "<tr>"
+	          +        "<th class='thXref'>T</th>"
+	          +        "<th class='thXref'>#</th>"
+	          +      "</tr>"
+    var main = ""; 
+
+    // Scan rows from server
+    for (var i=0; i < objects.length; i++) {
+ 	   	 	   
+ 	   main  +=   "<tr>"
+             +       "<td class='tdXrefIO'      id='" + prefix + "xrefIO_"   + i  + "' onclick='onclick_xrefIO(this.id)'"   + " tabindex='0' >"  + objects[i].io        + "</td>" 
+        	 +       "<td class='tdXrefNum'  	id='" + prefix + "xrefNum_"  + i  + "' onclick='onclick_xrefIO(this.id)'"   + " tabindex='0' >"  + objects[i].numInstr  + "</td>" 
+  	         +    "</tr>";	
+     }   
+     
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;	
+    
+	// Show xref table
+    document.getElementById(htmlDiv).innerHTML = tbl;	
+ 	
+}
+
+// Posizionamento nel sorgente xref selezionato
+function onclick_xrefIO(clicked_id) {
+    var prefix = "";
+	var idClicked = "";
+    var i = 0;
+	var numInstr = "";
+	var ifPerform = "N";
+	
+    
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);
+	prefix = clicked_id.charAt(0);
+    numInstr = document.getElementById(prefix + "xrefNum_" + i).innerHTML;
+    
+    positionOnSourceProcInstruction(numInstr, ifPerform); 
+    
+	// Selezione/deselezione
+	if (prefix == "W") {
+		iSelWorkingXref = i;
+	    if (iSelWorkingXref != iSelWorkingXrefOld && iSelWorkingXrefOld >= 0) {
+	    	document.getElementById(prefix + "xrefIO_" + iSelWorkingXrefOld).classList.remove("selected"); 
+	    	document.getElementById(prefix + "xrefNum_" + iSelWorkingXrefOld).classList.remove("selected"); 
+	    }
+	    iSelWorkingXrefOld=iSelWorkingXref;
+	    if (document.getElementById(prefix + "xrefNum_" + iSelWorkingXref).classList.length > 1) {
+	    	document.getElementById(prefix + "xrefIO_" + iSelWorkingXref).classList.remove("selected");
+	    	document.getElementById(prefix + "xrefNum_" + iSelWorkingXref).classList.remove("selected");
+	    } else {
+	    	document.getElementById(prefix + "xrefIO_" + iSelWorkingXref).classList.add("selected"); 
+	    	document.getElementById(prefix + "xrefNum_" + iSelWorkingXref).classList.add("selected"); 
+		}
+	} else if (prefix == "L") {
+		iSelLinkageXref = i;
+	    if (iSelLinkageXref != iSelLinkageXrefOld && iSelLinkageXrefOld >= 0) {
+	    	document.getElementById(prefix + "xrefIO_" + iSelLinkageXrefOld).classList.remove("selected"); 
+	    	document.getElementById(prefix + "xrefNum_" + iSelLinkageXrefOld).classList.remove("selected"); 
+	    }
+	    iSelLinkageXrefOld=iSelLinkageXref;
+	    if (document.getElementById(prefix + "xrefNum_" + iSelLinkageXref).classList.length > 1) {
+	    	document.getElementById(prefix + "xrefIO_" + iSelLinkageXref).classList.remove("selected");
+	    	document.getElementById(prefix + "xrefNum_" + iSelLinkageXref).classList.remove("selected");
+	    } else {
+	    	document.getElementById(prefix + "xrefIO_" + iSelLinkageXref).classList.add("selected"); 
+	    	document.getElementById(prefix + "xrefNum_" + iSelLinkageXref).classList.add("selected"); 
+		}
+	} else {
+		iSelFdXref = i;
+	    if (iSelFdXref != iSelFdXrefOld && iSelFdXrefOld >= 0) {
+	    	document.getElementById(prefix + "xrefIO_" + iSelFdXrefOld).classList.remove("selected"); 
+	    	document.getElementById(prefix + "xrefNum_" + iSelFdXrefOld).classList.remove("selected"); 
+	    }
+	    iSelFdXrefOld=iSelFdXref;
+	    if (document.getElementById(prefix + "xrefNum_" + iSelFdXref).classList.length > 1) {
+	    	document.getElementById(prefix + "xrefIO_" + iSelFdXref).classList.remove("selected");
+	    	document.getElementById(prefix + "xrefNum_" + iSelFdXref).classList.remove("selected");
+	    } else {
+	    	document.getElementById(prefix + "xrefIO_" + iSelFdXref).classList.add("selected"); 
+	    	document.getElementById(prefix + "xrefNum_" + iSelFdXref).classList.add("selected"); 
+		}
+	}
+
+}
+
+/*
+ *  Position on source at instruction number
+ *  Manage selection/deselection of rows
+ */
+function positionOnSourceProcInstruction(numInstrToPos, ifPerform) {	
+	var xmlhttp;
+	var url = baseUrl + "/" + urlProgramProcInstructionInfo + "/" + userInp + "/"  + idObject+ "/"  + numInstrToPos ;
+    var numInstr = 0;
+    var iSelRowSourceStartOldSave = "";	
+    var iSelRowSourceEndOldSave = "";
+    
+	xmlhttp=createRequest();
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		var object = null;	
+	    var inCopy = "";
+		
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}	
+	    if (xmlhttp.responseText.substr(0,2) == "KO") {
+		   alert("Error retrieving Program proc Instruction info List - "+xmlhttp.responseText.substr(2));
+	    }
+	    object=JSON.parse(xmlhttp.responseText);
+	    inCopy = object.inCopy;
+	    numInstr = numInstrToPos;
+	     
+	 	// Righe inizio fine istruzione in sorgente
+	    iSelRowSourceStart = object.rowStartSource; 
+	    iSelRowSourceEnd = object.rowEndSource; 
+	    if (ifPerform == "Y" && object.isPerform) {
+		    iSelRowSourceStart = object.rowStartFrom; 
+		    iSelRowSourceEnd = object.rowEndThru; 
+		    inCopy = object.paragraphInCopy;
+		    numInstr = object.fromNumInstr;
+		}
+	    	    
+	    // Rimuove selezione attiva corrente eventualmente anche dentro copy
+	    for (var i = iSelRowSourceStartOld; i <= iSelRowSourceEndOld; i++) {
+		    document.getElementById("Prow_" + i).classList.remove("selected");
+		    var control = document.getElementById("row" + inCopy + "_" + i);
+		    if (control != null) {
+			    document.getElementById("Prow" + inCopy + "_" + i).classList.remove("selected"); 
+			}
+	    }
+	    
+		// Selezione e focus
+		if (inCopy.trim() == "") {
+	  	    // Seleziona righe sorgente
+	        for (var i = iSelRowSourceStart; i <= iSelRowSourceEnd; i++) {
+	    	    document.getElementById("Prow_" + i).classList.add("selected"); 
+			}
+	        // Focus su riga selezionata 
+	  		document.getElementById('Prow_'  + iSelRowSourceStart).focus();
+		}
+	    
+	    // Imposta per nuova selezione
+	    iSelRowSourceStartOld = iSelRowSourceStart;	
+	    iSelRowSourceEndOld = iSelRowSourceEnd;
+	    
+	    // istruzione non è dentro copy: normale posizionamento già effettuato sullo statement
+	    if (inCopy.trim() == "") {
+	    	return;
+	 	}
+	    iSelRowSourceStartOldSave = iSelRowSourceStartOld;	
+	    iSelRowSourceEndOldSave = iSelRowSourceEndOld;
+				    
+	    gestExpandCopyAndPosition(numInstr, inCopy, "P");
+	    
+	    iSelRowSourceStartOld = iSelRowSourceStartOldSave;	
+	    iSelRowSourceEndOld = iSelRowSourceEndOldSave;
+
+	};  	
+}
+
+function setDivSecRowInstrPointers(o) {	
+	// Division  start & end rows source numbers
+	iDivIdRowStart = o.iDivIdRowStart;
+	iDivIdRowEnd = o.iDivIdRowEnd;
+	iDivEnvRowStart = o.iDivEnvRowStart;
+	iDivEnvRowEnd = o.iDivEnvRowEnd;
+	iDivDataRowStart = o.iDivDataRowStart;
+	iDivDataRowEnd = o.iDivDataRowEnd;
+	iDivProcRowStart = o.iDivProcRowStart;
+	iDivProcRowEnd = o.iDivProcRowEnd;
+	
+	// Division  start & end rows instruction numbers
+	iDivIdInstrStart = o.iDivIdInstrStart;
+	iDivIdInstrEnd = o.iDivIdInstrEnd;
+	iDivEnvInstrStart = o.iDivEnvInstrStart;
+	iDivEnvInstrEnd = o.iDivEnvInstrEnd;
+	iDivDataInstrStart = o.iDivDataInstrStart;
+	iDivDataInstrEnd = o.iDivDataInstrEnd;
+	iDivProcInstrStart = o.iDivProcInstrStart;
+	iDivProcInstrEnd = o.iDivProcInstrEnd;
+	
+	// Sections start & end rows source numbers
+	iSecWorkingRowStart = o.iSecWorkingRowStart;
+	iSecWorkingRowEnd = o.iSecWorkingRowEnd;
+	iSecLinkageRowStart = o.iSecLinkageRowStart;
+	iSecLinkageRowEnd = o.iSecLinkageRowEnd;
+	iSecFileRowStart = o.iSecFileRowStart;
+	iSecFileRowEnd = o.iSecFileRowEnd;
+
+	// Sections start & end instruction numbers
+	iSecWorkingInstrStart = o.iSecWorkingInstrStart;
+	iSecWorkingInstrEnd = o.iSecWorkingInstrEnd;
+	iSecLinkageInstrStart = o.iSecLinkageInstrStart;
+	iSecLinkageInstrEnd = o.iSecLinkageInstrEnd;
+	iSecFileInstrStart = o.iSecFileInstrStart;
+	iSecFileInstrEnd = o.iSecFileInstrEnd;	
+}
+
+
+// Caricamento utilizzi in I/O campo corrente
+function loadProgramWorkingLinkageFdCommonXref(htmlDiv, htmlTb, onClickExpand, onClickSel) {	
+	
+}
+
+/*
+ * Caricamento programmi chiamati/chiamanti con relative istruzioni origine
+ */
+function loadProgramCalledCallers () {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramCalledCaller + "/" + userInp + "/" + objConfig.sys  + "/" + sourceSubSys + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    }; 
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseCalledCallers(xmlhttp);};	
+} 
+function handleJsonResponseCalledCallers(xmlhttp) {
+	var objects = null;
+    var tbltop = "";
+    var main = ""; 
+	var tblBottom = "";
+	var tbl = "";	 
+    var iCaller = 0;
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+	objects=JSON.parse(xmlhttp.responseText);
+	arCalledCaller = objects;
+	
+	//-------
+	// Called
+	//-------
+	
+    tbltop = "<table id='tbPathsCalled' class='tbPathsCalled'>"
+	main = ""; 
+	
+	// Scan Called programs
+	for (i=0; i < objects.length; i++) {
+		  if (objects[i].type == "caller") {break;}
+	
+		  main  +=   "<tr>"
+		         +      "<td class='tdPathCalled'  id='pgmCalled_" + i  + "' onclick='onclick_pgmCalled(this.id)'"   + " tabindex='0' >"  + objects[i].program + "</td>" 
+		         +    "</tr>";
+	}   
+	
+	tblBottom = '</table>'
+	tbl = tbltop + main + tblBottom;	 
+	document.getElementById('divPathsCalled').innerHTML = tbl;	 
+	
+	//--------
+	// Callers
+	//--------
+	
+    tbltop = "<table id='tbPathsCaller' class='tbPathsCalled'>"
+   	main = ""; 
+   	
+   	// Scan Caller programs
+   	for (; i < objects.length; i++) {	      	   	    	   
+   		  main  +=   "<tr>"
+   		         +      "<td class='tdPathCalled'  id='pgmCaller_" + i  + "' onclick='onclick_pgmCaller(this.id)'"   + " tabindex='0' >"  + objects[i].program + "</td>" 
+   		         +    "</tr>"	
+   	}   
+   	
+   	tblBottom = '</table>'
+   	tbl = tbltop + main + tblBottom;	 
+   	document.getElementById('divPathsCaller').innerHTML = tbl;	 	
+}
+
+/*
+ * Selezionato un programma chiamati.
+ * Caricamento istruzioni origine dei programmi chiamati, nel programma corrente
+ */
+function onclick_pgmCalled(clicked_id) {
+	var idProgram = "";
+	var arOrigin = [];
+	var objOrigin = {};
+    var tbltop = "";
+    var main = ""; 
+	var tblBottom = "";
+	var tbl = "";	 
+	var i = 0;
+	
+	idProgram = document.getElementById(clicked_id).innerHTML;
+	curSelPgmCalled = idProgram;
+	
+    tbltop = "<table id='tbPathsCalledXref' class='tbPathsCalledXref'>";
+    main = ""; 
+    	
+	for (i=0; i < arCalledCaller.length; i++) {	 
+		
+		 if (arCalledCaller[i].type == "caller") {break;}
+		 if (arCalledCaller[i].program != idProgram) {continue;}
+
+		 arOrigin = arCalledCaller[i].arOrigin;
+		 
+		 for (var j = 0; j < arOrigin.length; j++) {
+			 objOrigin = arOrigin[j];
+	   		 main  +=   "<tr>"
+	   		       +      "<td class='tdPathsFieldXrefNumInstr'  id='pgmCalledXref_" + j  + "' onclick='onclick_pgmCalledXref(this.id)'"   + " tabindex='0' >"  + objOrigin.numInstrOrigin + "</td>" 
+	   		       +    "</tr>";	
+		 }
+	}   
+
+   	tblBottom = '</table>';
+	tbl = tbltop + main + tblBottom;	 
+	document.getElementById('divPathsCalledXref').innerHTML = tbl;	 	
+	
+	// Selezione/deselezione
+	i = clicked_id.indexOf("_");
+	iSelPgmCalled = clicked_id.substr(i+1);
+    if (iSelPgmCalled != iSelPgmCalledOld && iSelPgmCalledOld >= 0) {
+    	document.getElementById("pgmCalled_"+iSelPgmCalledOld).classList.remove("selected"); 
+    }
+    iSelPgmCalledOld=iSelPgmCalled;
+    if (document.getElementById("pgmCalled_"+iSelPgmCalled).classList.length > 1) {
+    	document.getElementById("pgmCalled_"+iSelPgmCalled).classList.remove("selected");
+    } else {
+    	document.getElementById("pgmCalled_"+iSelPgmCalled).classList.add("selected"); 
+	}
+} 
+
+/* Posizionamento su istruzione di programma corrente*/
+function onclick_pgmCalledXref(clicked_id) {
+	var i = 0;
+	var numInstr = 0;
+	var ifPerform = "N";    // In caso di perform si posiziona sulla perform e non sul paragrafo
+	
+	numInstr = document.getElementById(clicked_id).innerHTML;
+	positionOnSourceProcInstruction(numInstr, ifPerform);   	
+
+	// Selezione/deselezione
+	i = clicked_id.indexOf("_");
+	iSelPgmCalledXref = clicked_id.substr(i+1);
+    if (iSelPgmCalledXref != iSelPgmCalledXrefOld && iSelPgmCalledXrefOld >= 0) {
+    	document.getElementById("pgmCalledXref_"+iSelPgmCalledXrefOld).classList.remove("selected"); 
+    }
+    iSelPgmCalledXrefOld=iSelPgmCalledXref;
+    if (document.getElementById("pgmCalledXref_"+iSelPgmCalledXref).classList.length > 1) {
+    	document.getElementById("pgmCalledXref_"+iSelPgmCalledXref).classList.remove("selected");
+    } else {
+    	document.getElementById("pgmCalledXref_"+iSelPgmCalledXref).classList.add("selected"); 
+	}
+} 
+
+/*
+ * Selezionato un programma chiamante.
+ * Caricamento istruzioni origine dei programmi chiamati, nel programma corrente
+ */
+function onclick_pgmCaller(clicked_id) {	
+	var idProgram = "";
+	var arOrigin = [];
+    var tbltop = "";
+    var main = ""; 
+	var tblBottom = "";
+	var tbl = "";	 
+	var i = 0;
+	
+	idProgram = document.getElementById(clicked_id).innerHTML;
+	curSelPgmCaller = idProgram;
+	
+    tbltop = "<table id='tbPathsCallerXref' class='tbPathsCallerXref'>"
+    main = ""; 
+    	
+	for (i=0; i < arCalledCaller.length; i++) {	      	   	    	   
+		 if (arCalledCaller[i].type == "called") 	{continue;}
+		 if (arCalledCaller[i].program != idProgram) {continue;}
+		 arOrigin = arCalledCaller[i].arOrigin;
+		 for (var j = 0; j < arOrigin.length; j++) {
+	   		  main  +=   "<tr>"
+	   		         +      "<td class='tdPathsFieldXrefNumInstr'  id='pgmCallerXref_" + i  + "' onclick='onclick_pgmCallerXref(this.id)''"   + " tabindex='0' >"  + arOrigin[j].numInstrOrigin + "</td>" 
+	   		         +    "</tr>"	
+		 }
+		 break;
+	}   
+
+   	tblBottom = '</table>'
+	tbl = tbltop + main + tblBottom;	 
+	document.getElementById('divPathsCallerXref').innerHTML = tbl;	
+	
+	// Selezione/deselezione
+	i = clicked_id.indexOf("_");
+	iSelPgmCaller = clicked_id.substr(i+1);
+    if (iSelPgmCaller != iSelPgmCallerOld && iSelPgmCallerOld >= 0) {
+    	document.getElementById("pgmCaller_"+iSelPgmCallerOld).classList.remove("selected"); 
+    }
+    iSelPgmCallerOld=iSelPgmCaller;
+    if (document.getElementById("pgmCaller_"+iSelPgmCaller).classList.length > 1) {
+    	document.getElementById("pgmCaller_"+iSelPgmCaller).classList.remove("selected");
+    } else {
+    	document.getElementById("pgmCaller_"+iSelPgmCaller).classList.add("selected"); 
+	}
+} 
+
+
+/* Attivazione di una nuova pagina di Inspector e posizionamento su istruzione di programma */
+function onclick_pgmCallerXref(clicked_id) {
+	var numInstr = 0;
+	
+	numInstr = document.getElementById(clicked_id).innerHTML;
+	
+    // Show standard source parameters
+    localStorage.setItem("sourceIdObject", curSelPgmCaller);
+    localStorage.setItem("sourceCaller", "Inspector");
+    localStorage.setItem("sourceNumInstr", numInstr);
+    localStorage.setItem("sourceOriginArea", "P");
+ 
+    // Specific for Inspector
+    localStorage.setItem("sourceSubSys_" + curSelPgmCaller, sourceSubSys);
+    localStorage.setItem("sourceTypeObject_" + curSelPgmCaller, "OBJECT_PGM_COBOL");
+    localStorage.setItem("sourceTypeObjectN_" + curSelPgmCaller, OBJECT_PGM_COBOL);
+    localStorage.setItem("sourceIdObject_" + curSelPgmCaller, curSelPgmCaller);
+    localStorage.setItem("sourceCaller_"   + curSelPgmCaller, "Inspector");
+    localStorage.setItem("sourceNumInstr_" + curSelPgmCaller, numInstr);
+    localStorage.setItem("sourceOriginArea_" + curSelPgmCaller, "P");
+    
+   // Load inspector in a new page
+	window.open("Inspector.html",curSelPgmCaller);
+
+	// Selezione/deselezione
+	i = clicked_id.indexOf("_");
+	iSelPgmCallerXref = clicked_id.substr(i+1);
+    if (iSelPgmCallerXref != iSelPgmCallerXrefOld && iSelPgmCallerXrefOld >= 0) {
+    	document.getElementById("pgmCallerXref_"+iSelPgmCallerXrefOld).classList.remove("selected"); 
+    }
+    iSelPgmCallerXrefOld=iSelPgmCallerXref;
+    if (document.getElementById("pgmCallerXref_"+iSelPgmCallerXref).classList.length > 1) {
+    	document.getElementById("pgmCallerXref_"+iSelPgmCallerXref).classList.remove("selected");
+    } else {
+    	document.getElementById("pgmCallerXref_"+iSelPgmCallerXref).classList.add("selected"); 
+	}
+
+} 
+
+
+/*
+ * Caricamento informazioni dinamiche
+ */
+function loadProgramDynamicInstr() {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramDynamicInstr + "/" + userInp + "/" + objConfig.sys + "/" + sourceSubSys + "/"  + idObject;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramDynamicInstr(xmlhttp);};
+}  
+function handleJsonResponseProgramDynamicInstr(xmlhttp) {
+	var objects = null;
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+ 	   alert("Error retrieving Dynamic Instruction List - "+xmlhttp.responseText.substr(2));
+    }
+    objects=JSON.parse(xmlhttp.responseText);
+    arDynamicInstr = objects;
+     
+    var tbltop = "<table id='tbDynInstr'>"
+    var main = ""; 
+
+    // Scan rows from server
+    for (var i=0; i < objects.length; i++) {
+ 
+    	main  +=   "<tr>"
+	         +      "<td class='dynNumInstr' id='dynNumInst" + "_"  + i  + "'" + "' onclick='onclick_dynNumInstr(this.id)'>" + objects[i].numInstr  + "</td>" 
+  	         +    "</tr>";	
+     }   
+     
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;	 
+    
+    // Show source and position on first instruction row
+    document.getElementById("divTbDynInstr").innerHTML = tbl;	
+} 
+
+// Selezione numero istruzione dinamica
+// Load Campi/sottocampi dinamici
+function onclick_dynNumInstr(clicked_id) {
+	var xmlhttp;
+	var objDynamicInstr = {};
+	var numInstr = "";
+	var idField = "";
+    var i = 0;
+    
+    i = clicked_id.indexOf("_");
+    i = clicked_id.substr(i+1);
+ 
+	numInstr = document.getElementById(clicked_id).innerHTML;
+	objDynamicInstr = arDynamicInstr[i];
+	idField = objDynamicInstr.idField;
+	
+	positionOnSourceProcInstruction(numInstr, "N");   // Position on source program
+
+ 	// Selezione/deselezione numero istruzione dinamica
+    i = clicked_id.indexOf("_");
+    iSelDynInstr = clicked_id.substr(i+1);
+    if (iSelDynInstr != iSelDynInstrOld && iSelDynInstrOld >= 0) {
+		document.getElementById("dynNumInst_" + iSelDynInstrOld).classList.remove("selected"); 
+	}   
+	iSelDynInstrOld=iSelDynInstr;	
+	if (document.getElementById("dynNumInst_" + iSelDynInstr).classList.length > 1) {
+		document.getElementById("dynNumInst_" + iSelDynInstr).classList.remove("selected"); 
+	} else {
+		document.getElementById("dynNumInst_" + iSelDynInstr).classList.add("selected"); 
+	}		
+	iSelDynFieldTypeOld = -1;
+	
+	// Caricamento campo/sottocampi
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramDynamicSubFields + "/" + userInp + "/" + objConfig.sys + "/" + sourceSubSys+ "/"  + idObject + "/" + numInstr + "/" + idField ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramDynamicSubField(xmlhttp, idField);};
+}
+function handleJsonResponseProgramDynamicSubField(xmlhttp, idField) {
+	var objects = null;
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving Dynamic SubField List - "+xmlhttp.responseText.substr(2));
+    }
+    objects=JSON.parse(xmlhttp.responseText);
+    arDynamicFieldSub = objects;
+    
+    var tbltop = "<table id='tbDynFields'>"
+    var main = ""; 
+
+    // Scan rows from server
+    for (var i=0; i < objects.length; i++) {
+ 
+    	main  +=  "<tr>";
+    	if (i == 0) {
+    		main  += "<td class='dynFieldFS'       id='dynFieldType" + "_"    + i  + "'" + "' onclick='onclick_dynFieldType(this.id)'>" + "F"  + "</td>";
+       	    main  += "<td class='dynFieldName'     id='dynFieldName" + "_"    + i  + "'" + "' onclick='onclick_dynFieldName(this.id)'>" + objects[i].idField + "</td>" 
+    	} else {
+    		main  += "<td class='dynFieldFS'       id='dynFieldType" + "_"    + i  + "'" + "' onclick='onclick_dynFieldType(this.id)'>" + "S"  + "</td>";
+       	    main  += "<td class='dynFieldName'     id='dynFieldName" + "_"    + i  + "'" + "' onclick='onclick_dynFieldName(this.id)'>" + objects[i].idSubField + "</td>" 
+		}
+	    main += "</tr>";	
+     }   
+     
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;	 
+    
+    // Show source and position on first instruction row
+    document.getElementById("divTbDynFields").innerHTML = tbl;	
+    
+    // Clear values
+    document.getElementById("divTbDynValues").innerHTML = null;	
+} 
+// Selezione campo/Sottocampo
+// Load Valori campo
+// Load trasformazioni campo (subField settings)
+function onclick_dynFieldType(clicked_id) {
+	var xmlhttp;
+	var idField = "";
+	var idSubField = "";
+	var fieldType = "";  // F/S
+	var numInstr = 0;
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = parseInt(clicked_id.substr(i+1));
+	fieldType = document.getElementById("dynFieldType_"+i).innerHTML;
+	
+	idField = arDynamicFieldSub[i].idField;
+	idSubField = arDynamicFieldSub[i].idSubField;
+	numInstr = arDynamicFieldSub[i].numInstr;
+
+ 	// Selezione/deselezione numero istruzione dinamica
+    i = clicked_id.indexOf("_");
+    iSelDynFieldType = clicked_id.substr(i+1);
+    if (iSelDynFieldType != iSelDynFieldTypeOld && iSelDynFieldTypeOld >= 0) {
+		document.getElementById("dynFieldType_" + iSelDynFieldTypeOld).classList.remove("selected"); 
+		document.getElementById("dynFieldName_" + iSelDynFieldTypeOld).classList.remove("selected"); 
+	}   
+	iSelDynFieldTypeOld=iSelDynFieldType;	
+	if (document.getElementById("dynFieldType_" + iSelDynFieldType).classList.length > 1) {
+		document.getElementById("dynFieldType_" + iSelDynFieldType).classList.remove("selected"); 
+		document.getElementById("dynFieldName_" + iSelDynFieldTypeOld).classList.remove("selected"); 
+	} else {
+		document.getElementById("dynFieldType_" + iSelDynFieldType).classList.add("selected"); 
+		document.getElementById("dynFieldName_" + iSelDynFieldTypeOld).classList.remove("selected"); 
+	}		
+		
+	// The field is not a group
+	if (idSubField == "") {
+		idSubField = "*"
+	}
+	
+	// Load trasformazioni sottocampo (subField settings)
+	// Se sottocampo di gruppo o unico campo elementare
+	if (fieldType == "S" 
+	|| (fieldType == "F" && arDynamicFieldSub.length == 1)) {
+		loadSubFieldSettings(numInstr, idField, idSubField);
+	}
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramDynamicValues + "/" + userInp + "/" + objConfig.sys + "/" + sourceSubSys + "/"  + idObject + "/" + numInstr + "/" + idField + "/" + idSubField ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramDynamicValues(xmlhttp);};
+}
+function handleJsonResponseProgramDynamicValues(xmlhttp) {
+	var objects = null;
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving Dynamic Field Values - "+xmlhttp.responseText.substr(2));
+    }
+    objects=JSON.parse(xmlhttp.responseText);
+	
+    var tbltop = "<table id='tbDynValues'>"
+    var main = ""; 
+
+    // Scan rows from server
+    for (var i=0; i < objects.length; i++) {
+ 
+    	main  +=  "<tr>"
+	         +      "<td class='dynValue'   id='dynFieldValue" + "_"    + i  + "'" + "' onclick='onclick_dynFieldValue(this.id)'>" + objects[i].value  + "</td>" 
+  	         +    "</tr>";	
+     }   
+     
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;	 
+    
+    document.getElementById("divTbDynValues").innerHTML = tbl;	
+} 
+//Selezione campo/Sottocampo
+//Posizionamento su definizione dati
+function onclick_dynFieldName(clicked_id) {
+	var idField = "";
+	var idSubField = "";
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = parseInt(clicked_id.substr(i+1));
+	
+	idField = arDynamicFieldSub[i].idField;
+	idSubField = arDynamicFieldSub[i].idSubField;
+
+	// Selezione/deselezione numero istruzione definizione
+	// Posizionamento in Working/Linkage con eventuale esplosione copy
+	positionOnSourceDataInstruction(idField, 0);
+}
+
+// Select value
+function onclick_dynFieldValue(clicked_id) {
+	// TODO
+}
+
+// Load trasformazioni sottocampo nel programma corrente e in caller/called
+// Si imposta programma, numero istruzione e tipo impostazione.
+// Il dettaglio impostazione si visualizza alla selezione della trasformazione
+function loadSubFieldSettings(numInstr, idField, idSubField) {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramDynamicSubFieldSetting + "/" + userInp + "/" + objConfig.sys + "/" + sourceSubSys + "/"  + idObject + "/" + numInstr + "/" + idField + "/" + idSubField ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramSubFieldSettings(xmlhttp);};
+}
+function handleJsonResponseProgramSubFieldSettings(xmlhttp) {
+	var objects = null;
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving Dynamic SubField Settings - "+xmlhttp.responseText.substr(2));
+    }
+    objects=JSON.parse(xmlhttp.responseText);
+    arDynamicFieldSubSetting = objects;
+    
+    var tbltop = "<table id='tbDynSetting'>"
+    var main = ""; 
+
+    // Scan rows from server
+    for (var i=0; i < objects.length; i++) {
+ 
+    	main  +=  "<tr>"
+	          +      "<td class='dynSettingNumChain' id='dynSettingNumChain" + "_"  + i  + "'>"  + objects[i].numChain     + "</td>" 
+	          +      "<td class='dynSettingPgm'      id='dynSettingPgm"      + "_"  + i  + "'>"  + objects[i].idPgmSet     + "</td>" 
+	          +      "<td class='dynSettingNumInstr' id='dynSettingNumInstr" + "_"  + i  + "'" + "' onclick='onclick_dynSettingNumInstr(this.id)'>" + objects[i].numInstrSet  + "</td>" 
+	          +      "<td class='dynSettingSetMode'  id='dynSettingSetMode"  + "_"  + i  + "'" + "' onclick='onclick_dynSettingSetMode(this.id)'>"  + objects[i].setMode  + "</td>" 
+  	          +    "</tr>";	
+     }   
+     
+    var tblBottom = '</table>'
+    var tbl = tbltop + main + tblBottom;	
+    
+    document.getElementById("divTbDynSetting").innerHTML = tbl;	
+    
+    // Clear valori di impostazione
+    // Caricati su selezione di specifica riga di setting
+    clearDynamicFieldSubSetting();
+} 
+// Su selezione numero istruzione
+// Se in programma corrente posizionamento su numero inìstruzione di assegnazione
+// Se in programma chiamante/chiamante attivazione nuova pagina di in
+function onclick_dynSettingNumInstr(clicked_id) {
+	var idPgmSet = "";
+	var numInstr = "";
+	var i = 0;
+    i = clicked_id.indexOf("_");
+    i = clicked_id.substr(i+1);
+ 
+    idPgmSet = document.getElementById("dynSettingPgm_"+i).innerHTML;
+	numInstr = document.getElementById(clicked_id).innerHTML;
+	
+	// Posizionamento se assegnazione in pgm corrente
+	if (idPgmSet == idObject) {
+		positionOnSourceProcInstruction(numInstr, "N");   // Position on source program
+	} else {
+	    // Load inspector in a new page
+	    localStorage.setItem("sourceIdObject", curSelPgmCaller);
+	    localStorage.setItem("sourceCaller", "Inspector");
+	    localStorage.setItem("sourceNumInstr_" + idObject, numInstr).innerHTML;
+		winOpenInspector = window.open("Inspector.html","_blank");
+	}
+}
+// Su selezione tipologia setting
+// Caricamento tabella dettaglio setting 
+// Le righe della tabella con valori vuoti sono state caricate a inizio programma
+function onclick_dynSettingSetMode(clicked_id) {	 
+	var objDynamicFieldSubSetting = {};
+	var i = 0;
+	
+    i = clicked_id.indexOf("_");
+    i = clicked_id.substr(i + 1);
+    objDynamicFieldSubSetting = arDynamicFieldSubSetting[i];
+    
+    // Caricamento valori assegnazione
+    document.getElementById('idFieldNameValue').innerHTML=objDynamicFieldSubSetting.idField;                                    
+    document.getElementById('numFieldValue').innerHTML=objDynamicFieldSubSetting.numField;                                    
+    document.getElementById('idSubFieldNameValue').innerHTML=objDynamicFieldSubSetting.idSubField;                                    
+    document.getElementById('numSubFieldValue').innerHTML=objDynamicFieldSubSetting.numSubField;                                    
+    document.getElementById('posInSubFieldValue').innerHTML=objDynamicFieldSubSetting.posInSubField;                                    
+    document.getElementById('lngInSubFieldValue').innerHTML=objDynamicFieldSubSetting.lngInSubField;                                    
+    document.getElementById('numInstrOriginSpreadedValue').innerHTML=objDynamicFieldSubSetting.numInstrOriginSpreaded;                                    
+    document.getElementById('typeObjectPgmSetValue').innerHTML=objDynamicFieldSubSetting.typeObjectPgmSet;                                    
+    document.getElementById('numPathValue').innerHTML=objDynamicFieldSubSetting.numPath;                                    
+    document.getElementById('fieldSenderIdValue').innerHTML=objDynamicFieldSubSetting.fieldSenderId;                                    
+    document.getElementById('fieldSenderNumValue').innerHTML=objDynamicFieldSubSetting.fieldSenderNum;                                    
+    document.getElementById('fieldSenderPosValue').innerHTML=objDynamicFieldSubSetting.fieldSenderPos;                                    
+    document.getElementById('fieldSenderLngValue').innerHTML=objDynamicFieldSubSetting.fieldSenderLng;                                    
+    document.getElementById('fieldReceiverIdValue').innerHTML=objDynamicFieldSubSetting.fieldReceiverId;                                    
+    document.getElementById('fieldReceiverNumValue').innerHTML=objDynamicFieldSubSetting.fieldReceiverNum;                                    
+    document.getElementById('fieldReceiverPosValue').innerHTML=objDynamicFieldSubSetting.fieldReceiverPos;                                    
+    document.getElementById('fieldReceiverLngValue').innerHTML=objDynamicFieldSubSetting.fieldReceiverLng;                                    
+    document.getElementById('setModeValue').innerHTML=objDynamicFieldSubSetting.setMode;                                    
+    document.getElementById('numUsingParmValue').innerHTML=objDynamicFieldSubSetting.numUsingParm;                                    
+    document.getElementById('dspFieldInUsingParmValue').innerHTML=objDynamicFieldSubSetting.dspFieldInUsingParm;                                    
+    document.getElementById('dspFieldInLinkageAreaValue').innerHTML=objDynamicFieldSubSetting.dspFieldInLinkageArea;                                    
+    document.getElementById('typePointerAreaValue').innerHTML=objDynamicFieldSubSetting.typePointerArea;                                    
+    document.getElementById('numUsingParmPointerValue').innerHTML=objDynamicFieldSubSetting.numUsingParmPointer;                                    
+    document.getElementById('dspPointerInUsingParmValue').innerHTML=objDynamicFieldSubSetting.dspPointerInUsingParm;                                    
+    document.getElementById('dspPointerInLinkageAreaValue').innerHTML=objDynamicFieldSubSetting.dspPointerInLinkageArea;                                    
+    document.getElementById('valueValue').innerHTML=objDynamicFieldSubSetting.value;                                    
+    document.getElementById('typeObjExtValue').innerHTML=objDynamicFieldSubSetting.typeObjExt;                                    
+    document.getElementById('idObjExtValue').innerHTML=objDynamicFieldSubSetting.idObjExt;  
+    document.getElementById('objExtSqlTableColumnValue').innerHTML=objDynamicFieldSubSetting.objExtSqlTableColumn;  
+    document.getElementById('objExtSystemValue').innerHTML=objDynamicFieldSubSetting.objExtSystem;                                    
+    document.getElementById('objExtColFieldValue').innerHTML=objDynamicFieldSubSetting.objExtColField;                                   
+    document.getElementById('objExtIdCopyValue').innerHTML=objDynamicFieldSubSetting.objExtIdCopy;                                      
+    document.getElementById('objExtPosColValue').innerHTML=objDynamicFieldSubSetting.objExtPosCol;                                    
+    document.getElementById('objExtLengthColValue').innerHTML=objDynamicFieldSubSetting.objExtLengthCol;                                    
+    document.getElementById('solvedObjExtValue').innerHTML=objDynamicFieldSubSetting.solvedObjExt;                                    
+    document.getElementById('waitingForExternalDataValue').innerHTML=objDynamicFieldSubSetting.waitingForExternalData;  
+}
+
+// clear valori sub field setting
+function clearDynamicFieldSubSetting() {
+    // Caricamento valori assegnazione
+    document.getElementById('numFieldValue').innerHTML="";                                    
+    document.getElementById('numSubFieldValue').innerHTML="";                                        
+    document.getElementById('posInSubFieldValue').innerHTML="";                                   
+    document.getElementById('lngInSubFieldValue').innerHTML="";                                 
+    document.getElementById('numInstrOriginSpreadedValue').innerHTML="";                                         
+    document.getElementById('typeObjectPgmSetValue').innerHTML="";                                      
+    document.getElementById('numPathValue').innerHTML="";                                    
+    document.getElementById('fieldSenderIdValue').innerHTML="";                                       
+    document.getElementById('fieldSenderNumValue').innerHTML="";                                     
+    document.getElementById('fieldSenderPosValue').innerHTML="";                                          
+    document.getElementById('fieldSenderLngValue').innerHTML="";                                     
+    document.getElementById('fieldReceiverIdValue').innerHTML="";                                           
+    document.getElementById('fieldReceiverNumValue').innerHTML="";                                      
+    document.getElementById('fieldReceiverPosValue').innerHTML="";                                          
+    document.getElementById('fieldReceiverLngValue').innerHTML="";                                      
+    document.getElementById('setModeValue').innerHTML="";                                         
+    document.getElementById('numUsingParmValue').innerHTML="";                                      
+    document.getElementById('dspFieldInUsingParmValue').innerHTML="";                                   
+    document.getElementById('dspFieldInLinkageAreaValue').innerHTML="";                                           
+    document.getElementById('typePointerAreaValue').innerHTML="";                                 
+    document.getElementById('numUsingParmPointerValue').innerHTML="";                                   
+    document.getElementById('dspPointerInUsingParmValue').innerHTML="";                                   
+    document.getElementById('dspPointerInLinkageAreaValue').innerHTML="";                                       
+    document.getElementById('valueValue').innerHTML="";                                         
+    document.getElementById('typeObjExtValue').innerHTML="";                                  
+    document.getElementById('idObjExtValue').innerHTML="";                                       
+    document.getElementById('objExtSystemValue').innerHTML="";                                      
+    document.getElementById('objExtColFieldValue').innerHTML="";                                   
+    document.getElementById('objExtPosColValue').innerHTML="";                               
+    document.getElementById('objExtLengthColValue').innerHTML="";                                       
+    document.getElementById('solvedObjExtValue').innerHTML="";                                         
+    document.getElementById('waitingForExternalDataValue').innerHTML="";        
+}
+
+
+// Caricamento tipo expand del path
+function loadComboExpand () {
+	pathExpandSel.disable=true; 	
+	pathExpandSel.add(new Option("Stack", "Stack"));
+	pathExpandSel.add(new Option("Parag.", "Parag."));
+	pathExpandSel.add(new Option("Detail", "Detail"));
+	curSelTypeExpand = "S";
+	pathExpandSel.disable=false;	
+} 
+
+// Caricamento dead-code range di istruzioni
+function loadComboDeadCode() {	
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlProgramDeadCode + "/" + userInp + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    }; 
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseDeadCode(xmlhttp);};	
+} 
+
+function handleJsonResponseDeadCode(xmlhttp) {
+	var objects = null;
+    var arDead = [];
+    var arDeadXN = [];
+    var objDeadDataProc = {};   
+    var i = 0;
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+	
+	objects=JSON.parse(xmlhttp.responseText);
+	
+	arDeadDataProc = new Array();
+	deadCodeSel.disable=true;
+	
+	//1 Copy Data Division
+	arDead = objects.arDeadCodeCopyDataCD;
+	arDeadXN = objects.arDeadCodeCopyDataCD_N;
+	for (i=0; i < arDead.length; i++) {
+		deadCodeSel.add(new Option("CD("+arDead[i]+")", "CD("+arDead[i]+")")); 
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "CD";
+		objDeadDataProc.copyName = arDead[i];
+		objDeadDataProc.numInstr = arDeadXN[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = "";
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+
+	//2 Copy Data Procedure
+	arDead = objects.arDeadCodeCopyProcCP;
+	arDeadXN = objects.arDeadCodeCopyDataCP_N;
+	for (i=0; i < arDead.length; i++) {	
+		deadCodeSel.add(new Option("COPY("+arDead[i]+")", "COPY("+arDead[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "CP";
+		objDeadDataProc.copyName = arDead[i];
+		objDeadDataProc.numInstr = arDeadXN[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = "";
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+	
+	//3 Data Division Item Numbers
+	arDead = objects.arDeadCodeDataItemNumbersDD;
+	arDeadXN = objects.arDeadCodeDataItemNumbersDD_X;
+	for (i=0; i < arDead.length; i++) {
+		deadCodeSel.add(new Option("F("+arDeadXN[i]+")", "F("+arDeadXN[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "DD";
+		objDeadDataProc.copyName = "";
+		objDeadDataProc.numInstr = arDead[i];
+		objDeadDataProc.fieldName = arDeadXN[i];
+		objDeadDataProc.labelSectionName = "";
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+	
+	//4 Procedure Division Instruction Numbers
+	arDead = objects.arDeadCodeInstrNumbersIP;
+	for (i=0; i < arDead.length; i++) {	
+		deadCodeSel.add(new Option("I("+arDead[i]+")", "I("+arDead[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "IP";
+		objDeadDataProc.copyName = "";
+		objDeadDataProc.numInstr = arDead[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = "";
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+	
+	//5 Procedure Division Not reacheble Instruction Numbers
+	arDead = objects.ardeadCodeUnreachableUP;
+	for (i=0; i < arDead.length; i++) {	 
+		deadCodeSel.add(new Option("UP("+arDead[i]+")", "UP("+arDead[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "UP";
+		objDeadDataProc.copyName = "";
+		objDeadDataProc.numInstr = arDead[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = "";
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+
+	//6 Procedure Division Labels
+	arDeadXN = objects.arDeadCodeLabelsLB_N;
+	arDead = objects.arDeadCodeLabelsLB;
+	for (i=0; i < arDead.length; i++) {	 
+		deadCodeSel.add(new Option("LB("+arDead[i]+")", "LB("+arDead[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "LB";
+		objDeadDataProc.copyName = "";
+		objDeadDataProc.numInstr = arDeadXN[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = arDead[i];
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+	
+	//7 Procedure Division Paragraphs
+	arDeadXN = objects.arDeadCodeParagraphsPH_N;
+	arDead = objects.arDeadCodeParagraphsPH;
+	for (i=0; i < arDead.length; i++) {	 
+		deadCodeSel.add(new Option("PH("+arDead[i]+")", "PH("+arDead[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "PH";
+		objDeadDataProc.copyName = "";
+		objDeadDataProc.numInstr = arDeadXN[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = arDead[i];
+		arDeadDataProc.push(objDeadDataProc);
+	}   
+	
+	//8 Procedure Division Sections
+	arDeadXN = objects.arDeadCodeLabelsSE_N;
+	arDead = objects.arDeadCodeSectionsSE;
+	for (i=0; i < arDead.length; i++) {	 
+		deadCodeSel.add(new Option("SE("+arDead[i]+")", "SE("+arDead[i]+")"));  
+		objDeadDataProc = new Object();
+		objDeadDataProc.prefix = "SE";
+		objDeadDataProc.copyName = "";
+		objDeadDataProc.numInstr = arDeadXN[i];
+		objDeadDataProc.fieldName = "";
+		objDeadDataProc.labelSectionName = arDead[i];
+		arDeadDataProc.push(objDeadDataProc);
+	} 
+	
+	deadCodeSel.disable=false;	
+}
+
+function loadIdxAndPgmsource() {
+	getJsonResponseIdxProgramGET(); 
+}
+
+// Recupero source e posizionamento
+// a fronte di richiamo da ViewerRelations, ViewerWhereUsed, etc
+function fillSource() {
+	setSourceCallerParameters();
+	
+	// Richiesto posizionamento su programma diverso da quello
+	// correntemente visualizzato
+	if (curPgmName != sourceIdObject) {
+		startProcessing();
+		return;
+	}
+		
+	// Richiesto posizionamento su programma correntemete visualizzato o suo copy
+
+	// Visualizzazione riga sorgente programma
+	if (sourceUnderCopy == "") {
+		startProcessing();
+	// Visualizzazione riga sorgente dentro copy
+	} else {		
+		gestExpandCopyAndPosition(sourceNumInstr, sourceUnderCopy, "P");
+	}
+	
+	return;
+}
+
+/* Called by loadIdxProgram() */
+function loadSource() {
+	getJsonResponseSourceGET(); 
+}
+
+
+function getJsonResponseIdxProgramGET() {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlIdxProgramGET + "/" + userInp + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseIdxProgram(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseIdxProgram(xmlhttp, jsonArray) {
+	var idxFile = "";
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   return;
+		   } else {
+			   idxFile=xmlhttp.responseText;
+			   arIdxProgram = idxFile.split("|");
+		   }		   
+		   loadSource();	
+    }	
+}
+
+function getJsonResponseSourceGET() {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlSourceGET + "/" + userInp + "/" + objConfig.sys + "/" + sourceSubSys + "/" + typeObjectN + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    }; 
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSource(xmlhttp, idObject);};
+}
+
+function handleJsonResponseSource(xmlhttp, id	) {
+	var objects = null;
+	var rowStartOrigin = 0;
+	var rowEndOrigin = 0;
+	var rowStartIdx = 0;
+	var rowEndIdx = 0;
+	var arIdx = [];
+	var iIdx = 0;
+	var numInstr = 0;
+	var strng = "";
+	var division = "";         // I E D P
+	var expand = "";           // + if copy statement
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   alert("File Not Found - "+xmlhttp.responseText.substr(2));
+		   }
+		   objects=JSON.parse(xmlhttp.responseText);
+		   
+		   // Save source descriptor in global variable
+		   arSourceProgram = objects;
+
+	       var tbltop = "<table id='tbSourceRows'>";
+		   var main = ""; 
+		   var spaces="";
+		   var iEnd=0;
+		   
+		   // Ahead per gestione numero istruzione programma
+		   strng = arIdxProgram[iIdx];
+		   arIdx = strng.split(" ");
+		   rowStartIdx = parseInt(arIdx[0]);
+		   rowEndIdx = parseInt(arIdx[1]);
+		   numInstr =  arIdx[2];
+		   division = arIdx[3];
+   		   expand = arIdx[4];		// - or copyName
+		   
+		   // Scan rows from server		   
+	       for (var i=0; i < objects.length; i++) {
+	          
+	    	   // Get proper Instruction number
+	    	   while  (i > rowStartIdx) {
+	    		   iIdx++;
+	  			   strng = arIdxProgram[iIdx];
+	   			   arIdx = strng.split(" ");
+	   			   rowStartIdx = parseInt(arIdx[0]);
+	   			   rowEndIdx = parseInt(arIdx[1]);
+	   			   numInstr =  parseInt(arIdx[2]);
+	   			   division = arIdx[3];
+	   			   expand = arIdx[4];		// - or copyName
+	   			   if (expand == "-") {
+	   				   expand = "";
+	   			   } else {
+	   				   expand = "+";  
+				   }
+			   } 
+
+	    	   setDivisionStartEndRowIdx(iIdx, division);
+	    	   
+	    	   // Per ottimizzazione  
+	    	   if (iIdxProcedure == 0 && division == "P") {
+	    		   iIdxProcedure = iIdx;
+	    		   iSourceProcedure = rowStartIdx;
+			   }
+			   
+	    	   // Pointer to last full char
+			   spaces = "";
+	    	   for (iEnd = objects[i].row.length-1; iEnd > 0; iEnd--) {
+				  if ( objects[i].row.charAt(iEnd) != " ") {break;}
+			   }
+	    	   // Space till the first non space char      	  
+	    	   for (var ji = 0; ji < iEnd; ji++) {
+				  if ( objects[i].row.charAt(ji) != " ") {break;}	    		   
+				  spaces+="&nbsp;"
+			   }
+ 	    	   if (numInstr == 0) {
+ 	    		  numInstr = "";
+			   }
+	    	   main  +=   "<tr class='trAll'       id=Pr_"       + i  + "  tabindex='0' >"
+	     	         +      "<td class='nRow'      id=PnR_"      + i  + "  tabindex='0' >"          								    + i                     	+ "</td>" 
+	     	         +      "<td class='nInstr'    id=PnI_"  	 + i  + "  tabindex='0' >"          								    + numInstr              	+ "</td>" 
+	      	         +      "<td class='expand'    id=Pexpand_"  + i  + "  tabindex='0'  onclick='onclick_expandProc(this.id)'" + " >"  + expand  					+ "</td>" 
+ 	     	         +      "<td class='row'       id=Prow_" 	 + i  + "  tabindex='0'  onclick='onclick_rowProc(this.id)'" + " >"  	+ spaces + objects[i].row  	+ "</td>" 
+	     	         +    "</tr>";
+               
+	  	       
+	     	   // Expand indica copy da esplodere, con una riga con un TD e un DIV caricato a richiesta
+	     	   // Prefisso impostato a P in quanto source centrale di programma
+               if (expand != "+") {continue;}
+	    	   main  +=   "<tr class='trDiv' >" + "<td class='tdDiv' colspan='4'> <div id='PtdDiv_" + i + "'></div></td>" + "</tr>";
+ 	       }   
+	       
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;	 	       
+  
+	       // Show source and position on first instruction row
+	       document.getElementById('divTbSourceRows').innerHTML = tbl;
+	       document.getElementById('PnR_'  + rowStartOrigin).focus();	       
+
+	       // Procedure division
+	       if (sourceOriginArea == "P") {
+			   rowStartOrigin = parseInt(sourceRowStart);
+			   rowEndOrigin =  parseInt(sourceRowEnd);		       
+		       iSelRowSourceStartOld = rowStartOrigin;
+		       iSelRowSourceEndOld = rowEndOrigin;
+	 	       numInstr = localStorage.getItem("sourceNumInstr_" + idObject)
+	 	       positionOnSourceProcInstruction(numInstr, "N");
+		   }
+	       
+           // Oggetto programma sicuramente disponibile in cache
+           fillLayout();
+    }	
+	
+}
+
+// Inizio fine Division nel sorgente e nell'index alle istruzioni
+function setDivisionStartEndRowIdx(iIdx, division)  {
+	if (division == "I" )  {
+		// Index
+		if (iDivIdIdxStart == -1 ) {
+			iDivIdIdxStart = iIdx;
+		}
+		iDivIdIdxEnd = iIdx;		
+	} else if (division == "E" ) {
+		// Index
+		if (iDivEnvIdxStart == -1 ) {
+			iDivEnvIdxStart = iIdx;
+		}
+		iDivEnvIdxEnd = iIdx;		
+	} else if (division == "D" ) {
+		// Index
+		if (iDivDataIdxStart == -1 ) {
+			iDivDataIdxStart = iIdx;
+		}
+		iDivDataIdxEnd = iIdx;		
+	} else if (division == "P" ) {
+		// Index
+		if (iDivProcIdxStart == -1 ) {
+			iDivProcIdxStart = iIdx;
+		}
+		iDivProcIdxEnd = iIdx;		
+	}
+}
+
+
+function getJsonResponseLabelsGET() {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlLabelsGET + "/" + userInp + "/"  + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseLabels(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseLabels(xmlhttp, jsonArray) {
+	var objects = null;
+	var labelSection = "";
+	var objLabelDescriptor = null;
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   alert("File Not Found - "+xmlhttp.responseText.substr(2));
+		   }
+		   objects=JSON.parse(xmlhttp.responseText);
+		   arLabelRowNum = new Array();
+		   
+	       var tbltop = "<table id='tbPgmLabel'>"
+			          +      "<tr>"
+		              +        "<th class='thPgmLabel'>T</th>"
+		              +        "<th class='thPgmLabel'>Name</th>"
+		              +        "<th class='thPgmLabel'>Instr</th>"
+		              +        "<th class='thPgmLabel'>Copy</th>"
+		              +      "</tr>"
+		   var main = ""; 
+
+		   // Scan rows from server
+	       for (var i=0; i < objects.length; i++) {
+	    	       	   	    	   
+			   labelSection = "";
+               if (objects[i].isSection) {
+            	   labelSection = "S";
+			   } else {
+				   labelSection = "L";
+			   }
+ 	
+	    	   objLabelDescriptor = new LabelDescriptor();
+	    	   objLabelDescriptor.numInstr = objects[i].numInstr;
+	    	   objLabelDescriptor.rowStart = objects[i].rowStart;
+	    	   objLabelDescriptor.rowEnd = objects[i].rowEnd;
+	    	   objLabelDescriptor.labelSection = objects[i].labelSection;
+	    	   objLabelDescriptor.name = objects[i].name;
+	    	   objLabelDescriptor.inCopy = objects[i].inCopy;
+	    	   objLabelDescriptor.isExpanded = false;
+	    	   arLabelRowNum.push(objLabelDescriptor);
+            
+	    	   main  +=   "<tr>"
+	     	         +      "<td class='tdLabelSection'      	id='labelSection_"         + i  + "' onclick='onclick_labelSection(this.id)"   + " tabindex='0' >"  + labelSection          + "</td>" 
+     	         	 +      "<td class='tdLabelSectionName'  	id='labelName_"            + i  + "' onclick='onclick_labelSection(this.id)''" + " tabindex='0' >"  + objects[i].name       + "</td>" 
+	     	         +      "<td class='tdLabelSectionNumInstr' id='labelSectionNumInstr_" + i  + "' onclick='onclick_labelSection(this.id)''" + " tabindex='0' >"  + objects[i].numInstr   + "</td>" 
+	     	         +      "<td class='tdLabelSectionInCopy'   id='labelInCopy_"          + i  + "' onclick='onclick_labelSection(this.id)''" + " tabindex='0' >"  + objects[i].inCopy     + "</td>" 
+	     	         +    "</tr>"
+	
+ 	       }   
+	        
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;	 
+	       
+	       // Show source and position on first instruction row
+	       document.getElementById('divTbPgmLabel').innerHTML = tbl;
+	       
+    }	
+}
+
+
+function loadUserObjectConfig() {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlUserGET + "/"+ userInp 
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseUser(xmlhttp);};
+} 
+
+function handleJsonResponseUser(xmlhttp) {
+	var objects = null;
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   var objects=JSON.parse(xmlhttp.responseText);
+	   
+	   if (objects.length == 0) {	
+			  alert("User not found on database");
+			  return;
+	   }
+	   
+	   objConfig = new Config(
+				               objects[0].user
+				             , objects[0].pwd  
+							 , objects[0].companyCode    // sys VN
+							 , ""     				     // subSys
+							 , baseUrl
+				             , objects[0].companyCode 
+				             , objects[0].company 
+				             , objects[0].userType  
+				             , objects[0].userStatus  
+				             , objects[0].language  
+				             , objects[0].country  
+				             , objects[0].mail  
+				             , objects[0].mailInfo  
+				             , objects[0].phone  
+				             , objects[0].referManager  
+				             , objects[0].referTech  
+				             , objects[0].analyzerEnabled  
+				             , objects[0].viewerEnabled 
+				             , objects[0].inspectorEnabled  
+				             , objects[0].assesmentEnabled  
+				             , objects[0].countLogin   			
+				             , objects[0].dtActivation  
+				             , objects[0].tmActivation  
+				             , objects[0].dtExpiration  
+				             , objects[0].tmExpiration  
+				             , objects[0].dtFirstLogin  
+				             , objects[0].dtFirstLogin  
+				             , objects[0].dtLastLogin  
+				             , objects[0].tmLastLogin  
+				             , objects[0].pathConfigFile  
+				             , objects[0].pathRoot  
+				             , objects[0].pathUser  
+				             , objects[0].pathPilot  
+							   // Directories relative a root o WEB-INF da file di configurazione generale
+				             , objects[0].dirResources  
+				             , objects[0].dirWork  
+				             , objects[0].dirDatabase       
+				             , objects[0].dirJclInput  
+				             , objects[0].dirCobolSrcPgmInput  
+				             , objects[0].dirCobolSrcCopyInput  
+				             , objects[0].dirCobolPgm  
+				             , objects[0].dirCobolCopy  
+				             , objects[0].dirJcl  
+				             , objects[0].dirSqlScript  	 
+				             , objects[0].dirCobolGraph  
+				             , objects[0].dirPilot  
+				             , objects[0].dirLog  
+				             , objects[0].dirOutput  
+							   // Ottimizzazione processi ed elaborazioni,  allocazione di arrays,  collections, map
+				             , objects[0].limitMaxLinesScanFindingSourceType 
+				             , objects[0].limitMaxSources  
+				             , objects[0].limitMaxSourcesInput  
+				             , objects[0].limitMaxSourcesToProcess  
+				             , objects[0].limitMaxObjects  
+				             , objects[0].limitMaxObjectsInput 
+				             , objects[0].limitMaxObjectsToProcess 
+				             , objects[0].debugThresholdMemoryGarbage  
+				             , objects[0].debugSourcesDetectedFreqGarbage  
+				             , objects[0].debugActive  
+				             , objects[0].logVerbose  
+				             , objects[0].preferredVisitMethod  
+				             , objects[0].preferredCachingLevel  
+				             , objects[0].preferredCachingSupport  
+							   //  Database
+				             , objects[0].dataBaseType  
+				             , objects[0].dataBaseName  
+				             , objects[0].dataBaseUser  
+				             , objects[0].dataBasePwd  
+				             , objects[0].dataBaseDriver  
+				             , objects[0].dataBaseAccessType  
+				             , objects[0].dataBaseUrl  
+				             , objects[0].dataBaseMaxConn  
+				             , objects[0].dataBaseCommitBlockUpdates  
+				             , objects[0].dataBaseLogAnySql 
+							   // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+				             , objects[0].pilotDefaultSource  
+				             , objects[0].pilotDefaultProcess  
+				             , objects[0].userExitClass
+				             , objects[0].userTypeOrdinal 
+				             , objects[0].userStatusOrdinal   
+					 );	   
+	   loadIdxAndPgmsource();	// --> loadSource();
+	}	   
+}
+
+/* set properties not working just with CSS */
+function adjustLayout() {
+	var div1 = "";
+	var div1Height = "";
+	var div2 = "";
+	var div2Height = "";
+	var newHeightN = "";
+	var newHeightT = "";
+	var x = 0;
+	var y = 0;
+
+	// Pgm structure box
+	div1 = document.getElementById("divPgmStructureContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+    newHeightN = parseInt(div1Height) - 1;
+	newHeightT = newHeightN.toString() + "px";
+	document.getElementById ( "divTbPgmStructure" ).style.height = newHeightT;	
+	document.getElementById ( "divTbPgmStructure" ).style.maxHeight = newHeightT;	
+
+	// Labels/Sections box
+	div1 = document.getElementById("divPgmLabelContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height);
+	newHeightT = newHeightN.toString() + "px";
+	document.getElementById ( "divTbPgmLabel" ).style.maxHeight = newHeightT;	
+	document.getElementById ( "divTbPgmLabel" ).style.height = newHeightT;	
+	 
+
+	// Source box
+	div1 = document.getElementById("divSourceContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divSourceToolbar");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height);
+	newHeightT = newHeightN.toString() + "px";
+	x = document.getElementById ( "divTbSourceRows" ).clientHeight;
+	y = document.getElementById ( "divTbSourceRows" ).clientHeight;	
+	x = document.getElementById ( "divTbSourceRows" ).height;
+	y = document.getElementById ( "divTbSourceRows" ).maxHeight;	
+ 	document.getElementById ( "divTbSourceRows" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divTbSourceRows" ).styleheight = newHeightT;	
+
+	// Structure
+	div1 = document.getElementById("divTbPathsStructureContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height) - 2;
+	newHeightT = newHeightN.toString() + "px";
+ 	document.getElementById ( "divTbPathStructure" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divTbPathStructure" ).style.height = newHeightT;	
+	
+	// Field I/O Xref / Pgm Called / Pgm Called Xref / 	// Pgm Caller / // Pgm Caller Xref
+	div1 = document.getElementById("divTbPathsIOContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height);
+	newHeightT = newHeightN.toString() + "px";
+	x = document.getElementById ( "divPathsFieldIO" ).clientHeight;
+	y = document.getElementById ( "divPathsFieldIO" ).clientHeight;
+ 	document.getElementById ( "divPathsFieldIO" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divPathsFieldIO" ).style.height = newHeightT;	
+ 	document.getElementById ( "divPathsFieldIOXref" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divPathsFieldIOXref" ).style.height = newHeightT;	
+ 	document.getElementById ( "divPathsCalled" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divPathsCalled" ).style.height = newHeightT;	 	
+ 	document.getElementById ( "divPathsCalledXref" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divPathsCalledXref" ).style.height = newHeightT;	 
+ 	document.getElementById ( "divPathsCaller" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divPathsCaller" ).style.height = newHeightT;	 	
+ 	document.getElementById ( "divPathsCallerXref" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divPathsCallerXref" ).style.height = newHeightT;	 
+	
+ 	// Dynamic instr 
+	div1 = document.getElementById("divDynInstrContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height) - 2;
+	newHeightT = newHeightN.toString() + "px";
+ 	document.getElementById ( "divTbDynInstr" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divTbDynInstr" ).style.Height = newHeightT; 	
+
+ 	// Dynamic fields 
+	div1 = document.getElementById("divDynFieldsContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height) - 2;
+	newHeightT = newHeightN.toString() + "px";
+ 	document.getElementById ( "divTbDynFields" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divTbDynFields" ).style.Height = newHeightT; 	
+
+ 	// Dynamic values 
+	div1 = document.getElementById("divDynValuesContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height) - 2;
+	newHeightT = newHeightN.toString() + "px";
+ 	document.getElementById ( "divTbDynValues" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divTbDynValues" ).style.Height = newHeightT; 	
+
+ 	// Dynamic setting
+	div1 = document.getElementById("divDynSettingContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height) - 2;
+	newHeightT = newHeightN.toString() + "px";
+ 	document.getElementById ( "divTbDynSetting" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divTbDynSetting" ).style.Height = newHeightT; 	
+
+ 	// Dynamic settingDetail
+	div1 = document.getElementById("divDynSettingDetailContainer");
+	div1Height = div1.clientHeight;
+	div2 = document.getElementById("divDataHeader");
+	div2Height = div2.offsetHeight;
+	newHeightN = parseInt(div1Height) - parseInt(div2Height) - 5;
+	newHeightT = newHeightN.toString() + "px";
+ 	document.getElementById ( "divTbDynSettingDetail" ).style.maxHeight = newHeightT; 	
+ 	document.getElementById ( "divTbDynSettingDetail" ).style.Height = newHeightT; 	
+
+}
+
+// Select label
+function onclick_labelSection(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    var labelSection = "";
+    var inCopy = "";
+    var iSelRow = 0;
+	var numInstrSel = 0;
+	var isLabelSelected = false;   	// Per gestion unselect riga sorgente a partire dalla label 
+  
+	// Impostazione da box labels
+    iSelRowLabel = parseInt(clicked_id.substr(i+1));
+    labelSection = document.getElementById("labelSection_"+iSelRowLabel).innerHTML;
+    inCopy = document.getElementById("labelInCopy_"+iSelRowLabel).innerHTML;
+    numInstrSel =  arLabelRowNum[iSelRowLabel].numInstr;
+ 
+	// Righe inizio fine label in sorgente
+    iSelRowSourceStart = arLabelRowNum[iSelRowLabel].rowStart; 
+    iSelRowSourceEnd = arLabelRowNum[iSelRowLabel].rowStart; 
+    
+    // Rimuove selezione attiva corrente nel sorgente
+    for (var i = iSelRowSourceStartOld; i <= iSelRowSourceEndOld; i++) {
+	    document.getElementById("Prow_" + i).classList.remove("selected"); 
+	 }
+    
+    // Gestione label selezionata in box labels
+    
+	// Selezione/deselezione
+    if (iSelRowLabel != iSelRowLabelOld && iSelRowLabelOld >= 0) {
+		document.getElementById("labelSection_"+iSelRowLabelOld).classList.remove("selected"); 
+		document.getElementById("labelName_"+iSelRowLabelOld).classList.remove("selected"); 
+		document.getElementById("labelSectionNumInstr_"+iSelRowLabelOld).classList.remove("selected"); 
+		document.getElementById("labelInCopy_"+iSelRowLabelOld).classList.remove("selected"); 
+		isLabelSelected =false;
+	}   
+	iSelRowLabelOld=iSelRowLabel;	
+	if (document.getElementById("labelSection_"+iSelRowLabel).classList.length > 1) {
+		// Deseleziona label in box label
+		document.getElementById("labelSection_"+iSelRowLabel).classList.remove("selected"); 
+		document.getElementById("labelName_"+iSelRowLabel).classList.remove("selected"); 
+		document.getElementById("labelSectionNumInstr_"+iSelRowLabel).classList.remove("selected"); 
+		document.getElementById("labelInCopy_"+iSelRowLabel).classList.remove("selected"); 
+		isLabelSelected =false;
+	} else {
+		document.getElementById("labelSection_"+iSelRowLabel).classList.add("selected"); 
+		document.getElementById("labelName_"+iSelRowLabel).classList.add("selected"); 
+		document.getElementById("labelSectionNumInstr_"+iSelRowLabel).classList.add("selected"); 
+		document.getElementById("labelInCopy_"+iSelRowLabel).classList.add("selected"); 
+		isLabelSelected =true;
+ 
+		// Selezione e focus
+  	    if (inCopy.trim() == "") {
+  	  	    // Seleziona label in righe sorgente
+  	        for (var i = iSelRowSourceStart; i <= iSelRowSourceEnd; i++) {
+  	    	    document.getElementById("Prow_" + i).classList.add("selected"); 
+  			}
+  	        // Focus su riga selezionata
+  	  		document.getElementById('Prow_'  + iSelRowSourceStart).focus();
+		}
+        
+  	    // Imposta per nuova selezione
+  	    iSelRowSourceStartOld = iSelRowSourceStart;	
+  	    iSelRowSourceEndOld = iSelRowSourceEnd;
+	}	
+
+    // Label non è dentro copy: normale posizionamento già effettuato sul COPY statement
+    if (inCopy.trim() == "") {
+    	return;
+ 	}
+	
+	// Label dentro copy
+	
+	// Label deselezionata e anche riga sorgente
+    if (!isLabelSelected) {
+		return;
+	}
+	
+	// Gestione espansione copy e posizionamento	
+	gestExpandCopyAndPosition(numInstrSel, inCopy, "P");	
+	
+} 
+
+
+// Espansione del copy  se necessario
+// Posizionamento sulla riga copy sorgente
+function gestExpandCopyAndPosition(numInstrSel, inCopy, prefix) {
+	var arIdx = [];
+	var strng = "";
+    var expand = "";
+	var rowStartIdx = 0;
+	var rowEndIdx = 0;
+	var idxCopyInTable = 0;           
+	var numInstr = 0;
+	var iStart = 0;
+	var iEnd = 0;
+	
+	if (iIdxData == 0) {
+	    setIdxDivisionPointers();    // -> iIdxProcedure, iIdxProcedureEnd, iIdxData, iIdxDataEnd
+	}
+    if (prefix != "P") {
+    	iStart = iIdxData;
+    	iEnd = iIdxDataEnd;
+	} else {
+    	iStart = iIdxProcedure;
+    	iEnd = iIdxProcedureEnd;
+	}
+	
+	// Cerco numero istruzione Copy stmt e riga  nel sorgente
+	// Posizionamento e selezione
+		
+	rowStartIdx = 0;
+	rowEndIdx = 0;
+	for (var i = iStart; i < iEnd; i++) {
+		   strng = arIdxProgram[i];
+		   arIdx = strng.split(" ");
+		   numInstr =  parseInt(arIdx[2]);		   
+		   if (numInstr >= numInstrSel) {
+			    strng = arIdxProgram[i-1];
+			    arIdx = strng.split(" ");
+			    rowStartIdx = parseInt(arIdx[0]);
+				rowEndIdx = parseInt(arIdx[1]);
+		  	    iSelRowSourceStartOld = rowStartIdx;	
+		  	    iSelRowSourceEndOld = rowEndIdx;
+		  	    // Selezione e focus istruzione in righe sorgente
+		        document.getElementById(prefix + 'row_'  + rowStartIdx).focus();
+		        for (var j = rowStartIdx; j <= rowEndIdx; j++) {
+		    	    document.getElementById(prefix + "row_" + j).classList.add("selected"); 
+				}
+		        idxCopyInTable = rowStartIdx;
+		        expand = document.getElementById(prefix + "expand_" + idxCopyInTable).innerHTML; 
+		        break;		
+		   }
+	       // Copy Ultimo statement della divisione
+	       // Si prende l'ultima definizione
+	       if (i == iEnd - 1) {
+		      strng = arIdxProgram[iEnd - 1];
+		      arIdx = strng.split(" ");
+		      rowStartIdx = parseInt(arIdx[0]);
+			  rowEndIdx = parseInt(arIdx[1]);
+		      iSelRowSourceStartOld = rowStartIdx;	
+		      iSelRowSourceEndOld = rowEndIdx;
+		  	  // Selezione e focus istruzione in righe sorgente
+		      document.getElementById(prefix + 'row_'  + rowStartIdx).focus();
+		      for (var j = rowStartIdx; j <= rowEndIdx; j++) {
+		    	  document.getElementById(prefix + "row_" + j).classList.add("selected"); 
+		      }
+		      idxCopyInTable = rowStartIdx;
+		      expand = document.getElementById(prefix + "expand_" + idxCopyInTable).innerHTML; 
+			  break
+		   }
+	}
+	
+	// Selezione e focus istruzione copy in righe sorgente
+    document.getElementById(prefix + 'row_'  + idxCopyInTable).focus();
+    document.getElementById(prefix + "row_"  + idxCopyInTable).classList.add("selected"); 
+    
+    // Gestione espansione copy se necessario
+    // Posizionamento su istruzione corretta dentro copy
+     
+    // Copy da espandere
+    if (expand == "+") {
+    	if (prefix == "P") {
+    		setTimeout(expandCopySelectFocus(idxCopyInTable, prefix, inCopy, numInstrSel, OBJECT_COPY_COBOL_PROC, prefix), 3000);
+		} else {
+			setTimeout(expandCopySelectFocus(idxCopyInTable, prefix, inCopy, numInstrSel, OBJECT_COPY_COBOL_DATA, prefix), 3000);
+		}
+    	
+		return;
+	}
+    focusSelectInstructionInCopy(numInstrSel, inCopy, prefix+"row")
+}
+
+// Impostazione pointers inizio/fine in index riga/istruzione per Procedure e Data Division
+function setIdxDivisionPointers() {
+	var strng = "";
+	var arIdx = [];
+	for (var i = 0; i < arIdxProgram.length; i++) {
+	   strng = arIdxProgram[i];
+	   arIdx = strng.split(" ");
+	   if (iIdxData == 0 && arIdx[3] == "D") {
+		   iIdxData = i;
+	   }
+	   if (arIdx[3] == "P") {
+		   iIdxProcedure = i;
+		   iIdxDataEnd = i;
+		   iIdxProcedureEnd = arIdxProgram.length;
+		   break;
+	   }
+	}
+	
+}
+
+
+// Posizionamento su istruzione dentro modulo copy
+function focusSelectInstructionInCopy(numInstrSel, inCopy, idRow){
+	var objCopy = {};
+	var arIdxSource = [];
+	var arIdx = [];
+	var rowStartIdx = 0;
+	var rowEndIdx = 0;
+	var numInstr = 0;
+	var strng = "";
+
+	for (var i = 0; i < arCopy.length; i++) {
+		objCopy = arCopy[i];
+		if (objCopy.copy == inCopy) {
+			var arIdxSource = objCopy.arIdx
+			for (var i = 0; i < arIdxSource.length; i++) {
+				strng = arIdxSource[i];
+				arIdx = strng.split(" ");
+				rowStartIdx = parseInt(arIdx[0]);
+				rowEndIdx = parseInt(arIdx[1]);
+				numInstr =  parseInt(arIdx[2]);		   
+			    if (numInstr >= numInstrSel) {
+			        document.getElementById(idRow  + inCopy  + "_" + rowStartIdx).focus();
+			  	    // Seleziona istruzione in righe sorgente copy
+			        for (var i = rowStartIdx; i <= rowEndIdx; i++) {
+			    	    document.getElementById(idRow + inCopy + "_" + i).classList.add("selected"); 
+					}
+			        break;		
+			    }
+			}
+		}
+	}       
+	
+} 
+
+//--------------------------------------------------
+// Get idx copy
+// Get source copy
+// Focus
+// Select rows in copy 
+//--------------------------------------------------
+function expandCopySelectFocus(idxCopyInTable, division, idCopy, numInstr, typeObjectCopy, prefix){
+	var xmlhttp;
+	var idProgram = sourceIdObject;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlIdxProgramCopyGET + "/" + userInp + "/" + division + "/" + idProgram + "/" + idCopy;
+
+	xmlhttp.open("GET", url, true);
+	xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+    xmlhttp.send(null);
+    xmlhttp.onreadystatechange = function() {handleJsonResponseIdxProgramCopy(xmlhttp, idxCopyInTable, idCopy, numInstr, typeObjectCopy, prefix);};	
+} 
+function handleJsonResponseIdxProgramCopy(xmlhttp, idxCopyInTable, idCopy, numInstr, typeObjectCopy, prefix) {
+	var idxCopyFile = "";
+	var arIdxCopy = [];
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   return;
+		   } else {
+			   idxCopyFile=xmlhttp.responseText;
+			   arIdxCopy = idxCopyFile.split("|");
+		   }
+		   // Idx disponibile, recupero source
+		   getSourceCopy(idxCopyInTable, idCopy, numInstr, arIdxCopy, typeObjectCopy, prefix);			
+    }	
+}
+function getSourceCopy(idxCopyInTable, idCopy, numInstr, arIdxCopy, typeObjectCopy, prefix){
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlSourceGET + "/" + objConfig.user + "/" + objConfig.sys + "/" + sourceSubSys + "/" + typeObjectCopy + "/" + idCopy ;
+
+	xmlhttp.open("GET", url, true);
+	xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+    xmlhttp.send(null);
+    xmlhttp.onreadystatechange = function() {handleJsonResponseSourceCopy(xmlhttp, idxCopyInTable, idCopy, arIdxCopy, numInstr, prefix);};	
+} 
+// Source copy disponibile, caricamento e posizionamento
+function handleJsonResponseSourceCopy(xmlhttp, idxCopyInTable, idCopy, arIdxCopy, numInstrSel, prefix) {
+	var objects = null;
+	var rowStartOrigin = 0;
+	var rowEndOrigin = 0;
+	var rowStartIdx = 0;
+    var rowStart = 0;
+    var rowEnd = 0;
+	var rowEndIdx = 0;
+	var numInstr = 0;
+	var arIdx = [];
+	var iIdx = 0;
+    var iEnd=0;
+    var iIdx=0;
+	var strng = "";
+	var division = "";         // I E D P
+	var expand = "";           // + if copy statement
+	var onClick = "";
+	
+	onClick = "onclick='onclick_DataProcRow(this.id)'";
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   alert("File Not Found - "+xmlhttp.responseText.substr(2));
+			   return;
+		   }
+		   objects=JSON.parse(xmlhttp.responseText);
+
+		   var tbltop = "<table class='tbSourceCopyRows' id='" + prefix + "tbCopy_" + idCopy + "'"  + ">";
+		   var main = ""; 
+					   				   
+		   // Scan rows from server
+	       for (var i=0; i < objects.length; i++) {
+
+	    	   // Get proper Instruction number
+	    	   while  (iIdx < arIdxCopy.length) {
+	  			   strng = arIdxCopy[iIdx];
+		   		   arIdx = strng.split(" ");
+	   			   rowStartIdx = parseInt(arIdx[0]);
+	   			   rowEndIdx = parseInt(arIdx[1]);
+	   			   numInstr =  parseInt(arIdx[2]);
+	   			   if (numInstr == numInstrSel) {
+					  rowStart = rowStartIdx;
+					  rowEnd = rowEndIdx;
+				   }
+	   			   if (i < rowStartIdx) {
+	   				  numInstr = " ";
+	   				  break;
+				   }
+	   			   if (i >= rowStartIdx && i <= rowEndIdx) {
+	   				  break; 
+				   }
+	   			   iIdx++;
+			   } 
+			   main   +=   "<tr class='trAll'       id='" + prefix + "r" 		+ idCopy + "_" + i  + "' tabindex='0' >"
+			          +      "<td class='nRow'      id='" + prefix + "nR" 		+ idCopy + "_" + i  + "' tabindex='0' >"  + i        					+ "</td>" 
+			          +      "<td class='nInstr'    id='" + prefix + "nI" 		+ idCopy + "_" + i  + "' tabindex='0' >"  + numInstr 					+ "</td>" 
+			          +      "<td class='expand'    id='" + prefix + "expand" 	+ idCopy + "_" + i  + "' tabindex='0' >"  + "|"     					+ "</td>" 
+			          +      "<td class='row'       id='" + prefix + "row"    	+ idCopy + "_" + i  + "' tabindex='0' "   + onClick + " ><pre>" + objects[i].row  + "</pre></td>" 
+ 	     	          +    "</tr>";
+  	       } 
+		   
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;	 
+
+	       // Imposta la tabella con il copy nel Div
+           document.getElementById(prefix + "tdDiv_"+idxCopyInTable).innerHTML = tbl;
+           document.getElementById(prefix + "expand_"+idxCopyInTable).innerHTML = "-";
+           document.getElementById(prefix + "tdDiv_"+idxCopyInTable).style.display="block";
+ 
+           
+           // Ricerca numero istruzione, con riga inizio e fine
+		   for (var i = 0; i < arIdxCopy.length; i++) {
+			   strng = arIdxCopy[i];
+			   arIdx = strng.split(" ");
+			   rowStartIdx = parseInt(arIdx[0]);
+			   rowEndIdx = parseInt(arIdx[1]);
+			   numInstr =  parseInt(arIdx[2]);	
+			   if (numInstr > numInstrSel) {break;}
+			   if (rowStartIdx > rowStart) {rowStart = rowStartIdx;}
+			   if (rowEndIdx > rowEnd) {rowEnd = rowEndIdx;}
+		   }
+           
+	       // Focus e Select instruction rows
+ 	       document.getElementById(prefix + "row" + idCopy + "_" + rowStart).focus();
+           for (var i = rowStart; i <= rowEnd; i++) {
+        	   document.getElementById(prefix + "row" + idCopy + "_" + i).classList.add("selected"); 
+		   }
+           
+           // Intabellamento copy
+           var objCopy = {};
+           for (var i = 0; i < arCopy.length; i++) {
+			 if (arCopy.copy == idCopy) {
+				 objCopy.idx = arIdxCopy;
+				 return;
+			 }
+		   }
+           objCopy.copy = idCopy;
+           objCopy.arIdx = arIdxCopy;
+           arCopy.push(objCopy);
+    	}	
+}
+
+// Impostazione numero istruzione e riga selezionata
+function onclick_rowProc(clicked_id) {
+	var idCopy = "";
+	var v = "";
+	var iSel = 0;
+    var i = 0;
+    
+    i = clicked_id.indexOf("_");
+    iSel = clicked_id.substr(i + 1);
+
+    // Click su riga di modulo copy
+    if (i > 4) {
+    	idCopy = clicked_id.substr(4, i)
+	}
+    
+    curSelNumInstr = document.getElementById("PnI_" + iSel).innerHTML;
+    curSelNumRow = document.getElementById("PnR_" + iSel).innerHTML;
+    v = document.getElementById("pathTo").value;
+    if (v.trim() == "") {
+    	document.getElementById('pathTo').value = curSelNumInstr;
+    	document.getElementById("pathFrom").value = "0";
+	}
+}
+
+// Espansione/Contrazione copy indicato da + - Procedure division
+function onclick_expandProc(clicked_id) {
+	var expand = "";
+	var idExpand = "";
+    expand = document.getElementById(clicked_id).innerHTML;
+    if (expand == "") {return;}
+    expandContractCopyDataProcCopy(clicked_id, expand);
+}
+
+//Espansione/Contrazione copy indicato da + - Data division
+function onclick_expandData(clicked_id) {
+	var expand = "";
+	var idExpand = "";
+    expand = document.getElementById(clicked_id).innerHTML;
+    if (expand == "") {return;}
+    expandContractCopyDataProcCopy(clicked_id, expand);
+}
+
+
+// Gestione generalizzata Espansione/Contrazione copy indicato da + - 
+// Attivato da:
+// Source centrale - origin = "P"
+// Working         - origin = "W"
+// Linkage         - origin = "L"
+// File Section    - origin = "F"
+function expandContractCopyDataProcCopy(idExpand, expand) {
+	var xmlhttp;
+	var iSel = 0;
+	var iRowCopyStmt = 0;
+	var numInstrCopy = "";
+	var idCopy = "";
+	var typeObjectCopy = "";  // Copy data o proc
+	var division = "";
+	var idProgram = sourceIdObject;
+	var prefix = "";         // Source centrale completo
+    	
+	// Porocedure/Working/Linkage/File section
+    prefix = idExpand.substr(0,1);
+    iSel = parseInt(idExpand.substr(8));
+        
+	if (iSel < iSourceProcedure) {
+		division = "D";
+		typeObjectCopy = OBJECT_COPY_COBOL_DATA;
+	} else {
+		division = "P";
+		typeObjectCopy = OBJECT_COPY_COBOL_PROC;
+	}
+    
+    // Espansione
+    if (expand == "+") {
+    	// Caricamento da server
+    	numInstrCopy = document.getElementById(prefix + "nI_" + iSel).innerHTML;
+        
+    	iRowCopyStmt = iSel;
+     	xmlhttp=createRequest();
+    	var url = baseUrl + "/" + urlProgramCopyName + "/" + userInp + "/" + division + "/" + idProgram + "/" + numInstrCopy ;
+
+    	xmlhttp.open("GET", url, true);
+        xmlhttp.onprogress = function () {
+        	if (xmlhttp.status!=200){
+        	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+        	}   
+        };
+    	xmlhttp.send(null);
+    	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramCopyName(xmlhttp, division, iRowCopyStmt, numInstrCopy, typeObjectCopy, prefix);};
+   	
+    // Contrazione
+	} else {
+    	document.getElementById(prefix + "expand_" + iSel).innerHTML = "+";
+		document.getElementById(prefix + "tdDiv_" + iSel).style.display="none";
+	}
+}
+
+// Get copy name da espandere dal server espansione, select e focus
+function handleJsonResponseProgramCopyName(xmlhttp, division, iRowCopyStmt, numInstrCopy, typeObjectCopy, prefix) {
+	var idCopy = "";
+	var objCopy = {};
+	
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}
+	
+    idCopy=xmlhttp.responseText;
+    
+	// Ricerca copy in quelli già trattati, basta espandere
+	for (var i = 0; i < arCopy.length; i++) {
+		objCopy = arCopy[i];
+		if (objCopy.idCopy == idCopy) {
+	    	document.getElementById(prefix + "expand_"+iSel).innerHTML = "-";
+	    	document.getElementById(prefix + "tdDiv_"+iSel).style.display="block";
+	    	return;
+		}
+	}
+	
+	// Copy da caricare
+	expandCopySelectFocus(iRowCopyStmt, division, idCopy, numInstrCopy, typeObjectCopy, prefix);    	   
+}
+
+/* Posizionamento su perform/paragraph/section sorgente */
+function onclick_sectionParagraph(clicked_id) {
+	var objStructureProgram = {};
+	var idClicked = "";
+    var i = clicked_id.indexOf("_");
+    var inCopy = "";
+	var numInstrSel = 0;
+	var isLabelSelected = false;   	// Per gestion unselect riga sorgente a partire dalla perform  a label/Section
+
+	idClicked = clicked_id.substr(0, i);
+	
+	// Impostazione da box struttura
+    iSelRowStructure = parseInt(clicked_id.substr(i+1));
+    objStructureProgram = arStructureProgram[iSelRowStructure];
+    
+ 	// Numero istruzione e Righe inizio fine perform a procedure in sorgente
+    // e Copy dove eventualmente label/section è definita
+    iSelRowSourceStart = objStructureProgram.rowFrom; 
+    iSelRowSourceEnd = objStructureProgram.rowThru; 
+    numInstrSel =  objStructureProgram.numInstrFrom;
+    inCopy = objStructureProgram.inCopy;
+   
+    // Se click su ultima colonna si posiziona sulla perform o istruzione dentro paragrafo/section
+    if (idClicked == "pgmStructureShowText") {
+        iSelRowSourceStart = objStructureProgram.rowNumStart; 
+        iSelRowSourceEnd = objStructureProgram.rowNumEnd; 
+        numInstrSel =  objStructureProgram.numInstr;
+        inCopy = "";
+	}
+    
+    // Rimuove selezione attiva corrente nel box centrale con sorgente
+    if (iSelRowSourceStartOld >= 0) {
+        for (var i = iSelRowSourceStartOld; i <= iSelRowSourceEndOld; i++) {
+    	    document.getElementById("Prow_" + i).classList.remove("selected"); 
+    	 }
+	}
+    
+    // Gestione paragrafo/section selezionata in box structure
+     
+	// Selezione/deselezione
+    if (iSelRowStructure != iSelRowStructureOld && iSelRowStructureOld >= 0) {
+		document.getElementById("pgmStructureUnderIf_"+iSelRowStructureOld).classList.remove("selected"); 
+		document.getElementById("pgmStructureLabelSectionName_"+iSelRowStructureOld).classList.remove("selected"); 
+		document.getElementById("pgmStructureShowText_"+iSelRowStructureOld).classList.remove("selected"); 
+		isLabelSelected =false;
+	}   
+	iSelRowStructureOld=iSelRowStructure;	
+	if (document.getElementById("pgmStructureLabelSectionName_"+iSelRowStructure).classList.length > 1) {
+		// Deseleziona label in box label
+		document.getElementById("pgmStructureUnderIf_"+iSelRowStructure).classList.remove("selected"); 
+		document.getElementById("pgmStructureLabelSectionName_"+iSelRowStructure).classList.remove("selected"); 
+		document.getElementById("pgmStructureShowText_"+iSelRowStructure).classList.remove("selected"); 
+		isLabelSelected =false;
+	} else {
+		document.getElementById("pgmStructureUnderIf_"+iSelRowStructure).classList.add("selected"); 
+		document.getElementById("pgmStructureLabelSectionName_"+iSelRowStructure).classList.add("selected"); 
+		document.getElementById("pgmStructureShowText_"+iSelRowStructure).classList.add("selected"); 
+		isLabelSelected =true;
+ 
+		// Selezione e focus
+  	    if (inCopy.trim() == "") {
+  	  	    // Seleziona label in righe sorgente
+  	        for (var i = iSelRowSourceStart; i <= iSelRowSourceEnd; i++) {
+  	    	    document.getElementById("Prow_" + i).classList.add("selected"); 
+  			}
+  	        // Focus su riga selezionata
+  	  		document.getElementById('Prow_'  + iSelRowSourceStart).focus();
+		}
+        
+  	    // Imposta per nuova selezione
+  	    iSelRowSourceStartOld = iSelRowSourceStart;	
+  	    iSelRowSourceEndOld = iSelRowSourceEnd;
+	}	
+
+    // paragrafo/section non è dentro copy: normale posizionamento già effettuato sul COPY statement o sulla label/section
+    if (inCopy.trim() == "") {
+    	return;
+ 	}
+	
+	// Paragrafo/Section dentro copy
+	
+	// Label deselezionata e anche riga sorgente
+    if (!isLabelSelected) {
+		return;
+	}
+	
+	// Gestione espansione copy e posizionamento	
+	gestExpandCopyAndPosition(numInstrSel, inCopy, "P");	
+}
+
+/* Selezione tipo espansione path */
+function onChangePathExpand() {
+	var str = "";	
+	curSelTypeExpand = pathExpandSel.value.substr(0,1);
+	
+	// Se già richiesta generazione path e path selezionato generazione struttura path al dettaglio selezionato
+	str = pathSel.value;
+	if (str != "" && str != "-") {
+		onChangePathSel();
+	}
+}
+
+// Selezione path prodotti
+function onChangePathSel() {
+	var str = "";	
+	var pathEntry = {};
+	
+	str = pathSel.value;
+	curSelPath = str.substr(4);
+	pathEntry = arPath[curSelPath];
+
+	pathShow(pathEntry);	
+}
+
+//Posizionamento su definizione dati
+function onclick_posOnFieldName(clicked_id) {
+	var idField = "";
+	
+	idField = document.getElementById(clicked_id).innerHTML;
+	
+	// Posizionamento in Working/Linkage con eventuale esplosione copy
+	positionOnSourceDataInstruction(idField, 0);
+}
+
+
+// Caricamento struttura path e Fields I/O  
+// Viene caricato il livello di espansione richiesto S/P/D
+function pathShow(pathEntry) {
+	var xmlhttp;
+	var pathFromNumInstr = "";
+	var pathToNumInstr = "";
+	var oPath = {};	
+	
+	oPath = arPath[curSelPath];
+	pathFromNumInstr = oPath.fromInstr;
+	pathToNumInstr = oPath.toInstr;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlPogramPathShow + "/" + userInp + "/"  + idObject + "/" + pathEntry.fromInstr + "/" + pathEntry.toInstr + "/" + curSelPath + "/" + curSelTypeExpand; ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseprogramPathShow(xmlhttp);};	
+}
+function handleJsonResponseprogramPathShow(xmlhttp) {
+    var objects = null;
+    var object = null;
+	var idPath = "";
+	var str = "";
+    var i = 0;
+    var arPathEntry = [];
+    var spaces = "";
+    var sourceInstr = "";
+    var paragraph = "";
+    var lvlDeep = 0;
+    var tbltop = "";
+    var main = ""; 
+	   
+    if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}	
+	
+    if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving program Path fields I/O - "+xmlhttp.responseText.substr(2));
+    }
+    
+    object=JSON.parse(xmlhttp.responseText);
+
+    arPathEntry = object.arPathEntry;
+    arPathFieldIO = object.arFieldsIO;
+
+    ////////////////////////////////////////////
+    // Caricamento Path structure
+    ////////////////////////////////////////////
+      
+    var tbltop = "<table id='tbPathParagraph'>"
+        var main = ""; 
+
+        // Scan rows from server
+        for (var i=0; i < arPathEntry.length; i++) {
+           lvlDeep = arPathEntry[i].lvlDeep;
+           spaces = "";
+           for (var j = 0; j < lvlDeep; j++) {
+         	   spaces+= "  ";	
+     	   }
+           paragraph = spaces + arPathEntry[i].idParagraph;
+           sourceInstr = spaces + arPathEntry[i].sourceInstr;
+           if (sourceInstr.length > 60) {
+        	   sourceInstr = sourceInstr.substr(0, 61) + "..."
+    	   }
+       	   main  +=   "<tr>"
+    	         +       "<td class='tdPathParagraphPerformNum'  id='pathParagraphPerformNum_" + i  + "' onclick='onclick_pathParagraphPerformNum(this.id)'>"  + arPathEntry[i] .numInstr  + "</td>" 
+      	         +       "<td class='tdPathParagraph'            id='pathParagraph_"           + i  + "' onclick='onclick_pathParagraph(this.id)'>   <pre>"    + sourceInstr  + "</pre></td>" 
+        	     +    "</tr>";
+           
+          
+         }   
+           
+        var tblBottom = '</table>'
+        var tbl = tbltop + main + tblBottom;	 
+          
+        // Show source and position on first instruction row
+        document.getElementById('divTbPathStructure').innerHTML = tbl;  
+   
+   
+   ////////////////////////////////////////////
+   // Caricamento Fields I/O
+   ////////////////////////////////////////////
+   
+   
+   tbltop = "<table id='tbPathsFieldIO'>"
+   main = ""; 
+
+   // Scan rows from server
+   for (var i=0; i < arPathFieldIO.length; i++) {
+   	       	   	    	   	   
+   	   main  +=   "<tr>"
+ 	         +      "<td class='tdXrefPathField'           id='pathFieldIOName_"      + i  + "' onclick='onclick_pathFieldIOName(this.id)'>"  + arPathFieldIO[i].fieldName  + "</td>" 
+         	 +      "<td class='tdXrefPathFieldIOSection'  id='pathFieldIOSection_"   + i  + "'>" 									          + arPathFieldIO[i].section    + "</td>" 
+    	     +    "</tr>"	
+       }   
+       
+      var tblBottom = '</table>'
+      var tbl = tbltop + main + tblBottom;	 
+      
+      // Show source and position on first instruction row
+      document.getElementById('divPathsFieldIO').innerHTML = tbl;
+	    
+}
+// Selezione campo in I/O movimentato nel path selezionato
+// Posizionamento sul sorgente, può essere anche sotto copy
+function onclick_pathFieldIOName(clicked_id) {
+	var objPathFieldIO = {};
+	var arXrefInput = [];
+	var arXrefOutput = [];
+	var fieldName = "";
+	var inputOutput = "";
+	var numInstrX = "";
+	var numInstr = 0;
+	var inCopy = "";
+    var i = 0;
+    
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);	
+	fieldName = document.getElementById("pathFieldIOName_" + i).innerHTML
+	inputOutput = document.getElementById("pathFieldIOSection_" + i).innerHTML
+	
+	// Caricamento tabella xref in I/O
+ 	objPathFieldIO = arPathFieldIO[i];
+	arXrefInput = objPathFieldIO.arXrefInput;
+	arXrefOutput = objPathFieldIO.arXrefOutput;
+	
+    var tbltop = "<table id='tbPathsFieldIOXref'>"
+    var main = ""; 
+
+    // Scan xref in input
+    for (i=0; i < arXrefInput.length; i++) {   	       	   	    	   	   
+   	   main  +=   "<tr>"
+ 	         +       "<td class='tdPathsFieldXrefIO'        id='pathFieldXrefIO_"      	+ i   + "'> I"                                            +                      "</td>" 
+         	 +       "<td class='tdPathsFieldXrefNumInstr'  id='pathFieldIOXrefNumInstr_"  + i   + "' onclick='onclick_pathFieldXrefIO(this.id)'>"   +	 arXrefInput[i]    + "</td>" 
+    	     +    "</tr>"	
+     }   
+    // Scan xref in output
+    for (; i < arXrefOutput.length; i++) {   	       	   	    	   	   
+   	   main  +=   "<tr>"
+ 	         +       "<td class='tdPathsFieldXrefIO'        id='pathFieldXrefIO_" 		   + i  + "'> O"                                           +                      "</td>" 
+         	 +       "<td class='tdPathsFieldXrefNumInstr'  id='pathFieldIOXrefNumInstr_" + i  + "' onclick='onclick_pathFieldXrefIO(this.id)'>"  + arXrefOutput[i]    + "</td>" 
+    	     +    "</tr>"	
+     }    
+     var tblBottom = '</table>'
+     var tbl = tbltop + main + tblBottom;	   
+     document.getElementById('divPathsFieldIOXref').innerHTML = tbl;
+	
+ 	// Selezione/deselezione riga field I/O selezionata
+    i = clicked_id.indexOf("_");
+    iSelFieldIO = clicked_id.substr(i+1);
+    if (iSelFieldIO != iSelFieldIOOld && iSelFieldIOOld >= 0) {
+		document.getElementById("pathFieldIOName_"    + iSelFieldIOOld).classList.remove("selected"); 
+		document.getElementById("pathFieldIOSection_" + iSelFieldIOOld).classList.remove("selected"); 
+	}   
+	iSelFieldIOOld=iSelFieldIO;	
+	if (document.getElementById("pathFieldIOName_" + iSelFieldIO).classList.length > 1) {
+		document.getElementById("pathFieldIOName_"    + iSelFieldIO).classList.remove("selected"); 
+		document.getElementById("pathFieldIOSection_" + iSelFieldIO).classList.remove("selected"); 
+	} else {
+		document.getElementById("pathFieldIOName_" 	  + iSelFieldIO).classList.add("selected"); 
+		document.getElementById("pathFieldIOSection_" + iSelFieldIO).classList.add("selected"); 
+	}
+	// Posizionamento su definizione dati
+	positionOnSourceDataInstruction(fieldName, 0)
+}
+
+
+/* Selection dead-code range to select */
+function onChangeDeadCode()  {
+	var objDeadDataProc = {};
+	var i = 0;
+	
+	i = deadCodeSel.selectedIndex; 	
+	objDeadDataProc = arDeadDataProc[i];
+	
+	// Posizionamento su istruzione di data division
+	if (objDeadDataProc.prefix == "DD") {
+		positionOnSourceDataInstruction(objDeadDataProc.fieldName, 0)
+		return;
+	}
+	
+	// Posizionamento su copy di data division
+	if (objDeadDataProc.prefix == "CD") {
+		positionOnSourceDataInstruction(objDeadDataProc.copyName, objDeadDataProc.numInstr)
+		return;
+	}
+	
+	// Posizionamento su istruzione
+	positionOnSourceProcInstruction(objDeadDataProc.numInstr);	
+}
+
+// Impostazione istruzione di partenza per generazione path
+function onClick_pathFrom() {
+   document.getElementById("pathFrom").value = curSelNumInstr;
+}
+
+//Impostazione istruzione di arrivo per generazione path
+function onClick_pathTo() {
+	
+}
+
+// Attivazione richiesta di estrazione paths 
+function onclick_btnPaths() {
+	var xmlhttp;
+	var pathFromNumInstr = "";
+	var pathToNumInstr  = "";
+	var url = "";
+	
+	pathFromNumInstr = document.getElementById("pathFrom").value;
+	pathToNumInstr  = document.getElementById("pathTo").value;
+	
+	// Istruzione finale non selezionata
+	if (pathToNumInstr == "") {
+		document.getElementById('pathMessage').innerHTML = "To Number Missing ..";
+		return;
+	}
+
+	url = baseUrl + "/" + urlProgramPaths + "/" + userInp + "/"  + idObject + "/" + pathFromNumInstr + "/" + pathToNumInstr; 
+	
+	xmlhttp=createRequest();
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseProgramPaths(xmlhttp);};
+}
+function handleJsonResponseProgramPaths(xmlhttp) {
+   var objects = null;
+   var idPath = "";
+   if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}	
+	
+   if (xmlhttp.responseText.substr(0,2) == "KO") {
+	   alert("Error retrieving program structure - "+xmlhttp.responseText.substr(2));
+   }
+   objects=JSON.parse(xmlhttp.responseText);
+   arPath = objects;
+
+   pathSel.disable=true; 		
+   while (pathSel.length != 0) {
+		pathSel.remove(0);		
+   }
+   pathSel.add(new Option("-", "-"));  
+   // Scan rows from server
+   for (var i=0; i < objects.length; i++) {
+	   idPath = objects[i].idPath;
+	   pathSel.add(new Option(idPath, idPath));    	   	    	   	   
+   }   
+   pathSel.disable=false;	
+
+   document.getElementById("pathMessage").innerHTML = objects.length + " Paths Generated ";
+ }
+
+
+// Posizionamento su definizione dati in Working/Linkage/Fd
+// Recupero informazioni su definizione dati
+// Espansione copy se necessario
+function positionOnSourceDataInstruction(fieldName, numDefInstr) {
+	var xmlhttp;
+	var url = baseUrl + "/" + urlProgramDataInstructionInfo + "/" + userInp + "/"  + idObject + "/"  + fieldName + "/"  + numDefInstr ;
+    var numInstr = 0;
+    var iSelRowStartOldSave = "";	
+    var iSelRowSourceEndOldSave = "";
+    
+	xmlhttp=createRequest();
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+		var object = {};
+		var objSel = {};
+		var control = null;
+	    var idExpand = "";              // id completo XexpandCCCCCC_n identificante la riga con l'istruzione copy da espandere
+	    var expand = "";                // + -
+	    var idRow = "";                 // id completo XrowCCCCCC_n identificante la riga con l'istruzione da selezionare
+	    var numDefInstr = 0;  		    // Nel programma
+	    var numDefInstrCopy = 0;  		// Nel programma
+	    var rowStartCopyInstr = 0       // Nel programma
+	    var rowEndCopyInstr = 0      	// Nel programma
+		
+		if (xmlhttp.readyState!=4 || xmlhttp.status!=200) {return;}	
+	    if (xmlhttp.responseText.substr(0,2) == "KO") {
+		   alert("Error retrieving Program Data Instruction info - "+xmlhttp.responseText.substr(2));
+	    }
+	    
+	    object=JSON.parse(xmlhttp.responseText);		// Info istruzione
+
+	    // Impostazione iSelStart/End correnti e old
+	    setDataIndexSel(objSel, object);
+	    
+		// Gestione espansione copy se necessario
+		// Posizionamento su istruzione corretta dentro copy
+	 
+		if (object.underCopyName.trim() != "") {
+			gestExpandCopyAndPosition(object.numDefField, object.underCopyName, object.section);	
+		}
+		
+	    // Rimuove selezione attiva corrente eventualmente anche dentro copy (se valorizzato)
+	    if (objSel.iSelStartOld >= 0) {
+		    for (var i = objSel.iSelStartOld; i <= objSel.iSelEndOld; i++) {
+			    control = document.getElementById(object.section + "row" + object.underCopyName + "_" + i);
+			    if (control != null) {
+			    	control.classList.remove("selected"); 
+				}
+		    }
+		}
+ 
+		// Selezione righe istruzione e focus
+        for (var i = objSel.iSelStart ; i <= objSel.iSelEnd ; i++) {
+        	control = document.getElementById(object.section + "row" + object.underCopyName + "_"  + i)
+        	if (control != null) {
+        		control.classList.add("selected");
+        		if (i = objSel.iSelStart) {
+        			control.focus();
+				}
+        	}   	    
+		}
+  			    
+	    // Imposta per nuova selezione
+	 	if (object.section == "W") {
+	 		iSelRowWorkingStartOld = objSel.iSelStart; 
+	 		iSelRowWorkingEndOld = objSel.iSelEnd; 
+		} else if (object.section == "L") {
+			iSelRowLinkageStartOld = objSel.iSelStart; 
+			iSelRowLinkageEndOld = objSel.iSelEnd; 
+		} else if (object.section == "F") {
+			iSelRowFdStartOld = objSel.iSelStart; 
+			iSelRowFdEndOld = objSel.iSelEnd; 
+		}
+
+	}; // end function () 		
+}
+
+// Impostazione indici selezione corrente/old in base alla sezione
+function setDataIndexSel(objSel, object, section){
+	
+    // Indici Righe inizio fine istruzione in sorgente o istruzione copy
+ 	objSel.iSelStart = object.rowStartDefField; 
+ 	objSel.iSelEnd = object.rowEndDefField; 
+ 	
+ 	if (object.section == "W") {
+ 		iSelRowWorkingStart = objSel.iSelStart; 
+ 		iSelRowWorkingEnd = objSel.iSelEnd; 
+ 		objSel.iSelStartOld = iSelRowWorkingStartOld
+ 		objSel.iSelEndOld = iSelRowWorkingEndOld
+	} else if (object.section == "L") {
+		iSelRowLinkageStart = objSel.iSelStart; 
+		iSelRowLinkageEnd =objSel.iSelEnd; 
+		objSel.iSelStartOld = iSelRowLinkageStartOld
+		objSel.iSelEndOld = iSelRowLinkageEndOld
+	} else if (object.section == "F") {
+		iSelRowFdStart = objSel.iSelStart; 
+		iSelRowFdEnd = objSel.iSelEnd; 
+		objSel.iSelStartOld = iSelRowFdStartOld
+		objSel.iSelEndOld = iSelRowFdEndOld
+	}	
+}
+
+// Posizionamento sul sorgente dove il campo è referenziato in input/output
+// Può essere dentro modulo copy
+function onclick_pathFieldXrefIO (clicked_id) {
+	var prefixIO = "";
+	var numInstrX = "";
+	var numInstr = 0;
+	var i = 0;
+
+	numInstrX = document.getElementById(clicked_id).innerHTML
+	numInstr = parseInt(numInstrX);
+
+	positionOnSourceProcInstruction(numInstr);	
+
+ 	// Selezione/deselezione riga field I/O Xref selezionata
+    i = clicked_id.indexOf("_");
+    iSelFieldIOXref = clicked_id.substr(i+1);
+    if (iSelFieldIOXref != iSelFieldIOXrefOld && iSelFieldIOXrefOld >= 0) {
+		document.getElementById("pathFieldXrefIO_"         + iSelFieldIOXrefOld).classList.remove("selected"); 
+		document.getElementById("pathFieldIOXrefNumInstr_" + iSelFieldIOXrefOld).classList.remove("selected"); 
+	}   
+	iSelFieldIOXrefOld=iSelFieldIOXref;	
+	if (document.getElementById("pathFieldXrefIO_" + iSelFieldIOXref).classList.length > 1) {
+		document.getElementById("pathFieldXrefIO_"         + iSelFieldIOXref).classList.remove("selected"); 
+		document.getElementById("pathFieldIOXrefNumInstr_" + iSelFieldIOXref).classList.remove("selected"); 
+	} else {
+		document.getElementById("pathFieldXrefIO_" 	  + iSelFieldIOXref).classList.add("selected"); 
+		document.getElementById("pathFieldIOXrefNumInstr_" + iSelFieldIOXref).classList.add("selected"); 
+	}
+	
+}
+
+// Selezione numero istruzione in struttura path
+// Posizionamento sul sorgente, può essere dentro modulo copy
+function onclick_pathParagraphPerformNum(clicked_id) {
+	var numInstrX = "";
+	var numInstr = 0;
+	var ifPerform = "N";
+    var i = 0;
+ 
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);	
+	numInstrX = document.getElementById("pathParagraphPerformNum_" + i).innerHTML
+	numInstr = parseInt(numInstrX);
+
+	positionOnSourceProcInstruction(numInstr, ifPerform);
+	
+ 	// Selezione/deselezione numero istruzione perform/paragrafo
+    i = clicked_id.indexOf("_");
+    iSelParagraphPerformNum = clicked_id.substr(i+1);
+    if (iSelParagraphPerformNum != iSelParagraphPerformNumOld && iSelParagraphPerformNumOld >= 0) {
+		document.getElementById("pathParagraphPerformNum_" + iSelParagraphPerformNumOld).classList.remove("selected"); 
+	}   
+	iSelParagraphPerformNumOld=iSelParagraphPerformNum;	
+	if (document.getElementById("pathParagraphPerformNum_" + iSelParagraphPerformNum).classList.length > 1) {
+		document.getElementById("pathParagraphPerformNum_" + iSelParagraphPerformNum).classList.remove("selected"); 
+	} else {
+		document.getElementById("pathParagraphPerformNum_" + iSelParagraphPerformNum).classList.add("selected"); 
+	}		
+}
+
+// Selezione istruzione in struttura path
+// Se perform a paragrafo posizionamento sul sorgente, può essere dentro modulo copy
+function onclick_pathParagraph (clicked_id) {
+	var numInstrX = "";
+	var numInstr = 0;
+	var ifPerform = "Y";
+    var i = 0;
+ 
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);	
+	numInstrX = document.getElementById("pathParagraphPerformNum_" + i).innerHTML
+	numInstr = parseInt(numInstrX);
+
+	positionOnSourceProcInstruction(numInstr, ifPerform);
+
+ 	// Selezione/deselezione numero istruzione perform/paragrafo
+    i = clicked_id.indexOf("_");
+    iSelParagraph = clicked_id.substr(i+1);
+    if (iSelParagraph != iSelParagraphOld && iSelParagraphOld >= 0) {
+		document.getElementById("pathParagraph_" + iSelParagraphOld).classList.remove("selected"); 
+	}   
+	iSelParagraphOld=iSelParagraph;	
+	if (document.getElementById("pathParagraph_" + iSelParagraph).classList.length > 1) {
+		document.getElementById("pathParagraph_" + iSelParagraph).classList.remove("selected"); 
+	} else {
+		document.getElementById("pathParagraph_" + iSelParagraph).classList.add("selected"); 
+	}		
+}
+
+
+// Label/Section descriptor server
+function LabelDescriptor(
+						   labelSection 
+						  ,name 
+						  ,numInstr 
+						  ,rowStart
+						  ,rowEnd 
+						  ,inCopy
+						  ,isExpanded
+						  )  { 	
+
+this.labelSection = labelSection;
+this.labelName = name;
+this.numInstr = numInstr;  
+this.rowEnd = rowEnd;  
+this.inCopy = inCopy;  
+this.isExpanded = isExpanded; 
+}
+
+/**
+ * Common definitions for all pages
+ */
+//Defines Object configuration data available to all pages
+function Config( 
+		      user
+	         ,pwd  
+			 ,sys 
+			 ,subSys
+			 ,baseUrl
+			 
+             ,companyCode 
+             ,company 
+             ,userType  
+             ,userStatus  
+             ,language  
+             ,country  
+             ,mail  
+             ,mailInfo  
+             ,phone  
+             ,referManager  
+             ,referTech  
+             ,analyzerEnabled  
+             ,viewerEnabled 
+             ,inspectorEnabled  
+             ,assesmentEnabled  
+             ,countLogin   			
+             ,dtActivation  
+             ,tmActivation  
+             ,dtExpiration  
+             ,tmExpiration  
+             ,dtFirstLogin  
+             ,tmFirstLogin  
+             ,dtLastLogin  
+             ,tmLastLogin  
+
+             ,pathConfigFile  
+             ,pathRoot  
+             ,pathUser  
+             ,pathPilot  
+	
+			 // Directories relative a root o WEB-INF da file di configurazione generale
+             ,dirResources  
+             ,dirWork  
+             ,dirDatabase       
+             ,dirJclInput  
+             ,dirCobolSrcPgmInput  
+             ,dirCobolSrcCopyInput  
+             ,dirCobolPgm  
+             ,dirCobolCopy  
+             ,dirJcl  
+             ,dirSqlScript  	 
+             ,dirCobolGraph  
+             ,dirPilot  
+             ,dirLog  
+             ,dirOutput  
+
+			 // Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+             ,limitMaxLinesScanFindingSourceType 
+             ,limitMaxSources  
+             ,limitMaxSourcesInput  
+             ,limitMaxSourcesToProcess  
+             ,limitMaxObjects  
+             ,limitMaxObjectsInput 
+             ,limitMaxObjectsToProcess 
+             ,debugThresholdMemoryGarbage  
+             ,debugSourcesDetectedFreqGarbage  
+             ,debugActive  
+             ,logVerbose  
+             ,preferredVisitMethod  
+             ,preferredCachingLevel  
+             ,preferredCachingSupport  
+
+			 //  Database
+             ,dataBaseType  
+             ,dataBaseName  
+             ,dataBaseUser  
+             ,dataBasePwd  
+             ,dataBaseDriver  
+             ,dataBaseAccessType  
+             ,dataBaseUrl  
+             ,dataBaseMaxConn  
+             ,dataBaseCommitBlockUpdates  
+             ,dataBaseLogAnySql 
+	
+			 // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+             ,pilotDefaultSource  
+             ,pilotDefaultProcess  
+             ,userExitClass
+             
+             ,userTypeOrdinal 
+             ,userStatusOrdinal 
+				)  {
+	
+	    this.user = user;  
+		this.pwd = pwd;          								 	 // Password
+	    this.sys = sys;  
+	    this.subSys = subSys; 
+	    this.baseUrl = baseUrl;
+	    
+		// User Data
+		this.companyCode = companyCode; 							 // Codice societa 
+		this.company = company; 									 // Descrizione societa 
+		this.userType = userType;            			     		 // Tipologia utente forward (T052)
+		this.userStatus = userStatus;            	 				 // Stato utente forward (T051)
+		this.language = language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+		this.country = country; 									 // Country IT, .. 
+		this.mail = mail; 											 // Mail principale  
+		this.mailInfo = mailInfo; 									 // Mail per info anomali  
+		this.phone = phone; 										 // Telefono di riferimento  
+		this.referManager = referManager; 							 // Riferimento manager 
+		this.referTech = referTech; 								 // Riferimento tecnico 
+		this.analyzerEnabled = analyzerEnabled; 					 // True user can view Analyzer 
+		this.viewerEnabled = viewerEnabled; 						 // True user can view Viewer 
+		this.inspectorEnabled = inspectorEnabled; 					 // True user can view Inspector 
+		this.assesmentEnabled = assesmentEnabled; 					 // True user can view Assesment 
+		this.countLogin =countLogin; 								 // Counter login effettuati       			
+		this.dtActivation = dtActivation;  							 // Data attivazione AAAAMMGG'
+		this.tmActivation = tmActivation;  						     // Ora  attivazione HHMMSSCC'
+		this.dtExpiration = dtExpiration;  							 // Data disattivazione AAAAMMGG'
+		this.tmExpiration = tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+		this.dtFirstLogin = dtFirstLogin;  							 // Data primo login AAAAMMGG'
+		this.tmFirstLogin = tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+		this.dtLastLogin = dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+		this.tmLastLogin = tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	    this.pathConfigFile = pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+	    this.pathRoot = pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+	    this.pathUser = pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+	    this.pathPilot = pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+	 	
+		// Directories relative a root o WEB-INF da file di configurazione generale
+		this.dirResources = dirResources;                            //Resource'
+		this.dirWork = dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+		this.dirDatabase = dirDatabase;                              // Database'		              
+		this.dirJclInput = dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+		this.dirCobolSrcPgmInput = dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+		this.dirCobolSrcCopyInput = dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+		this.dirCobolPgm = dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+		this.dirCobolCopy = dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+		this.dirJcl = dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcethis.X =  .jclIncludethis.X =  .jclProc)'		 
+		this.dirSqlScript = dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+		this.dirCobolGraph = dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+		this.dirPilot = dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+		this.dirLog = dirLog;                                  		 // Log
+		this.dirOutput = dirOutput;                              	 // Output per funzioni che producono text'
+
+		// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+		this.limitMaxLinesScanFindingSourceType = limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+		this.limitMaxSources =  limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+		this.limitMaxSourcesInput = limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+		this.limitMaxSourcesToProcess = limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+		this.limitMaxObjects =  limitMaxObjects;                   	 	// Abilitazione limitazione agli oggetti processati'
+		this.limitMaxObjectsInput = limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+		this.limitMaxObjectsToProcess = limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+		this.debugThresholdMemoryGarbage = debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+		this.debugSourcesDetectedFreqGarbage = debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+		this.debugActive = debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+		this.logVerbose = logVerbose;                               	// Dettaglio log operazioni Sql e informative'
+		this.preferredVisitMethod = preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+		this.preferredCachingLevel = preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+		this.preferredCachingSupport = preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+		//  Database
+		this.dataBaseType = dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+		this.dataBaseName = dataBaseName;                            // Nome database (DbAmrita)'
+		this.dataBaseUser = dataBaseUser;                            // User (GZEDDA)'
+		this.dataBasePwd = dataBasePwd;                              // Pwd (giampietro4)'
+		this.dataBaseDriver = dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+		this.dataBaseAccessType = dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+		this.dataBaseUrl = dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+		this.dataBaseMaxConn = dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+		this.dataBaseCommitBlockUpdates = dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+		this.dataBaseLogAnySql = dataBaseLogAnySql;                 // Log istruzioni Sql come messaggi informativi'
+	    	
+		// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+		this.pilotDefaultSource = pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+		this.pilotDefaultProcess = pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+		this.userExitClass = userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+		// Ordinal
+		this.userTypeOrdinal = userTypeOrdinal;            			  // Tipologia utente forward (T052)
+		this.userStatusOrdinal = userStatusOrdinal;            	 	  // Stato utente forward (T051)
+}
+</script>
+
+</html>

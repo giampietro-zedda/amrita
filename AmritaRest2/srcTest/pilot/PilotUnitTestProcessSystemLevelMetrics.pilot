@@ -1,0 +1,57 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test post analisi processi a livello di sistema
+# si testano in particolare le logiche "spreaded"
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_UPDATE_DB_ENABLED
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY PGMCOB  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+LIBRARY COPYCOB E:\Amrita\Amrita-Java\AmritaFramework\UnitTestCopy\
+LIBRARY_SOURCE_SEARCH COPYCOB
+
+# Identificazione oggetti da trattare (per le elaborazioni che necessitano)
+SYSTEM_VALUE Z
+SUB_SYSTEM_VALUE ZZ
+FILTER_ON_OBJECT_NAME 1 CO
+#OBJECT_TYPE_PGM_COBOL *ALL*  
+#OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST02
+
+# Stati validi oggetto da considerare
+#INPUT_OBJECTS_STATUS_ALL
+INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS
+INPUT_OBJECTS_ANALYZED_WITH_ERRORS
+
+# Elaborazioni system level da effettuare 
+#OPT_SOLVE_DYNAMIC_SPREADED_ENABLED
+OPT_EVALUATE_METRICS_SYSTEM_ENABLED
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo al livello di sistema
+#--------------------------------------------------------------------------
+
+PROCESS_SYSTEM_LEVEL	 
+START

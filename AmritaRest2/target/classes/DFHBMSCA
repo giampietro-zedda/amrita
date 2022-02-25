@@ -1,0 +1,111 @@
+      ***************************************************************** 00060000
+      *                                                               * 00120000
+      * @BANNER_START                           02                    * 00128500
+      * Licensed Materials - Property of IBM                          * 00137000
+      *                                                               * 00145500
+      * "Restricted Materials of IBM"                                 * 00154000
+      *                                                               * 00162500
+      * 5655-M15              DFHBMSCA                                * 00171000
+      *                                                               * 00179500
+      * (C) Copyright IBM Corp. 1988, 2005                            * 00188000
+      *                                                               * 00196500
+      * CICS                                                          * 00205000
+      * (Element of CICS Transaction Server                           * 00213500
+      *   for z/OS, Version 3 Release 2)                              * 00222000
+      * @BANNER_END                                                   * 00230500
+      *                                                               * 00240000
+      * STATUS = 6.5.0                                                * 00300000
+      *                                                               * 00370000
+      * CHANGE ACTIVITY :                                             * 00440000
+      *                                                               * 00510000
+      *   $SEG(DFHBMSCA),COMP(BMS),PROD(CICS    ):                    * 00580000
+      *                                                               * 00650000
+      *  PN= REASON REL YYMMDD HDXXIII : REMARKS                      * 00720000
+      * $01= A10639 650 051018 HDBGNRB : Migrate PK10639 from SPA R640* 00750000
+      * $L0= Base   210 88     HD1MA   : Base                         * 00790000
+      *                                                               * 00860000
+      ***************************************************************** 00930000
+      *                                                                 01000000
+      *                                                                 03000000
+       01      DFHBMSCA.                                                04000000
+         02    DFHBMPEM  PICTURE X   VALUE  IS  ''.                    05000000
+         02    DFHBMPNL  PICTURE X   VALUE  IS  '
+'.                    06000000
+         02    DFHBMPFF  PICTURE X   VALUE  IS  ''.                    07000000
+         02    DFHBMPCR  PICTURE X   VALUE  IS  ''.                    08000000
+         02    DFHBMASK  PICTURE X   VALUE  IS  '0'.                    09000000
+         02    DFHBMUNP  PICTURE X   VALUE  IS  ' '.                    10000000
+         02    DFHBMUNN  PICTURE X   VALUE  IS  '&'.                    11000000
+         02    DFHBMPRO  PICTURE X   VALUE  IS  '-'.                    12000000
+         02    DFHBMBRY  PICTURE X   VALUE  IS  'H'.                    13000000
+         02    DFHBMDAR  PICTURE X   VALUE  IS  '<'.                    14000000
+         02    DFHBMFSE  PICTURE X   VALUE  IS  'A'.                    15000000
+         02    DFHBMPRF  PICTURE X   VALUE  IS  '/'.                    16000000
+         02    DFHBMASF  PICTURE X   VALUE  IS  '1'.                    17000000
+         02    DFHBMASB  PICTURE X   VALUE  IS  '8'.                    18000000
+         02    DFHBMEOF  PICTURE X   VALUE  IS  ''.                    19000000
+         02    DFHBMCUR  PICTURE X   VALUE  IS  ''.                    20000000
+         02    DFHBMEC   PICTURE X   VALUE  IS  'b'.                    21000000
+         02    DFHBMFLG  PICTURE X.                                     22000000
+             88    DFHERASE VALUES ARE '', 'b'.                        23000000
+             88    DFHCURSR VALUES ARE '', 'b'.                        24000000
+         02    DFHBMDET  PICTURE X   VALUE  IS  'Ÿ'.                    25000000
+         02    DFHBMPSO-BIN PIC 9(4) COMP VALUE 3599.                   26000000
+      * ABOVE VALUE 3599 = X'0E0F' ADDED BY PTM 81385 (APAR PN23267)    27000000
+         02    FILLER REDEFINES DFHBMPSO-BIN.                           28000000
+           03  DFHBMPSO  PICTURE X.                                     29000000
+           03  DFHBMPSI  PICTURE X.                                     30000000
+         02    DFHSA     PICTURE X   VALUE  IS  '´'.                    31000000
+         02    DFHCOLOR  PICTURE X   VALUE  IS  'ƒ'.                    32000000
+         02    DFHPS     PICTURE X   VALUE  IS  '„'.                    33000000
+         02    DFHHLT    PICTURE X   VALUE  IS  'ÿ'.                    34000000
+         02    DFH3270   PICTURE X   VALUE  IS  '{'.                    35000000
+         02    DFHVAL    PICTURE X   VALUE  IS  'A'.                    36000000
+         02    DFHOUTLN  PICTURE X   VALUE  IS  'B'.                    37000000
+         02    DFHBKTRN  PICTURE X   VALUE  IS  'Æ'.                    38000000
+         02    DFHALL    PICTURE X   VALUE  IS  ' '.                    39000000
+         02    DFHERROR  PICTURE X   VALUE  IS  X'3F'.                  40000000
+      * ABOVE VALUE X'3F' CHANGED BY APAR PK10639                  @01C 40500000
+         02    DFHDFT    PICTURE X   VALUE  IS  'Ÿ'.                    41000000
+         02    DFHDFCOL  PICTURE X   VALUE  IS  ' '.                    42000000
+         02    DFHBLUE   PICTURE X   VALUE  IS  '1'.                    43000000
+         02    DFHRED    PICTURE X   VALUE  IS  '2'.                    44000000
+         02    DFHPINK   PICTURE X   VALUE  IS  '3'.                    45000000
+         02    DFHGREEN  PICTURE X   VALUE  IS  '4'.                    46000000
+         02    DFHTURQ   PICTURE X   VALUE  IS  '5'.                    47000000
+         02    DFHYELLO  PICTURE X   VALUE  IS  '6'.                    48000000
+         02    DFHNEUTR  PICTURE X   VALUE  IS  '7'.                    49000000
+         02    DFHBASE   PICTURE X   VALUE  IS  ' '.                    50000000
+         02    DFHDFHI   PICTURE X   VALUE  IS  ' '.                    51000000
+         02    DFHBLINK  PICTURE X   VALUE  IS  '1'.                    52000000
+         02    DFHREVRS  PICTURE X   VALUE  IS  '2'.                    53000000
+         02    DFHUNDLN  PICTURE X   VALUE  IS  '4'.                    54000000
+         02    DFHMFIL   PICTURE X   VALUE  IS  'Ü'.                    55000000
+         02    DFHMENT   PICTURE X   VALUE  IS  ''.                    56000000
+         02    DFHMFE    PICTURE X   VALUE  IS  'Ã'.                    57000000
+         02    DFHUNNOD  PICTURE X   VALUE  IS  '('.                    58000000
+         02    DFHUNIMD  PICTURE X   VALUE  IS  'I'.                    59000000
+         02    DFHUNNUM  PICTURE X   VALUE  IS  'J'.                    60000000
+         02    DFHUNNUB  PICTURE X   VALUE  IS  'Q'.                    61000000
+      * ABOVE VALUE DFHUNNUB ADDED BY APAR PN67669                      62000000
+         02    DFHUNINT  PICTURE X   VALUE  IS  'R'.                    63000000
+         02    DFHUNNON  PICTURE X   VALUE  IS  ')'.                    64000000
+         02    DFHPROTI  PICTURE X   VALUE  IS  'Y'.                    65000000
+         02    DFHPROTN  PICTURE X   VALUE  IS  '%'.                    66000000
+         02    DFHMT     PICTURE X   VALUE  IS  ''.                    67000000
+         02    DFHMFT    PICTURE X   VALUE  IS  '	'.                    68000000
+         02    DFHMET    PICTURE X   VALUE  IS  ''.                    70000000
+         02    DFHMFET   PICTURE X   VALUE  IS  ''.                    72000000
+         02    DFHDFFR   PICTURE X   VALUE  IS  ' '.                    74000000
+         02    DFHLEFT   PICTURE X   VALUE  IS  'Ê'.                    76000000
+         02    DFHOVER   PICTURE X   VALUE  IS  'Ü'.                    78000000
+         02    DFHRIGHT  PICTURE X   VALUE  IS  ''.                    80000000
+         02    DFHUNDER  PICTURE X   VALUE  IS  ''.                    82000000
+         02    DFHBOX-BIN  PIC 9(4) COMP VALUE 15.                      84000000
+      * ABOVE VALUE 15 = X'000F' ADDED BY PTM 81385 (APAR PN23267)      86000000
+         02    FILLER REDEFINES DFHBOX-BIN.                             88000000
+           03  FILLER    PICTURE X.                                     90000000
+           03  DFHBOX    PICTURE X.                                     92000000
+         02    DFHSOSI   PICTURE X   VALUE  IS  ''.                    94000000
+         02    DFHTRANS  PICTURE X   VALUE  IS  '0'.                    96000000
+         02    DFHOPAQ   PICTURE X   VALUE  IS  'Ÿ'.                    98000000

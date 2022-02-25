@@ -1,0 +1,2410 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="AnalyzerConfiguratorDirectives.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div id="divTopHeader">
+	<table id='topHeaderTable'>
+		<tr>
+		   <td id='topHeader'>Execution Directives Pilot  </td>
+		   <td id='topHeaderPilot'>name</td>
+	    </tr>
+	</table>       
+</div>
+
+<div  id="divTopToolBar"> 
+	<table id='TopToolBarTable'>
+		<tr>
+		   <td> <input class='btnReturn'  		type="button" id='btnReturn'   value="<<"        onclick='onclick_btnReturn(this.id);' />  </td>
+		   <td> <input class='btnGeneric' 		type="button" id='btnClear'    value="Clear"     onclick='onclick_btnClear(this.id);' />  </td>
+		   <td> <input class='btnGeneric' 		type="button" id='btnDelete'   value="Delete"    onclick='onclick_btnDelete(this.id);' />  </td>
+		   <td> <input class='btnGeneric' 		type="button" id='btnSave'     value="Save"      onclick='onclick_btnSave(this.id);' />  </td>
+		   <td> <input class='btnGeneric' 		type="button" id='btnSaveAs'   value="Save As"   onclick='onclick_btnSaveSaveAs(this.id);' />  </td>
+		   <td> <input class='inputValueBigger' type="text"   id="fileToSave"  value=' ' tabindex='0'/>  </td>
+		   <td><div id='divPilot'></div></td>
+		   <td><div id='divMsgSave' tabindex='0'></div></td>
+	    </tr>
+	</table>       
+</div>
+
+<div class=divHeader>Input: System and subsystem</div>
+<table class='tbSection' id= tbSysSubSys>
+
+  <tr> 
+       <td class='leftHeader'><b>System</b></td>
+  	   <td class='rightTd'>
+  	     <table><tr>
+  	              <td>
+	  			        <input type="radio" id="systemByValue" 						 name="system"  		value="ByValue" >
+	     	            <label for="systemByValue">By Value</label>  
+	     	              <input  class='inputValue' type="text" id="systemInput" 	 name="systemInput" 	value=' '/> <br>
+	   		            <input type="radio" id="systemOnName"    					 name="system" 		 	value="OnName">
+	      	            <label for="systemOnName">By Pos/lng On Name </label> 
+	      	              <input  class='inputValueShort' type="text" id="systemPos" name="systemPos" 		value=' ' /> 
+	      	              <input  class='inputValueShort' type="text" id="systemLng" name="systemLngs" 		value=' ' /><br>
+	  		            <input type="radio" id="systemByExit"   					 name="system" 			value="*ByExit" >
+	     	            <label for="systemByExit">By Exit</label> 
+ 	              </td>
+  	           </tr>
+  	     </table>              
+  	   </td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'><b>Subsystem</b></td>
+  	   <td class='rightTd'>
+  	     <table>
+  	            <tr>
+	  	          <td>
+  		            <input type="radio" id="subSystemAll"    name="subSystemInput" value="*ByExit" >
+    	            <label for="subSystemByExit">All defined</label> <br>
+    	            
+ 		            <input type="radio" id="subSystemByExit"    name="subSystemInput" value="*ByExit" >
+    	            <label for="subSystemByExit">By User Exit</label>  <br>
+ 		           
+   		            <input type="radio" id="subSystemOnName"    name="subSystemInput"  value="OnName">
+     	            <label for="subSystemOnName">By Pos/lng On Name </label> 
+     	            
+     	            <input  class='inputValueShort' type="text" id="subSystemPos" name="subSystemPos" value=' ' /> 
+     	            <input  class='inputValueShort' type="text" id="subSystemLng" name="subSystemLng" value=' ' /><br>
+ 		            
+ 			        <input type="radio" id="subSystemByByValues" name="subSystemInput"  value="ByValue" >
+    	            <label for="subSystemByByValues">By Selected Values</label>  <br>
+  		           
+                  </td>
+  	            </tr>
+				<tr>
+				  <td>
+				     <table class='tbContainer' id="tbContainerLibrarySearch">
+				        <tr>
+							<td> <select class='selectGtLt' id="selSubSysLeft" name="selSubSysLeft" size=5 multiple></select> </td>
+							<td>
+							   <table>
+								     <tr> <td><input class='btnGt' type="button" id='btnGt' value=">" onclick='onclick_btnGtSelSubSys(this.id);' />  </td>   </tr>
+								     <tr> <td><input class='btnLt' type="button" id='btnLt' value="<" onclick='onclick_btnLtSelSubSys(this.id);' />  </td>	</tr>				   
+							   </table>
+							</td>
+							<td> <select class='selectGtLt' id="selSubSysRight" name="selSubSysRight" size=5 multiple></select> </td> 					
+					 </table>
+				  </td>
+		        </tr>  
+  	    </table>              
+  </tr>
+    
+</table>
+	 
+	 
+<div class=divHeader>Input: libraries, files, copy</div>
+<table class='tbSection' id= 'tbSectionSourceLibraries'>	 
+  <tr> 
+       <td class='leftHeader'><b>Source Libraries</b></td>
+  		<td class='rightTd'> 
+  		       <table  class='tbContainer' id='tbLibraryContainer'>	
+  		          <tr>	   		          
+   		          <td colspan=3>
+   		          	  <div id='divTbLibrary'> 		          	  
+     		             <table class='rightTables' id='tbLibrary'>
+   		                    <tr><th>Code</th><th>Path</th></tr>
+   		                    <tr><td>.</td><td>.</td></tr>
+   		                 </table>	
+   		              </div> 
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInputShort'>Library Code</td>
+  		              <td> <input  class='inputValueFile leftAlign' type="text" id="libraryCode" name="LibraryCode"/></td>
+  		           
+  		          <tr> 
+  		              <td class='leftHeaderInputShort'>Phisical Path </td>
+  		              <td><input  class='inputValueBigger' type="text" id="libraryPathInp" name="libraryPathInp"/> </td>
+  		              <td><input  type="file" id="LibraryPathSel" name="libraryPathSel" onchange='selectFolder(event);' webkitdirectory directory multiple > </td>
+  		          </tr>
+  		          <tr>
+  		              <td colspan=3>
+  		                  <input class='btnAddDelete' type="button" id='btnAddLibrary'       value="Add"    onclick='onclick_btnAddLibrary(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnSourceDelLibrary' value="Delete" onclick='onclick_btnDelLibrary(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		       </table>             
+  		</td>
+  </tr>
+</table>
+
+<table class='tbSection' id= 'tbSectionLibrarySearch'>	 
+  <tr> 
+       <td class='leftHeader'><b>Libraries Search Sequence</b></td>
+  		<td class='rightTd'> 
+   		 <table class='tbContainer' id="tbContainerLibrarySearch">
+			<tr>
+				<td> <select class='selectGtLtBigger' id="selLibrarySearchLeft" name="selLibrarySearchLeft" size=5 multiple></select> </td>
+				<td>
+				   <table>
+				     <tr> <td><input class='btnGt' type="button" id='btnLibrarySearchGt' value=">" onclick='onclick_btnLibrarySearchGt(this.id);' />  </td> </tr>
+				     <tr> <td><input class='btnLt' type="button" id='btnLibrarySearchLt' value="<" onclick='onclick_btnLibrarySearchLt(this.id);' />  </td>	</tr>				   
+				   </table>
+				</td>
+				<td> <select class='selectGtLtBigger' id="selLibrarySearchRight" name="selLibrarySearchRight" size=5 multiple></select> </td>              
+			</tr>
+		</table> 													               
+  		</td>
+  </tr>
+ </table>
+
+<table class='tbSection' id= 'tbSectionCopyPrecompiler'>	 
+  <tr> 
+       <td class='leftHeader'><b>IBM Cics Copy Precompilers</b></td>
+       <td class='rightTd'>
+   		 <table class='tbContainer' id="tbContainerCopyPrecompiler">
+			   <tr> <td><input class='inputValue'  type="text" id="dfheib" name="dfheib" value='DFHEIB'/></td>
+			        <td>
+	         		   <input type="radio" id="dfhEibLnk" name="dfhEibLnkWrk" > <label for="dfhEibLnk">Lnk</label>	                         
+	         		   <input type="radio" id="dfhEibWrk" name="dfhEibLnkWrk" > <label for="dfhEibWrk">Wrk</label> 
+ 			        <td>
+			           <input class='inputValuePre'  type="text" id="dfhEibFileInp" name="dfhEibFileInp"/> 
+			           <input class='inputValueFile' type="file" id="dfhEibFile"    name="dfhEibFile"   onchange="onchange_SelectFolder(event, this.id);" > 
+			        </td>
+			   </tr>
+			   <tr> <td><input class='inputValue'  type="text" id="dfhaid" name="dfhaid" value='DFHAID'/></td>
+			        <td>
+	         		   <input type="radio" id="dfhAidLnk" name="dfhAidLnkWrk" > <label for="dfhAidLnk">Lnk</label>	                         
+	         		   <input type="radio" id="dfhAidWrk" name="dfhAidLnkWrk" > <label for="dfhAidWrk">Wrk</label> 
+ 			        <td>
+			           <input class='inputValuePre'    type="text" id="dfhAidFileInp" name="dfhAidFileInp"/> 
+			           <input class='inputValueFile'   type="file" id="dfhAidFile"    name="dfhAidFile"   onchange="onchange_SelectFolder(event, this.id);" > 
+			        </td>
+			   </tr>
+			   <tr> <td><input class='inputValue'  type="text" id="dfhbms" name="dfhbms" value='DFHBMS'/></td>
+			        <td> 
+	         		   <input type="radio" id="dfhBmsLnk" name="dfhBmsLnkWrk" > <label for="dfhBmsLnk">Lnk</label>	                         
+	         		   <input type="radio" id="dfhBmsWrk" name="dfhBmsLnkWrk" > <label for="dfhBmsWrk">Wrk</label> 
+ 			        <td> 
+			           <input class='inputValuePre'    type="text" id="dfhBmsFileInp" name="dfhBmsFileInp"/> 
+			           <input class='inputValueFile'   type="file" id="dfhBmsFile"    name="dfhBmsFile"  onchange="onchange_SelectFolder(event, this.id);" > 
+			        </td>
+			   </tr>
+			   <tr> <td><input class='inputValue'  type="text" id="sqlca" name="sqlca" value='SQLCA'/></td>
+			        <td>
+	         		   <input type="radio" id="sqlcaLnk" name="sqlcaLnkWrk" > <label for="sqlcaLnk">Lnk</label>	                         
+	         		   <input type="radio" id="sqlcaWrk" name="sqlcaLnkWrk" > <label for="sqlcaWrk">Wrk</label> 
+ 			        <td> 
+			           <input class='inputValuePre'    type="text" id="sqlcaFileInp" name="sqlcaFileInp"/> 
+			           <input class='inputValueFile'   type="file" id="sqlcaFile"    name="sqlcaFile"   onchange="onchange_SelectFolder(event, this.id)" > 
+			        </td>
+			   </tr>
+			   <tr> <td><input class='inputValue'  type="text" id="sqlda" name="sqlda" value='SQLDA'/></td>
+			        <td>
+	         		   <input type="radio" id="dfhSqldaLnk" name="sqldaLnkWrk" > <label for="sqldaLnk">Lnk</label>	                         
+	         		   <input type="radio" id="dfhSqldaWrk" name="sqldaLnkWrk" > <label for="sqldaWrk">Wrk</label> 
+ 			        <td> 
+			           <input class='inputValuePre'    type="text" id="sqldaFileInp" name="sqldaFileInp"/> 
+			           <input class='inputValueFile'   type="file" id="sqldaFile"    name="sqldaFile"   onchange="onchange_SelectFolder(event, this.id)" > 
+			        </td>
+			   </tr>
+            </table>
+       </td>
+     </tr>
+   </table>
+
+<table class='tbSection' id= 'tbSectionCopySuffix'>	 
+  <tr> 
+       <td class='leftHeader'><b>Expected Copy Suffix</b></td>
+  		<td class='rightTd'> 
+  		       <table  class='tbContainer' id='tbLibraryContainer'>	
+  		          <tr>	   		          
+   		          <td colspan=2>
+   		             <select class='selectGtLt' id="selCopySuffix" name="selCopySuffix" size=5 multiple></select> 
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput' colspan=2>Suffix &nbsp;&nbsp; <input  class='inputValue' type="text" id="copySuffix" name="copySuffix"/></td>
+  		          </tr>
+  		          <tr>
+  		              <td colspan=2>
+  		                  <input class='btnAddDelete' type="button" id='btnAddCopySuffix' value="Add"    onclick='onclick_btnAddCopySuffix(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelCopySuffix' value="Delete" onclick='onclick_btnDelCopySuffix(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		       </table>             
+  		</td>
+  </tr>
+</table>
+
+<table class='tbSection' id= 'tbSectionFilePath'>	 
+  <tr> 
+       <td class='leftHeader'><b>Specific Source Files To Deal</b></td>
+  		<td class='rightTd'> 
+  		       <table  class='tbContainer' id='tbFilePath'>	
+  		          <tr>	   		          
+   		          <td colspan=2>
+   		             <select class ='selectGtLtPath' id="selFilePath" name="selFilePath" size=5 multiple></select> 
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput' colspan=2>File Path &nbsp;&nbsp; <input  class='inputValueBigger' type="text" id="filePath" name="filePath"/></td>
+  		          </tr>
+  		          <tr>
+  		              <td colspan=2>
+  		                  <input class='btnAddDelete' type="button" id='btnAddFilePath' value="Add"    onclick='onclick_btnAddFilePath(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelFilePath' value="Delete" onclick='onclick_btnDelFilePath(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		       </table>             
+  		</td>
+  </tr>
+</table>
+
+<div class=divHeader>Input: Object Types</div>
+<table class='tbSection' id= 'tbObjectTypes'>	 
+  <tr> 
+      <td class='leftHeader'><b>Object Types</b></td>
+  	   <td class='rightTd'> 
+ 		       <table  class='tbContainer' id='tbObjectTypesContainer'>	
+  		          <tr>	   		          
+   		          <td>
+   		          	  <div id='divTbObjectTypes'>
+     		             <table class='rightTables' id='TbObjectTypes'>
+	   		                 <tr>
+	   		                    <th>Type</th>
+	   		                    <th>Mode</th>
+	  		                    <th>From</th>
+	 		                    <th>To</th>
+	   		                 </tr>
+	   		                 <tr>
+	   		                    <td>.</td>
+	   		                    <td>.</td>
+	   		                    <td>.</td>
+	  		                    <td>.</td>
+	   		                 </tr>
+     		            </table>
+   		          	 </div> 
+   		          </td>
+  		          </tr>	
+				  <tr>
+				 	 <td>Type Object : <select id="seltypeObject" name="seltypeObject" onChange="onChangeTypeObject()"></select> </td>
+				  </tr>
+  		          <tr>	
+  		            <td colspan=2> 
+  		              <input type="radio" id="typeObjectSingle" name="typeObject"  value="*SINGLE*" >
+     	              <label for="typeObjectSingle">Single</label>  
+     	                 <input  class='inputValue' type="text" id="typeObjectSingleInp" name="typeObjectSingleInp" value=' '        />  
+  		              
+  		              <input type="radio" id="typeObjectAll"    name="typeObject"  value="*ALL*" >
+     	              <label for="typeObjectAll">All </label> 
+     	                 <input  class='inputValue' type="text" id="typeObjectFrom" name="typeObjectFrom" value='A'        /> 
+  		                 <input  class='inputValue' type="text" id="typeObjectTo"   name="typeObjectTo"   value='ZZZZZZZZ' />
+ 
+     	            </td>		          
+   		          <tr>
+  		             <td>
+  		                 <input class='btnAddDelete' type="button" id='btnAddTypeObject' value="Add"    onclick='onclick_btnAddTypeObject(this.id);' /> 
+  		                 <input class='btnAddDelete' type="button" id='btnDelTypeObject' value="Delete" onclick='onclick_btnDelTypeObject(this.id);' />
+  		             </td>
+  		          </tr>   		          
+  		       </table>   	        
+  		</td>      
+  </tr>
+</table>
+
+<div class=divHeader>Input: Object Status</div>
+<table class='tbSection' id= 'tbObjectStatus'>	 
+  <tr> 
+       <td class='leftHeader'><b>Status To consider </b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="ObjectStatusAny" name="ObjectStatusAny"      			             value="ObjectStatusAny"                onclick='onclick_btnObjectStatusAny(this.id);'>
+           <label for="ObjectStatusAny">Any</label> <br> 
+           <input type="checkbox" id="ObjectStatusToBeAnalyzed" name="ObjectStatusToBeAnalyzed"          value="ObjectStatusToBeAnalyzed"       >
+           <label for="ObjectStatusToBeAnalyzed">Source To Be Analyzed</label> <br> 
+           <input type="checkbox" id="ObjectStatusSourceDetected" name="ObjectStatusSourceDetected"      value="ObjectStatusSourceDetected"     >
+           <label for="ObjectStatusSourceDetected">Source Type Detected</label> <br> 
+           <input type="checkbox" id="ObjectStatusAnlzWithNoErrors" name="ObjectStatusAnlzWithNoErrors"  value="ObjectStatusAnlzWithNoErrors"   >
+           <label for="ObjectStatusAnlzWithNoErrors">Analyzed With No Errors</label> <br> 
+           <input type="checkbox" id="ObjectStatusAnlzWithErrors" name="ObjectStatusAnlzWithErrors"      value="ObjectStatusAnlzWithErrors"     >
+           <label for="ObjectStatusAnlzWithErrors">Analyzed With Errors</label> <br> 
+           <input type="checkbox" id=ObjectStatusAnlzWithException name="ObjectStatusAnlzWithException"   value="ObjectStatusAnlzWithException" >
+           <label for="ObjectStatusAnlzWithException">Analyzed With Exception</label> <br>           
+           <input type="checkbox" id="ObjectStatusAnlzDynCode" name="ObjectStatusAnlzDynCode" value="ObjectStatusAnlzDynCode" >
+           <label for="ObjectStatusAnlzDynCode">Analyzed With Dynamic Code</label> <br>                   
+           <input type="checkbox" id="ObjectStatusAnlzDynCodeSolved" name="ObjectStatusAnlzDynCodeSolved" value="ObjectStatusAnlzDynCodeSolved" >
+           <label for="ObjectStatusAnlzDynCodeSolved">Analyzed With Dynamic Code Solved</label> <br> 
+           <input type="checkbox" id="ObjectStatusAnlzDynCodeSpreadedToSolve" name="ObjectStatusAnlzDynCodeSpreadedToSolve" value="ObjectStatusAnlzDynCodeSpreadedToSolve" >
+           <label for="ObjectStatusAnlzDynCodeSpreadedToSolve">Analyzed With Dynamic Code Spreaded To Solve</label> <br> 
+           <input type="checkbox" id="ObjectStatusAnlzDynCodeWaitForData" name="ObjectStatusAnlzDynCodeWaitForData"  value="ObjectStatusAnlzDynCodeWaitForData" >
+           <label for="ObjectStatusAnlzDynCodeWaitForData">Analyzed With Dynamic Code Waiting For data Or Caller/Called Programs</label> <br>          
+           <input type="checkbox" id="ObjectStatusProcWithNoErrors" name="ObjectStatusProcWithNoErrors"   value=ObjectStatusProcWithNoErrors    >
+           <label for="ObjectStatusProcWithNoErrors">Processed With No Errors</label> <br> 
+           <input type="checkbox" id="ObjectStatusProcWithErrors" name="ObjectStatusProcWithErrors"       value=ObjectStatusProcWithErrors      >
+           <label for="ObjectStatusProcWithErrors">Processed With Errors</label> <br> 
+           <input type="checkbox" id="ObjectStatusProcWithException" name="ObjectStatusProcWithException" value="ObjectStatusProcWithException" >
+           <label for="ObjectStatusProcWithException">Processed With Exception</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+<div class=divHeader>Filters on sources/objects to deal with</div>
+<table class='tbSection' id= 'tbSectionFilters'>	 
+  <tr> 
+       <td class='leftHeader'><b>Filter Type</b></td>
+  	   <td class='rightTd'> 
+  		
+  		       <table  class='tbContainer' id='tbFilterContainerRadio'>	
+  		          <tr>	
+  		            <td colspan=2> 
+  		              <input type="radio" id="filterByExit" name="typeFilter"             value="byExit"             onclick='onclick_btnTypeFilter(this.id);'>
+     	              <label for="filterByExit">By Exit</label> <br> 
+   		              <input type="radio" id="filterByObjectNameRange" name="typeFilter"  value="ByObjectNameRange"  onclick='onclick_btnTypeFilter(this.id);'>
+     	              <label for="filterByObjectNameRange">By Object Name Range</label>
+     	                  <input  class='inputValue' type="text" id="filterNameFrom" name="filterNameFrom" value='A'      /> 
+     	                  <input  class='inputValue' type="text" id="filterNameTo" name="filterNameTo"   value='ZZZZZZZZ' /> <br>
+  		              <input type="radio" id="filterByValueAtPos" name="typeFilter"       value="ByValueAtPos"       onclick='onclick_btnTypeFilter(this.id);'>
+     	              <label for="filterByValueAtPos">By Value At Positions</label>  
+     	            </td>		          
+  		          </tr>	
+  		        </table>  
+       </td>
+  </tr>     
+ 
+   <tr>
+       <td class='leftHeader'><b>By Value At Positions</b></td>
+  	   <td class='rightTd'> 
+  		       <table  class='tbContainer' id='tbFilterContainerPosValue'>	
+  		          <tr>	   		          
+   		            <td>
+	   		          	  <div id='divTbFilterPosValue'>
+		   		             <table class='rightTables' id='tbFilterPosValue'>
+			   		                 <tr>
+			   		                    <th>Pos</th>
+			   		                    <th>Value</th>
+			   		                 </tr>
+			   		                 <tr>
+			   		                    <td>.</td>
+			   		                    <td>.</td>
+			   		                 </tr>
+	   		                 </table>
+	   		              </div>
+  		          	  
+   		            </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput'>Pos/Value </td>
+  		              <td>  <input  class='inputValueShort' type="text" id="filterPosStart" name="filterPos"/>  </td>
+  		              <td>  <input  class='inputValueShort' type="text" id="filterValue" name="filterValue"/> </td>
+  		          </tr>
+  		          <tr>
+  		              <td>
+  		                  <input class='btnAddDelete' type="button" id='btnAddFilterPosValue' value="Add"    onclick='onclick_btnAddFilterPosValue(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelFilterPosValue' value="Delete" onclick='onclick_btnDelFilterPosValue(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		       </table>          
+  		</td>  
+  </tr> 
+</table>
+
+<div class=divHeader>Exclusions on Objects/Sources</div>
+<table class='tbSection' id= 'tbSectionExclusion'>	 
+  <tr> 
+        <td class='leftHeader'><b>Exclusion Types</b></td>
+  		<td class='rightTd'> 
+   		       <table  class='tbContainer' id='tbExclusionContainerRadio'>	
+  		          <tr>	
+  		            <td> 
+  		              <input type="radio" id="excludeByExit" name="typeExclude"                value="byExit"             onclick='onclick_btnTypeExclusion(this.id);'>
+     	              <label for="excludeByExit">By Exit</label> <br> 
+  		              <input type="radio" id="excludeByObjectName" name="typeExclude"           value="ByObjectName"       onclick='onclick_btnTypeExclusion(this.id);'>
+     	              <label for="excludeByObjectName">By Object Name</label>  <br>
+  		              <input type="radio" id="excludeByObjectNameRange" name="typeExclude"  	value="ByObjectNameRange"  onclick='onclick_btnTypeExclude(this.id);'>
+     	              <label for="excludeByObjectNameRange">By Object Name Range</label> 
+     	                  <input  class='inputValue' type="text" id="excludeNameFrom" name="excludeNameFrom"   value='A'       /> 
+    	                  <input  class='inputValue' type="text" id="excludeNameTo"   name="excludeNameTo"     value='ZZZZZZZZ' /><br>
+  		              <input type="radio" id="excludeByValueAtPos" name="typeExclude"       value="ByValueAtPos"       onclick='onclick_btnTypeExclude(this.id);'>
+     	              <label for="excludeByValueAtPos">By Value At Positions</label>  
+     	            </td>		          
+  		          </tr>	
+   		        </table>  
+  		</td>       
+    </tr> 
+    
+    <tr>   		        
+        <td class='leftHeader'><b>By Object Name</b></td> 		        		        
+  		<td class='rightTd'> 		        
+  		        <table  class='tbContainer' id='tbExclusionContainerSel'>	 
+  		          <tr>	   		          
+   		          <td>
+   		             <select class='selectGtLtBigger' id="selExclusion" name="selExclusion" size=5 multiple></select> 
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput'>Object Name <input  class='inputValue' type="text" id="exclusionObjectName" name="exclusionObjectName"/></td>
+  		          </tr>
+  		          <tr>
+  		              <td>
+  		                  <input class='btnAddDelete' type="button" id='btnAddExclusion' value="Add"    onclick='onclick_btnAddExclusion(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelExclusion' value="Delete" onclick='onclick_btnDelExclusion(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		        </table>  
+    		</td>       
+    </tr> 
+       
+    <tr>   		        
+        <td class='leftHeader'><b>By Value At Positions</b></td> 		        		        
+   		<td class='rightTd'>        
+  		       <table  class='tbContainer' id='tbExclusionContainerPosValue'>	
+  		          <tr>	   		          
+   		          <td>
+   		          	  <div id='divTbExclusionPosValue'>
+	     		            <table class='rightTables' id='tbExclusionPosValue'>
+		   		                 <tr>
+		   		                    <th>Pos</th>
+		   		                    <th>Value</th>
+		   		                 </tr>
+		   		                 <tr>
+		   		                    <td>.</td>
+		   		                    <td>.</td>
+		   		                 </tr>
+	    		             </table>
+   		          	 </div>
+   		          	  
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput'>Pos/Value </td>
+  		              <td><input  class='inputValueShort' type="text" id="exclusionPos" name="exclusionPos"/> </td>
+   		              <td><input  class='inputValueShort' type="text" id="exclusionValue" name="exclusionValue"/> </td>
+  		          </tr>
+  		          <tr>
+  		              <td colspan=3>
+  		                  <input class='btnAddDelete' type="button" id='btnAddExclusionPosValue' value="Add"    onclick='onclick_btnAddExclusionPosValue(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelExclusionPosValue' value="Delete" onclick='onclick_btnDelExclusionPosValue(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		       </table>    	   		
+  	  </td>
+  </tr>
+</table>
+
+<div class=divHeader>Copy Specific Actions</div>
+<table class='tbSection' id= 'tbSectionLimits'>	 
+  <tr> 
+  	   <td class='leftHeader'><b>Force Re-Analysis</b> </td>
+  		<td class='rightTd'> 		        
+  		        <table  class='tbContainer' id='tbCopyForceReAnalysisContainerSel'>	 
+  		          <tr>	   		          
+   		          <td>
+   		             <select class='selectGtLtBigger' id="selForceCopyReAnalysis" name="selForceCopyReAnalysis" size=5 multiple></select> 
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput'>Copy Name <input  class='inputValue' type="text" id="forceCopyNameReAnalysis" name="forceCopyNameReAnalysis"/></td>
+  		          </tr>
+  		          <tr>
+  		              <td>
+  		                  <input class='btnAddDelete' type="button" id='btnAddForceReAnalysisCopyName' value="Add"    onclick='onclick_btnAddForceReAnalysisCopyName(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelForceReAnalysisCopyName' value="Delete" onclick='onclick_btnDelForceReAnalysisCopyName(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		        </table>  
+    		</td>       
+  </tr>
+  <tr> 
+  	   <td class='leftHeader'><b>Force Re-Build Definitions On Db</b> </td>
+  		<td class='rightTd'> 		        
+  		        <table  class='tbContainer' id='tbCopyForceReBuildOnDbContainerSel'>	 
+  		          <tr>	   		          
+   		          <td>
+   		             <select class='selectGtLtBigger' id="selForceCopyReBuildOnDb" name="selForceCopyReBuildOnDb" size=5 multiple></select> 
+   		          </td>
+  		          </tr>	
+  		          <tr>
+  		              <td class='leftHeaderInput'>Copy Name <input  class='inputValue' type="text" id="forceCopyNameReBuildOnDb" name="forceCopyNameReBuildOnDb"/></td>
+  		          </tr>
+  		          <tr>
+  		              <td>
+  		                  <input class='btnAddDelete' type="button" id='btnAddForceReBuildOnDbCopyName' value="Add"    onclick='onclick_btnAddForceReBuildOnDbCopyName(this.id);' /> 
+  		                  <input class='btnAddDelete' type="button" id='btnDelForceReBuildOnDbCopyName' value="Delete" onclick='onclick_btnDelForceReBuildOnDbCopyName(this.id);' />
+  		              </td>
+  		          </tr>   		          
+  		        </table>  
+    		</td>       
+  </tr>
+</table>
+
+<div class=divHeader>Limits Number Of Sources/Objects</div>
+<table class='tbSection' id= 'tbSectionLimits'>	 
+  <tr> 
+       <td class='leftHeader'><b>Limits Max Allowed</b> </td>
+  	   <td class='rightTd'>  		
+  		       <table  class='tbContainer' id='tbLimitContainerRadio'>	
+  		          <tr>	
+  		            <td colspan=2> 
+  		              <input type="checkbox" id="LimitEnabled" name="typeLimit"  value="Enabled"  onclick='onclick_btnTypeLimit(this.id);'>
+     	              <label for="LimitEnabled">Limit Enabled</label> <br> 
+     	            </td>	
+   		          <tr>
+  		              <td class='leftHeaderInput'>To Input Sources  </td> 
+  		              <td><input  class='inputValue' type="text" id="LimiMaxSources" name="LimiMaxSources"/></td>
+  		          </tr>	 
+   		          <tr>
+  		              <td class='leftHeaderInput'>To Objects To process   </td> 
+  		              <td><input  class='inputValue' type="text" id="LimitMaxObjects" name="LimitMaxObjects"/></td>
+  		          </tr>	 
+  		       </table>    	   		
+  	  </td>
+  </tr>
+</table>
+
+<div class=divHeader>Options</div>
+<table class='tbSection' id= 'tbOptGeneric'>	 
+  <tr> 
+       <td class='leftHeader'><b>Generic</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="OptGenericDbUpdate" name="OptGenericDbUpdate"      			 value="OptGenericDbUpdate"     >
+           <label for="OptGenericDbUpdate">Db Ubdate Enabled</label> <br> 
+           <input type="checkbox" id="OptGenericDbTraceErr" name="OptGenericDbTraceErr"  			 value="OptGenericDbTraceErr"   >
+           <label for="OptGenericDbTraceErr">Trace Errors On Db Enabled</label> <br> 
+           <input type="checkbox" id="OptGenericVerbose" name="OptGenericVerbose"        			 value="OptGenericVerbose"      >
+           <label for="OptGenericVerbose">Verbose Messages Enabled</label> <br>   	   
+           <input type="checkbox" id="OptGenericStackTraceParsingErr" name="OptStackTraceParsingErr" value="OptGenericStackTraceParsingErr" >
+           <label for="OptGenericStackTraceParsingErr">Logging Stack Trace on Parsing Errors</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+<table class='tbSection' id= 'tbOptionLibraryScan'>	 
+  <tr> 
+       <td class='leftHeader'><b>Library Scan</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="OptDetectSourceType" name="OptDetectSourceType"          value="true"       >
+           <label for="OptDetectSourceType">Detect Source Type Based On Content</label> <br> 
+           <input type="checkbox" id="OptFullInfoFileSystem" name="OptFullInfoFileSystem"    value="true"         >
+           <label for="OptFullInfoFileSystem">Detect Full File System Info For Each Source File</label> <br> 
+           <input type="checkbox" id="OptSearchFileRecursive" name="OptSearchFileRecursive"    value="true"       >
+           <label for="OptSearchFileRecursive">Recursive File Search In Source Folders</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+<table class='tbSection' id= 'tbOptAnalysisSources'>	 
+  <tr> 
+       <td class='leftHeader'><b>After Program Source Parsing</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="OptDbCreateCopyDefinition" name="OptDbCreateCopyDefinition"  			value="OptCopyDefOnDb"       	  >
+           <label for="OptDbCreateCopyDefinition">Db Create Copy Definition</label> <br> 
+           <input type="checkbox" id="OptDbCreateWhereUsedCopyField" name="OptDbCreateWhereUsedCopyField"  	value="OptWhereUsedCopyFieldOnDb"  >
+           <label for="OptDbCreateWhereUsedCopyField">Db Create Where Used Copy Fields</label> <br> 
+           <input type="checkbox" id="OptDbCreateWhereUsedEntityCol" name="OptDbCreateWhereUsedCopyField"  	value="OptWhereUsedEntityColOnDb"  >
+           <label for="OptDbCreateWhereUsedCopyField">Db Create Where Used Entity Columns</label> <br> 
+           <input type="checkbox" id="OptForceCopyDefReAnalysis" name="OptForceCopyDefReAnalysis"  			value="OptForceReAnalysisCopyDef">
+           <label for="OptForceCopyDefReAnalysis">Force Copy Definition Re-Analysis </label> <br> 
+           <input type="checkbox" id="OptForceCopyDefDbRebuid" name="OptForceCopyDefDbRebuid"  				value="OptRebuidCopyDefOnDb" 	  >
+           <label for="OptForceCopyDefDbRebuid">Force Copy Definition Db Re-Build</label> <br> 
+           <input type="checkbox" id="OptDetectCode" name="OptDetectCode"                          			value="true"       	 			  >
+           <label for="OptDetectCode">Dead Code Detection</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+<table class='tbSection' id= 'tbOptionPgmLevel'>	 
+  <tr> 
+       <td class='leftHeader'><b>Dynamic Code At Program Level</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="OptSolveDynamicLocal" name="OptSolveDynamicLocal"              value="true"    >
+           <label for="OptSolveDynamicLocal">Enabled</label> <br> 
+           <input type="checkbox" id="OptSolveDynamicLocalLight" name="OptSolveDynamicLocalLight"    value="true"    >
+           <label for="OptSolveDynamicLocalLight">Solve At Program Level Initialized Fields (light)</label> <br> 
+           <input type="checkbox" id="OptSolveDynamicCics" name="OptSolveDynamicCics"                value="true"    >
+           <label for="OptSolveDynamicCics">Solve In Cics Instructions</label> <br> 
+           <input type="checkbox" id="OptSolveDynamicDmlSql" name="OptSolveDynamicDmlSql"            value="true"    >
+           <label for="OptSolveDynamicDmlSql">Solve DML Sql Instructions</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+
+<table class='tbSection' id= 'tbOptionSystemLevel'>	 
+  <tr> 
+       <td class='leftHeader'><b>Process System Level</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="OptSolveDynamicCodeSpreaded" name="OptSolveDynamicCodeSpreaded"         value="true"        >
+           <label for="OptSolveDynamicCodeSpreaded">Solve Dynamic Code Spreaded Across Programs</label> <br> 
+           <input type="checkbox" id="OptDetectIndirectRelationships" name="OptDetectIndirectRelationships"   value="true"        >
+           <label for="OptDetectIndirectRelationships">Detect Indirect Relationships Between Programs</label> <br> 
+           <input type="checkbox" id="OptAssignPhisToLogicalFile" name="OptAssignPhisToLogicalFile"           value="true"        >
+           <label for="OptAssignPhisToLogicalFile">Detect Phisical File Names In Logical File Relationships (FD definition)</label> <br> 
+           <input type="checkbox" id="OptEvaluateMetricSystem" name="OptEvaluateMetricSystem"                 value="true"       >
+           <label for="OptEvaluateMetricSystem">Evaluate Metrics At System/Subsystem Level</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+<table class='tbSection' id= 'tbOptionMetrics'>	 
+  <tr> 
+       <td class='leftHeader'><b>Metrics And Quality System</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="OptMetricAll" name="OptMetricAll"               					value="true"        >
+           <label for="OptMetricAll">All Metrics Enabled</label> <br> 
+           <input type="checkbox" id="OptMetricBasic" name="OptMetricBasic"           					value="true"        >
+           <label for="OptMetricBasic">Basic Metrics (Dimensional)</label> <br> 
+           <input type="checkbox" id="OptMetricDetailOndb" name="OptMetricDetailOndb"               	value="true"        >
+           <label for="OptMetricDetailOndb">Detail Metrics On Db At Section/Paragraph Level</label> <br> 
+           <input type="checkbox" id="OptMetricDetail" name="OptMetricDetail"         					value="true"        >
+           <label for="OptMetricDetail">Detailed Program Metrics At Mainline/Section/Program Level</label> <br> 
+           <input type="checkbox" id="OptMetricMcCAbe" name="OptMetricMcCAbe"         					value="true"        >
+           <label for="OptMetricMcCAbe">McCabe Complexity (Arcs and Nodes)</label> <br> 
+           <input type="checkbox" id="OptMetricHalstead" name="OptMetricHalstead"     					value="true"        >
+           <label for="OptMetricHalstead">Halstead Metrics (Operands, Operators, Volume, ...) </label> <br> 
+           <input type="checkbox" id="OptMetricComplexityStructure" name="OptMetricComplexityStructure" value="true"        >
+           <label for="OptMetricComplexityStructure">Structural Complexity, Fan-in, Fan-out</label> <br> 
+           <input type="checkbox" id="OptMetricComplexityFunction" name="OptMetricComplexityFunction" 	value="true"        >
+           <label for="OptMetricComplexityFunction">Functional Complexity</label> <br> 
+           <input type="checkbox" id="OptMetricFuntionPoint" name="OptMetricFuntionPoint" 	            value="true"        >
+           <label for="OptMetricFuntionPoint">Function Point</label> <br>  
+           <input type="checkbox" id="OptMetricReHosting" name="OptMetricReHosting" 	           	    value="true"        >
+           <label for="OptMetricReHosting">Re-Hosting</label> <br> 
+           <input type="checkbox" id="OptMetricSquale" name="OptMetricSquale" 	           	    		value="true"        >
+           <label for="OptMetricSqualeDetectViolation">SQUALE (Software Quality Assessment based on Lifecycle Expectations)</label> <br>  
+           <input type="checkbox" id="OptMetricSqualeDetectViolation" name="OptMetricSqualeDetecttViolation"	value="true"   >
+           <label for="OptMetricSqualeDetecttViolation">SQUALE Violations To Rules Detected At Parsing Level</label> <br> 
+           <input type="checkbox" id="OptMetricSqualViolationScenario" name="OptMetricSqualViolationScenario"	value="true"   >
+           <label for="OptMetricSqualViolationScenario">SQUALE Violations Scenario User Defined</label> &nbsp;&nbsp;
+           <input  class='inputValue' type="text" id="metricSqualeScenario" name="metricSqualeScenario"  />
+   	   </td>
+  </tr>
+</table>
+
+<div class=divHeader>Execution</div>
+<table class='tbSection' id= tbSectionExecution>
+  <tr> 
+       <td class='leftHeader'><b>Threads</b></td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="executionUnderThread" name="executionUnderThread"  value="execUnderThread" >
+	       <label for="ExecutionUnderThread">Execution Under Thread</label>   <br>
+  		   <table class='tbContainer' id="tbContainerExecution">
+			   <tr> 
+			        <td class='rightLeftHeader'>Name</td>
+			        <td><input  class='inputValue' type="text" id="threadNameInp" name="threadNameInp"/></td>
+			   </tr>
+			   <tr> 
+			        <td class='rightLeftHeader'>Group</td>
+			        <td><input  class='inputValue' type="text" id="threadGroupInp" name="threadGroupInp"/></td>
+			   </tr>
+			   <tr> 
+			        <td class='rightLeftHeader'>Priority</td>
+			        <td><input  class='inputValue' type="text" id="threadPrtyInp" name="threadPrtyInp"/></td>
+			   </tr>
+			   <tr> 
+			        <td class='rightLeftHeader'>Max Subthreads</td>
+			        <td><input  class='inputValue' type="text" id="threadMaxSubInp" name="threadMaxSubInp"/></td>
+			   </tr>
+            </table>  	   	   
+  	   </td>
+
+  </tr>
+
+  <tr> 
+       <td class='leftHeader'><b>Java User Exit</b></td>
+       <td class='rightTd'>
+	       <table class='tbContainer' id='tbUserExit'>
+	         <tr>
+	             <td class='leftHeaderInput'>Class Name</td>
+  	             <td><input  class='inputValueBigger' type="text" id="javaClassName" name="javaClassName"  /></td>
+	         </tr>
+	         <tr>
+	             <td class='leftHeaderInput'>Customer Code</td>
+  	             <td><input  class='inputValue' type="text" id="customerCode" name="customerCode"  /></td>
+	         </tr>
+	         <tr>
+	             <td class='leftHeaderInput'>Customer Info</td>
+  	             <td><input  class='inputValue' type="text" id="customerInfo" name="customerInfo"  /></td>
+	         </tr>
+	       </table>
+       </td>
+  </tr>
+  
+    <tr> 
+       <td class='leftHeader'><b>Output File Name</b></td>
+       <td class='rightTd'>
+	       <table class='tbContainer' id='tbUserExit'>
+	         <tr>
+	             <td class='leftHeaderInput'>File name</td>
+  	             <td><input  class='inputValueBigger' type="text" id="outputFileName" name="outputFileName"  /></td>
+	         </tr>
+	       </table>
+       </td>
+  </tr>
+  
+</table>
+
+
+
+<script type="text/javascript">
+"use strict";
+
+const OBJECTS_IDENTIFICATION_UNIT = "OBJECTS_IDENTIFICATION_UNIT";
+const START = "START";
+
+const msgSaveOK="Pilot Succesfully Saved";
+const msgSaveKO="Errors Saving Pilot ";
+const msgDeleteOK="Pilot Succesfully Deleted";
+const msgDeleteKO="Errors Deleting Pilot ";
+const msgFileMissing="File Name Missing"
+
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest'; 
+var urlSubSysGET = 'subsys'
+var urlEnumGET = 'enum'
+var urlSavePilot = 'savePilot'
+var urlDeletePilotDELETE = 'deletePilot'
+var winAnalyzer=null;         // Analyzer reference
+var objConfig=null; 
+var pilotName="";
+var arSubSys = [];
+var arPilot = [];
+var arPosValueFilter = []; 
+var arPosValueExclude = [];
+var arLibPathSource = [];
+var arObjTypes = [];
+var objType="";
+var objMode="";
+var objSingle="";
+var objFrom="";
+var objTo="";
+var btnClicked="";     // from Analyzer btnNewPilot or btnConfigurator
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    winAnalyzer=window.opener;
+	    objConfig=winAnalyzer.getConfig();
+	    if (winAnalyzer != null) {
+			var obj=winAnalyzer.getPilotInfo();
+			pilotName=obj.pilotName;
+			arPilot=obj.arPilotRows;
+			document.getElementById("topHeaderPilot").innerHTML = pilotName;
+		    btnClicked=winAnalyzer.getBtnClicked();
+		}
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {	  
+	  loadSubSysD(selSubSysLeft);
+	  loadEnumFromDb("EnumDirectivesExecution", seltypeObject); 
+	  arPosValueFilter = new Array(); 
+	  arPosValueExclude = new Array();
+	  arLibPathSource = new Array();
+	  arObjTypes = new Array();
+	  populateHtmlFromPilotArray();
+	  
+	  // btnNewPilot or btnConfigurator
+	  if (btnClicked == "btnNewPilot") { topHeaderPilot
+		 document.getElementById("fileToSave").value = "";
+	     document.getElementById("topHeaderPilot").innerHTML="";
+		 document.getElementById("btnDelete").disabled = true;
+		 document.getElementById("btnSave").disabled = true;
+	  } else {
+		 document.getElementById("btnDelete").disabled = false;
+		 document.getElementById("btnSave").disabled = false;
+	  }
+}
+
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+
+
+function loadSubSysD(oSelect) {	
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlSubSysGET + "/" + objConfig.user;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var listSubSys=JSON.parse(xmlhttp.responseText);
+			arSubSys=[];
+			oSelect.disable=true;
+			while (oSelect.length != 0) {
+				oSelect.remove(0);		
+			}
+		    for (var i=0; i < listSubSys.length; i++) {
+		 	   var value = listSubSys[i].idObject;
+		 	    oSelect.add(new Option(value, value));
+		 	    arSubSys.push(value);
+		    }	
+		    oSelect.disable=false;	
+	    }		 
+	};
+}
+
+function refreshSelectSubSys(idSelectLeft, idSelectRight) {
+	var oSelectLeft = document.getElementById(idSelectLeft);
+	var oSelectRight = document.getElementById(idSelectRight);
+	
+	oSelectLeft.disable=true;
+	while (oSelectLeft.length != 0) {
+		oSelectLeft.remove(0);		
+	}
+    for (var i=0; i < arSubSys.length; i++) {
+	 	   var value = arSubSys[i];
+	 	  oSelectLeft.add(new Option(value, value));
+    }	
+    oSelectLeft.disable=false;	
+    
+	oSelectRight.disable=true;
+	while (oSelectRight.length != 0) {
+		oSelectRight.remove(0);		
+	}
+	oSelectRight.disable=false;
+}
+
+function loadEnumFromDb(enumName, oSelect) {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlEnumGET + "/" + objConfig.user + "/" + enumName;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var enums=JSON.parse(xmlhttp.responseText);
+			loadSelectGeneric(oSelect, enums);
+	    }		 
+	}; 
+}
+
+function loadSelectGeneric(oSelect, list) {
+	var value;
+	var v;
+	var arVal=[];
+	oSelect.disable=true;
+	while (oSelect.length != 0) {
+		oSelect.remove(0);		
+	}
+    for (var i=0; i < list.length; i++) {
+ 	    value = list[i].ordinal + " " + list[i].value;
+ 	    arVal=value.split(" ");
+    	v=arVal[1];
+    	if (v.substr(0,11) != "OBJECT_TYPE" 
+    	||  v.substr(0,23) == "OBJECT_TYPE_INCLUDE_ALL" 
+    	||  v.substr(0,23) == "OBJECT_TYPE_EXCLUDE_ALL") {
+    		continue;
+    	}
+	 	oSelect.add(new Option(v, v));      			
+    }
+    oSelect.disable=false;	
+}
+
+
+
+function onclick_btnGtSelSubSys(clicked_id) {
+	getSelectedOptions(selSubSysLeft, selSubSysRight); 
+} 
+
+function onclick_btnLtSelSubSys(clicked_id) {
+	getSelectedOptions(selSubSysRight, selSubSysLeft); 
+} 
+
+function onclick_btnLibrarySearchGt(clicked_id) {
+	getSelectedOptions(selLibrarySearchLeft, selLibrarySearchRight); 
+} 
+
+function onclick_btnLibrarySearchLt(clicked_id) {
+	getSelectedOptions(selLibrarySearchRight, selLibrarySearchLeft); 
+} 
+
+
+function onclick_btnAddCopySuffix(clicked_id) {
+	selectAdd("selCopySuffix", copySuffix )
+} 
+
+function onclick_btnDelCopySuffix(clicked_id) {
+	selectDel(selCopySuffix, copySuffix );
+
+} 
+
+function onclick_btnAddFilePath(clicked_id) {
+	selectAdd("selFilePath", filePath );
+} 
+
+function onclick_btnDelFilePath(clicked_id) {
+	selectDel(selFilePath, filePath );
+} 
+
+function onclick_btnAddExclusion(clicked_id) {
+	selectAdd("selExclusion", exclusionObjectName );
+} 
+
+function onclick_btnDelExclusion(clicked_id) {
+	selectDel(selExclusion, exclusionObjectName );
+} 
+
+function onclick_btnAddForceReAnalysisCopyName(clicked_id) {
+	selectAdd("selForceCopyReAnalysis", forceCopyNameReAnalysis );
+} 
+
+function onclick_btnDelForceReAnalysisCopyName(clicked_id) {
+	selectDel(selForceCopyReAnalysis, forceCopyNameReAnalysis );
+} 
+
+function onclick_btnAddForceReBuildOnDbCopyName(clicked_id) {
+	selectAdd("selForceCopyReBuildOnDb", forceCopyNameReBuildOnDb );
+} 
+
+function onclick_btnDelForceReBuildOnDbCopyName(clicked_id) {
+	selectDel(selForceCopyReBuildOnDb, forceCopyNameReBuildOnDb );
+} 
+ 
+function onclick_btnReturn(clicked_id) {
+	winAnalyzer.restoreFromConfigurator("DIRECTIVES");
+} 
+
+function onclick_btnClear(clicked_id) {
+	clearAndInitializeAll();
+} 
+
+function onclick_btnDelete(clicked_id) {
+	var filename=document.getElementById("topHeaderPilot").innerHTML;
+	var arFilename=[];
+	arFilename=filename.split(".pilot");
+	filename=arFilename[0];
+	var url = objConfig.baseUrl + "/" + urlDeletePilotDELETE + "/" + objConfig.user + "/" + filename 
+
+	var xmlhttp;
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	xmlhttp=createRequest();
+		
+	xmlhttp.open("DELETE", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4) {
+			if (xmlhttp.status==200){
+				msgSave(xmlhttp.responseText, msgDeleteOK, msgDeleteKO);
+		    } else {
+		    	alert("Processing Error - Status=" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);
+			}		 
+			
+		}
+	};	} 
+
+
+function onclick_btnSave(clicked_id) {
+	var filename=document.getElementById("topHeaderPilot").innerHTML;
+	var arFilename=[];
+	arFilename=filename.split(".pilot");
+	filename=arFilename[0];
+	pushPilotArrayFromHtml();
+	sendData(arPilot, filename, "Yes");
+} 
+
+function onclick_btnSaveSaveAs(clicked_id) {
+	var f = document.getElementById("fileToSave").value;
+	if (f.trimLeft() == "") {
+		document.getElementById("divMsgSave").innerHTML=msgFileMissing;
+		document.getElementById("divMsgSave").classList.remove("msgSaveOk"); 
+		document.getElementById("divMsgSave").classList.add("msgSaveKo"); 
+		document.getElementById("fileToSave").focus();
+		return;		
+	} 	
+	pushPilotArrayFromHtml();
+	sendData(arPilot, document.getElementById("fileToSave").value, "yes");
+} 
+/*
+ * Send data to server as a FORM
+ * The web service will receive a List of values  objConfig.baseUrl + "/" + objConfig.user
+ */
+function sendData(arPilot, filename, replace) {
+	var url = objConfig.baseUrl + "/" + urlSavePilot + "/" + objConfig.user + "/" + filename + "/" + replace;
+	var xmlhttp;
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	xmlhttp=createRequest();
+	
+	// Turn the data object into an array of URL-encoded key/value pairs.
+	for (var i = 0; i < arPilot.length; i++) {
+	   urlEncodedDataPairs.push( encodeURIComponent( "rowPilot" ) + '=' + encodeURIComponent( arPilot[i] ) );
+	}
+	   
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	// Define what happens in case of error
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error \n ResponseText=" + event.target.responseText);} );
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4) {
+			if (xmlhttp.status==200){
+				msgSave(xmlhttp.responseText, msgSaveOK, msgSaveKO);
+		    } else {
+		    	alert("Processing Error - Status=" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);
+			}		 
+			
+		}
+	};	
+}
+
+function msgSave(responseText, msgOk, msgKo) {
+	if (responseText.substr(0, 2) == 'OK') {
+		document.getElementById("divMsgSave").innerHTML=msgOk;
+		document.getElementById("divMsgSave").classList.remove("msgSaveKo"); 
+		document.getElementById("divMsgSave").classList.add("msgSaveOk"); 
+		return;
+	}
+	document.getElementById("divMsgSave").innerHTML=msgKo + responseText.substr(2);
+}
+
+function selectAdd(idSelect, oValue) {
+	var oSelect = document.getElementById(idSelect)
+    var opt;
+    
+    // Empty
+    if (oValue.value == "") {
+		return;
+	}
+    
+    // loop through options in select list
+    for (var i=0;  i < oSelect.length; i++) {
+        opt = oSelect.options[i];
+        
+        // Already added
+        if (oValue.text == opt.value ) {
+        	return;
+        }
+    }  
+
+	oSelect.disable=true;	   
+	oSelect.add(new Option(oValue.value , oValue.value ));
+    oSelect.disable=false;		
+} 
+
+function selectDel(oSelect, oText) {
+    var opt;
+    var iLength= oSelect.options.length;
+    
+    // loop through options in select list
+    for (var i=0, len=iLength; i<iLength; i++) {
+        opt = oSelect.options[i];
+        
+        // Found
+        if (opt.selected ) {
+        	opt.parentNode.removeChild(opt);
+        	return;
+        }
+    }  
+} 
+ 
+function getSelectedOptions(selFrom, setTo) {
+    var opt;
+    var value = "";
+    var iValue = 0;
+    var iLength= selFrom.options.length;
+    
+    // loop through options in select list
+    for (var i=0, len=iLength; i<iLength; i++) {
+        opt = selFrom.options[i];
+        
+        // check if selected
+        if ( opt.selected ) {
+        	value = opt.value;
+                opt.parentNode.removeChild(opt);
+                i--;
+                iLength--;
+                setTo.add(new Option(value, value));
+         }
+    }  
+    return;
+} 
+
+function createTableHtmlCol12(arPosValue, divTarget, idTable, th1, th2) {
+    var obj;
+	document.getElementById(divTarget).innerHTML = "";
+	
+    var tbltop = "<table class='rightTables' id='" + idTable + "'>"
+        +    "<tr>"
+        +      "<th>" + th1 + "</th>"
+        +      "<th>" + th2 + "</th>"
+        +    "</tr>"
+	var main = "";                    
+	for (var i=0; i < arPosValue.length; i++) {
+		obj=arPosValue[i];
+	    main  += "<tr>"
+		      +    "<td>"  + obj.col1   + "</td>" 
+		      +    "<td>"  + obj.col2   + "</td>" 
+		      +  "</tr>"
+     }   
+	if (arPosValue.length == 0) {
+	    main  += "<tr>"  
+		      +    "<td>.</td>" 
+		      +    "<td>.</td>" 
+		      +  "</tr>"
+	}
+	var tblBottom = '</table>'
+	var tbl = tbltop + main + tblBottom;
+
+    document.getElementById(divTarget).innerHTML = tbl;
+} 
+
+function deleteArrayTb(arTb, col1, col2) {
+	var obj=null;
+	for (var i = 0; i < arTb.length; i++) {
+		obj = arTb[i];
+		if (col1 == obj.col1) {
+			arTb.splice(i, 1);
+			return
+		}
+	}
+} 
+
+
+function onclick_btnAddLibrary(clicked_id) {
+ 
+	var obj=new Object();
+	obj.col1=libraryCode.value;
+	obj.col2=libraryPathInp.value;
+    for (var i = 0; i < arLibPathSource.length; i++) {
+		if (arLibPathSource[i].col1 == obj.col1) {
+			return;
+		}
+	}
+	arLibPathSource.push(obj);
+	createTableHtmlCol12(arLibPathSource, "divTbLibrary", "tbLibrary", "Code", "Path");
+	selectAdd("selLibrarySearchLeft", libraryCode)
+} 
+
+
+function onclick_btnDelLibrary(clicked_id) {
+	deleteArrayTb(arLibPathSource, libraryCode.value, libraryPathInp.value);
+	createTableHtmlCol12(arLibPathSource, "divTbLibrary", "tbLibrary", "Code", "Path");
+	removeSelectItem("selLibrarySearchLeft", libraryCode.value);
+	removeSelectItem("selLibrarySearchRight", libraryCode.value);
+} 
+
+
+function onclick_btnAddFilterPosValue(clicked_id) {
+	
+	var obj=new Object();
+	obj.col1=filterPosStart.value;
+	obj.col2=filterValue.value;
+    for (var i = 0; i < arPosValueFilter.length; i++) {
+		if (arPosValueFilter[i].col1 == obj.col1) {
+			return;
+		}
+	}
+    arPosValueFilter.push(obj);
+	createTableHtmlCol12(arPosValueFilter, "divTbFilterPosValue", "tbFilterPosValue", "Pos", "Value");
+	
+
+} 
+
+function onclick_btnDelFilterPosValue(clicked_id) {
+	deleteArrayTb(arPosValueFilter, filterPosStart.value, filterValue.value );
+	createTableHtmlCol12(arPosValueFilter, "divTbFilterPosValue", "tbFilterPosValue", "Pos", "Value");	
+} 
+
+function onclick_btnAddExclusionPosValue(clicked_id) {
+	
+	var obj=new Object();
+	obj.col1=exclusionPos.value;
+	obj.col2=exclusionValue.value;
+    for (var i = 0; i < arPosValueExclude.length; i++) {
+		if (arPosValueExclude[i].col1 == obj.col1) {
+			return;
+		}
+	}
+    arPosValueExclude.push(obj);
+	createTableHtmlCol12(arPosValueExclude, "divTbExclusionPosValue", "tbExclusionPosValue", "Pos", "Value");
+} 
+
+function onclick_btnDelExclusionPosValue(clicked_id) {	
+	deleteArrayTb(arPosValueExclude, exclusionPos.value, exclusionValue.value );
+	createTableHtmlCol12(arPosValueExclude, "divTbExclusionPosValue", "tbExclusionPosValue", "Pos", "Value");	
+} 
+ 
+function onclick_btnAddTypeObject(clicked_id) {
+	var obj=new Object();
+	objMode=getObjectTypeMode();
+
+	if (objMode == '*SINGLE*') {
+		typeObjectFrom.value = "";
+		typeObjectTo.value = "";
+		objFrom=objSingle;
+	}
+	if (objMode == '*ALL*') {
+		typeObjectSingleInp.value = "";
+	}
+	
+	obj.col1=seltypeObject.value;
+	obj.col2=objMode;
+	obj.col3=objFrom;
+	obj.col4=objTo;	
+	
+    for (var i = 0; i < arObjTypes.length; i++) {
+		if (arObjTypes[i].col1 == obj.col1
+		&& 	arObjTypes[i].col2 == obj.col2
+		&& 	arObjTypes[i].col3 == obj.col3
+		&& 	arObjTypes[i].col4 == obj.col4
+		) {
+			return;
+		}
+	}
+    arObjTypes.push(obj);
+	createTableHtmlTbCol1234(arObjTypes, "divTbObjectTypes", "tbTbObjectTypes");
+} 
+
+function onchange_SelectFolder(e, clicked_id) {
+	var fileSelected;
+	switch (clicked_id) {
+	case "cicsLnkEibFile":
+		document.getElementById("cicsLnkEibFileInp").value=e.target.files[0].name;
+		break;
+
+	case "cicsLnkAidFile":
+		document.getElementById("cicsLnkAidFileInp").value=e.target.files[0].name;
+		break;
+
+	case "cicsLnkBmsFile":
+		document.getElementById("cicsLnkBmsFileInp").value=e.target.files[0].name;
+		break;
+
+	case "cicsLnkSqlcaFile":
+		document.getElementById("cicsLnkSqlcaFileInp").value=e.target.files[0].name;
+		break;
+
+	case "cicsLnkSqldaFile":
+		document.getElementById("cicsLnkSqldaFileInp").value=e.target.files[0].name;
+		break;
+
+	default:
+		break;
+	}
+	
+}
+
+
+function getObjectTypeMode(){
+	objMode="";
+	objType="";
+	objSingle="";
+	objFrom="";
+	objTo="";
+
+	if (document.getElementById('typeObjectSingle').checked) {
+		objMode = document.getElementById('typeObjectSingle').value;
+		objSingle = document.getElementById('typeObjectSingleInp').value;
+	} else if (document.getElementById('typeObjectAll').checked) {
+		objMode = document.getElementById('typeObjectAll').value;
+		objFrom=document.getElementById('typeObjectFrom').value;
+		objTo=document.getElementById('typeObjectTo').value;
+	}	
+	return objMode;
+}
+
+
+function onclick_btnDelTypeObject(clicked_id) {
+	var mode=getObjectTypeMode();
+	var pgmName=typeObjectFrom.value;
+	if (mode == "*SINGLE*") {
+		pgmName=typeObjectSingleInp.value
+	}
+	deleteArrayTb1234(arObjTypes, seltypeObject.value, mode, pgmName, typeObjectTo.value );
+	createTableHtmlTbCol1234(arObjTypes, "divTbObjectTypes", "tbTbObjectTypes");	
+} 
+
+function deleteArrayTb1234(arTb, col1, col2,col3, col4) {
+	var obj=null;
+	for (var i = 0; i < arTb.length; i++) {
+		obj = arTb[i];
+		if (col1 == obj.col1 
+		&& col2 ==  obj.col2
+		&& col3 ==  obj.col3
+	    ) {
+			arTb.splice(i, 1);
+			return
+		}
+	}
+} 
+
+ 
+
+function createTableHtmlTbCol1234(arData, divTarget, idTable) {
+    var obj;
+	document.getElementById(divTarget).innerHTML = "";
+	
+    var tbltop = "<table class='rightTables' id='" + idTable + "'>"
+        +    "<tr>"
+        +      "<th>Type</th>"
+        +      "<th>Mode</th>"
+        +      "<th>From</th>"
+        +      "<th>To</th>"
+        +    "</tr>"
+	var main = "";                    
+	for (var i=0; i < arData.length; i++) {
+		obj=arData[i];
+	    main  += "<tr>"
+		      +    "<td>"  + obj.col1   + "</td>" 
+		      +    "<td>"  + obj.col2   + "</td>" 
+		      +    "<td>"  + obj.col3   + "</td>" 
+		      +    "<td>"  + obj.col4   + "</td>" 
+		      +  "</tr>"
+    }   
+	if (arData.length == 0) {
+	    main  += "<tr>"  
+		      +    "<td>.</td>" 
+		      +    "<td>.</td>" 
+		      +    "<td>.</td>" 
+		      +    "<td>.</td>" 
+		      +  "</tr>"
+	}
+	var tblBottom = '</table>'
+	var tbl = tbltop + main + tblBottom;
+
+    document.getElementById(divTarget).innerHTML = tbl;
+} 
+
+function onclick_btnExecutionUnderThread(clicked_id) {
+	alert(document.getElementById("executionUnderThread").value);
+}
+
+
+function onclick_btnTypeFilter(clicked_id) {
+	// TODO
+}
+
+function onclick_btnTypeFilter(clicked_id) {
+	// TODO
+}
+
+function onclick_btnTypeFilter(clicked_id) {
+	// TODO
+}
+
+function onclick_btnObjectStatusAny(clicked_id) {
+	// TODO
+}
+
+
+
+
+
+//The layout will be re-built */
+function populateHtmlFromPilotArray() {
+	var row="";
+	var rowDirective="";
+	var arSplit=[];
+	var val1="";
+	var val2="";
+	var val3="";
+	var val4="";
+		
+	clearAndInitializeAll();   // Space in items, empty selects, etc
+	
+	for (var i = 0; i < arPilot.length; i++) {
+		row = arPilot[i];
+		if (row.substring(0, 1) == '#' || row == "" ) {continue;}
+		val1="";
+		val2="";
+		val3="";
+		val4="";
+		arSplit=row.split(" ");   
+		rowDirective=arSplit[0];
+		if (arSplit.length > 1) {val1=arSplit[1];}
+		if (arSplit.length > 2) {val2=arSplit[2];}
+		if (arSplit.length > 3) {val3=arSplit[3];}
+		if (arSplit.length >= 4) {val4=arSplit[4];}
+	
+		///////////////////////////////
+		// Input System and Subsystem
+		///////////////////////////////
+		
+		// System
+		popPilotCheckedValue1   (rowDirective, "systemByValue", "SYSTEM_INPUT",   "systemInput", val1);                        
+		popPilotCheckedValue2   (rowDirective, "systemOnName",  "SYSTEM_ON_NAME", "systemPos", "systemLng", val1, val2);       
+		popPilotCheckedValue3   (rowDirective, "systemByExit",  "SYSTEM_BY_EXIT");                                          
+		 
+		// SubSystem 
+		popPilotSelValues       (rowDirective, "subSystemByByValues",  "SUB_SYSTEM_INPUT",   "selSubSysRight", arSplit);       
+		popPilotCheckedValue2   (rowDirective, "subSystemOnName",      "SUB_SYSTEM_ON_NAME", "subSystemPos", "subSystemLng", val1, val2);  
+		popPilotCheckedValue3   (rowDirective, "subSystemByExit",      "SUB_SYSTEM_BY_EXIT");                               
+		popPilotSelValues       (rowDirective, "subSystemAll",         "SUB_SYSTEM_INPUT", "selSubSysRight", arSplit);                																											
+		
+		////////////////////////////////////////
+		// Input libraries, files, copy
+		///////////////////////////////////////
+		
+	    // Source Libraries
+	    // Library search sequence
+	    popPilotArCol12         (rowDirective, "", "LIBRARY", arLibPathSource, val1, val2, "", ""); 		                    
+		popPilotSelValues3      (rowDirective, "", "LIBRARY_SOURCE_SEARCH",  "selLibrarySearchRight", "selLibrarySearchLeft", val1);  	   
+		   
+		// IBM Cics Copy Precompiler 																  
+		popPilotCopyPrecompiler(rowDirective, "COPY_PRECOMPILER",  "DFHEIB", "dfheib",   "dfhEibLnk",  "dfhEibWrk",  "dfhEibFileInp",  val2, val3, val4);
+		popPilotCopyPrecompiler(rowDirective, "COPY_PRECOMPILER",  "DFHAID", "dfhaid",   "dfhAidLnk",  "dfhAidWrk",  "dfhAidFileInp",  val2, val3, val4);
+		popPilotCopyPrecompiler(rowDirective, "COPY_PRECOMPILER",  "DFHBMS", "dfhbms",   "dfhBmsLnk",  "dfhBmsWrk",  "dfhBmsFileInp",  val2, val3, val4);
+		popPilotCopyPrecompiler(rowDirective, "COPY_PRECOMPILER",  "SQLCA",  "sqlca",    "sqlcaLnk",   "sqlcaWrk",   "sqlcaFileInp",   val2, val3, val4);
+		popPilotCopyPrecompiler(rowDirective, "COPY_PRECOMPILER",  "SQLDA",  "sqlda",    "sqldaLnk",   "sqldaWrk",   "sqldaFileInp",   val2, val3, val4);
+				
+		// Copy Suffix
+		// Specific Source Files To Deal
+		popPilotSelValues2(rowDirective, "",  "FILE_SUFFIX_COPY",  "selCopySuffix", val1);  	                
+		popPilotSelValues2(rowDirective, "",  "FILE_PATH",         "selFilePath",   val1);  	                    
+		
+		
+		/////////////////////////////////////////////////
+		// Object Types
+		/////////////////////////////////////////////////
+		
+		// OBJECT_TYPE_INCLUDE_ALL
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_PGM_COBOL",       arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_COPY_COBOL_ID",   arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_COPY_COBOL_ENV",  arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_COPY_COBOL_DATA", arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_COPY_COBOL_PROC", arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_SQL_SCRIPT",      arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_JCL_MVS_JOB",     arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_JCL_MVS_INCLUDE", arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_JCL_MVS_PROC",    arObjTypes, val1, val2, val3, val4); 	             
+		popPilotArCol1234 (rowDirective, "OBJECT_TYPE_CICS_BMS",        arObjTypes, val1, val2, val3, val4); 	             
+
+
+		/////////////////////////////////////////////////
+		// Object Status
+		/////////////////////////////////////////////////
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAny",                 			"INPUT_OBJECTS_STATUS_ALL");     
+		popPilotCheckedValue3(rowDirective, "ObjectStatusToBeAnalyzed",       			"INPUT_OBJECTS_TO_BE_ANALYZED");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusSourceDetected",      			"INPUT_OBJECTS_SOURCE_MEMBER_TYPE_DETECTED");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzWithNoErrors",    			"INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzDynCode",   			    "INPUT_OBJECTS_ANALYZED_DYNAMIC");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzDynCodeSolved",   			"INPUT_OBJECTS_ANALYZED_DYNAMIC_SOLVED");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzDynCodeSpreadedToSolve",  	"INPUT_OBJECTS_ANALYZED_DYNAMIC_SPREADED_TO_SOLVE");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzDynCodeWaitForData",		"INPUT_OBJECTS_ANALYZED_DYNAMIC_WAITING_FOR_DATA");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzWithErrors",      			"INPUT_OBJECTS_ANALYZED_WITH_ERRORS");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusAnlzWithException",   			"INPUT_OBJECTS_ANALYZED_WITH_EXCEPTION");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusProcWithNoErrors",    			"INPUT_OBJECTS_PROCESSED_WITH_NO_ERRORS");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusProcWithErrors",      			"INPUT_OBJECTS_PROCESSED_WITH_ERRORS");  
+		popPilotCheckedValue3(rowDirective, "ObjectStatusProcWithException",   			"INPUT_OBJECTS_PROCESSED_WITH_EXCEPTION");  
+		
+		//////////////////////////////////////////////////
+		// Filters on sources/objects to deal with
+		//////////////////////////////////////////////////	
+		popPilotCheckedValue3(rowDirective, "filterByExit",            "FILTER_BY_EXIT");  
+		popPilotCheckedValue2(rowDirective, "filterByObjectNameRange", "FILTER_ON_OBJECT_NAME_RANGE",    "filterNameFrom", "filterNameTo", val1, val2);
+		popPilotArCol12      (rowDirective, "filterByValueAtPos",      "FILTER_ON_OBJECT_NAME_POS_VALUE", arPosValueFilter, val1, val2, val3, val4);   // pos+value 
+		
+		///////////////////////////////////////
+		// Exclusion on objects/sources
+		///////////////////////////////////////
+		popPilotCheckedValue3   (rowDirective, "excludeByExit", "EXCLUDE_BY_EXIT");  
+		popPilotSelValues2      (rowDirective, "excludeByObjectName",      "EXCLUDE_ON_OBJECT_NAME",          "selExclusion", val1);   
+		popPilotCheckedValue2   (rowDirective, "excludeByObjectNameRange", "EXCLUDE_ON_OBJECT_NAME_RANGE",    "excludeNameFrom", "excludeNameTo", val1, val2); 
+		popPilotArCol12         (rowDirective, "excludeByValueAtPos",      "EXCLUDE_ON_OBJECT_NAME_POS_VALUE", arPosValueExclude, val1, val2, val3, val4);    // pos+value
+		
+		///////////////////////////////////////
+		// Copy Specific Actions
+		///////////////////////////////////////
+		
+		// Force re-Analysis
+		// Force re-Build Definitions On Db
+		popPilotSelValues2(rowDirective, "", "COPY_TO_FORCE_RE_ANALYSIS",        "selForceCopyReAnalysis",  val1);  	                
+		popPilotSelValues2(rowDirective, "", "COPY_TO_FORCE_RE_BUILD_DEF_ON_DB", "selForceCopyReBuildOnDb", val1);  	                
+		
+		
+		/////////////////////////////////
+		// Limit number
+		////////////////////////////////
+		popPilotCheckedValue3(rowDirective, "LimitEnabled", "LIMIT_MAX_OBJECTS");  
+		popPilotCheckedValue1(rowDirective, "LimitEnabled", "LIMIT_MAX_OBJECTS_INPUT", 		"LimiMaxSources", val1);      
+		popPilotCheckedValue1(rowDirective, "LimitEnabled", "LIMIT_MAX_OBJECTS_TO_PROCESS", "LimitMaxObjects", val1);    
+		
+		///////////////////////////////
+		// Options
+		///////////////////////////////
+		
+		// Option Generic
+		popPilotCheckedOption(rowDirective, "OptGenericDbUpdate","OPT_UPDATE_DB");  
+		popPilotCheckedOption(rowDirective, "OptGenericVerbose","OPT_VERBOSE_MESSAGES");  
+		popPilotCheckedOption(rowDirective, "OptGenericDbTraceErr", "OPT_TRACE_ANY_ANALYSIS_ERROR_ON_DB");  
+		popPilotCheckedOption(rowDirective, "OptGenericStackTraceParsingErr", "OPT_STACK_TRACE_ON_PARSING_ERROR");  
+		
+	    // Option Library Scan
+	    popPilotCheckedOption(rowDirective, "OptDetectSourceType","OPT_DETECT_SOURCE_TYPE");  
+	    popPilotCheckedOption(rowDirective, "OptSearchFileRecursive","OPT_SEARCH_SOURCES_FILE_RECURSIVE");  
+	    popPilotCheckedOption(rowDirective, "OptFullInfoFileSystem","OPT_FULL_INFO_FILE_SYSTEM");  
+		
+		// Option After Program Source Parsing
+		popPilotCheckedOption(rowDirective, "OptDbCreateCopyDefinition","OPT_DB_CREATE_COPY_DEF");  
+		popPilotCheckedOption(rowDirective, "OptDbCreateWhereUsedCopyField","OPT_DB_CREATE_WHERE_USED_COPY_ITEMS");  
+		popPilotCheckedOption(rowDirective, "OptDbCreateWhereUsedEntityCol","OPT_DB_CREATE_WHERE_USED_ENTITY_COLUMNS");  
+		popPilotCheckedOption(rowDirective, "OptForceCopyDefReAnalysis","OPT_FORCE_RE_ANALYSIS_COPY");  
+		popPilotCheckedOption(rowDirective, "OptForceCopyDefDbRebuid", "OPT_FORCE_RE_BUILD_COPY_DEF_ON_DB");  
+		popPilotCheckedOption(rowDirective, "OptDetectCode", "OPT_DETECT_DEAD_CODE");  
+		
+		// Option Dynamic Code At Program Level
+		popPilotCheckedOption(rowDirective, "OptSolveDynamicLocal","OPT_SOLVE_DYNAMIC_LOCAL");  
+		popPilotCheckedOption(rowDirective, "OptSolveDynamicLocalLight","OPT_SOLVE_DYNAMIC_LOCAL_LIGHT");  
+		popPilotCheckedOption(rowDirective, "OptSolveDynamicCics","OPT_SOLVE_CODE_CICS");  
+		popPilotCheckedOption(rowDirective, "OptSolveDynamicDmlSql","OPT_SOLVE_DML_SQL");  
+			
+		// Option Process System Level
+		popPilotCheckedOption(rowDirective, "OptSolveDynamicCodeSpreaded","OPT_SOLVE_DYNAMIC_SPREADED");  
+		popPilotCheckedOption(rowDirective, "OptDetectIndirectRelationships","OPT_DETECT_INDIRECT_RELATIONSHIPS");  
+		popPilotCheckedOption(rowDirective, "OptAssignPhisToLogicalFile","OPT_ASSIGN_PHISICAL_TO_LOGICAL_FILE");  
+		popPilotCheckedOption(rowDirective, "OptEvaluateMetricSystem","OPT_EVALUATE_METRICS_SYSTEM");  
+				
+		// Option Metrics And Quality System
+		popPilotCheckedOption(rowDirective, "OptMetricAll","OPT_METRICS_ALL");  
+		popPilotCheckedOption(rowDirective, "OptMetricBasic","OPT_METRICS_BASIC");  
+		popPilotCheckedOption(rowDirective, "OptMetricDetailOndb","OPT_METRICS_PGM_DETAIL_ON_DB");  
+		popPilotCheckedOption(rowDirective, "OptMetricDetail","OPT_METRICS_DETAIL");  
+		popPilotCheckedOption(rowDirective, "OptMetricMcCAbe","OPT_METRICS_MCCABE");  
+		popPilotCheckedOption(rowDirective, "OptMetricHalstead","OPT_METRICS_HALSTEAD");  
+		popPilotCheckedOption(rowDirective, "OptMetricComplexityStructure","OPT_METRICS_COMPLEXITY_STRUCTURE");  
+		popPilotCheckedOption(rowDirective, "OptMetricComplexityFunction","OPT_METRICS_COMPLEXITY_FUNCTION");  
+		popPilotCheckedOption(rowDirective, "OptMetricFuntionPoint","OPT_METRICS_FUNCTION_POINT");  
+		popPilotCheckedOption(rowDirective, "OptMetricReHosting","OPT_METRICS_REHOSTING_");  
+		popPilotCheckedOption(rowDirective, "OptMetricSquale","OPT_METRICS_SQUALE");  
+		popPilotCheckedOption(rowDirective, "OptMetricSqualeDetectViolation","OPT_METRICS_SQUALE_DETECT_VIOLATIONS");  
+		popPilotCheckedOption(rowDirective, "OptMetricSqualViolationScenario","OPT_METRICS_SQUALE_VIOLATIONS_SCENARIO"); 
+		popPilotCheckedValue1(rowDirective, "", "METRICS_SQUALE_VIOLATIONS_SCENARIO",   "metricSqualeScenario", val1);           
+	
+		
+		////////////////////////////////////////
+		// Execution
+		////////////////////////////////////
+		
+		// Threads
+		popPilotCheckedValue3(rowDirective, "executionUnderThread", "EXECUTION_UNDER_THREAD");  
+		popPilotCheckedValue1(rowDirective, "executionUnderThread", "THREAD_NAME", 			   "threadNameInp",   val1);
+		popPilotCheckedValue1(rowDirective, "executionUnderThread", "THREAD_GROUP", 	       "threadGroupInp", val1);   
+		popPilotCheckedValue1(rowDirective, "executionUnderThread", "THREAD_PRTY", 	           "threadPrtyInp", val1);   
+		popPilotCheckedValue1(rowDirective, "executionUnderThread", "THREAD_MAX_SUB_THREADS",  "threadMaxSubInp",val1);    
+			
+		// Java User Exit
+		popPilotCheckedValue1NoSpace(rowDirective, "javaClassName", "USER_EXIT_CLASS", val1);   
+		popPilotCheckedValue1NoSpace(rowDirective, "customerCode",  "CUSTOMER_CODE",   val1);   
+		popPilotCheckedValue1NoSpace(rowDirective, "customerInfo",  "CUSTOMER_INFO",   val1);    
+		
+		// Output File Name
+		popPilotCheckedValue1NoSpace(rowDirective, "outputFileName",  "FILE_NAME_OUTPUT", val1);   	
+	}
+
+	// Rebuild all tables	
+	createTableHtmlCol12(arLibPathSource,  "divTbLibrary",           "tbLibrary",           "Code", "Path");	
+	createTableHtmlCol12(arPosValueFilter, "divTbFilterPosValue",    "tbFilterPosValue",    "Pos",  "Value");
+	createTableHtmlCol12(arPosValueExclude,"divTbExclusionPosValue", "tbExclusionPosValue", "Pos",  "Value");	
+	createTableHtmlTbCol1234(arObjTypes,   "divTbObjectTypes",       "tbTbObjectTypes");
+
+	
+}
+
+
+// Based on all parameters a complete pilot array file will be created */
+function pushPilotArrayFromHtml() {
+	arPilot = new Array();
+	
+	///////////////////////////////
+	// Input System and Subsystem
+	///////////////////////////////
+	
+	// System
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Input System");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedValue1   ("systemByValue", "SYSTEM_INPUT",   "systemInput");
+	pushPilotCheckedValue2   ("systemOnName",  "SYSTEM_ON_NAME", "systemPos", "systemLng");
+	pushPilotCheckedValue3   ("systemByExit",  "SYSTEM_BY_EXIT");
+	 
+	// SubSystem 
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Input subSystem");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotSelValues     ("subSystemByByValues",  "SUB_SYSTEM_INPUT",   "selSubSysRight");
+	pushPilotCheckedValue2 ("subSystemOnName",      "SUB_SYSTEM_ON_NAME", "subSystemPos", "subSystemLng");
+	pushPilotCheckedValue3 ("subSystemByExit",      "SUB_SYSTEM_BY_EXIT");
+	pushPilotCheckedValue4 ("subSystemAll",         "SUB_SYSTEM_INPUT",   "*ALL*");
+	
+	////////////////////////////////////////
+	// Input libraries, files, copy
+    ///////////////////////////////////////
+	
+    // Source Libraries
+    // Library search sequence
+    arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+    arPilot.push("# Source Libraries");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+    pushPilotArCol12         ("", "LIBRARY",                arLibPathSource); 
+    arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+    arPilot.push("# Library search sequence");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotSelValuesNoCheck("LIBRARY_SOURCE_SEARCH",  "selLibrarySearchRight");  	
+    
+	// IBM Cics Copy Precompiler
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# IBM Cics Copy Precompiler ");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCopyPrecompiler("dfheib",   "dfhEibLnk",   "dfhEibFileInp");
+	pushPilotCopyPrecompiler("dfhaid",   "dfhAidLnk",   "dfhAidFileInp");
+	pushPilotCopyPrecompiler("dfhbms",   "dfhBmsLnk",   "dfhBmsFileInp");
+	pushPilotCopyPrecompiler("dfhsqlca", "dfhSqlcaLnk", "sqlcaFileInp");
+	pushPilotCopyPrecompiler("dfhsqlda", "dfhSqldaLnk", "sqldaFileInp");
+
+	// Copy Suffix
+	// Specific Source Files To Deal
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Copy Suffix");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotSelValuesNoCheck("FILE_SUFFIX_COPY",  "selCopySuffix");  
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Specific Source Files To Deal");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotSelValuesNoCheck("FILE_PATH",         "selFilePath"); 
+
+	
+	/////////////////////////////////////////////////
+	// Object Types
+	/////////////////////////////////////////////////
+	
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Object Types");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotArCol1234 (arObjTypes); 	
+		
+	/////////////////////////////////////////////////
+	// Object Status
+	/////////////////////////////////////////////////
+	
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Object Status");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedValue3("ObjectStatusAny",                 		"INPUT_OBJECTS_STATUS_ALL");
+	pushPilotCheckedValue3("ObjectStatusToBeAnalyzed",        		"INPUT_OBJECTS_TO_BE_ANALYZED");
+	pushPilotCheckedValue3("ObjectStatusSourceDetected",     		"INPUT_OBJECTS_SOURCE_MEMBER_TYPE_DETECTED");
+	pushPilotCheckedValue3("ObjectStatusAnlzWithNoErrors",    		"INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS");
+	pushPilotCheckedValue3("ObjectStatusAnlzDynCode",   	        "INPUT_OBJECTS_ANALYZED_DYNAMIC");
+	pushPilotCheckedValue3("ObjectStatusAnlzDynCodeSolved",   		"INPUT_OBJECTS_ANALYZED_DYNAMIC_SOLVED");
+	pushPilotCheckedValue3("ObjectStatusAnlzDynCodeSpreadedToSolve","INPUT_OBJECTS_ANALYZED_DYNAMIC_SPREADED_TO_SOLVE");
+	pushPilotCheckedValue3("ObjectStatusAnlzDynCodeWaitForData",  	"INPUT_OBJECTS_ANALYZED_DYNAMIC_WAITING_FOR_DATA");
+	pushPilotCheckedValue3("ObjectStatusAnlzWithErrors",      		"INPUT_OBJECTS_ANALYZED_WITH_ERRORS");
+	pushPilotCheckedValue3("ObjectStatusAnlzWithException",   		"INPUT_OBJECTS_ANALYZED_WITH_EXCEPTION");
+	pushPilotCheckedValue3("ObjectStatusProcWithNoErrors",    		"INPUT_OBJECTS_PROCESSED_WITH_NO_ERRORS");
+	pushPilotCheckedValue3("ObjectStatusProcWithErrors",      		"INPUT_OBJECTS_PROCESSED_WITH_ERRORS");
+	pushPilotCheckedValue3("ObjectStatusProcWithException",   		"INPUT_OBJECTS_PROCESSED_WITH_EXCEPTION");
+	
+	//////////////////////////////////////////////////
+	// Filters on sources/objects to deal with
+	//////////////////////////////////////////////////	
+	
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Filters on sources/objects to deal with");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedValue3 ("filterByExit",            "FILTER_BY_EXIT");
+	pushPilotCheckedValue2 ("filterByObjectNameRange", "FILTER_ON_OBJECT_NAME_RANGE",    "filterNameFrom", "filterNameTo");
+	pushPilotArCol12       ("filterByValueAtPos",      "FILTER_ON_OBJECT_NAME_POS_VALUE", arPosValueFilter);  // pos+value
+	
+	///////////////////////////////////////
+	// Exclusion on objects/sources
+	///////////////////////////////////////
+	
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Exclusion on objects/sources");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedValue3   ("excludeByExit", "EXCLUDE_BY_EXIT");
+	pushPilotCheckedValue2   ("excludeByObjectNameRange", "EXCLUDE_ON_OBJECT_NAME_RANGE",    "excludeNameFrom", "excludeNameTo");
+	pushPilotSelValuesChecked("excludeByObjectName",      "EXCLUDE_ON_OBJECT_NAME",          "selExclusion");
+	pushPilotArCol12         ("excludeByValueAtPos",      "EXCLUDE_ON_OBJECT_NAME_POS_VALUE", arPosValueExclude);  // pos+value
+
+	///////////////////////////////////////
+	// Copy Specific Actions
+	///////////////////////////////////////
+	
+	// Force re-Analysis
+	// Force re-Build Definitions On Db
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Copy Specific Actions");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotSelValuesNoCheck("COPY_TO_FORCE_RE_ANALYSIS","selForceCopyReAnalysis");
+	pushPilotSelValuesNoCheck("COPY_TO_FORCE_RE_BUILD_DEF_ON_DB", "selForceCopyReBuildOnDb");
+	
+
+	/////////////////////////////////
+	// Limit number
+	////////////////////////////////
+	
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Execution Limits");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("LimitEnabled", "LIMIT_MAX_OBJECTS");
+	pushPilotCheckedValue1("LimitEnabled", "LIMIT_MAX_OBJECTS_INPUT", 		"LimiMaxSources");
+	pushPilotCheckedValue1("LimitEnabled", "LIMIT_MAX_OBJECTS_TO_PROCESS", 	"LimitMaxObjects");
+	
+	///////////////////////////////
+	// Options
+	///////////////////////////////
+
+	// Option Generic
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Option Generic");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("OptGenericDbUpdate","OPT_UPDATE_DB");
+	pushPilotCheckedOption("OptGenericVerbose","OPT_VERBOSE_MESSAGES");
+	pushPilotCheckedOption("OptGenericDbTraceErr",           "OPT_TRACE_ANY_ANALYSIS_ERROR_ON_DB");
+	pushPilotCheckedOption("OptGenericStackTraceParsingErr", "OPT_STACK_TRACE_ON_PARSING_ERROR");
+
+    // Option Library Scan
+    arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+    arPilot.push("# Option Library Scan");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+    pushPilotCheckedOption("OptDetectSourceType", 	 		 "OPT_DETECT_SOURCE_TYPE");
+    pushPilotCheckedOption("OptSearchFileRecursive", 		 "OPT_SEARCH_SOURCES_FILE_RECURSIVE");
+    pushPilotCheckedOption("OptFullInfoFileSystem",	 		 "OPT_FULL_INFO_FILE_SYSTEM");
+
+	// Option After Program Source Parsing
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Option After Program Source Parsing");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("OptDbCreateCopyDefinition",	 	 "OPT_DB_CREATE_COPY_DEF");
+	pushPilotCheckedOption("OptDbCreateWhereUsedCopyField",	 "OPT_DB_CREATE_WHERE_USED_COPY_ITEMS");
+	pushPilotCheckedOption("OptDbCreateWhereUsedEntityCol",	 "OPT_DB_CREATE_WHERE_USED_ENTITY_COLUMNS");
+	pushPilotCheckedOption("OptForceCopyDefReAnalysis",	 	 "OPT_FORCE_RE_ANALYSIS_COPY");
+	pushPilotCheckedOption("OptForceCopyDefDbRebuid",	 	 "OPT_FORCE_RE_BUILD_COPY_DEF_ON_DB");
+	pushPilotCheckedOption("OptDetectCode",	 				 "OPT_DETECT_DEAD_CODE");
+	
+	// Option Dynamic Code At Program Level
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Option Dynamic Code At Program Level");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("OptSolveDynamicLocal",	 		 "OPT_SOLVE_DYNAMIC_LOCAL");
+	pushPilotCheckedOption("OptSolveDynamicLocalLight",	 	 "OPT_SOLVE_DYNAMIC_LOCAL_LIGHT");
+	pushPilotCheckedOption("OptSolveDynamicCics",	 	 	 "OPT_SOLVE_CODE_CICS");
+	pushPilotCheckedOption("OptSolveDynamicDmlSql",	 	 	 "OPT_SOLVE_DML_SQL");
+		
+	// Option Process System Level
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Option Process System Level");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("OptSolveDynamicCodeSpreaded",	 "OPT_SOLVE_DYNAMIC_SPREADED");
+	pushPilotCheckedOption("OptDetectIndirectRelationships", "OPT_DETECT_INDIRECT_RELATIONSHIPS");
+	pushPilotCheckedOption("OptAssignPhisToLogicalFile",	 "OPT_ASSIGN_PHISICAL_TO_LOGICAL_FILE");
+	pushPilotCheckedOption("OptEvaluateMetricSystem",	     "OPT_EVALUATE_METRICS_SYSTEM");
+			
+	// Option Metrics And Quality System
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Option Metrics And Quality System");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("OptMetricAll",	    			  "OPT_METRICS_ALL");
+	pushPilotCheckedOption("OptMetricBasic",	     		  "OPT_METRICS_BASIC");
+	pushPilotCheckedOption("OptMetricDetailOndb",	     	  "OPT_METRICS_PGM_DETAIL_ON_DB");
+	pushPilotCheckedOption("OptMetricDetail",	     		  "OPT_METRICS_DETAIL");
+	pushPilotCheckedOption("OptMetricMcCAbe",	     		  "OPT_METRICS_MCCABE");
+	pushPilotCheckedOption("OptMetricHalstead",	     	      "OPT_METRICS_HALSTEAD");
+	pushPilotCheckedOption("OptMetricComplexityStructure",	  "OPT_METRICS_COMPLEXITY_STRUCTURE");
+	pushPilotCheckedOption("OptMetricComplexityFunction",	  "OPT_METRICS_COMPLEXITY_FUNCTION");
+	pushPilotCheckedOption("OptMetricFuntionPoint",	          "OPT_METRICS_FUNCTION_POINT");
+	pushPilotCheckedOption("OptMetricReHosting",	     	  "OPT_METRICS_REHOSTING");
+	pushPilotCheckedOption("OptMetricSquale",	     	 	  "OPT_METRICS_SQUALE");
+	pushPilotCheckedOption("OptMetricSqualeDetectViolation",  "OPT_METRICS_SQUALE_DETECT_VIOLATIONS");
+	pushPilotCheckedOption("OptMetricSqualViolationScenario", "OPT_METRICS_SQUALE_VIOLATIONS_SCENARIO");
+	
+ 	////////////////////////////////////////
+	// Execution
+	////////////////////////////////////////
+
+	// Execution Threads
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Execution Threads");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedOption("executionUnderThread", "EXECUTION_UNDER_THREAD");
+	pushPilotCheckedValue1("executionUnderThread", "THREAD_NAME", 			 "threadNameInp");
+	pushPilotCheckedValue1("executionUnderThread", "THREAD_GROUP", 			 "threadGroupInp");
+	pushPilotCheckedValue1("executionUnderThread", "THREAD_PRTY", 			 "threadPrtyInp");
+	pushPilotCheckedValue1("executionUnderThread", "THREAD_MAX_SUB_THREADS", "threadMaxSubInp");
+	
+	// Java User Exit
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Java User Exit");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedValue1NoSpace("javaClassName", "USER_EXIT_CLASS");
+	pushPilotCheckedValue1NoSpace("customerCode",  "CUSTOMER_CODE");
+	pushPilotCheckedValue1NoSpace("customerInfo",  "CUSTOMER_INFO");
+
+	// Output File Name
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("# Seq file for specific functions");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	pushPilotCheckedValue1NoSpace("outputFileName","FILE_NAME_OUTPUT");
+	
+	// Final directives
+	arPilot.push("#");
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push('# Final Execution Directives');
+	arPilot.push("#---------------------------------------------------------*");
+	arPilot.push("#");
+	arPilot.push(OBJECTS_IDENTIFICATION_UNIT);
+	arPilot.push(winAnalyzer.getActiveProcessExec());
+	arPilot.push(START);
+
+}
+
+function pushPilotCheckedValue1(idCheckBox, idDirective, idValue ) {
+	if (document.getElementById(idCheckBox).checked) {
+		arPilot.push(idDirective + " " + document.getElementById(idValue).value);
+	}
+}
+function pushPilotCheckedValue1NoSpace(idField, idDirective ) {
+	if (document.getElementById(idField).value != "") {
+		arPilot.push(idDirective + " " + document.getElementById(idField).value);
+	}
+}
+
+function pushPilotCheckedValue2(idCheckBox, idDirective, idValue1, idValue2 ) {
+	if (document.getElementById(idCheckBox).checked) {
+		arPilot.push(idDirective + " " + document.getElementById(idValue1).value + " " + document.getElementById(idValue2).value);
+	}
+}
+function pushPilotCheckedValue3(idCheckBox, idDirective) {
+	if (document.getElementById(idCheckBox).checked) {
+		arPilot.push(idDirective);
+	}
+}
+function pushPilotCheckedValue4(idCheckBox, idDirective, value1 ) {
+	if (document.getElementById(idCheckBox).checked) {
+		arPilot.push(idDirective + " " + value1) ;
+	}
+}
+function pushPilotCheckedOption(idCheckBox, idDirective ) {
+	if (document.getElementById(idCheckBox).checked) {
+    	arPilot.push(idDirective+"_ENABLED");
+	} else {
+		arPilot.push(idDirective+"_DISABLED");
+	}
+}
+function pushPilotSelValues(idCheckBox, idDirective, idSelect ) {
+	var values="";
+	var i;
+	if (document.getElementById(idCheckBox).checked) {
+		var oSelect = document.getElementById(idSelect);
+		for (i = 0; i < oSelect.length; i++) {
+			values = values + oSelect.options[i].text  + " ";
+		}
+		arPilot.push(idDirective + " " + values);
+	}
+}
+function pushPilotSelValuesNoCheck(idDirective, idSelect) {
+	var oSelValues = document.getElementById(idSelect);
+	var txt = "";
+	var i;
+	for (i = 0; i < oSelValues.length; i++) {
+	  txt = oSelValues.options[i].text;
+	  arPilot.push(idDirective + " " + txt );
+	}
+
+}
+function pushPilotSelValuesChecked(idCheckBox, idDirective, idSelect) {
+	var oSelValues = document.getElementById(idSelect);
+	var txt = "";
+	var i;
+	if (document.getElementById(idCheckBox).checked) {
+		for (i = 0; i < oSelValues.length; i++) {
+			  txt = oSelValues.options[i].text;
+			  arPilot.push(idDirective + " " + txt );
+			}
+	}
+}
+
+function removeSelectItemsNoCheck(idSelect) {
+	var oSelect = document.getElementById(idSelect);
+	oSelect.disable=true;
+	while (oSelect.length != 0) {
+		oSelect.remove(0);		
+	}
+	oSelect.disable=false;
+}
+function removeSelectItems(idCheckBox, idSelect) {
+	var oSelect = document.getElementById(idSelect);
+	if (document.getElementById(idCheckBox).checked) {
+		removeSelectItemsNoCheck(idSelect);
+	}	
+}
+function loadAllSubSys(idCheckBox, idSelect) {	
+	var oSelect = document.getElementById(idSelect);
+	if (document.getElementById(idCheckBox).checked) {
+		oSelect.disable=true;
+	    for (var i=0; i < arSubSys.length; i++) {
+	 	    var value = arSubSys[i];
+	 	    oSelect.add(new Option(value, value));
+	    }
+	    oSelect.disable=false;
+	}	
+}
+function pushPilotArCol12(idCheckedBox, idDirective, arCol1Col2) {
+	var obj;
+	if (idCheckedBox != "" && !document.getElementById(idCheckedBox).checked) {
+		return;
+	}
+	for (var i = 0; i < arCol1Col2.length; i++) {
+		obj=arCol1Col2[i];
+		arPilot.push(idDirective + " " + obj.col1 + " " + obj.col2);
+	}	
+}
+function pushPilotArCol12Checked(idCheckBox, idDirective, arCol1Col2) {
+	var obj;
+	if (document.getElementById(idCheckBox).checked) {
+		for (var i = 0; i < arCol1Col2.length; i++) {
+			obj=arCol1Col2[i];
+			arPilot.push(idDirective + " " + obj.col1 + " " + obj.col2);
+		}
+	}
+}
+// Col1 contains the directive
+function pushPilotArCol1234(arCol1234) {
+	for (var i = 0; i < arObjTypes.length; i++) {
+		var obj=arCol1234[i];
+		arPilot.push(obj.col1 + " " + obj.col2 + " " + obj.col3 + " " +  obj.col4);
+	}
+}
+function pushPilotCopyPrecompiler(idDfhSql, idCheckLnkWrk, idFile) {
+	if (document.getElementById(idFile).value != "") {
+		if (document.getElementById(idCheckLnkWrk).checked) {
+			arPilot.push("COPY_PRECOMPILER CICS " + document.getElementById(idDfhSql).value + " LINKAGE " + document.getElementById(idFile).value);
+		} else {
+			arPilot.push("COPY_PRECOMPILER CICS " + document.getElementById(idDfhSql).value + " WORKING " + document.getElementById(idFile).value);
+		}
+	}	
+}	
+
+
+function popPilotCheckedValue1(idDirRow, idCheckBox, idDirective, idValue, val1 ) {
+	if (idDirRow != idDirective) {return;}
+	if (idCheckBox != "") {
+		document.getElementById(idCheckBox).checked=true;
+	}	
+	document.getElementById(idValue).value = val1;
+}
+function popPilotCheckedValue1NoSpace(idDirRow, idField, idDirective, val1 ) {
+	if (idDirRow != idDirective) {return;}
+	document.getElementById(idField).value = val1;
+}
+function popPilotCheckedValue2(idDirRow, idCheckBox, idDirective, idValue1, idValue2, val1, val2 ) {
+	if (idDirRow != idDirective) {return;}
+	document.getElementById(idCheckBox).checked=true;
+	document.getElementById(idValue1).value = val1;
+	document.getElementById(idValue2).value = val2;
+}
+function popPilotCheckedOption(idDirRow, idCheckBox, idDirective ) {
+	if (idDirRow.substring(0, idDirective.length) != idDirective) {return;}
+	var arDirRow=[];
+	var nElem=0;
+	arDirRow=idDirRow.split('_');
+	nElem=arDirRow.length;
+	if (arDirRow[nElem - 1] == 'ENABLED') {
+		document.getElementById(idCheckBox).checked = true;
+	} else if (arDirRow[nElem - 1] == 'DISABLED') {
+		document.getElementById(idCheckBox).checked = false;
+	} else {
+		document.getElementById(idCheckBox).checked = true;
+	}
+}
+function popPilotCheckedValue3(idDirRow, idCheckBox, idDirective ) {
+	if (idDirRow.substring(0, idDirective.length) != idDirective) {return;}
+	document.getElementById(idCheckBox).checked = true;
+}
+
+function popPilotSelValues(idDirRow, idCheckBox, idDirective, idSelect, arValues) {
+	if (idDirRow != idDirective) {return;}
+    var value = "";
+    var oSelect = document.getElementById(idSelect);
+
+    document.getElementById(idCheckBox).checked = true;
+      
+    // Specific for subsystems, values from all subsystems
+    if (arValues[1] == "*ALL*") {
+		return;
+	}
+    
+    // Remove all in target & enable checkbox
+	removeSelectItems       (idCheckBox, idSelect);
+
+    // loop through values (first value is the directive)
+    oSelect.disable=true;
+    for (var i=1; i<arValues.length; i++) {
+     	value = arValues[i];
+     	if (value != "") {
+        	oSelect.add(new Option(value, value));
+		}
+    }
+    oSelect.disable=false;
+    
+}
+function popPilotSelValues2(idDirRow, idCheckbox, idDirective, idSelect, val1) {
+	if (idDirRow != idDirective) {return;}
+	var oSelect = document.getElementById(idSelect);
+	if (idCheckbox != "") {
+		document.getElementById(idCheckbox).checked=true;
+	}	
+	oSelect.disable=true;	   
+	oSelect.add(new Option(val1, val1));
+	oSelect.disable=false;		
+	
+}
+function popPilotSelValues3(idDirRow, idCheckbox, idDirective, idSelect1, idSelect2, val1) {
+	if (idDirRow != idDirective) {return;}
+	popPilotSelValues2(idDirRow, idCheckbox, idDirective, idSelect1, val1);
+	removeSelectItem(idSelect2, val1);
+}
+function removeSelectItem (idSelect, value) {
+	var oSelect = document.getElementById(idSelect);
+    var options = oSelect.options;
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+        	oSelect.remove(i);
+            break;  
+        }
+    }
+    return;
+}
+function removeSelectItems(idCheckBox, idSelect) {
+	var oSelect = document.getElementById(idSelect);
+	if (document.getElementById(idCheckBox).checked) {
+		oSelect.disable=true;
+		while (oSelect.length != 0) {
+			oSelect.remove(0);		
+		}
+		oSelect.disable=false;
+	}	
+}
+function loadAllSubSys(idCheckBox, idSelect) {	
+	var oSelect = document.getElementById(idSelect);
+	if (document.getElementById(idCheckBox).checked) {
+		oSelect.disable=true;
+	    for (var i=0; i < arSubSys.length; i++) {
+	 	    var value = arSubSys[i];
+	 	    oSelect.add(new Option(value, value));
+	    }
+	    oSelect.disable=false;
+	}	
+}
+function popPilotArCol12(idDirRow, idCheckBox, idDirective, arCol1Col2, val1, val2, val3, val4) {
+	if (idDirRow != idDirective) {return;}
+	var oSelect;
+	var obj = new Object();
+	obj.col1=val1;
+	obj.col2=val2;
+	arCol1Col2.push(obj);
+	if (val3 != "" && val4 != "") {
+		obj = new Object();
+		obj.col1=val3;
+		obj.col2=val4;
+		arCol1Col2.push(obj);
+	}
+	if (idCheckBox != "") {
+		document.getElementById(idCheckBox).checked=true;
+	}
+	
+	// Specific for Library: add on selLibrarySearchLeft
+	if (idDirRow == "LIBRARY") {
+		oSelect = document.getElementById("selLibrarySearchLeft")
+		oSelect.disable=true;
+	 	oSelect.add(new Option(val1, val1));
+	    oSelect.disable=false;
+	}
+}
+function popPilotArCol12Checked(idDirRow, idCheckBox, idDirective, arCol1Col2) {
+	if (idDirRow != idDirective) {return;}
+	if (document.getElementById(idCheckBox).checked) {
+		for (var i = 0; i < arCol1Col2.length; i++) {
+			arPilot.pop(idDirective + " " + arCol1Col2[i].col1 + " " + arCol1Col2[i].col2);
+		}
+	}
+}
+// Col1 contains the directive
+function popPilotArCol1234(idDirRow, idDirective, arCol1234, val1, val2, val3, val4) {
+	if (idDirRow != idDirective) {return;}
+	var obj=new Object();
+	obj.col1 = idDirRow;
+	obj.col2 = val1;
+	obj.col3 = val2;
+	obj.col4 = val3;
+	arCol1234.push(obj);
+}
+function popPilotCopyPrecompiler(idDirRow, idDirective, DFHSQL, idDfhSql, idCheckLnk, idCheckwrk,  idFile, val2, val3, val4) {
+	if (idDirRow != idDirective) {return;}
+	if (DFHSQL != val2) {return;}
+	document.getElementById(idDfhSql).value = val2;
+	if (val3 == "LINKAGE") {
+		document.getElementById(idCheckLnk).checked = true;
+		document.getElementById(idCheckwrk).checked = false;
+	} else {
+		document.getElementById(idCheckLnk).checked = false;
+		document.getElementById(idCheckwrk).checked = true;
+	}	
+	document.getElementById(idFile).value = val4;
+}	
+
+
+function clearAndInitializeAll() {
+	
+	refreshSelectSubSys("selSubSysLeft", "selSubSysRight");
+	
+	// Initialize all service array
+	arLibPathSource=new Array();
+	arObjTypes=new Array();
+	arPosValueFilter=new Array();
+	arPosValueExclude=new Array();
+	
+	// Rebuild all tables	
+	createTableHtmlCol12(arLibPathSource,  "divTbLibrary",           "tbLibrary",           "Code", "Path");	
+	createTableHtmlCol12(arPosValueFilter, "divTbFilterPosValue",    "tbFilterPosValue",    "Pos",  "Value");
+	createTableHtmlCol12(arPosValueExclude,"divTbExclusionPosValue", "tbExclusionPosValue", "Pos",  "Value");	
+	createTableHtmlTbCol1234(arObjTypes,   "divTbObjectTypes",       "tbTbObjectTypes");
+
+	
+	// Empty all select
+	removeSelectItemsNoCheck("selLibrarySearchLeft");
+	removeSelectItemsNoCheck("selLibrarySearchRight");
+	removeSelectItemsNoCheck("selCopySuffix");
+	removeSelectItemsNoCheck("selFilePath");
+	removeSelectItemsNoCheck("selExclusion");
+	removeSelectItemsNoCheck("selForceCopyReAnalysis");
+	removeSelectItemsNoCheck("selForceCopyReBuildOnDb");
+	
+	// Radio buttom System
+	document.getElementById("systemByValue").checked=false;
+	document.getElementById("systemOnName").checked=false;
+	document.getElementById("systemByExit").checked=false;
+
+	// Radio buttom subSystem
+	document.getElementById("subSystemByByValues").checked=false;
+	document.getElementById("subSystemOnName").checked=false;
+	document.getElementById("subSystemByByValues").checked=false;
+	document.getElementById("subSystemByExit").checked=false;
+	document.getElementById("subSystemAll").checked=false;
+
+	// Radio IBM Cics copy precompilers
+	document.getElementById("dfhEibLnk").checked=false;
+	document.getElementById("dfhEibWrk").checked=false;
+	document.getElementById("dfhAidLnk").checked=false;
+	document.getElementById("dfhAidWrk").checked=false;
+	document.getElementById("dfhBmsLnk").checked=false;
+	document.getElementById("dfhBmsWrk").checked=false;
+	document.getElementById("sqlcaLnk").checked=false;
+	document.getElementById("sqlcaWrk").checked=false;
+	document.getElementById("dfhSqldaLnk").checked=false;
+	document.getElementById("dfhSqldaWrk").checked=false;
+
+	// Radio object Types
+	document.getElementById("typeObjectSingle").checked=false;
+	document.getElementById("typeObjectAll").checked=false;
+
+	// Radio Filer Types
+	document.getElementById("filterByExit").checked=false;
+	document.getElementById("filterByObjectNameRange").checked=false;
+	document.getElementById("filterByValueAtPos").checked=false;
+
+	// Radio Exclusion Types
+	document.getElementById("excludeByExit").checked=false;
+	document.getElementById("excludeByObjectName").checked=false;
+	document.getElementById("excludeByObjectNameRange").checked=false;
+	document.getElementById("excludeByValueAtPos").checked=false;
+
+
+	// Space in all input fields
+	document.getElementById("systemInput").value="";
+	document.getElementById("systemPos").value="";
+	document.getElementById("systemLng").value="";
+	document.getElementById("subSystemPos").value="";
+	document.getElementById("subSystemLng").value="";
+	document.getElementById("libraryCode").value="";
+	document.getElementById("libraryPathInp").value="";
+	document.getElementById("dfhEibFileInp").value="";
+	document.getElementById("dfhAidFileInp").value="";
+	document.getElementById("dfhBmsFileInp").value="";
+	document.getElementById("sqlcaFileInp").value="";
+	document.getElementById("sqldaFileInp").value="";
+	document.getElementById("copySuffix").value="";
+	document.getElementById("filePath").value="";
+	document.getElementById("typeObjectSingleInp").value="";
+	document.getElementById("typeObjectFrom").value="";
+	document.getElementById("typeObjectTo").value="";
+	document.getElementById("filterNameFrom").value="";
+	document.getElementById("filterNameTo").value="";
+	document.getElementById("filterPosStart").value="";
+	document.getElementById("filterValue").value="";
+	document.getElementById("excludeNameFrom").value="";
+	document.getElementById("excludeNameTo").value="";
+	document.getElementById("exclusionObjectName").value="";
+	document.getElementById("exclusionPos").value="";
+	document.getElementById("exclusionValue").value="";
+	document.getElementById("forceCopyNameReAnalysis").value="";
+	document.getElementById("forceCopyNameReBuildOnDb").value="";	
+	document.getElementById("LimiMaxSources").value="";
+	document.getElementById("LimitMaxObjects").value="";
+	document.getElementById("threadNameInp").value="";
+	document.getElementById("threadGroupInp").value="";
+	document.getElementById("threadPrtyInp").value="0";
+	document.getElementById("threadMaxSubInp").value="0";
+	document.getElementById("javaClassName").value="";
+	document.getElementById("customerCode").value="";
+	document.getElementById("customerInfo").value="";
+	document.getElementById("outputFileName").value="";
+	
+	// Object Status
+	document.getElementById("ObjectStatusAny").checked=false;
+	document.getElementById("ObjectStatusToBeAnalyzed").checked=false;
+	document.getElementById("ObjectStatusSourceDetected").checked=false;
+	document.getElementById("ObjectStatusAnlzWithNoErrors").checked=false;
+	document.getElementById("ObjectStatusAnlzWithErrors").checked=false;
+	document.getElementById("ObjectStatusAnlzWithException").checked=false;
+	document.getElementById("ObjectStatusAnlzDynCode").checked=false;
+	document.getElementById("ObjectStatusAnlzDynCodeSolved").checked=false;
+	document.getElementById("ObjectStatusAnlzDynCodeSpreadedToSolve").checked=false;
+	document.getElementById("ObjectStatusAnlzDynCodeWaitForData").checked=false;
+	document.getElementById("ObjectStatusProcWithNoErrors").checked=false;
+	document.getElementById("ObjectStatusProcWithErrors").checked=false;
+	document.getElementById("ObjectStatusProcWithException").checked=false;
+	
+	// Generic
+	document.getElementById("OptGenericDbUpdate").checked=false;
+	document.getElementById("OptGenericDbTraceErr").checked=false;
+	document.getElementById("OptGenericVerbose").checked=false;
+	document.getElementById("OptGenericStackTraceParsingErr").checked=false;
+	// Library Scan
+	document.getElementById("OptDetectSourceType").checked=false;
+	document.getElementById("OptFullInfoFileSystem").checked=false;
+	document.getElementById("OptSearchFileRecursive").checked=false;
+	// After Program Source Parsing
+	document.getElementById("OptDbCreateCopyDefinition").checked=false;
+	document.getElementById("OptDbCreateWhereUsedCopyField").checked=false;
+	document.getElementById("OptDbCreateWhereUsedEntityCol").checked=false;
+	document.getElementById("OptForceCopyDefReAnalysis").checked=false;
+	document.getElementById("OptForceCopyDefDbRebuid").checked=false;
+	document.getElementById("OptDetectCode").checked=false;
+	// Dynamic Code At Program Level
+	document.getElementById("OptSolveDynamicLocal").checked=false;
+	document.getElementById("OptSolveDynamicLocalLight").checked=false;
+	document.getElementById("OptSolveDynamicCics").checked=false;
+	document.getElementById("OptSolveDynamicDmlSql").checked=false;
+	// Process System Level
+	document.getElementById("OptSolveDynamicCodeSpreaded").checked=false;
+	document.getElementById("OptDetectIndirectRelationships").checked=false;
+	document.getElementById("OptAssignPhisToLogicalFile").checked=false;
+	document.getElementById("OptEvaluateMetricSystem").checked=false;
+	// Metrics And Quality System
+	document.getElementById("OptMetricAll").checked=false;
+	document.getElementById("OptMetricBasic").checked=false;
+	document.getElementById("OptMetricDetailOndb").checked=false;
+	document.getElementById("OptMetricDetail").checked=false;
+	document.getElementById("OptMetricMcCAbe").checked=false;
+	document.getElementById("OptMetricHalstead").checked=false;
+	document.getElementById("OptMetricComplexityStructure").checked=false;
+	document.getElementById("OptMetricComplexityFunction").checked=false;
+	document.getElementById("OptMetricFuntionPoint").checked=false;
+	document.getElementById("OptMetricReHosting").checked=false;
+	document.getElementById("OptMetricSquale").checked=false;
+	document.getElementById("OptMetricSqualeDetectViolation").checked=false;
+	document.getElementById("OptMetricSqualViolationScenario").checked=false;
+}
+
+function selectFolder(e) {
+	 
+	   for (var i = 0; i < e.target.files.length; i++) {
+	      var s = e.target.files[i].name + '\n';
+	      s += e.target.files[i].size + ' Bytes\n';
+	      s += e.target.files[i].type;
+	   }
+	   alert(s);
+
+}
+
+
+</script>
+</body>
+</html>

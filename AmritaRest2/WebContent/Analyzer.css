@@ -1,0 +1,454 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main table of the SPA Viewer application */
+#mainTable { 
+  vertical-align: top;
+  width: 100%;
+  height:35px;
+  border 0;
+  margin 0;
+}
+
+#mainTable2 { 
+ 
+  vertical-align: top;
+  width: 100%;
+  height: calc(80% - 57px);
+}
+
+#mainTable3 { 
+  vertical-align: top;
+  width: 100%;
+  height: 20%;
+  border 0;
+  margin 0;
+}
+
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+#headerRightTh{
+} 
+
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  height: 30px;
+  border: 1px solid black;
+} 
+
+
+#tr1{
+	vertical-align: top;  
+	border: 1px solid black;
+}
+
+#tr2{
+	vertical-align: top;  
+
+}
+#td21{  
+	vertical-align: top;
+	width: 25%; 
+	margin:0;
+	padding:0;
+}
+
+
+#td22{ 
+	width: 75%;
+	margin:0;
+	padding:0;
+	vertica-align:top;
+	font-size: small;
+}
+
+
+/* Inside td21 */
+#tbProcesses { 
+    width: 100%; 
+    border-collapse: collapse;
+}
+.tbBtnProcesses{
+   margin-top:0;
+   width: 100%; 
+} 
+
+.tbBtnProcesses td{
+   width: 50%; 
+} 
+
+/* Inside tbProcesses */
+.btnProcesses { 
+  margin-top: 0;
+  width: 100%; 
+}
+
+#divTbPilotList{ 
+  width:auto;
+  height: 93%;
+  overflow: auto;
+}	
+
+#tbPilotList {
+  padding:0;	
+  width: 100%;
+  margin-top: 0;	
+  margin-bottom: auto;
+  border-collapse: collapse;
+  font-size: small; 
+  font-family: Arial, Helvetica, sans-serif 
+}
+
+#divTbPilotSource{ 
+  width:auto;
+  height: 93%;
+  overflow: auto;
+}	
+
+#tbPilotSource {
+	padding:0;	
+	width: 100%;
+	margin-top: 0;	
+    margin-bottom: auto;
+    border-collapse: collapse;  
+    font-size: small; 
+    font-family: Arial, Helvetica, sans-serif 
+}
+#tbPilotSource td {
+    border:none;
+}
+.btnProcessPilot {
+  width: 100%;
+  height: 23px;
+  margin-bottom:0px; 
+  border: 1px solid black; 
+  font-size: small; 
+}
+
+
+#divtbPilotObjects { 
+  height:0;
+}	
+
+#tbPilotObjects {
+   width: 100%;
+   padding:0;
+   margin-top: 0;	
+   margin-bottom: auto;
+   border-collapse: collapse;
+   font-size: small; 
+   font-family: Arial, Helvetica, sans-serif 
+}
+
+
+
+/* Inside tdProcessPilots */
+#divProcessPilots{
+	width: 100%;
+	height: 97%;
+}	
+
+#divIframeConfig{
+	width: 100%;
+	height: 100%;
+}	
+
+/* Inside divProcessPilots */
+#tbPilotsObjectsSources {
+	width:100%;
+	height: 99%;
+    margin:0;
+	padding:0;
+	vertica-align:top;	
+    font-size: small; 
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Inside tbPilotsObjectsSource */
+#td221{  
+	vertical-align: top;
+	width: 25%;
+	height: 100%;
+	margin:0;
+	padding:0;
+}
+/* Inside tbPilotsObjectsSource */
+#td222{  
+	vertical-align: top;
+	width: 55%;
+    height: 100%;
+	margin:0;
+	padding:0;
+}
+/* Inside tbPilotsObjectsSource */
+#td223{  
+	border: 1px solid black;
+	vertical-align: top;
+	width: 20%;
+    height: 100%;
+	margin:0;
+	padding:0;
+}
+
+/* Inside td223 */
+#divtbSourcesToProcess {
+  width:auto;
+  height: 90%;
+  overflow: auto;
+
+}
+#tbSourcesToProcess {
+  padding:0;	
+  width: 100%;
+  margin-top: 0;	
+  margin-bottom: auto;
+  border-collapse: collapse;
+  font-size: xx-small; 
+  font-family: Arial, Helvetica, sans-serif ;
+}
+.countSources {
+ color: green;
+ font-size: medium; 
+ border: 0;
+ width: inherit;
+}
+.lblCountSources {
+  border: 0;
+}
+.countTable {
+}
+
+#tr3{
+	vertical-align: top;  
+    height:25%; 
+}
+#td31{  
+	border: 1px solid black;
+	width: 20%;
+	margin:0;
+	padding:0;
+}
+
+#td32{  
+	width: 100%;
+	border: 1px solid black;
+	margin:0;
+	padding:0;
+}
+
+#tb321{ 
+	width: 100%;
+	height: 100%;
+	margin:0;
+	padding:0;
+}
+
+#td321{  
+    border: 1px solid black;
+    vertical-align: top;
+	width: 50%;	
+	height: 100%;
+}
+
+/* Inside td321 */
+#divTbProcessLog {
+    margin:0;
+	padding:0;
+	width:100%;
+	height: 80%;
+	overflow-y: auto;
+	border: 10px, solid, black;
+}
+#tbProcessLog {
+  padding:0;	
+  width: 100%;
+  margin-top: 0;	
+  margin-bottom: auto;
+  border-collapse: collapse;
+  font-size: xx-small; 
+  font-family: Arial, Helvetica, sans-serif ;
+}
+
+
+#td321{  
+    border: 1px solid black;
+    vertical-align: top;
+	width: 50%;
+}
+#tbElapsedTime {
+    margin:0;
+	padding:0;
+	width:100%;
+	height: auto;
+	border-collapse: collapse;
+	border: 1px, solid, black;
+}
+
+#td322{  
+    border: 1px solid black;
+    vertical-align: top;
+	width: 50%;
+}
+/* Inside td322 */
+#divTbExecution {
+    margin:0;
+	padding:0;
+	width:100%;
+	height:auto;
+	border: 10px, solid, black;
+}
+#tbExecution {
+    margin:0;
+	padding:0;
+	width:100%;
+	height: auto;
+	border: 1px, solid, black;
+}
+
+#tdStartStop{
+	width:40%;
+}
+#tdRunningStopped{
+	width:60%;
+}
+
+#tbStartStop {
+	width: 100%;
+    margin:0;
+	padding:auto;
+	border: 1px, solid, black;
+	margin-right: auto;
+    margin-left: 0;
+	
+}
+.btnStartStop {
+  height: 30px;
+  width: 100%;
+  margin-top:0px;
+  margin-bottom:0px;  
+  font-size: small; 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#tbRunningStopped{
+  width: 100%;
+  height: 100%;
+  border: 1px, solid, black;   
+  border-collapse: collapse;
+  horizontal-align: right;
+  margin-right: 0;
+  margin-left: auto;
+  
+}
+#execCurIdObject{
+  text-align: left;
+  font-size: large;
+  font-weight: bold;
+}
+#execCntObjectProcessed{
+  text-align: left;
+  font-size: large;
+  font-weight: bold;
+  width: 8px;
+  border-right: solid 1px #FFF;
+}
+#slash{
+  text-align: center;
+}
+#execTotObjectToProcess{
+  text-align: left;
+  font-size: large;
+  font-weight: bold;
+  border-left: solid 2px #FFF;
+}
+#statusExec{
+  text-align: left;
+  font-size: large;
+  font-weight: bold;
+  color: red;
+}	
+.elapsed {
+  text-align: left;
+  font-weight: bold;
+}
+
+
+/* Activated on row selection */
+.selected {
+  background-color: yellow;
+}
+	
+#iframeConfig {
+  border: none;
+  width: 100%;
+  height: calc(100% - 20px);  
+}
+
+#divProgrBar {
+  width: 100%;
+  height: calc(100% - 96px);
+  background-color: #ddd;
+}
+
+#progrBar {
+  width: 10%;
+  height: 100%;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+
+
+.divHeader{
+ height:20px;
+ text-align: center;
+ font-size: medium;
+ font-weight: bold;
+ background-color: #757560;
+ color: white;
+}  
+
+/* Table containing objects */
+table td {
+  border-collapse: collapse; 
+  border: 1px solid black;   
+  width: auto;
+  padding: 0px;
+  margin-top: 1px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;   
+  font-size: small; 
+  font-family: Arial, Helvetica, sans-serif; 
+}
+
+table th {
+  background-color: gray;
+  color:white;
+  border: 1px solid black;
+  font-size: small; 
+}
+
+

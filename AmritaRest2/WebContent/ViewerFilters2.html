@@ -1,0 +1,1027 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="ViewerFilters.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+ 
+	<table id="tblSys">
+		<tr>
+			<td class="tdLeft4">System </td>
+			<td> <select id="sysD" name="sysD" onChange="onChangeSys()"></select> </td>
+		</tr>
+	</table> 
+
+     <div class='filterHeader'>Objects Filter Criteria</div>
+	 <div>
+		<table class="tblGen" id="tblGen">
+			<tr>
+				<td class="tdLeft">SubSystem Owner </td>
+				<td> <select id="objSubSysSel" name="objSubSysSel"  onChange="onChangeSubSys()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Type Object </td>
+				<td> <select class='typeObject' id=objTypeObjectSel name=objTypeObjectSel onChange="onChangeTypeObject()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Status Object </td>
+				<td> <select id="objStatusObjectSel" name="objStatusObjectSel" onChange="onChangeStatusObject()" ></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Object Name Like (* % Wild Char) </td>
+				<td colspan=2>
+				  <table>
+				   <tr>
+				     <td><input type="text" id="idObjectLike" name="idObjectLike" onChange="onChangeIdObjectLike()" /></td>
+				   </tr>
+				  </table>
+				</td>
+			</tr>
+		</table> 
+		
+		<div  class="divLine"> </div>		
+    	<table id="tblOptSelContainer">
+			<tr>
+				<td class="tdLeft2"> <select id="selOptD" name="selOptD" size=5 multiple></select> </td>
+				<td class="tdLeft3">
+				   <table>
+				     <tr> <td><input class='btnGt' type="button" id='btnGt' value=">" onclick='onclick_btnGt(this.id);' />  </td>   </tr>
+				     <tr> <td><input class='btnLt' type="button" id='btnLt' value="<" onclick='onclick_btnLt(this.id);' />  </td>	</tr>				   
+				   </table>
+				</td>
+				<td> <select id="selOptSelD" name="selOptSelD" size=5 multiple></select> </td>              
+			</tr>
+		</table> 											
+	</div>
+	
+		<div  class="divLine"> </div>
+		<table class="tblGen" id="tblShow">
+			<tr>
+				<td class="tdLeft">Show Owner Objects </td>
+				<td> <input type="checkbox" checked class='classChkbx' id="showOwnerObjects" onChange="onChangeShowOwnerObjects()"></input> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Show External Objects </td>
+				<td> <input type="checkbox" checked  class='classChkbx' id="showExternalObjects" onChange="onChangeShowExternalObjects()"></input> </td>
+			</tr>
+		</table> 
+
+	    <div class='filterHeader'>Relationships Filter Criteria</div>	
+	    <div>
+		<table class="tblGen" id="tblRel">
+			<tr>
+				<td class="tdLeft">SubSystem </td>
+				<td> <select class='subSys' id="relSubSysSel" name="relSubSysSel" onChange="onChangeRelSubSys()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Type Object A</td>
+				<td> <select class='typeObject' id="relTypeObjectASel" name="relTypeObjectASel" onChange="onChangeRelTypeObjectASel()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Object Name A</td>
+				<td><input class='fromTo' type="text" class="fromTo" id="relIdObjectA" name="relIdObjectA"  onChange="onChangeRelIdObjectA()" /></td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Relation</td>
+				<td> <select class='relation' id="relRelationSel" name="relRelationSel" onChange="onChangeRelationSel()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft" class="tdLeft">Type Object B</td>
+				<td> <select class='typeObject' id="relTypeObjectBSel" name="relTypeObjectBSel" onChange="onChangeRelTypeObjectBSel()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Object Name B</td>
+				<td><input type="text" class="fromTo" id="relIdObjectB" name="relIdObjectB" onChange="onChangeRelIdObjectB()" /></td>
+			</tr>
+		</table> 
+		
+		<div  class="divLine"> </div>
+		<table class="tblGen" id="tblShowRelChkbx">
+			<tr>
+				<td class="tdLeft">Show Reverse Relations </td>
+				<td> <input type="checkbox" checked class='classChkbx' id="showReverseRel" onChange="onChangeShowReverseRel()"></input> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Show Relations With External Objects </td>
+				<td> <input type="checkbox" checked class='classChkbx' id="showExternalRel" onChange="onChangeShowExternalRel()"></input> </td>
+			</tr>
+		</table> 
+		
+	</div>
+
+    <div class='filterHeader'>Where Used Filter Criteria</div>
+    <div>
+		<table class="tblGen" id="tblWhusd">
+			<tr>
+				<td class="tdLeft">SubSystem </td>
+				<td> <select class='subSys' id="wusdSubSysSel" name="wusdSubSysSel" onChange="onChangeWusdSubSysSel()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Type Object </td>
+				<td> <select class='typeObject' id="wusdTypeObjectSel" name="wusdTypeObjectSel" onChange="onChangeWusdTypeObjectSel()"></select> </td>
+			</tr>
+			<tr>
+				<td class="tdLeft">Object Name </td>
+				<td><input class='fromTo' type="text" class="idObject" id="wusdIdObject" name="wusdIdObject" onChange="onChangeWusdIdObject()"  /></td>
+			</tr>
+		</table>     </div>
+
+</body>
+
+<script type="text/javascript">
+"use strict";
+var userInp="amrita";       							 // Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlEnumGET = 'enum';
+var urlSysGET = 'sys';
+var urlSubSysGET = 'subsys';
+
+// Parameters for viewer, in object parameters
+var sysCur = "";
+var subSysCur = "";
+var typeObjectCur = "";
+var statusObjectCur = "";
+var relationObjectCur = "";
+var idObjectLike = "";
+var pgmFromCur = "";
+var pgmToCur = "";
+var withDynamicCodeCur = false;
+var withDynamicCodeSolvedCur = false;
+var withDynamicCodeSolvedFullCur = false;
+var optionsCur = []; 
+var typeObjectFullCur = "";
+var statusObjectFullCur = "";
+
+var ar_filterOptions = [];            // Options attive
+
+// To open windows forms
+var winOpenViewer=null;               // Reference to the open window 
+var objConfig=null;                   // Configurator Object
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {  
+      var filterOptions = "";
+      
+	  userInp = localStorage.getItem("user");		
+	  hostName = localStorage.getItem("hostName");		
+	  baseUrl = localStorage.getItem("baseUrl");		
+
+	  winOpenViewer=window.opener;
+	  if (winOpenViewer != null) {
+		  objConfig=winOpenViewer.getConfig();
+	  }
+	  setDefaultCurrentSessionStorage();
+	  
+      filterOptions = localStorage.getItem("filterObjOptions");
+      if (filterOptions == "") {
+    	  ar_filterOptions = [];
+	  } else {
+		  ar_filterOptions = filterOptions.split("|");
+	  }
+ 	  
+ 	  loadSysD();
+	  loadSubSys(objSubSysSel, relSubSysSel, wusdSubSysSel);
+	  loadEnumFromDb("EnumObject", objTypeObjectSel); 
+	  loadEnumFromDb("EnumObjectStatus", objStatusObjectSel);
+	  loadEnumFromDb("EnumObjectOption", selOptD); 
+	  loadEnumFromDb("EnumObject", relTypeObjectASel);
+	  loadEnumFromDb("EnumRelation", relRelationSel); 
+	  loadEnumFromDb("EnumObject", relTypeObjectBSel);
+	  loadEnumFromDb("EnumObject", wusdTypeObjectSel);	  
+  }
+
+function setDefaultCurrentSessionStorage() {
+	var v = "";
+
+	v = localStorage.getItem("filterObjObjectLike");
+	if (v == null) {
+		localStorage.setItem("filterObjObjectLike", "");
+	}
+    document.getElementById("idObjectLike").value = localStorage.getItem("filterObjObjectLike");
+	  	
+	localStorage.setItem("filterObjShowOwner", "true");
+	localStorage.setItem("filterObjShowExternal", "true");
+	
+	v = localStorage.getItem("filterObjOptions");
+	if (v == null) {
+		localStorage.setItem("filterObjOptions", "");
+	}
+
+	v = localStorage.getItem("filterRelSubSys");
+	if (v == null) {
+		localStorage.setItem("filterRelSubSys", "*");
+	}
+	
+	v = localStorage.getItem("filterRelIdObjectA");
+	if (v == null) {
+		localStorage.setItem("filterRelIdObjectA", "*");
+		document.getElementById("relIdObjectA").value = "*";
+	} else {
+		document.getElementById("relIdObjectA").value = v;
+	}
+	
+	v = localStorage.getItem("filterRelTypeObjectA");
+	if (v == null) {
+		localStorage.setItem("filterRelTypeObjectA", "*");
+	}
+	
+	v = localStorage.getItem("filterRelIdObjectB");
+	if (v == null) {localStorage.setItem("filterRelIdObjectB", "*");
+		localStorage.setItem("relIdObjectB", "*");
+		document.getElementById("relIdObjectB").value = "*";
+	} else {
+		document.getElementById("relIdObjectB").value = v;
+	}
+	
+	v = localStorage.getItem("filterRelTypeObjectB");
+	if (v == null) {
+		localStorage.setItem("filterRelTypeObjectB", "*");
+	}
+	
+	v = localStorage.getItem("filterRelRelation");
+	if (v == null) {
+		localStorage.setItem("filterRelRelation", "*");
+	}
+
+	localStorage.setItem("filterRelShowReverse", "true");
+	localStorage.setItem("filterRelShowExternal", "true");
+	
+	v = localStorage.getItem("filterWusdIdObject");
+	if (v == null) {
+		localStorage.setItem("filterWusdIdObject", "");
+	} else {
+		localStorage.setItem("filterWusdIdObject", v);
+		document.getElementById("wusdIdObject").value = v;
+	}
+
+	v = localStorage.getItem("filterWusdTypeObject");
+	if (v == null) {
+		localStorage.setItem("filterWusdTypeObject", "9");
+	} else {
+		localStorage.setItem("filterWusdTypeObject", v.trim());
+		document.getElementById("wusdTypeObjectSel").selectedIndex  = v.trim();
+	}
+
+}
+
+function getOptionByValue (select, value) {
+    var options = select.options;
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].value === value) {
+            return options[i]  
+        }
+    }
+    return null
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+
+
+function loadSysD() {	
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlSysGET + "/" + userInp;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var listSys=JSON.parse(xmlhttp.responseText);
+			sysD.disable=true;
+			while (sysD.length != 0) {
+				sysD.remove(0);		
+			}
+		    for (var i=0; i < listSys.length; i++) {
+		 	   var value = listSys[i].idObject;
+		 	   sysD.add(new Option(value, value));
+		    }
+			sysCur = listSys[0].idObject;
+			localStorage.setItem("filterObjSys", sysCur);
+		    sysD.disable=false;	
+	    }		 
+	};
+}
+
+function loadSubSys(oSelObj, oSelRel, oSelWusd) {	
+	var xmlhttp;
+	var listSubSys = [];
+	
+	// Dati già disponibili
+	listSubSys = winOpenViewer.getListSubSys();
+	if (listSubSys.length > 0) {
+		loadSelectSpecific(oSelObj, listSubSys);
+		loadSelectSpecific(oSelRel, listSubSys);
+		loadSelectSpecific(oSelWusd, listSubSys);
+		objSubSysSel.value = localStorage.getItem("filterObjSubSys");	 
+		relSubSysSel.value = localStorage.getItem("filterRelSubSys");	 
+		wusdSubSysSel.value = localStorage.getItem("filterWusdSubSys");	 
+		typeObjectCur='*';
+		return;
+	}
+	
+	// Dati da richiedere al server
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlSubSysGET + "/" + userInp;
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var listSubSys=JSON.parse(xmlhttp.responseText);
+			loadSelectSpecific(oSelObj, listSubSys);
+			loadSelectSpecific(oSelRel, listSubSys);
+			loadSelectSpecific(oSelWusd, listSubSys);
+			oSelObj.value="*";
+			oSelRel.value="*";
+			oSelWusd.value="*";
+			localStorage.setItem("filterObjSubSys", "*");
+			localStorage.setItem("filterRelSubSys", "*");
+			localStorage.setItem("filterWusdSubSys", "*");
+			winOpenViewer.setListSubSys(listSubSys);
+	    }		 
+	};
+	subSysCur='*';
+}
+
+function loadSelectSpecific(oSelect, listSubSys) {
+	oSelect.disable=true;
+	while (oSelect.length != 0) {
+		oSelect.remove(0);		
+	}
+	oSelect.add(new Option("*", "*"));
+	for (var i=0; i < listSubSys.length; i++) {
+		   var value = listSubSys[i].idObject;
+		   oSelect.add(new Option(value, value));
+	}
+	oSelect.disable=false;	
+}
+
+function loadEnumFromDb(enumName, oSelect) {
+	var xmlhttp;
+	var enumsX=[];
+	var indexSel = 0;
+	
+	// Dati già disponibili
+	if (enumName == "EnumObject") {
+		enumsX = winOpenViewer.getListTypeObject();
+		if (enumsX.length > 0) {
+			loadSelectGeneric(oSelect, enumsX);
+			typeObjectCur='*';
+			if (oSelect.name == "objTypeObjectSel") {
+				var v = localStorage.getItem("filterObjTypeObject");
+				if (v == null) {v = "*";}
+				oSelect.selectedIndex = getSelIndex(oSelect, v);
+			} else if (oSelect.name == "relTypeObjectASel") {
+				var v = localStorage.getItem("filterRelTypeObjectA");
+				if (v == null) {v = "*";}
+				oSelect.selectedIndex = getSelIndex(oSelect, v);
+			} else if (oSelect.name == "relTypeObjectBSel") {
+				var v = localStorage.getItem("filterRelTypeObjectB");
+				oSelect.selectedIndex = getSelIndex(oSelect, v);
+			} else if (oSelect.name == "wusdTypeObjectSel") {
+				var v = localStorage.getItem("filterWusdTypeObject");
+				if (v == null) {v = "*";}
+				oSelect.selectedIndex = getSelIndex(oSelect, v);
+			}
+			return;
+		}
+	} else if (enumName == "EnumObjectStatus") {
+		enumsX = winOpenViewer.getListStatusObject();
+		if (enumsX.length > 0) {
+			loadSelectGeneric(oSelect, enumsX);
+			var v = localStorage.getItem("filterObjStatusObject");
+			if (v == null) {v = "*";}			
+			oSelect.selectedIndex = v;
+			return;
+		}
+	}  else if (enumName == "EnumRelation") {
+		enumsX = winOpenViewer.getListRelationObject();
+		if (enumsX.length > 0) {
+			loadSelectGeneric(oSelect, enumsX);
+			var v = localStorage.getItem("filterRelRelation");
+			if (v == null) {v = "*";}
+			oSelect.selectedIndex = v;
+			return;
+		}
+	}
+	
+	// Richiesta dati al server
+	xmlhttp=createRequest();
+  	var url = baseUrl + "/" + urlEnumGET + "/" + userInp + "/" + enumName;
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var enums=JSON.parse(xmlhttp.responseText);
+			loadSelectGeneric(oSelect, enums);
+			if (enumName == "EnumObjectOption") {
+				loadSelectFilterOptions(selOptSelD);
+			} else if (enumName == "EnumObject") {
+				winOpenViewer.setListTypeObject(enums);
+				typeObjectCur='*';
+				localStorage.setItem("filterObjTypeObject", "*");
+			} else if (enumName == "EnumObjectStatus") {
+				winOpenViewer.setListStatusObject(enums);
+				statusObjectCur='*';
+				localStorage.setItem("filterObjStatusObject", "*");
+			}  else if (enumName == "EnumRelation") {
+				winOpenViewer.setListRelationObject(enums);
+				relationObjectCur='*';
+				localStorage.setItem("filterRelRelation", "*");
+			}
+		}		 
+	};
+}
+
+// Find correct index 
+function getSelIndex (oSelect, v) {
+	var opt;
+	var value = "";
+	var iLength= oSelect.options.length;
+    // loop through options in select list
+    for (var i=0, len=iLength; i<iLength; i++) {
+        opt = oSelect.options[i];
+        value = opt.value;
+        if (value.substr(0, 1) == v || value.substr(0, 2) == v) {
+			break;
+		}
+    }
+    return i;
+}
+
+// Caricamento opzioni attive
+function loadSelectFilterOptions(oSelect) {
+	  var selOpt = "";
+	  var selOptSel = "";
+      var i = 0;
+      
+      // Options
+      selOpt = document.getElementById('selOptD');
+      selOptSel = document.getElementById('selOptSelD');
+      
+      // Load opzioni correnti selezionate
+      for (var i = 0; i < ar_filterOptions.length; i++) {
+    	  var value = ar_filterOptions[i];
+    	  selOptSel.add(new Option(value, value));
+	  }
+      
+}
+
+function loadSelectGeneric(oSelect, list) {
+	
+	oSelect.disable=true;
+	while (oSelect.length != 0) {
+		oSelect.remove(0);		
+	}
+    for (var i=0; i < list.length; i++) {
+ 	    var value = list[i].ordinal + " " + list[i].value;
+ 	    if (value.indexOf("FREE") > 0) {continue;}
+ 	    
+ 	    if (oSelect.name == 'selOptD') {	    	
+	 		if (value.substring(0,2) != '0 ') {
+	 			for (var i2 = 0; i2 < ar_filterOptions.length; i2++) {
+					if (value == ar_filterOptions[i2]) {
+						break;
+					}
+				}
+	 			if (i2 >= ar_filterOptions.length) {
+			 	    oSelect.add(new Option(value, value));
+				}
+	 		}	        			
+		} else {
+	 		if (value.substring(0,2) == '0 ') {
+	 			value = '*';
+	 		}	        
+	 	    oSelect.add(new Option(value, value));
+		}
+    }
+    oSelect.disable=false;	
+}
+
+function onChangeSys() {
+	sysCur = sysD.value;
+	localStorage.setItem("filterObjSys", sysCur);
+}
+
+function onChangeSubSys() {
+	subSysCur = objSubSysSel.value;
+	localStorage.setItem("filterObjSubSys", objSubSysSel.value);
+    
+	// Update anche di relazioni/where used
+	localStorage.setItem("filterRelSubSys", subSysCur);	 
+    document.getElementById("relSubSysSel").value = subSysCur;
+	localStorage.setItem("filterWusdSubSys", subSysCur);	 
+    document.getElementById("wusdSubSysSel").value = subSysCur;
+}
+
+function onChangeTypeObject() {
+	var selx = objTypeObjectSel.value;
+	var typeObjectCur = selx.substring(0,2);
+	var selIndex = objTypeObjectSel.selectedIndex;
+	if (typeObjectCur == '0') {
+		typeObjectCur = '*'
+	}
+	localStorage.setItem("filterObjTypeObject", typeObjectCur.trim());	
+
+	// Relazioni Any objectB
+	// Se non COPY e non ENTITY_SQL
+	if (typeObjectCur != "10" && typeObjectCur != "15") {
+		
+		// Rel Specific idObjectA
+		document.getElementById("relIdObjectA").value = "*";
+		localStorage.setItem("filterRelIdObjectA", "*");	 
+		document.getElementById("relTypeObjectASel").selectedIndex = typeObjectCur.trim();
+		localStorage.setItem("filterRelTypeObjectA", typeObjectCur.trim());
+		
+		// Rel Any idObjectB
+		document.getElementById("relIdObjectB").value = "*";
+		localStorage.setItem("filterRelIdObjectB", "*");	 
+		document.getElementById("relTypeObjectBSel").value  = "*";
+		localStorage.setItem("filterRelTypeObjectB", "*");
+
+		// Wusd clear
+		document.getElementById("wusdIdObject").value = "";
+		localStorage.setItem("filterWusdIdObject", "");	 
+		document.getElementById("wusdTypeObjectSel").value = "*";
+		localStorage.setItem("filterWusdTypeObject", "*");		
+		return;
+	}
+
+	// Rel any idObjectA
+	document.getElementById("relIdObjectA").value = "*";
+	localStorage.setItem("filterRelIdObjectA", "*");	 
+	document.getElementById("relTypeObjectASel").value = "*";
+	localStorage.setItem("filterRelTypeObjectA", "*");
+
+	// Rel Specific idObjectB
+	document.getElementById("relIdObjectB").value = "*";
+	localStorage.setItem("filterRelIdObjectB", "*");	 
+	document.getElementById("relTypeObjectBSel").selectedIndex = selIndex;
+	localStorage.setItem("filterRelTypeObjectB", typeObjectCur.trim());
+		
+	// Entity o Copy: imposto whereused
+	document.getElementById("wusdIdObject").value = "";
+	localStorage.setItem("filterWusdIdObject", "");	 
+	document.getElementById("wusdTypeObjectSel").selectedIndex = selIndex;
+	localStorage.setItem("filterWusdTypeObject", typeObjectCur.trim());		
+	
+}
+function onChangeStatusObject() {
+	var selx = objStatusObjectSel.value;
+	var statusObjectCur = selx.substring(0,2);
+	if (statusObjectCur == '0') {
+		statusObjectCur = '*'
+	}
+	localStorage.setItem("filterObjStatusObject", statusObjectCur.trim());	 
+}
+
+function onChangeIdObjectLike() {
+	localStorage.setItem("filterObjObjectLike", document.getElementById("idObjectLike").value);	 
+}
+
+function onChangeRelSubSys() {
+	localStorage.setItem("filterRelSubSys",relSubSysSel.value);	 
+}
+function onChangeRelTypeObjectASel() {
+	var selx = relTypeObjectASel.value;
+	var selr = relRelationSel.value;
+	var typeObjectCur = selx.substring(0,2);
+	var relationCur = selr.substring(0,2);
+	if (typeObjectCur == '0') {
+		typeObjectCur = '*'
+	}
+	localStorage.setItem("filterRelTypeObjectA", typeObjectCur.trim());
+	// Se relazione valorizzata il tipo oggetto è già determinat0
+	// Forzo * in tupo oggetto A 	
+	if (relationCur != '*') {
+		localStorage.setItem("filterRelTypeObjectA", '*');	
+		document.getElementById("relTypeObjectASel").selectedIndex = "0";
+	}
+}
+function onChangeRelIdObjectA() {
+	var idObject = relIdObjectA.value;
+	if (idObject.trim() == "") {
+		idObject = '*';
+		document.getElementById("relIdObjectA").value = "*";
+	}	
+	localStorage.setItem("filterRelIdObjectA", idObject);		 
+}
+function onChangeRelationSel() {
+	var i = 0;
+	var selx = relRelationSel.value;
+	var relationCur = selx.substring(0,2);
+	if (relationCur == '0') {
+		relationCur = '*'
+	} else {
+		i = selx.indexOf(" ");
+		relationCur = selx.substring(0,i);
+	}
+	localStorage.setItem("filterRelRelation", relationCur);	
+	
+	// Se relazione valorizzata i tipi oggetto sono già determinati
+	// Forzo * in tupo oggetto A e B
+	if (relationCur != '*') {
+		localStorage.setItem("filterRelTypeObjectA", '*');	
+		localStorage.setItem("filterRelTypeObjectB", '*');
+		document.getElementById("relTypeObjectASel").selectedIndex = "0";
+		document.getElementById("relTypeObjectBSel").selectedIndex = "0";
+	}
+}
+function onChangeRelTypeObjectBSel() {
+	var selx = relTypeObjectBSel.value;
+	var typeObjectCur = selx.substring(0,2);
+	var sely = relRelationSel.value;
+	var relationCur = sely.substring(0,2);
+	
+	if (typeObjectCur == '0') {
+		typeObjectCur = '*'
+	}
+	localStorage.setItem("filterRelTypeObjectB", typeObjectCur.trim());	 
+	// Se relazione valorizzata il tipo oggetto è già determinat0
+	// Forzo * in tupo oggetto A 	
+	if (relationCur != '*') {
+		localStorage.setItem("filterRelTypeObjectB", '*');	
+		document.getElementById("relTypeObjectBSel").selectedIndex = "0";
+	}
+
+}
+function onChangeRelIdObjectB() {
+	var idObject = relIdObjectB.value;
+	if (idObject.trim() == "") {
+		idObject = '*';
+		document.getElementById("relIdObjectB").value = "*";
+	}
+	localStorage.setItem("filterRelIdObjectB", idObject);	 	 
+}
+function onChangeWusdSubSysSel() {
+	localStorage.setItem("filterWusdSubSys", wusdSubSysSel.value);	 	 
+}
+function onChangeWusdTypeObjectSel() {
+	var selx = wusdTypeObjectSel.value;
+	var typeObjectCur = selx.substring(0,2);
+	if (typeObjectCur == '0') {
+		typeObjectCur = '*'
+	}
+	localStorage.setItem("filterWusdTypeObject", typeObjectCur);	 	 
+}
+function onChangeWusdIdObject() {
+	var idObject = wusdIdObject.value;
+	if (idObject.trim() == "") {
+		idObject = '*';
+		document.getElementById("wusdIdObject").value = "*";
+	}
+	localStorage.setItem("filterWusdIdObject", idObject);	 	 	  
+}
+
+// Richiamata da Viewer alla selezione di un oggetto
+function setRelIdObjectA(idObject, typeObject) {
+	
+	// OBJECT_COPY_COBOL_DATA or OBJECT_ENTITY_SQL
+	if (typeObject == "10" || typeObject == "15" ) {
+		// Any objectA
+		document.getElementById("relIdObjectA").value = "*";
+		localStorage.setItem("filterRelIdObjectA", "*");	 
+		document.getElementById("relTypeObjectASel").value  = "*";
+		localStorage.setItem("filterRelTypeObjectA", "*");
+		// Specific objectB
+		document.getElementById("relIdObjectB").value = idObject;
+		localStorage.setItem("filterRelIdObjectB", idObject);	 
+		document.getElementById("relTypeObjectBSel").selectedIndex  = typeObject;
+		localStorage.setItem("filterRelTypeObjectB", String(typeObject));	
+		// where used idObject
+		document.getElementById("wusdIdObject").value = idObject;
+		localStorage.setItem("filterWusdIdObject", idObject);	 
+		
+	// Impostazione idObjectA e reset where used
+	} else {
+		// Specific idObjectA
+		document.getElementById("relIdObjectA").value = idObject;
+		localStorage.setItem("filterRelIdObjectA", idObject);	 
+		document.getElementById("relTypeObjectASel").selectedIndex  = typeObject;
+		localStorage.setItem("filterRelTypeObjectA", String(typeObject));	
+		
+		// Rel Any idObjectB
+		document.getElementById("relIdObjectB").value = "*";
+		localStorage.setItem("filterRelIdObjectB", "*");	 
+		document.getElementById("relTypeObjectBSel").value  = "*";
+		localStorage.setItem("filterRelTypeObjectB", "*");	
+		
+		// Reset where used
+		document.getElementById("wusdIdObject").value = "";
+		localStorage.setItem("filterWusdIdObject", "");	 
+		document.getElementById("wusdTypeObjectSel").value  = "*";
+		localStorage.setItem("filterWusdTypeObjectSel", "*");	
+
+	}
+}
+
+
+function onclick_btnGt(clicked_id) {
+	getSelectedOptions(selOptD);
+} 
+
+function onclick_btnLt(clicked_id) {
+	getSelectedOptions(selOptSelD);
+} 
+
+
+//arguments: reference to select list, callback function (optional)
+function getSelectedOptions(sel) {
+    var opt;
+    var f = "";
+    var value = "";
+    var iValue = 0;
+    var iLength= sel.options.length;
+    
+    // loop through options in select list
+    for (var i=0, len=iLength; i<iLength; i++) {
+        opt = sel.options[i];
+        
+        // check if selected
+        if ( opt.selected ) {
+        	value = opt.value;
+            // add to array of option elements to return from this function
+            if (sel.name == 'selOptD') {
+            	optionsCur.push(value);  
+                opt.parentNode.removeChild(opt);
+                i--;
+                iLength--;
+                selOptSelD.add(new Option(value, value));                
+			} else {
+                opt.parentNode.removeChild(opt);
+                i--;
+                iLength--;
+                selOptD.add(new Option(value, value),0);
+                iValue = optionsCur.indexOf(value);
+                if (iValue > -1) {
+                	optionsCur.splice(iValue, 1);
+                }
+			}
+         }
+    }
+    
+    // Update filterObjOptions
+    var ar_fn2 = new Array();
+    var lng = document.getElementById("selOptSelD").options.length;
+    for (var i = 0; i < lng; i++) {
+    	var opt = document.getElementById("selOptSelD").options.item(i).text;
+    	ar_fn2.push(opt);
+	}
+    var optR = ar_fn2.join("|");
+    localStorage.setItem("filterObjOptions", optR);
+
+    return;
+} 
+
+function onChangeShowOwnerObjects() {
+	if (document.getElementById("showOwnerObjects").checked) {
+		localStorage.setItem("filterObjShowOwner", "true");
+	} else {
+		localStorage.setItem("filterObjShowOwner", "false");
+	}
+}
+function onChangeShowExternalObjects() {
+	if (document.getElementById("showExternalObjects").checked) {
+		localStorage.setItem("filterObjShowExternal", "true");
+	} else {
+		localStorage.setItem("filterObjShowExternal", "false");
+	}
+}
+function onChangeShowReverseRel() {
+	if (document.getElementById("showReverseRel").checked) {
+		localStorage.setItem("filterRelShowReverse", "true");
+	} else {
+		localStorage.setItem("filterRelShowReverse", "false");
+	}
+}
+function onChangeShowExternalRel() {
+	if (document.getElementById("showExternalRel").checked) {
+		localStorage.setItem("filterRelShowExternal", "true");
+	} else {
+		localStorage.setItem("filterRelShowExternal", "false");
+	}
+}
+
+/**
+ * Common definitions for all pages
+ */
+//Defines Object configuration data available to all pages
+function Config( 
+		      user
+	         ,pwd  
+			 ,sys 
+			 ,subSys
+			 ,baseUrl
+			 
+             ,companyCode 
+             ,company 
+             ,userType  
+             ,userStatus  
+             ,language  
+             ,country  
+             ,mail  
+             ,mailInfo  
+             ,phone  
+             ,referManager  
+             ,referTech  
+             ,analyzerEnabled  
+             ,viewerEnabled 
+             ,inspectorEnabled  
+             ,assesmentEnabled  
+             ,countLogin   			
+             ,dtActivation  
+             ,tmActivation  
+             ,dtExpiration  
+             ,tmExpiration  
+             ,dtFirstLogin  
+             ,tmFirstLogin  
+             ,dtLastLogin  
+             ,tmLastLogin  
+
+             ,pathConfigFile  
+             ,pathRoot  
+             ,pathUser  
+             ,pathPilot  
+	
+			 // Directories relative a root o WEB-INF da file di configurazione generale
+             ,dirResources  
+             ,dirWork  
+             ,dirDatabase       
+             ,dirJclInput  
+             ,dirCobolSrcPgmInput  
+             ,dirCobolSrcCopyInput  
+             ,dirCobolPgm  
+             ,dirCobolCopy  
+             ,dirJcl  
+             ,dirSqlScript  	 
+             ,dirCobolGraph  
+             ,dirPilot  
+             ,dirLog  
+             ,dirOutput  
+
+			 // Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+             ,limitMaxLinesScanFindingSourceType 
+             ,limitMaxSources  
+             ,limitMaxSourcesInput  
+             ,limitMaxSourcesToProcess  
+             ,limitMaxObjects  
+             ,limitMaxObjectsInput 
+             ,limitMaxObjectsToProcess 
+             ,debugThresholdMemoryGarbage  
+             ,debugSourcesDetectedFreqGarbage  
+             ,debugActive  
+             ,logVerbose  
+             ,preferredVisitMethod  
+             ,preferredCachingLevel  
+             ,preferredCachingSupport  
+
+			 //  Database
+             ,dataBaseType  
+             ,dataBaseName  
+             ,dataBaseUser  
+             ,dataBasePwd  
+             ,dataBaseDriver  
+             ,dataBaseAccessType  
+             ,dataBaseUrl  
+             ,dataBaseMaxConn  
+             ,dataBaseCommitBlockUpdates  
+             ,dataBaseLogAnySql 
+	
+			 // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+             ,pilotDefaultSource  
+             ,pilotDefaultProcess  
+             ,userExitClass
+             
+             ,userTypeOrdinal 
+             ,userStatusOrdinal 
+				)  {
+	
+	    this.user = user;  
+		this.pwd = pwd;          								 	 // Password
+	    this.sys = sys;  
+	    this.subSys = subSys; 
+	    this.baseUrl = baseUrl;
+	    
+		// User Data
+		this.companyCode = companyCode; 							 // Codice societa 
+		this.company = company; 									 // Descrizione societa 
+		this.userType = userType;            			     		 // Tipologia utente forward (T052)
+		this.userStatus = userStatus;            	 				 // Stato utente forward (T051)
+		this.language = language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+		this.country = country; 									 // Country IT, .. 
+		this.mail = mail; 											 // Mail principale  
+		this.mailInfo = mailInfo; 									 // Mail per info anomali  
+		this.phone = phone; 										 // Telefono di riferimento  
+		this.referManager = referManager; 							 // Riferimento manager 
+		this.referTech = referTech; 								 // Riferimento tecnico 
+		this.analyzerEnabled = analyzerEnabled; 					 // True user can view Analyzer 
+		this.viewerEnabled = viewerEnabled; 						 // True user can view Viewer 
+		this.inspectorEnabled = inspectorEnabled; 					 // True user can view Inspector 
+		this.assesmentEnabled = assesmentEnabled; 					 // True user can view Assesment 
+		this.countLogin =countLogin; 								 // Counter login effettuati       			
+		this.dtActivation = dtActivation;  							 // Data attivazione AAAAMMGG'
+		this.tmActivation = tmActivation;  						     // Ora  attivazione HHMMSSCC'
+		this.dtExpiration = dtExpiration;  							 // Data disattivazione AAAAMMGG'
+		this.tmExpiration = tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+		this.dtFirstLogin = dtFirstLogin;  							 // Data primo login AAAAMMGG'
+		this.tmFirstLogin = tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+		this.dtLastLogin = dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+		this.tmLastLogin = tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	    this.pathConfigFile = pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+	    this.pathRoot = pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+	    this.pathUser = pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+	    this.pathPilot = pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+	 	
+		// Directories relative a root o WEB-INF da file di configurazione generale
+		this.dirResources = dirResources;                            //Resource'
+		this.dirWork = dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+		this.dirDatabase = dirDatabase;                              // Database'		              
+		this.dirJclInput = dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+		this.dirCobolSrcPgmInput = dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+		this.dirCobolSrcCopyInput = dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+		this.dirCobolPgm = dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+		this.dirCobolCopy = dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+		this.dirJcl = dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcethis.X =  .jclIncludethis.X =  .jclProc)'		 
+		this.dirSqlScript = dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+		this.dirCobolGraph = dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+		this.dirPilot = dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+		this.dirLog = dirLog;                                  		 // Log
+		this.dirOutput = dirOutput;                              	 // Output per funzioni che producono text'
+
+		// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+		this.limitMaxLinesScanFindingSourceType = limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+		this.limitMaxSources =  limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+		this.limitMaxSourcesInput = limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+		this.limitMaxSourcesToProcess = limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+		this.limitMaxObjects =  limitMaxObjects;                   	 	// Abilitazione limitazione agli oggetti processati'
+		this.limitMaxObjectsInput = limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+		this.limitMaxObjectsToProcess = limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+		this.debugThresholdMemoryGarbage = debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+		this.debugSourcesDetectedFreqGarbage = debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+		this.debugActive = debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+		this.logVerbose = logVerbose;                               	// Dettaglio log operazioni Sql e informative'
+		this.preferredVisitMethod = preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+		this.preferredCachingLevel = preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+		this.preferredCachingSupport = preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+		//  Database
+		this.dataBaseType = dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+		this.dataBaseName = dataBaseName;                            // Nome database (DbAmrita)'
+		this.dataBaseUser = dataBaseUser;                            // User (GZEDDA)'
+		this.dataBasePwd = dataBasePwd;                              // Pwd (giampietro4)'
+		this.dataBaseDriver = dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+		this.dataBaseAccessType = dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+		this.dataBaseUrl = dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+		this.dataBaseMaxConn = dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+		this.dataBaseCommitBlockUpdates = dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+		this.dataBaseLogAnySql = dataBaseLogAnySql;                 // Log istruzioni Sql come messaggi informativi'
+	    	
+		// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+		this.pilotDefaultSource = pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+		this.pilotDefaultProcess = pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+		this.userExitClass = userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+		// Ordinal
+		this.userTypeOrdinal = userTypeOrdinal;            			  // Tipologia utente forward (T052)
+		this.userStatusOrdinal = userStatusOrdinal;            	 	  // Stato utente forward (T051)
+}
+</script>
+</html>

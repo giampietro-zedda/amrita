@@ -1,0 +1,1108 @@
+<html>
+<head>
+<meta charset= "ISO-8859-1">
+<title>Viewer</title>
+<link rel="stylesheet" type="text/css" href="Viewer.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>	
+  
+	<table id='mainTable'>
+	  
+	  <!-- First Header Row -->
+      <tr>
+         <td colspan='3'>
+			  <table id='headerLineTable'>
+			   <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Viewer</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id='linkMain'  align="right"><a href="AmritaHomePage.html">Home page</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+			   </tr>
+			  </table> 
+         </td>    
+      </tr>
+
+	  <!-- Second Row containing 3 cells -->
+	  <tr>
+	  
+	    <!-- First cell with left side of screen -->
+	    <td id='leftMainTableCell'>  
+              <table id='countTable'>
+                    <tr><td id='lblCountObjects'>Objects Count:</td>
+                        <td id='countObjects'>0</td>
+                    </tr>
+              </table>
+              
+               <div id='leftTableDiv'>
+	                <table id='leftTableList'>
+	                    <tr><td class='leftTableRowC0'>. </td><td class='leftTableRowC1'>. </td><td class='leftTableRowC2'>. </td> <td class='leftTableRowC3'>. </td></tr>
+	        	    </table>	         
+	          </div>	    
+	    </td>
+	    
+	    <!-- Second cell with central main frame -->
+	    <td id='centerMainTableCell'> 
+	        <iframe id='iframeCenter' name='iframeCenter' src="ViewerFilters2.html" title="description"></iframe>        
+	    </td>
+	    
+	     <!-- Third cell with right menu frame -->
+	    <td id='rightMainTableCell'>  
+	        <table id='rightMenuTable'>
+	            <tr><td> <input class='btnRight' type="button" id='btnFilter'       value="Filters"                        onclick='onclick_btnFilters(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnObjects'      value="Objects"                        onclick='onclick_btnObjects(this.id);' />  </td></tr>
+                <tr><td> <input class='btnRight' type="button" id='btnInfoAnalysis' value="Analysis Information"           onclick='onclick_btnInfoAnalysis(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnSource'       value="Source Code"                    onclick='onclick_btnSource(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnRelations'    value="Relations Between Objects"      onclick='onclick_btnRelations(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnWhereUsed'    value="Where Used Entity/Copy Items"   onclick='onclick_btnWhereUsed(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnErrors'       value="Analysys And Processing Errors" onclick='onclick_btnErrors(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnViolations'   value="Metric Rules Violations"        onclick='onclick_btnViolations(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnMetrics'      value="Metrics Values"                 onclick='onclick_btnMetrics(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnDynamicCode'  value="Dynamic Code"                   onclick='onclick_btnDynamicCode(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnCRUDMatrix'   value="CRUD Matrix"                    onclick='onclick_btnCRUDMatrix(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnScreenlayout' value="Screen Layout"                  onclick='onclick_btnScreenlayout(this.id);' />  </td></tr>
+	            <tr><td> <input class='btnRight' type="button" id='btnTreeView'     value="Tree View"                      onclick='onclick_btnTreeView(this.id);' />  </td></tr>
+ 	            <tr><td> <input class='btnRight' type="button" id='btnPgmSummary'   value="Pgm Summary"                    onclick='onclick_btnPgmSummary(this.id);' />  </td></tr>
+ 	        </table>
+	    </td>
+	  </tr>
+	</table>
+</body>
+
+<script type="text/javascript">
+"use strict";
+const OBJECT_NOT_ASSIGNED = 0;	  				// 00 Non assegnato
+const OBJECT_PGM_COBOL = 1;	  					// 01 Sorgenti Cobol 
+const OBJECT_COPY_COBOL_PROC = 9;	  			// 09 Sorgenti Copy Cobol Procedure Division
+const OBJECT_COPY_COBOL_DATA = 10;	  			// 10 Sorgenti Copy Cobol Data Division
+const OBJECT_COPY_COBOL_ENV = 11;		        // 11 Sorgenti Copy Cobol Environment Division
+const OBJECT_COPY_COBOL_ID = 12;		        // 12 Sorgenti Copy Cobol Identification Division
+const OBJECT_ENTITY_SQL = 15;       			// 15 Tabella SQL
+const OBJECT_SQL_SCRIPT = 42;                 	// 42 DB2 Script Sql con DDL, Commands etc., membro di libreria 
+const OBJECT_JCL_JOB = 54;           	        // 54 JCL source name con scheda job non definizione proc e non include
+const OBJECT_JCL_PROC = 55;      	            // 55 JCL source name con definizione proc  
+const OBJECT_JCL_INCLUDE = 56;       	        // 56 JCL source incluso in jcl o altre include
+const OBJECT_JCL_JOBNAME = 57;       	        // 57 Job Name su //Name   JOB
+const OBJECT_JCL_DDNAME = 58;      	        	// 58 JCL DDNAME
+const OBJECT_CICS_FORM = 67;                   	// 67 Map-Mapset  identifica univocamente una mappa video
+const OBJECT_CICS_MAP = 68;                    	// 68 BMS Map     può comparire in mapset diversi
+const OBJECT_CICS_MAPSET = 69;                 	// 69 BMS Mapset  univoco nelCics
+const OBJECT_CICS_BMS_SOURCE = 70;            	// 70 BMS source name
+const OBJECT_SOURCE_MEMBER = 89;	  			// 89 Membro di libreria sorgente
+const CICS_MAP_MAPSET = 137;                    // 
+const CICS_MAP_BMS_SOURCE = 139;                // 
+
+var userInp="amrita";       // Replaced by localStorage variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlUserGET = 'user'
+var urlObjectGET = 'object'
+var urlRelationGET = 'relation'
+
+// Parameter set by localStorage
+var sysCur = "";
+var subSysCur = ""; 
+var typeObjectCur = "";
+var statusObjectCur = "";
+var pgmFromCur = "";
+var objectLikeCur = "";
+var withDynamicCodeCur = "";
+var withDynamicCodeSolvedCur = "";
+var withDynamicCodeSolvedFullCur = "";
+var optionsCur= []; 
+var typeObjectFullCur = "";
+var statusObjectFullCur = "";
+
+// To manage sources display
+var sourceDescriptor = new(SourceDescriptor);
+
+// To manage objects list
+var arObjectRow = [];
+var iSelRow=0;
+var iSelRowOld=-1;
+var objSelRow=null;         // Info selected row, used by all page to store current info selected
+
+var curFunction = 0;        // Active object function
+
+// Open windows
+var winOpenInspector = null;
+var winOpenFilter = null;
+
+// Json to be passed to pages by callback
+var objConfig=null;             // Contains Configuration parameters available to all pages
+var jsonObjectInfo=null;        // Json Object to Pass to ObjectAnalysisInfo.html by getJsonObjectAnalysisInfo()
+
+// Arrays subSys,TypeObject,StatusObject from ViewerFilter
+var arObjSubSys = [];
+var arObjTypeObject = [];
+var arObjStatusObject = [];
+var arObjoptionObject = [];
+var arObjRelationObject = [];
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+
+	userInp = localStorage.getItem("user");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");		
+    window.setTimeout(dummy, 0);
+	/* Get config and start processes */
+	loadUserObjectConfig();   // --> objConfig
+	
+	objSelRow = new ObjectRow("","","","",0,0,0,0);
+		
+ 	onclick_btnFilters();
+}
+
+function dummy(){	
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating Ajax request object!");
+	return xmlhttp;
+}
+
+function loadObjectTable() {
+    var arOpt = [];
+    var arStr = [];
+    var str = "";
+    var opt = "";
+    var dlm = "";
+    
+	sysCur = localStorage.getItem("filterObjSys");
+	subSysCur = localStorage.getItem("filterObjSubSys");
+	typeObjectCur = localStorage.getItem("filterObjTypeObject");
+	statusObjectCur = localStorage.getItem("filterObjStatusObject");
+	objectLikeCur = localStorage.getItem("filterObjObjectLike");
+    withDynamicCodeCur = localStorage.getItem("filterObjDynCode");
+    withDynamicCodeSolvedCur = localStorage.getItem("filterObjDynCodeSolved");
+    withDynamicCodeSolvedFullCur = localStorage.getItem("filterObjDynCodeSolvedFull");
+    
+    // Options in filters
+    arOpt = localStorage.getItem("filterObjOptions").split("|");   
+    for (var i = 0; i < arOpt.length; i++) {
+    	str = arOpt[i];
+    	arStr = str.split(" ");
+    	opt = opt + dlm + arStr[0];
+    	dlm = "|";
+	}
+    if (opt == "") {
+    	opt = "*"
+	}
+    optionsCur = opt;
+	if (objectLikeCur == "") {
+		objectLikeCur = "*";
+	}
+	// Crt not allowed in REST web services
+	objectLikeCur = objectLikeCur.replace("%", "*");
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = objConfig.baseUrl + "/" + urlObjectGET + "/" +  userInp + "/" + sysCur + "/" + subSysCur + "/" + typeObjectCur + "/"+ statusObjectCur + "/" + objectLikeCur + "/" + optionsCur;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObject(xmlhttp);};
+	document.getElementById("countObjects").innerHTML = "Db fetching ...";	
+} 
+
+
+function handleJsonResponseObject(xmlhttp) {
+	var typeObject="";
+	var filterObjShowOwner = true;
+	var filterObjShowExternal = true;
+	var cntDiscarded = 0;
+	var cntObjects = 0;
+	var j;
+	
+	filterObjShowOwner = localStorage.getItem("filterObjShowOwner");
+	filterObjShowExternal = localStorage.getItem("filterObjShowExternal");
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);		   
+           var i;
+	       
+		   document.getElementById("countObjects").innerHTML = objects.length;		   
+	       arObjectRow = new Array(ObjectRow);
+
+	       var tbltop = "<table id='leftTableList'>"		   
+			          +      "<tr>"
+		              +        "<th>SubSys</th>"
+		              +        "<th>Owner</th>"
+		              +        "<th>Type</th>"
+		              +        "<th>Name</th>"
+		              +      "</tr>"
+	
+    	   var main = "";
+               
+	       for (var i=0; i < objects.length; i++) {
+
+	    	   if (filterObjShowOwner == "false" &  objects[i].subSystem == objects[i].subSystemOwner) {
+	    		   cntDiscarded++;
+	    		   continue; 
+	    	   }
+	    	   if (filterObjShowExternal == "false" & objects[i].subSystem != objects[i].subSystemOwner) {
+	    		   cntDiscarded++;
+	    		   continue;
+	    	   }
+
+	    	   typeObject=objects[i].typeObject;
+	    	   if (typeObject != "NOT_ASSIGNED") {
+	        	   j=typeObject.indexOf("_") + 1;
+		    	   typeObject=typeObject.substr(j);
+		       }
+		       	    	   
+	    	   main  += "<tr>"
+	      	         +    "<td class='leftTableRowC0' id='subSystem_"        + i + "' onclick='onclick_idObject(this.id)'>"  + objects[i].subSystem       + "</td>" 
+	      	         +    "<td class='leftTableRowC1' id='subSystemOwner_"   + i + "' onclick='onclick_idObject(this.id)'>"  + objects[i].subSystemOwner  + "</td>" 
+	      	         +    "<td class='leftTableRowC2' id='typeObject_"       + i + "' onclick='onclick_idObject(this.id)'>"  + typeObject                 + "</td>" 
+	      	         +    "<td class='leftTableRowC3' id='idObject_"         + i + "' onclick='onclick_idObject(this.id)'>"  + objects[i].idObject        + "</td>" 
+	     	         +  "</tr>"
+	     	         
+	     	   var objectRow = new ObjectRow(
+                                               objects[i].sys	 
+                                              ,objects[i].subSystem	     			                           
+                                              ,objects[i].subSystemOwner
+                                              ,objects[i].idObject
+                                              ,objects[i].typeObject
+                                              ,objects[i].status
+                                              ,objects[i].typeObjectOrdinal
+                                              ,objects[i].statusOrdinal
+                                              );
+	     	        arObjectRow.push(objectRow);
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('leftTableDiv').innerHTML = tbl;
+		   cntObjects = objects.length - cntDiscarded;
+		   document.getElementById("countObjects").innerHTML = cntObjects;
+		   iSelRow=0;
+    }	
+}
+
+// Select/deselect row
+function onclick_idObject(clicked_id) {
+    var i = clicked_id.indexOf("_");
+    var idObject = "";
+    var typeObject = "";
+    var subSysOwner = "";
+    
+    iSelRow = parseInt(clicked_id.substr(i+1));
+    idObject = document.getElementById("idObject_"+iSelRow).innerHTML;
+    subSysOwner = document.getElementById("subSystemOwner_"+iSelRow).innerHTML;
+    
+    if (iSelRow != iSelRowOld && iSelRowOld >= 0) {
+		document.getElementById("subSystem_"+iSelRowOld).classList.remove("selected"); 
+		document.getElementById("subSystemOwner_"+iSelRowOld).classList.remove("selected"); 
+		document.getElementById("subSystem_"+iSelRowOld).classList.remove("selected"); 
+		document.getElementById("typeObject_"+iSelRowOld).classList.remove("selected"); 
+		document.getElementById("idObject_"+iSelRowOld).classList.remove("selected"); 
+		localStorage.setItem("filterObjIdObject", idObject);
+	}
+    
+	iSelRowOld=iSelRow;
+	
+	objSelRow =arObjectRow[iSelRow+1];	// Element 0 contains var names
+	if (document.getElementById(clicked_id).classList.length > 1) {
+		document.getElementById("subSystem_"+iSelRow).classList.remove("selected"); 
+		document.getElementById("subSystemOwner_"+iSelRow).classList.remove("selected"); 
+		document.getElementById("typeObject_"+iSelRow).classList.remove("selected"); 
+		document.getElementById("idObject_"+iSelRow).classList.remove("selected"); 
+	} else {
+		document.getElementById(clicked_id).classList.add("selected"); 
+		document.getElementById("subSystem_"+iSelRow).classList.add("selected"); 
+		document.getElementById("subSystemOwner_"+iSelRow).classList.add("selected"); 
+		document.getElementById("typeObject_"+iSelRow).classList.add("selected"); 
+		document.getElementById("idObject_"+iSelRow).classList.add("selected"); 
+		localStorage.setItem("filterObjIdObject", idObject);
+	}
+
+	typeObject = objSelRow.typeObjectN;
+
+	// Impostazione parametri per filtri relazioni/where used
+ 	localStorage.setItem("filterRelIdObjectA", idObject);
+	localStorage.setItem("filterRelTypeObjectA", typeObject);
+	localStorage.setItem("filterRelRelation", "*");
+	localStorage.setItem("filterRelIdObjectB", "*");
+	localStorage.setItem("filterRelTypeObjectB", "*");			
+	localStorage.setItem("filterWusdTypeObject", typeObject);
+	localStorage.setItem("filterWusdIdObject", idObject);
+	localStorage.setItem("filterWusdTypeObject", typeObject);
+
+	// Attivazione funzione di default a centro schermo  
+	switch (typeObject) {
+		case OBJECT_PGM_COBOL:
+			onclick_btnSource();
+			break;
+		case OBJECT_COPY_COBOL_PROC:
+			onclick_btnSource();
+			break;
+		case OBJECT_COPY_COBOL_DATA:
+			localStorage.setItem("filterWusdSubSys", subSysOwner);
+			localStorage.setItem("filterWusdIdObject", idObject);	
+			localStorage.setItem("filterWusdTypeObject", typeObject);	
+			onclick_btnWhereUsed();
+			break;
+		case OBJECT_COPY_COBOL_ENV:
+			onclick_btnSource();
+			break;
+		case OBJECT_COPY_COBOL_ID:
+			onclick_btnSource();
+			break;
+		case OBJECT_ENTITY_SQL:
+			localStorage.setItem("filterWusdSubSys", subSysOwner);
+			localStorage.setItem("filterWusdIdObject", idObject);	
+			localStorage.setItem("filterWusdTypeObject", typeObject);	
+			onclick_btnWhereUsed();
+			break;			
+		case OBJECT_CICS_FORM:
+			onclick_btnScreenlayout()
+			break;
+		case OBJECT_CICS_MAP:
+			onclick_btnScreenlayout()
+			break;
+		case OBJECT_CICS_MAPSET:
+			onclick_btnSource();
+			break;
+		case OBJECT_CICS_BMS_SOURCE:
+			onclick_btnSource();
+			break;
+		case OBJECT_SOURCE_MEMBER:
+			onclick_btnSource();
+			break;
+		case OBJECT_SQL_SCRIPT:
+			onclick_btnSource();
+			break;
+		case OBJECT_JCL_JOB:
+			onclick_btnSource();
+			break;
+		case OBJECT_JCL_PROC:
+			onclick_btnSource();
+			break;
+		case OBJECT_JCL_INCLUDE:
+			onclick_btnSource();
+			break;
+		case OBJECT_JCL_JOBNAME:
+			onclick_btnRelations();
+			break;
+		case OBJECT_JCL_DDNAME:
+			onclick_btnRelations();
+			break;
+		case OBJECT_NOT_ASSIGNED:
+			onclick_btnSource();
+			break;
+		// Visualizza relazioni di default
+		default:		    
+			onclick_btnRelations()			
+		break;
+	}	
+} 
+
+
+function onclick_btnFilters(clicked_id) {
+	curFunction=0; 	
+	winOpenFilter = window.open('ViewerFilters2.html', 'iframeCenter'); 
+} 
+
+function onclick_btnObjects(clicked_id) {	
+	curFunction=0; 
+	iSelRowOld = -1;
+	loadObjectTable();
+	objConfig.subSys = subSysCur;
+
+} 
+
+function onclick_btnInfoAnalysis(clicked_id) {
+	curFunction=1; 
+	
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	
+	window.open('ViewerAnalysisInfo.html', 'iframeCenter'); 
+} 
+
+function onclick_btnSource(clicked_id) {
+	var idObject = "";
+	var typeObject = "";
+	var typeObjectN = "";
+	
+	curFunction=2; 
+	
+	idObject = objSelRow.idObject;
+	typeObject = objSelRow.typeObject;
+	typeObjectN = objSelRow.typeObjectN;
+		
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	
+    // Attivo oggetto mapset, individuazione CICS_MAP_BMS_SOURCE
+    if (objSelRow.typeObjectN == OBJECT_CICS_MAPSET) {
+		getIdMapAndBmsSource(objSelRow.typeObjectN, objSelRow.idObject);
+		return;
+	}
+	
+    callSourceViewer(objSelRow, idObject, typeObject, typeObjectN);
+} 
+
+// Impostazione parametri per source
+// Richiamo sourceViewer
+function callSourceViewer(objSelRow, idObject, typeObject, typeObjectN) {
+	// Impostazione parametri per source
+	localStorage.setItem("sourceSubSys", objSelRow.subSys);
+	localStorage.setItem("sourceIdObject", idObject);
+	localStorage.setItem("sourceTypeObject", typeObject);
+	localStorage.setItem("sourceTypeObjectN", typeObjectN);   
+    localStorage.setItem("sourceRowStart", "0");
+    localStorage.setItem("sourceRowEnd", "0");    
+    localStorage.setItem("sourceIsShowPgm", "false");
+    localStorage.setItem("sourceIsIdxFileToGet", "false");
+  	var win = window.open('ViewerSourceViewer.html', 'iframeCenter'); 
+  	window.name="viewer";
+}
+
+function onclick_btnRelations(clicked_id) {
+	curFunction=3;   
+	window.open('ViewerRelations.html', 'iframeCenter'); 
+} 
+
+function onclick_btnWhereUsed(clicked_id) {
+	curFunction=4;  
+	document.getElementById('iframeCenter').src = document.getElementById('iframeCenter').src;
+    window.iframeCenter.location.href=window.parent.iframeCenter.location.href;
+    window.iframeCenter.history.go(0);
+    window.frames[0].location.reload();
+    var iframe = document.getElementById("iframeCenter");
+    iframe.src = iframe.src; 
+    iframe.src = null; 
+	window.open('ViewerWhereUsed.html', 'iframeCenter'); 
+} 
+
+function onclick_btnErrors(clicked_id) {
+	curFunction=5;  
+
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	
+	window.open('ViewerErrors.html', 'iframeCenter'); 
+} 
+
+function onclick_btnViolations(clicked_id) {
+	curFunction=6; 
+	
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	
+	window.open('ViewerMetricViolations.html', 'iframeCenter');
+} 
+
+function onclick_btnMetrics(clicked_id) {
+	curFunction=7;  
+	
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	
+	window.open('ViewerMetricValues.html', 'iframeCenter'); 
+} 
+
+function onclick_btnDynamicCode(clicked_id) {
+	curFunction=8;  
+	
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	
+ 	window.open('ViewerDynamicCode.html', 'iframeCenter'); 
+} 
+
+function onclick_btnScreenlayout(clicked_id) {
+	curFunction=9;  
+	
+	// Non è ancora stato selezionato nessun oggetto
+	if (objSelRow.idObject == "") {
+		return;
+	}
+	if (objSelRow.typeObjectN != OBJECT_CICS_MAP) {
+		return;
+	}
+	
+	localStorage.setItem("screenMap", objSelRow.idObject);
+	localStorage.setItem("screenTypeObject", objSelRow.typeObject);
+	localStorage.setItem("screenTypeObjectN", objSelRow.typeObjectN);
+	window.open('ViewerScreenLayout.html', 'iframeCenter'); 
+} 
+
+function onclick_btnCRUDMatrix(clicked_id) {
+	curFunction=10;  
+	window.open('ViewerCrudMatrix.html', 'iframeCenter'); 
+} 
+
+function onclick_btnTreeView(clicked_id) {
+	curFunction=11;  
+	window.open('ViewerTreeView.html', 'iframeCenter'); 
+} 
+
+function onclick_btnPgmSummary(clicked_id) {
+	curFunction=12;  
+	window.open('ViewerPgmSummary.html', 'iframeCenter'); 
+} 
+
+// Recupero nome mappa da mapset
+function getIdMapAndBmsSource(typeObject, mapset) {
+	var xmlhttp;
+	var jsonArray = [];
+	var sysCur = localStorage.getItem("filterObjSys");
+	var subSysCur = localStorage.getItem("filterRelSubSys");
+	var relation = CICS_MAP_MAPSET;
+	var map = "";
+	
+	var url = objConfig.baseUrl + "/" + urlRelationGET + "/" + userInp + "/" + sysCur + "/" + subSysCur + "/" + "*"  + "/" +  "*" + "/*/" + relation + "/" + mapset + "/" + typeObject + "/*";
+
+	xmlhttp=createRequest();
+	arSelOperation
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+			  if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};		                                         
+			  jsonArray=JSON.parse(xmlhttp.responseText);
+			  if (jsonArray.length > 0) {
+				  map = jsonArray[0].idObjectA;
+				  getBmsSource(OBJECT_CICS_MAP, map)
+			  }												
+	    };	
+}
+
+// Recupero BMS source da map
+function getBmsSource(typeObject, map) {
+	var xmlhttp;
+	var jsonArray = [];
+	var sysCur = localStorage.getItem("filterObjSys");
+	var subSysCur = localStorage.getItem("filterRelSubSys");
+	var relation = CICS_MAP_BMS_SOURCE;
+	var bmsSource = "";
+	
+	var url = objConfig.baseUrl + "/" + urlRelationGET + "/" + userInp + "/" + sysCur + "/" + subSysCur + "/" + map  + "/" +  typeObject + "/*/" + relation + "/" + "*" + "/" + "*" + "/*";
+
+	xmlhttp=createRequest();
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {
+			  if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;};		                                         
+			  jsonArray=JSON.parse(xmlhttp.responseText);
+			  if (jsonArray.length > 0) {
+				  bmsSource = jsonArray[0].idObjectB;
+				  callSourceViewer(objSelRow, bmsSource, "CICS_BMS_SOURCE", OBJECT_CICS_BMS_SOURCE);
+			  }												
+	    };		
+}
+
+function getObjSelRow() {
+	return objSelRow;
+}
+
+/* Service */
+function hideSource(){
+	
+}
+
+function loadUserObjectConfig() {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlUserGET + "/"+ userInp 
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseUser(xmlhttp);};
+} 
+
+function handleJsonResponseUser(xmlhttp) {
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   var objects=JSON.parse(xmlhttp.responseText);
+	   
+	   if (objects.length == 0) {	
+			  alert("User not found on database");
+			  return;
+	   }
+	   
+	   objConfig = new Config(
+				               objects[0].user
+				             , objects[0].pwd  
+							 , objects[0].companyCode    // sys VN
+							 , ""     				   // subSys
+							 , baseUrl
+				             , objects[0].companyCode 
+				             , objects[0].company 
+				             , objects[0].userType  
+				             , objects[0].userStatus  
+				             , objects[0].language  
+				             , objects[0].country  
+				             , objects[0].mail  
+				             , objects[0].mailInfo  
+				             , objects[0].phone  
+				             , objects[0].referManager  
+				             , objects[0].referTech  
+				             , objects[0].analyzerEnabled  
+				             , objects[0].viewerEnabled 
+				             , objects[0].inspectorEnabled  
+				             , objects[0].assesmentEnabled  
+				             , objects[0].countLogin   			
+				             , objects[0].dtActivation  
+				             , objects[0].tmActivation  
+				             , objects[0].dtExpiration  
+				             , objects[0].tmExpiration  
+				             , objects[0].dtFirstLogin  
+				             , objects[0].dtFirstLogin  
+				             , objects[0].dtLastLogin  
+				             , objects[0].tmLastLogin  
+				             , objects[0].pathConfigFile  
+				             , objects[0].pathRoot  
+				             , objects[0].pathUser  
+				             , objects[0].pathPilot  
+							   // Directories relative a root o WEB-INF da file di configurazione generale
+				             , objects[0].dirResources  
+				             , objects[0].dirWork  
+				             , objects[0].dirDatabase       
+				             , objects[0].dirJclInput  
+				             , objects[0].dirCobolSrcPgmInput  
+				             , objects[0].dirCobolSrcCopyInput  
+				             , objects[0].dirCobolPgm  
+				             , objects[0].dirCobolCopy  
+				             , objects[0].dirJcl  
+				             , objects[0].dirSqlScript  	 
+				             , objects[0].dirCobolGraph  
+				             , objects[0].dirPilot  
+				             , objects[0].dirLog  
+				             , objects[0].dirOutput  
+							   // Ottimizzazione processi ed elaborazioni,  allocazione di arrays,  collections, map
+				             , objects[0].limitMaxLinesScanFindingSourceType 
+				             , objects[0].limitMaxSources  
+				             , objects[0].limitMaxSourcesInput  
+				             , objects[0].limitMaxSourcesToProcess  
+				             , objects[0].limitMaxObjects  
+				             , objects[0].limitMaxObjectsInput 
+				             , objects[0].limitMaxObjectsToProcess 
+				             , objects[0].debugThresholdMemoryGarbage  
+				             , objects[0].debugSourcesDetectedFreqGarbage  
+				             , objects[0].debugActive  
+				             , objects[0].logVerbose  
+				             , objects[0].preferredVisitMethod  
+				             , objects[0].preferredCachingLevel  
+				             , objects[0].preferredCachingSupport  
+							   //  Database
+				             , objects[0].dataBaseType  
+				             , objects[0].dataBaseName  
+				             , objects[0].dataBaseUser  
+				             , objects[0].dataBasePwd  
+				             , objects[0].dataBaseDriver  
+				             , objects[0].dataBaseAccessType  
+				             , objects[0].dataBaseUrl  
+				             , objects[0].dataBaseMaxConn  
+				             , objects[0].dataBaseCommitBlockUpdates  
+				             , objects[0].dataBaseLogAnySql 
+							   // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+				             , objects[0].pilotDefaultSource  
+				             , objects[0].pilotDefaultProcess  
+				             , objects[0].userExitClass
+				             , objects[0].userTypeOrdinal 
+				             , objects[0].userStatusOrdinal                                                
+					 );	   
+	   
+	}	   
+}
+
+function getListSubSys() {
+	return arObjSubSys;
+}
+function setListSubSys(list) {
+	arObjSubSys = list;
+	return;
+}
+function getListTypeObject() {
+	return arObjTypeObject;
+}
+function setListTypeObject(list) {
+	arObjTypeObject = list;
+	return;
+}
+function getListStatusObject() {
+	return arObjStatusObject;
+}
+function setListStatusObject(list) {
+	arObjStatusObject = list;
+	return;
+}
+function getListOptionObject() {
+	return arObjObjectObject;
+}
+function setListOptionObject(list) {
+	arObjOptionObject = list;
+	return;
+}
+function getListRelationObject() {
+	return arObjRelationObject;
+}
+function setListRelationObject(list) {
+	arObjRelationObject = list;
+	return;
+}
+
+// Pointer to Inspector
+function getWinInspector() {
+	return winOpenInspector;
+}
+function setWinInspector(objWinInspector) {
+	winOpenInspector = objWinInspector;
+	return;
+}
+
+// Define object identification list information
+function ObjectRow(		
+		  sys 
+		, subSys 
+		, subSysOwner 
+		, idObject 
+		, typeObject 
+		, statusObject
+		, typeObjectN
+		, statusObjectN
+		, numInstrOrigin                   // Updated by relations/WhereUsed etc 
+		, rowStartOrigin                   // Updated by relations/WhereUsed etc 
+		, rowEndOrigin                     // Updated by relations/WhereUsed etc 
+		, copyOrigin                       // Updated by relations/WhereUsed etc 
+		, rowStartInCopy                   // Updated by relations/WhereUsed etc 
+		, rowEndInCopy                     // Updated by relations/WhereUsed etc 
+)  {
+this.sys = sys;  
+this.subSys = subSys;  
+this.subSysOwner = subSysOwner;  
+this.idObject = idObject;
+this.typeObject = typeObject;
+this.statusObject = statusObject;
+this.typeObjectN = typeObjectN;
+this.statusObjectN = statusObjectN;
+this.numInstrOrigin = numInstrOrigin;
+this.rowStartOrigin = rowStartOrigin;
+this.rowEndOrigin = rowEndOrigin;
+this.copyOrigin = copyOrigin;
+this.rowStartInCopy = rowStartInCopy;
+this.rowEndInCopy = rowEndInCopy;
+
+}
+
+// Defines Object Parameters Object to be passed to Viewer
+function Parameters(
+		  sysCur
+		, subSysCur
+		, typeObjectCur
+		, statusObjectCur
+		, pgmFromCur
+		, pgmToCur
+		, withDynamicCodeCur
+		, withDynamicCodeSolvedCur
+		, withDynamicCodeSolvedFullCur
+		, optionsCur = []
+		, typeObjectCurD
+		, statusObjectCurD
+                     )  {
+	
+   this.sysCur = sysCur;  
+   this.subSysCur = subSysCur;
+   this.typeObjectCur = typeObjectCur;
+   this.statusObjectCur = statusObjectCur;
+   this.pgmFromCur = pgmFromCur;
+   this.pgmToCur = pgmToCur;
+   this.withDynamicCodeCur = withDynamicCodeCur;
+   this.withDynamicCodeSolvedCur = withDynamicCodeSolvedCur;
+   this.withDynamicCodeSolvedFullCur = withDynamicCodeSolvedFullCur;
+   this.optionsCur = optionsCur;	
+   this.typeObjectCurD = typeObjectCurD;	
+   this.statusObjectCurD = statusObjectCurD;	
+}
+
+// Source descriptor passed to ViewerSourceViewer
+function SourceDescriptor(
+						  sys 
+						, subSys
+						, typeObject            // Enumeration
+						, idObject
+						, arRows                // Any element is object RowDescriptor
+						, isShowLeftComm
+						, isShowRightComm
+						, isHilightToDo
+						, isToPosAtInstr
+						, isToShowExpanded      // Sections with + will be expanded
+						, instrToPos
+						, rowStartToPos
+						, rowEndToPos
+						, typeObjectN           // Numeric value
+                     )  {	
+	
+   this.sys = sys;  
+   this.subSys = subSys;
+   this.typeObject = typeObject;
+   this.idObject = idObject;
+   this.arRows = arRows;
+   this.isShowLeftComm = isShowLeftComm;
+   this.isShowRightComm = isShowRightComm;
+   this.isHilightToDo = isHilightToDo;
+   this.isToPosAtInstr = isToPosAtInstr;
+   this.isToShowExpanded = isToShowExpanded;
+   this.instrToPos = instrToPos;	
+   this.rowStartToPos = rowStartToPos;	
+   this.rowEndToPos = rowEndToPos;
+   this.typeObjectN = typeObjectN;   
+}
+
+function getConfig() {
+	return objConfig;
+}
+
+/**
+ * Common definitions for all pages
+ */
+//Defines Object configuration data available to all pages
+function Config( 
+		      user
+	         ,pwd  
+			 ,sys 
+			 ,subSys
+			 ,baseUrl
+			 
+             ,companyCode 
+             ,company 
+             ,userType  
+             ,userStatus  
+             ,language  
+             ,country  
+             ,mail  
+             ,mailInfo  
+             ,phone  
+             ,referManager  
+             ,referTech  
+             ,analyzerEnabled  
+             ,viewerEnabled 
+             ,inspectorEnabled  
+             ,assesmentEnabled  
+             ,countLogin   			
+             ,dtActivation  
+             ,tmActivation  
+             ,dtExpiration  
+             ,tmExpiration  
+             ,dtFirstLogin  
+             ,tmFirstLogin  
+             ,dtLastLogin  
+             ,tmLastLogin  
+
+             ,pathConfigFile  
+             ,pathRoot  
+             ,pathUser  
+             ,pathPilot  
+	
+			 // Directories relative a root o WEB-INF da file di configurazione generale
+             ,dirResources  
+             ,dirWork  
+             ,dirDatabase       
+             ,dirJclInput  
+             ,dirCobolSrcPgmInput  
+             ,dirCobolSrcCopyInput  
+             ,dirCobolPgm  
+             ,dirCobolCopy  
+             ,dirJcl  
+             ,dirSqlScript  	 
+             ,dirCobolGraph  
+             ,dirPilot  
+             ,dirLog  
+             ,dirOutput  
+
+			 // Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+             ,limitMaxLinesScanFindingSourceType 
+             ,limitMaxSources  
+             ,limitMaxSourcesInput  
+             ,limitMaxSourcesToProcess  
+             ,limitMaxObjects  
+             ,limitMaxObjectsInput 
+             ,limitMaxObjectsToProcess 
+             ,debugThresholdMemoryGarbage  
+             ,debugSourcesDetectedFreqGarbage  
+             ,debugActive  
+             ,logVerbose  
+             ,preferredVisitMethod  
+             ,preferredCachingLevel  
+             ,preferredCachingSupport  
+
+			 //  Database
+             ,dataBaseType  
+             ,dataBaseName  
+             ,dataBaseUser  
+             ,dataBasePwd  
+             ,dataBaseDriver  
+             ,dataBaseAccessType  
+             ,dataBaseUrl  
+             ,dataBaseMaxConn  
+             ,dataBaseCommitBlockUpdates  
+             ,dataBaseLogAnySql 
+	
+			 // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+             ,pilotDefaultSource  
+             ,pilotDefaultProcess  
+             ,userExitClass
+             
+             ,userTypeOrdinal 
+             ,userStatusOrdinal 
+				)  {
+	
+	    this.user = user;  
+		this.pwd = pwd;          								 	 // Password
+	    this.sys = sys;  
+	    this.subSys = subSys; 
+	    this.baseUrl = baseUrl;
+	    
+		// User Data
+		this.companyCode = companyCode; 							 // Codice societa 
+		this.company = company; 									 // Descrizione societa 
+		this.userType = userType;            			     		 // Tipologia utente forward (T052)
+		this.userStatus = userStatus;            	 				 // Stato utente forward (T051)
+		this.language = language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+		this.country = country; 									 // Country IT, .. 
+		this.mail = mail; 											 // Mail principale  
+		this.mailInfo = mailInfo; 									 // Mail per info anomali  
+		this.phone = phone; 										 // Telefono di riferimento  
+		this.referManager = referManager; 							 // Riferimento manager 
+		this.referTech = referTech; 								 // Riferimento tecnico 
+		this.analyzerEnabled = analyzerEnabled; 					 // True user can view Analyzer 
+		this.viewerEnabled = viewerEnabled; 						 // True user can view Viewer 
+		this.inspectorEnabled = inspectorEnabled; 					 // True user can view Inspector 
+		this.assesmentEnabled = assesmentEnabled; 					 // True user can view Assesment 
+		this.countLogin =countLogin; 								 // Counter login effettuati       			
+		this.dtActivation = dtActivation;  							 // Data attivazione AAAAMMGG'
+		this.tmActivation = tmActivation;  						     // Ora  attivazione HHMMSSCC'
+		this.dtExpiration = dtExpiration;  							 // Data disattivazione AAAAMMGG'
+		this.tmExpiration = tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+		this.dtFirstLogin = dtFirstLogin;  							 // Data primo login AAAAMMGG'
+		this.tmFirstLogin = tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+		this.dtLastLogin = dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+		this.tmLastLogin = tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	    this.pathConfigFile = pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+	    this.pathRoot = pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+	    this.pathUser = pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+	    this.pathPilot = pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+	 	
+		// Directories relative a root o WEB-INF da file di configurazione generale
+		this.dirResources = dirResources;                            //Resource'
+		this.dirWork = dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+		this.dirDatabase = dirDatabase;                              // Database'		              
+		this.dirJclInput = dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+		this.dirCobolSrcPgmInput = dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+		this.dirCobolSrcCopyInput = dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+		this.dirCobolPgm = dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+		this.dirCobolCopy = dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+		this.dirJcl = dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcethis.X =  .jclIncludethis.X =  .jclProc)'		 
+		this.dirSqlScript = dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+		this.dirCobolGraph = dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+		this.dirPilot = dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+		this.dirLog = dirLog;                                  		 // Log
+		this.dirOutput = dirOutput;                              	 // Output per funzioni che producono text'
+
+		// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+		this.limitMaxLinesScanFindingSourceType = limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+		this.limitMaxSources =  limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+		this.limitMaxSourcesInput = limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+		this.limitMaxSourcesToProcess = limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+		this.limitMaxObjects =  limitMaxObjects;                   	 	// Abilitazione limitazione agli oggetti processati'
+		this.limitMaxObjectsInput = limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+		this.limitMaxObjectsToProcess = limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+		this.debugThresholdMemoryGarbage = debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+		this.debugSourcesDetectedFreqGarbage = debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+		this.debugActive = debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+		this.logVerbose = logVerbose;                               	// Dettaglio log operazioni Sql e informative'
+		this.preferredVisitMethod = preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+		this.preferredCachingLevel = preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+		this.preferredCachingSupport = preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+		//  Database
+		this.dataBaseType = dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+		this.dataBaseName = dataBaseName;                            // Nome database (DbAmrita)'
+		this.dataBaseUser = dataBaseUser;                            // User (GZEDDA)'
+		this.dataBasePwd = dataBasePwd;                              // Pwd (giampietro4)'
+		this.dataBaseDriver = dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+		this.dataBaseAccessType = dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+		this.dataBaseUrl = dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+		this.dataBaseMaxConn = dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+		this.dataBaseCommitBlockUpdates = dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+		this.dataBaseLogAnySql = dataBaseLogAnySql;                 // Log istruzioni Sql come messaggi informativi'
+	    	
+		// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+		this.pilotDefaultSource = pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+		this.pilotDefaultProcess = pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+		this.userExitClass = userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+		// Ordinal
+		this.userTypeOrdinal = userTypeOrdinal;            			  // Tipologia utente forward (T052)
+		this.userStatusOrdinal = userStatusOrdinal;            	 	  // Stato utente forward (T051)
+}
+
+</script>
+
+</html>

@@ -1,0 +1,178 @@
+#--------------------------------------------------------------------
+# Analisi procedura San Paolo UX*
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY PGMTEST  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+LIBRARY COPYTEST E:\Amrita\Amrita-Java\AmritaFramework\UnitTestCopy\
+LIBRARY PGMUX F:\SPaolo\Sources\LTM0T.SAE.SOURCE\
+LIBRARY COPYUX F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+LIBRARY_SOURCE_SEARCH COPYTEST
+LIBRARY_SOURCE_SEARCH COPYUX
+
+#--------------------------------------------------------------------------
+# Opzioni e direttive specifiche di processo
+#--------------------------------------------------------------------------
+
+# Opzioni generali di analisi 
+OPT_UPDATE_DB_ENABLED
+OPT_DETECT_DEAD_CODE_ENABLED
+OPT_PGM_GRAPH_CREATION_ENABLED
+OPT_SOLVE_DYNAMIC_LOCAL_ENABLED
+
+# Opzioni per forzatura rianalisi e scrittura tracciato copy
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni per tracciati copy e where used campi in copy
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_DISABLED
+OPT_COPY_DEF_ON_DB_ENABLED
+
+# Categorie di misurazioni e metriche non di base (incluse nell'analisi)
+OPT_METRICS_ALL_DISABLED           	        
+OPT_METRICS_MCCABE_HALSTEAD_DISABLED          
+OPT_METRICS_COMPLEXITY_STRUCTURE_DISABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_DISABLED       
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED                
+
+#--------------------------------------------------------------------------
+# Identificazione oggetti da analizzare
+#--------------------------------------------------------------------------
+#COPY_TO_FORCE_RE_BUILD_ON_DB UX00000
+#OBJECT_TYPE_COPY_COBOL_DATA *ALL*  
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* UXH1100
+
+SYSTEM_VALUE S
+SUB_SYSTEM_VALUE UX
+
+#OBJECT_TYPE_PGM_COBOL *ALL* 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO3150
+#OBJECT_TYPE_PGM_COBOL *ALL* fromName ToName 
+
+#dinamici
+OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP12   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP13   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP14   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2500   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2600   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2700   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2800   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH3000   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH3400   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UX57200   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH1100   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXH2400   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO1997   logiche OK ? verificare
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO2998   logiche OK ? verificare
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO3997   logiche OK ? verificare
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO5997   logiche OK
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UX50030   logiche OK
+
+
+#FILTER_ON_OBJECT_NAME 1 UX0
+#FILTER_ON_OBJECT_NAME 1 UX1
+#FILTER_ON_OBJECT_NAME 1 UX2
+#FILTER_ON_OBJECT_NAME 1 UX3
+#FILTER_ON_OBJECT_NAME 1 UX4
+#FILTER_ON_OBJECT_NAME 1 UX5
+#FILTER_ON_OBJECT_NAME 1 UX6
+#FILTER_ON_OBJECT_NAME 1 UX7
+#FILTER_ON_OBJECT_NAME 1 UX8
+#FILTER_ON_OBJECT_NAME 1 UX9
+#FILTER_ON_OBJECT_NAME 1 UXA
+#FILTER_ON_OBJECT_NAME 1 UXB
+#FILTER_ON_OBJECT_NAME 1 UXC
+#FILTER_ON_OBJECT_NAME 1 UXD
+#FILTER_ON_OBJECT_NAME 1 UXE
+#FILTER_ON_OBJECT_NAME 1 UXF
+#FILTER_ON_OBJECT_NAME 1 UXG
+#FILTER_ON_OBJECT_NAME 1 UXH
+#FILTER_ON_OBJECT_NAME 1 UXI
+#FILTER_ON_OBJECT_NAME 1 UXJ
+#FILTER_ON_OBJECT_NAME 1 UXK
+#FILTER_ON_OBJECT_NAME 1 UXL
+#FILTER_ON_OBJECT_NAME 1 UXM
+#FILTER_ON_OBJECT_NAME 1 UXN
+#FILTER_ON_OBJECT_NAME 1 UXO
+#FILTER_ON_OBJECT_NAME 1 UXP
+#FILTER_ON_OBJECT_NAME 1 UXQ
+#FILTER_ON_OBJECT_NAME 1 UXR
+#FILTER_ON_OBJECT_NAME 1 UXS
+#FILTER_ON_OBJECT_NAME 1 UXT
+#FILTER_ON_OBJECT_NAME 1 UXU
+#FILTER_ON_OBJECT_NAME 1 UXV
+#FILTER_ON_OBJECT_NAME 1 UXW
+#FILTER_ON_OBJECT_NAME 1 UXX
+#FILTER_ON_OBJECT_NAME 1 UXY
+#FILTER_ON_OBJECT_NAME 1 UXZ
+
+#EXCLUDE_OBJECT_NAME_RANGE FromName ToName
+
+# Con errori NON Amrita da escludere in quanto obsoleti e/o disallineati
+EXCLUDE_OBJECT_NAME UXQRN03   # Move campo Of
+EXCLUDE_OBJECT_NAME UXO6200   # Move campo Of
+EXCLUDE_OBJECT_NAME UXQRN04   # Move campo Of
+EXCLUDE_OBJECT_NAME UX2C205   # copy disallineati
+EXCLUDE_OBJECT_NAME UXZZM00   # Campo DSNTIAR non definito
+EXCLUDE_OBJECT_NAME UXQR09B   # Copy UXQMI09c UXQMA09C non allineati al programma
+EXCLUDE_OBJECT_NAME UX55G10   # campo ZW59-TIPO-CENTRO ZW59-RETURN-CODE non definiti nel programma e nei copy
+EXCLUDE_OBJECT_NAME UX55I00   # campo ZW59-TIPO-CENTRO ZW59-RETURN-CODE non definiti nel programma e nei copy
+EXCLUDE_OBJECT_NAME UXI5000N  # campo ZW59-TIPO-CENTRO ZW59-RETURN-CODE non definiti nel programma e nei copy
+EXCLUDE_OBJECT_NAME UXI7000N  # campo ZW59-TIPO-CENTRO ZW59-RETURN-CODE non definiti nel programma e nei copy
+
+
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 
+	 
+START
+
+# Anomalie analizzando UX senza filtri
+# WARN : ANALYZER MW0006: Sorgente BO35110 non trovato nel path dove era stato censito.  Path: BO35110 
+# WARN : ANALYZER MW0006: Sorgente COBADDR  non trovato nel path dove era stato censito.  Path: COBADDR  
+# WARN : ANALYZER MW0006: Sorgente COBBMQI non trovato nel path dove era stato censito.  Path: COBBMQI 
+# WARN : ANALYZER MW0006: Sorgente ILBOABN0 non trovato nel path dove era stato censito.  Path: ILBOABN0 
+# WARN : ANALYZER MW0006: Sorgente PH10A90 non trovato nel path dove era stato censito.  Path: PH10A90 
+# WARN : ANALYZER MW0006: Sorgente QORAM47 non trovato nel path dove era stato censito.  Path: QORAM47 
+# WARN : ANALYZER MW0006: Sorgente QORAM52  non trovato nel path dove era stato censito.  Path: QORAM52  
+# WARN : ANALYZER MW0006: Sorgente QORAM53  non trovato nel path dove era stato censito.  Path: QORAM53  
+# WARN : ANALYZER MW0006: Sorgente QORAM57  non trovato nel path dove era stato censito.  Path: QORAM57  
+# WARN : ANALYZER MW0006: Sorgente QORAM62  non trovato nel path dove era stato censito.  Path: QORAM62  
+# WARN : ANALYZER MW0006: Sorgente QORAM65 non trovato nel path dove era stato censito.  Path: QORAM65 
+# WARN : ANALYZER MW0006: Sorgente QORAM81 non trovato nel path dove era stato censito.  Path: QORAM81 
+# WARN : ANALYZER MW0006: Sorgente QORAM86  non trovato nel path dove era stato censito.  Path: QORAM86  
+# WARN : ANALYZER MW0006: Sorgente QORAM89 non trovato nel path dove era stato censito.  Path: QORAM89 
+# WARN : ANALYZER MW0006: Sorgente QOZZM47 non trovato nel path dove era stato censito.  Path: QOZZM47 
+# WARN : ANALYZER MW0006: Sorgente QOZZM52  non trovato nel path dove era stato censito.  Path: QOZZM52  
+# WARN : ANALYZER MW0006: Sorgente QOZZM53  non trovato nel path dove era stato censito.  Path: QOZZM53  
+# WARN : ANALYZER MW0006: Sorgente RAZZ2DEB  non trovato nel path dove era stato censito.  Path: RAZZ2DEB  
+# WARN : ANALYZER MW0006: Sorgente UWZZP10 non trovato nel path dove era stato censito.  Path: UWZZP10 
+
+
+

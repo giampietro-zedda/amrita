@@ -1,0 +1,266 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    overflow: auto;
+}
+
+#divSubsys{
+	margin-bottom: 8px;           
+}
+#tbSubSys{         
+  font-size: large; 
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse:collapse;
+}
+#tdSubSys{
+  width: 200px;
+  height: 15.5px;
+  font-size:large
+}
+
+select#objSubSysSel { 
+	width: 50px; 
+	height: 20px; 
+	font-weight: bold;
+	font-size: small; 
+}
+#divTreeContainer { 
+ overflow: hidden;
+}
+/* Main table */
+#tbTree {  
+  width: 100%;
+  height:calc(100% - 70px);
+  border-collapse:collapse; 
+  font-size:xx-small; 
+  margin-left:4px; 
+}
+#tdTree { 
+  vertical-align:top;
+  width: 50%; 
+  padding: 0;
+  border: 1px solid black; 
+}
+#tdOriginFieldsWhereUsed {
+  width: 50%; 
+  height: 100%;
+  border: 1px solid blue; 
+  vertical-align:top;
+}
+
+.tbFieldsWhereUsed	{
+  width: 100%;
+  height: 100%;
+}
+
+#divTree{         
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  max-height: 522px;    /* Changed by JavaScript to the actual value */
+}
+#divRelationOrigin { 
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-top: 0px;
+  padding-bottom: 2px;
+  width: 500px;        /* Forced by JavaScript to the actual value */
+  max-height: 522px;   /* Changed by JavaScript to the actual value */
+
+}
+#divFields { 
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-top: 0px;
+  padding-bottom: 2px;
+  max-height: 522px;   /* Changed by JavaScript to the actual value */
+
+}
+#divWhereUsed { 
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-top: 0px;
+  padding-bottom: 2px;
+  max-height: 522px;  /* Changed by JavaScript to the actual value */
+
+}
+
+/* Table containing the tree */
+#objTable{  
+  width: 100%;
+  height:auto;
+  border-collapse:collapse; 
+  font-size:xx-small; 
+  margin-left:4px; 	
+}
+
+.expandTypeObj {
+  width: 10px;
+  height: 10px;
+  background-color: #4a4a6b;
+  color:white;
+  font-weight: bold;
+  font-size:x-small; 
+  text-align: center;
+  border: 2px solid black;
+}
+.typeObj { 
+ font-size:xx-small; 
+ font-weight: bold;
+ color: 4a4a6b;
+}
+/* Container con oggetti/relazioni espanse a livello 0*/
+.tdDiv { 
+}	
+
+.tbObj {
+  width: auto;
+  border-collapse:collapse;
+}	
+.idObj { 
+ font-size:xx-small; 
+ padding:0;
+ margin: 0;
+}
+
+.tbIdObj {
+  width: 100%;
+  border-collapse:collapse;
+  margin-left:12px; 
+  padding: 0;
+  font-size:xx-small; 	
+  font-weight: bold;
+}
+	
+.divObjRel {
+	margin: 0;
+	margin-left: 12px;
+	overflow: auto;
+}
+	
+.expandIdObj {
+  width: 10px;
+  height: 10px;
+  background-color: #7e1b7e;
+  color:white;
+  font-size:small; 
+  font-weight: bold;
+  font-size:xx-small; 
+  text-align: center;
+  border: 2px solid black;
+}
+.idObj{ 
+ font-size:x-small; 
+ font-weight: bold;
+ color: #7e1b7e;
+ padding:0;
+ padding-left:2px;
+}
+
+.tbRel {
+  width: auto;
+  border-collapse:collapse; 	
+}	
+.expandRelObj  {
+  width: 10px;
+  height: 10px;
+  background-color: #e70652;
+  color:white;
+  font-size:xx-small; 
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid black;
+}
+.idRel{ 
+ font-size:x-small; 
+ font-weight: bold;
+ color: #e70652;
+ padding:0;
+ padding-left:2px;
+}
+.divHeader {
+	border: 2px solid #0000a0;
+	background-color: gray;  	
+	color: black; 
+	font-family:monospace;
+	font-size: x-large;
+	padding: 0;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	margin-left: 0px; 
+	text-align: center; 
+}	
+	
+.selected {  
+  background-color: yellow;
+}
+
+ 
+th  {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+    color:  black;  
+    background-color: #ded9d9;  
+	padding: 2px;
+	height: 20px;
+	font-weight:bold;
+	font-size:medium
+} 
+
+#tbRelationOrigin {
+	width: 100%;
+	border-collapse: collapse;
+	font-family:monospace;
+	font-size: small;
+	margin-bottom: 2px;
+}
+
+#tbRelationOrigin td{
+	border: 1px solid #0000a0;	 
+}
+
+#tbFields {
+	width: 100%;
+	border-collapse: collapse;
+	font-family:monospace;
+	font-size: small;
+}
+
+#tbFields td{
+	border: 1px solid #0000a0;	 
+}
+
+#tbWhereUsed {
+	width: 100%;
+	border-collapse: collapse;
+	font-family:monospace;
+	font-size: small;
+}
+
+#tbWhereUsed td{
+	border: 1px solid #0000a0;	 
+}
+
+
+
+
+.divDataHeader {
+  width: calc(100% - 2px);
+  height: 15px;
+  margin-top:0.7;
+  margin-bottom:2px;
+  padding-left: 3px;  
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+  font-weight:bold;
+  background-color: gray;
+  border: 1px solid black;
+  color:white;
+  text-align:center
+}

@@ -1,0 +1,85 @@
+#--------------------------------------------------------------------
+# Pilot di Test funzione di SourceDetect su unit test pgm cobol
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_DETECT_SOURCE_TYPE_ENABLED
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+OPT_SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+OPT_UPDATE_DB_ENABLED
+
+#--------------------------------------------------------------------------
+# Estrazione programmi Cobol di unit test (sistema Z e sottosistema ZZ)
+# Caricamento libtrerie copy e programmi (la stessa)
+#--------------------------------------------------------------------------
+
+# Z/ZZ
+SYSTEM_VALUE Z
+#SUB_SYSTEM_VALUE ZZ
+SUB_SYSTEM_VALUE GP
+#FILTER_ON_OBJECT_NAME 1 CO 
+#FILTER_ON_OBJECT_NAME 1 GP 
+#FILTER_ON_OBJECT_NAME 4 WK
+#FILTER_BY_EXIT
+#FILTER_ON_OBJECT_NAME_RANGE AC ZZ
+#FILTER_DISABLED
+#FILTER_CLEAR
+
+# Sequenza librerie in search per copy include
+LIBRARY TESTCOPY C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestCopy
+LIBRARY TESTPGM  C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm
+LIBRARY_SOURCE_SEARCH TESTCOPY
+LIBRARY_SOURCE_SEARCH TESTPGM
+
+OBJECT_TYPE_INCLUDE_ALL
+#OBJECT_TYPE_PGM_COBOL
+#OBJECT_TYPE_COPY_COBOL_DATA
+#OBJECT_TYPE_COPY_COBOL_PROC
+
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\COBTST01
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\COBTST02
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\COBTST03
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\COBTST04
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\COBTST05
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\COBTST06
+##-STD-COPY          AN    BD CF CG    DA DB DG DI DJ DK DM DS DW FA    FC                FM    FS       GT       IC IN LE MA MP MT MV    OC OF OM OS PC PL PM QC    RE RM RT    SC    SH SK    SO ST TB TS UT 
+#-STD-BMS           AN    BD             DB          DK          FA                      FM                      IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT          SH SK    SO ST TB    UT 
+#-STD-COB           AN    BD             DB          DK          FA FB    FD FE          FM FR    FU FY    HE    IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT          SH SK    SO ST TB    UT 
+#-STD-SQL           AN    BD CF       DA DB    DI DJ    DM    DW FA                      FM                      IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT    SC    SH SK    SO ST TB    UT 
+
+#-PER-COPY          AN    BD       CO    DB                      FA    FC          FI FK FM    FS    FY GT       IC IN    MA MP    MV MU OC OF       PC       QC QF RE RM    SA SC    SH SK    SO    TB TS UT 
+#-PER-BMS           AN                   DB                      FA                      FM                      IC       MA MP    MV    OC OF                         RM             SH SK    SO          UT UX    VM
+#-PER-COB           AN             CO    DB                      FA       FD FE FG       FM    FS FU FY    HE    IC       MA MP    MV    OC OF       PC PL PM QC       RM RT SA SC    SH SK SM SO    TB    UT    VA VM
+#-PER-SQL   
+
+#-PVN-COPY          AN AT          CO    DB    DI                FA    FC                               GT    HO IC IN    MA       MV    OC OF                         RM RT    SC SE SH SK    SO    TB TS UT    VA VM 
+#-PVN-BMS           AN                   DB                      FA                                              IC       MA             OC OF                         RM             SH SK SM             UT    VA VM
+#-PVN-COB       AG  AN             CO    DB                      FA                      FM                      IC       MA       MV    OC OF OM          PM          RM RT          SH SK SM SO    TB    UT    VA VM
+#-PVN-SQL           AN                                           FA                      FM                         IN    MA       MV                                  RM                                  UT    VA 
+FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestPgm\GPPGM001
+
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestCopy\COPY01
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestCopy\COPY02
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestCopy\COPY03
+#FILE_PATH C:\Personale\Amrita-2019-workspace\Amrita2019\UnitTestCopy\COPY04
+
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_LIBRARY_SCAN	
+	 	 
+START

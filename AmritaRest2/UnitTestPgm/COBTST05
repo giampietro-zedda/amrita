@@ -1,0 +1,1063 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance     
+      *      Reverse
+      *       Integrated
+      *         Tecnology 
+      *           Application
+      *
+      *================================================================
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.     COBTST05.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: Programma per Unit test esaustivo Analyzer Sql.
+      *                 :  
+      *  Scritto il    	: 08-08-2011
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================       
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+ 
+       DATA DIVISION.
+       FILE SECTION.
+       WORKING-STORAGE SECTION.          
+           EXEC SQL BEGIN DECLARE SECTION END-EXEC.
+           EXEC SQL INCLUDE VTTAB190    END-EXEC.
+           EXEC SQL END DECLARE SECTION END-EXEC.
+           EXEC SQL INCLUDE SQLCA       END-EXEC.
+           
+      ****************************************************************
+      * VTC190R - RIDEFINIZIONE DI VTTAB190 (SECONDO CODICI TABELLE) *
+      *                            T190-DATI LL=1000                 *
+      ****************************************************************
+       01  CODTAB0  REDEFINES VTTAB190.
+           05  FILLER                  PIC X(80).
+           05  DATE0.
+               10 VT190-PROPOSTE       PIC X(10).
+               10 VT190-CONTRATTI      PIC X(10).
+               10 VT190-PAGAMENTI      PIC X(10).
+               10 VT190-SIN-DEN        PIC X(10).
+               10 VT190-SIN-N-LIQ      PIC X(10).
+               10 VT190-RENDITE        PIC X(10).
+               10 VT190-CONTRATTI-S    PIC X(10).
+               10 VT190-POL-RIATT      PIC X(10).
+               10 VT190-PRESTITI       PIC X(10).
+               10 VT190-UTILI          PIC X(10).
+               10 VT190-QUIETANZ       PIC X(10).
+               10 VT190-RIVALUTAZ      PIC X(10).
+               10 VT190-RIS-MATEM      PIC X(10).
+               10 VT190-CES-LEGALE     PIC X(10).
+               10 VT190-COASS-EMESSO   PIC X(10).
+               10 VT190-COASS-STORNI   PIC X(10).
+               10 VT190-COASS-PAGAM    PIC X(10).
+               10 VT190-COASS-PRINC    PIC X(10).
+               10 VT190-MARG-SOLVIB    PIC X(10).
+               10 VT190-MOD7-8-9-10    PIC X(10).
+               10 VT190-CAPITALIZ-13   PIC X(10).
+               10 VT190-CESSIONI-14    PIC X(10).
+               10 VT190-MORTA-PROB     PIC X(10).
+               10 VT190-PROD-PREMI     PIC X(10).
+               10 VT190-STAT-PROV      PIC X(10).
+               10 VT190-STAT-REG       PIC X(10).
+               10 VT190-RIASS-RISCHIO  PIC X(10).
+               10 VT190-RIASS-EMESSO   PIC X(10).
+               10 VT190-RIASS-STORNO   PIC X(10).
+               10 VT190-RIASS-VARIAB   PIC X(10).
+               10 VT190-RIASS-PAGAME   PIC X(10).
+               10 VT190-COLL-BONUS     PIC X(10).
+               10 VT190-COLL-RICPREMI  PIC X(10).
+               10 VT190-NEW-PROD       PIC X(10).
+               10 VT190-RIASS-RIATTIV  PIC X(10).
+               10 VT190-VARIAZ         PIC X(10).
+               10 VT190-DATA-37        PIC X(10).
+               10 VT190-DATA-38        PIC X(10).
+               10 VT190-DATA-39        PIC X(10).
+               10 VT190-DATA-40        PIC X(10).
+               10 VT190-DATA-41        PIC X(10).
+               10 VT190-DATA-42        PIC X(10).
+               10 VT190-DATA-43        PIC X(10).
+               10 VT190-DATA-44        PIC X(10).
+               10 VT190-DATA-45        PIC X(10).
+               10 VT190-DATA-46        PIC X(10).
+               10 VT190-DATA-47        PIC X(10).
+               10 VT190-DATA-48        PIC X(10).
+               10 VT190-DATA-49        PIC X(10).
+               10 VT190-DATA-50        PIC X(10).
+           05  FILLER                  PIC X(510).
+     
+       01  IND-VTTAB190.
+           05 TB-IND OCCURS 55 PIC S9(4) COMP.
+
+          COPY COPYUNDF.
+       01 FILLER.
+      * Nome programma, file ...
+          05 W-SQLCODE PIC S9(9) COMP-5.
+     
+      ****************************************************************
+      * Tracciato per select * TB0001  
+      ****************************************************************
+       01  COLS-TB0001.
+      * SMALLINT01         SMALLINT                
+        05 SMALLINT01      PIC S9(4) COMP.                
+      * SMALLINT02         INTEGER 
+        05 SMALLINT02      PIC S9(4) COMP.                       
+      * SMALLINT03         INT                   
+        05 SMALLINT03      PIC S9(4) COMP.       
+      * SMALLINT04         BIGINT  
+        05 SMALLINT04      PIC S9(8) COMP.                      
+      * DECIMAL01          DECIMAL  
+        05 DECIMAL01       PIC S9(5) COMP-3.                    
+      * DECIMAL02          DEC   
+        05 DECIMAL01       PIC S9(5) COMP-3.                    
+      * DECIMAL03          NUMERIC    
+        05 DECIMAL03       PIC S9(5) COMP-3.             
+      * DECIMAL04          DECIMAL(5,0) 
+        05 DECIMAL04       PIC 9(5) COMP-3.        
+      * DECIMAL05          DEC(5)   
+        05 DECIMAL05       PIC 9(5) COMP-3.                    
+      * DECIMAL06          NUMERIC(7, 2)  
+        05 DECIMAL06       PIC 9(5)V9(2) COMP-3.               
+      * FLOAT01            FLOAT  
+        05 FLOAT01         PIC 9(8) COMP-1.                       
+      * FLOAT02            FLOAT(7)   
+        05 FLOAT02         PIC 9(7) COMP-1.               
+      * FLOAT03            REAL   
+        05 FLOAT03         PIC 9(8) COMP-1.                   
+      * FLOAT04            DOUBLE   
+        05 FLOAT04         PIC 9(8) COMP-1.                 
+      * FLOAT05	           DOUBLE PRECISION  
+        05 FLOAT05         PIC 9(8) COMP-1.     
+      * DECFLOAT01         DECFLOAT  
+        05 DECFLOAT01      PIC 9(34) COMP-1.                 
+      * DECFLOAT02         DECFLOAT (34) 
+        05 DECFLOAT02      PIC 9(34) COMP-1.             
+      * DECFLOAT03         DECFLOAT (16)  
+        05 DECFLOAT03      PIC 9(16) COMP-1.            
+      * CHARACTER01        CHARACTER 
+        05 CHARACTER01     PIC X.             
+      * CHARACTER02        CHAR
+        05 CHARACTER02     PIC X.                   
+      * CHARACTER03        CHARACTER(20) 
+        05 CHARACTER03     PIC X(20).          
+      * CHARACTER04        CHAR(30) 
+        05 CHARACTER04     PIC X(30).               
+      * CHARACTER05        CHAR VARYING(30)  
+        05 CHARACTER05     PIC X(30).       
+      * CHARACTER06        CHARACTER VARYING (30)
+        05 CHARACTER06     PIC X(30).  
+      * CHARACTER07        VARCHAR(50)   
+        05 CHARACTER07     PIC X(30).           
+      * CHARACTER08        CHAR LARGE OBJECT(4 G)
+        05 CHARACTER08     PIC X(4000000).  
+      * CHARACTER09        CHAR LARGE OBJECT  
+        05 CHARACTER09     PIC X(4000).    
+      * CHARACTER10        CLOB  
+        05 CHARACTER10     PIC X(4000).                 
+      * CHARACTER11        CLOB (4 M) 
+        05 CHARACTER11     PIC X(4000).       
+      * GRAPHIC01          GRAPHIC   
+        05 GRAPHIC01       PIC X(1000).              
+      * GRAPHIC02          GRAPHIC(3000) 
+        05 GRAPHIC02       PIC X(3000).          
+      * GRAPHIC03          DBCLOB  
+        05 GRAPHIC03       PIC X(1000).                
+      * GRAPHIC04          DBCLOB (5 G)  
+        05 GRAPHIC04       PIC X(5000000).          
+      * GRAPHIC05          VARGRAPHIC (2000) 
+        05 GRAPHIC5        PIC X(2000).       
+      * BINARY01           BINARY          
+        05 BINARY01        COMP.     
+      * BINARY02           BINARY LARGE OBJECT 
+        05 BINARY02        PIC X(10000).    
+      * BINARY03           BLOB    
+        05 BINARY03        PIC X(10000).               
+      * BINARY04           BINARY  
+        05 BINARY04        COMP.              
+      * BINARY05           BINARY(10) 
+        05 BINARY05        PIC 9(10) COMP.               
+      * BINARY06           BINARY VARYING(20) 
+        05 BINARY06        PIC 9(10) COMP.      
+      * BINARY07           VARBINARY(6)
+        05 BINARY07        PIC 9(10) COMP.             
+      * BINARY08           BINARY LARGE OBJECT(4 M) 
+        05 BINARY08        PIC X(10000).    
+      * BINARY09           BLOB  (1 G)  
+        05 BINARY09        PIC X(10000).          
+      * DATE01             DATE 
+        05 DATE01          PIC X(8).                 
+      * TIME01             TIME  
+        05 TIME01          PIC X(10).                    
+      * TIMESTAMP01        TIMESTAMP   
+        05 TIMESTAMP01     PIC X(10).               
+      * TIMESTAMP02        TIMESTAMP  
+        05 TIMESTAMP02     PIC X(10).             
+      * TIMESTAMP03        TIMESTAMP 
+        05 TIMESTAMP03     PIC X(10).             
+      * TIMESTAMP04        TIMESTAMP (10) 
+        05 TIMESTAMP04     PIC X(10).         
+      * TIMESTAMP05        TIMESTAMP (10)
+        05 TIMESTAMP05     PIC X(10).          
+      * TIMESTAMP06        TIMESTAMP (10) 
+        05 TIMESTAMP06     PIC X(10).         
+      * ROWID01            ROWID  
+        05 ROWID01         PIC 9(4) COMP.                 
+      * ROWID02            ROWID  
+        05 ROWID02         PIC 9(4) COMP.                   
+      * ROWID03            ROWID 
+        05 ROWID03         PIC 9(4) COMP.                    
+      * ROWID04            ROWID   
+        05 ROWID04         PIC 9(4) COMP.                 
+      * ROWID05            ROWID 
+        05 ROWID05         PIC 9(4) COMP.                   
+      * ROWID06            ROWID 
+        05 ROWID06         PIC 9(4) COMP.                    
+      * ROWID07            ROWID 
+        05 ROWID07         PIC 9(4) COMP.                    
+      * ROWID08            ROWID 
+        05 ROWID08         PIC 9(4) COMP.                    
+      * XML01              XML 
+        05 ROWID09         PIC X(100).   
+ 
+ 	   01 NUM-ROW          PIC 9(4) COMP.
+	   01 NUM-ROWS         PIC 9(4) COMP.
+	   
+	  * Per test var-host-array
+ 	   01 AR-CHARACTER01   PIC X(20) OCCURS 10.
+	   01 AR-SMALLINT03    PIC 9(4) BINARY OCCURS 10.
+ 	   
+ 	   
+       LINKAGE SECTION.
+
+      * Dfhcommarea Cics   
+       01 DFHCOMMAREA                   PIC X(4096).
+         
+       PROCEDURE DIVISION.
+  
+      * T001 OK S0101 SELECT INTO semplice con tutte le colonne di tab NON definita
+           EXEC SQL SELECT  *
+             INTO  :VTTAB190 INDICATOR :IND-VTTAB190
+             FROM VTTAB190
+             WHERE (T190_CODSOC      = :VTTAB190.T190-CODSOC       AND
+                    T190_CATEGORIA   = :VTTAB190.T190-CATEGORIA    AND
+                    T190_COD_TABELLA = :VTTAB190.T190-COD-TABELLA  AND
+                    T190_CHIAVE1     = :VTTAB190.T190-CHIAVE1      AND
+                    T190_CHIAVE2     = :VTTAB190.T190-CHIAVE2      AND
+                    T190_CHIAVE3     = :VTTAB190.T190-CHIAVE3)
+             END-EXEC.
+
+           MOVE SQLCODE  TO XXXX-SQLCODE.
+         
+  
+      * T002 OK S0102 - SELECT INTO semplice con nome qualificato da owner e tutte le colonne di tab definita
+           EXEC SQL SELECT  *
+             INTO  :COLS-TB0001
+             FROM OWNRT01.TB0001
+             WHERE (CHARACTER01   = :CHARACTER01        AND
+                    CHARACTER03   <> 'A2'              AND
+                    CHARACTER04   != :TB0001.CHARACTER04)
+                WITH CS
+                FETCH FIRST ROW ONLY
+           END-EXEC.
+           MOVE SQLCODE  TO XXXX-SQLCODE.
+         
+      * T003 OK S0103 - SELECT INTO semplice con nome qualificato e correlation name
+           EXEC SQL SELECT  *
+             INTO  :COLS-TB0001
+             FROM OWNRT01.TB0001 A
+             WHERE (A.CHARACTER01   = CHARACTER01        AND
+                    A.CHARACTER03   <> 'A2'              AND
+                    A.CHARACTER04   != :TB0001.CHARACTER04)
+                FOR READ ONLY
+                OPTIMIZE FOR 1 ROW
+                WITH UR
+           END-EXEC.
+         
+      * T004 OK S0104 - SELECT INTO + group + having + order by + opzioni 
+           EXEC SQL SELECT  A.CHARACTER01,A.CHARACTER02
+                         INTO  :COLS-TB0001
+                         FROM OWNRT01.TB0001 A
+                         WHERE (A.CHARACTER01 = :CHARACTER01)
+                         GROUP BY A.CHARACTER01
+                         HAVING MAX(SMALLINT01) 
+                                 < (SELECT AVG(SMALLINT01)
+                                      FROM TB0002 B
+                                     WHERE NOT B.COLNUM = A.SMALLINT05)
+                         ORDER BY A.CHARACTER01 ASC, CHARACTER02 DESC
+                         FETCH FIRST 5 ROW ONLY
+      * Opzioni select-stmt
+                    FOR UPDATE
+                    WITH RS USE AND KEEP EXCLUSIVE LOCKS
+            END-EXEC.
+         
+         
+      * T005 OK S0105 - SELECT con function + opzioni 
+           EXEC SQL SELECT DISTINCT CHARACTER01, 
+                           CHARACTER02,AVG(SMALLINT03+SMALLINT04)
+                          FROM OWNRT01.TB0001 A
+                         WHERE (A.CHARACTER01   = CHARACTER01)
+                         GROUP BY CHARACTER01
+                         ORDER BY 3
+                         FETCH FIRST 2 ROWS ONLY
+      * Opzioni select-stmt
+                    FOR UPDATE OF A.CHARACTER01, A.CHARACTER02
+                    OPTIMIZE FOR 1 ROWS
+                    WITH RS USE AND KEEP EXCLUSIVE LOCKS
+                    QUERYNO 10
+                    SKIP LOCK DATA
+            END-EXEC.
+         
+      * T006 OK S0106 - SELECT con clausola IN in where
+           EXEC SQL SELECT  ALL CHARACTER01, CHARACTER02
+             FROM OWNRT01.TB0001 A
+             WHERE A.CHARACTER01 = CHARACTER01 AND 
+                   A.CHARACTER02  IN ('D11','D21')
+             ORDER BY INPUT SEQUENCE
+           END-EXEC.
+         
+        
+         
+      * T007 OK S0107 - SELECT con  test esausivo espressioni in colonna
+           EXEC SQL SELECT 
+      * column 
+                   CHARACTER01						 AS COL1
+                  ,CHARACTER01 || CHARACTER02		 AS COL2
+                  ,CHARACTER01 CONCAT CHARACTER02	 AS COL3
+      * special-register
+                  ,CURRENT DATE  	   	               
+                  ,CURRENT TIME  	   	                COL4	
+                  ,CURRENT TIME    YEARS 	            COL5	
+      * function-invocation
+                  ,MIN(SMALLINT01) DAYS 	         AS COL6	
+                  ,MIN(SMALLINT01) DAY  	            COL7	
+                  ,MAX(SMALLINT02) MICROSECOND
+                  ,MAX(SMALLINT03) MICROSECONDS 
+                  ,MAX(SMALLINT01)
+                  ,AVG(SMALLINT01) AT LOCAL
+                  ,AVG(SMALLINT01) AT TIME ZONE '+08:00’'
+      * scalar-full-select
+                  ,(SELECT COUNT(*) FROM TB0001) AS     COL8 
+      * numeric-constant          
+                  , 5
+                  ,10 MONTHS
+      * alphanumeric-constant          
+                  , 'AAA'
+                  , 'BBB'                               COL9
+                  , "CCC"                           AS  COL10
+      * host-var
+                  ,:SMALLINT02
+                  ,:SMALLINT02 SECOND                   COL11
+                  ,:SMALLINT02 SECONDS   
+      * expression
+                  ,(CURRENT TIME - 200)		   	        COL12	
+                  ,(CURRENT_TIME + 2.E5)             AS COL13
+                  ,(CURRENT_DATE * 15E1)
+                  ,(2 * :SMALLINT02 + :SMALLINT01)              
+                  ,(2 * :SMALLINT02 + :SMALLINT01) YEAR COL14  
+                  ,1.10 * (SMALLINT01 + SMALLINT02) 
+                                      + SMALLINT04/:SMALLINT02
+      * case-expression
+                  ,CASE WHEN CHARACTER01 = "A" THEN 5
+                         WHEN CHARACTER01 = "B" THEN NULL
+                         ELSE NULL
+                   END     
+                  ,CASE CHARACTER01 
+                         WHEN 'A' THEN 1
+                         WHEN 'B' THEN 2
+                         ELSE NULL
+                   END    
+      * cast-specification  
+                  ,CAST(SMALLINT01 AS INTEGER)
+                  ,CAST(SMALLINT01 AS INTEGER) SECONDS 
+                  ,CAST(SMALLINT01 AS INTEGER) SECONDS COL15
+      * cast-specification  
+                  ,XMLCAST(CHARACTER02 AS CHAR)
+      * row-change-expression           
+                  ,ROW CHANGE TIMESTAMP FOR A
+                  ,ROW CHANGE TOKEN FOR A
+                  ,ROW CHANGE TOKEN FOR A 				COL16
+      * sequence-reference
+                  ,NEXT VALUE FOR SQNAME1
+                  ,PREVIOUS VALUE FOR SQNAME2
+      * olap-specification
+                  ,RANK() OVER (1 2 3)
+                  ,DENSE_RANK() OVER (A B C)
+                  ,ROW_NUMBER() OVER (D E)
+                  ,COUNT(DISTINCT CHARACTER01) OVER (D E)
+             FROM OWNRT01.TB0001 A
+             WHERE NOT ROW CHANGE TIMESTAMP FOR A >
+                       CURRENT TIMESTAMP - 24 HOURS
+                   AND (SMALLINT03 > .5 * (SELECT MAX(SMALLINT03) 
+                                             FROM TB0001))
+             ORDER BY COL2
+          END-EXEC.
+
+         
+      * T008 OK S0108 - SELECT con  test esausivo predicati in where
+           EXEC SQL SELECT  
+                   CHARACTER01					AS COL1
+             FROM TB0001 A
+             WHERE 
+
+      * Basic OK
+                    SMALLINT01 + SMALLINT02 =  :SMALLINT03
+               OR  :SMALLINT04              >   SMALLINT01 + 5
+               OR  :SMALLINT01              <   SMALLINT02
+               OR  :SMALLINT02              <>  SMALLINT02
+               OR  :SMALLINT02              !=  SMALLINT02
+               OR   SMALLINT01              <= (SELECT MAX(SMALLINT03) 
+                                                  FROM TB0001)
+               OR  (SMALLINT01,SMALLINT02)  =  (SMALLINT03,SMALLINT04)
+               
+      * Quantified OK
+               OR  CHARACTER01 = SOME (SELECT CHARACTER03 FROM TB0001
+                                        WHERE SMALLINT04 = 6)            
+               OR  CHARACTER02 = ANY  (SELECT CHARACTER03 FROM TB0001
+                                        WHERE SMALLINT04 = 4)            
+               OR  CHARACTER02 = ALL  (SELECT CHARACTER03 FROM TB0001
+                                        WHERE SMALLINT04 = 2)            
+               OR ('A1','A2')  = SOME  (SELECT CHARACTER03, CHARACTER04 
+                                          FROM TB0001
+                                        WHERE SMALLINT04 = 2)            
+               OR ('A5','A6')  = ANY   (SELECT CHARACTER04, CHARACTER05 
+                                          FROM TB0001
+                                        WHERE SMALLINT04 = 1)            
+               OR ('B1','B2')  = ALL   (SELECT CHARACTER04, CHARACTER05 
+                                          FROM TB0001
+                                        WHERE SMALLINT04 = 1)            
+      * Between OK
+               OR SMALLINT01  BETWEEN 1 AND 2
+               OR CHARACTER05 NOT BETWEEN 'A' AND "Z"
+               OR (SELECT MAX(SMALLINT03) FROM TB0001) BETWEEN 10 AND 20
+ 
+      * Exists OK
+               OR EXISTS (SELECT * FROM TB0001 WHERE SMALLINT03 > 6)
+               
+      * In OK
+               OR  CHARACTER02     IN (SELECT CHARACTER05 FROM TB0001 
+                                        WHERE SMALLINT03 > 8)
+               OR  CHARACTER02 NOT IN (SELECT CHARACTER01 FROM TB0001 
+                                        WHERE SMALLINT03 > 4)
+               OR  CHARACTER02     IN ('VAL1','VAL2','VAL3')
+               OR  CHARACTER02     IN ('VAL1','VAL2','VAL3')
+               OR  SMALLINT01 + 4  IN (12,14,18)
+               OR (CHARACTER01,CHARACTER02) IN (SELECT CHARACTER04
+                                                     , CHARACTER05
+                                                  FROM TB0001 
+                                                 WHERE SMALLINT04= 0)
+                                                 
+      * Like OK
+               OR      CHARACTER02  LIKE '%AB%'
+               OR NOT  CHARACTER02  LIKE '%AB%' ESCAPE '-'
+               OR      CHARACTER02 CONCAT CHARACTER03  LIKE '%AB%'
+                                                       ESCAPE '+'
+               OR      CHARACTER02 LIKE :CHARACTER05 ESCAPE '+'
+               
+             
+               
+      * Null OK
+               OR  CHARACTER02 IS NULL
+               OR  CHARACTER03 IS NOT NULL
+               
+      * Xmlexist OK
+               OR  XMLEXISTS(TEST)
+               
+      * Distinct OK
+               OR CHARACTER01 IS     DISTINCT FROM CHARACTER05
+               OR CHARACTER02 IS NOT DISTINCT FROM CHARACTER06
+               OR (SMALLINT01,SMALLINT02*5) 
+                              IS DISTINCT FROM (SMALLINT03,SMALLINT04)
+ 
+              ORDER BY COL2
+              
+          END-EXEC.
+   
+
+      * T009 OK S0109 - FULL SELECT  con UNION
+           EXEC SQL SELECT CHARACTER01, CHARACTER02 FROM TB0001 A 
+                     WHERE CHARACTER01 = 'AA'
+           
+                      UNION DISTINCT
+                       
+                    SELECT CHARACTER01, CHARACTER02 FROM TB0005 A 
+                     WHERE CHARACTER01 = 'AA'
+                     
+                      UNION ALL 
+                      
+                    SELECT CHARACTER01, CHARACTER02 FROM TB0006 A 
+                     WHERE CHARACTER01 = 'AA'
+                     
+                      EXCEPT   
+                      
+                    SELECT CHARACTER01, CHARACTER02 FROM TB0007 A 
+                     WHERE CHARACTER01 = 'AA'
+                     
+                       UNION
+                          
+                   (SELECT CHARACTER01, CHARACTER02 FROM TB0005 A 
+                     WHERE CHARACTER01 = 'BB'
+                      INTERSECT
+                    SELECT CHARACTER01, CHARACTER02 FROM TB0005 A 
+                     WHERE CHARACTER01 = 'CC'
+                        ORDER BY 1
+                   )
+                   
+                   ORDER BY 1
+ 
+           END-EXEC.
+  
+      * T010 OK S0110 - SELECT con  test selezione colonne con .* e corr-name
+           EXEC SQL SELECT TB0001.*
+               FROM OWNRT01.TB0001 A
+             WHERE NOT ROW CHANGE TIMESTAMP FOR A >
+                       CURRENT TIMESTAMP - 24 HOURS
+                   AND (SMALLINT03 > .5 * (SELECT MAX(SMALLINT03) 
+                                             FROM TB0001
+                                          )
+                       )
+             END-EXEC.
+         
+  
+      * T015 OK S0201 - Insert con nomi espliciti di colonne e scalar full-select
+          EXEC SQL INSERT INTO TB0001
+                       (CHARACTER01,CHARACTER02,SMALLINT01,SMALLINT02)
+                VALUES ('CHR01','CHR02',345,(SELECT MAX(SMALLINT05) 
+                                               FROM TB0003))
+          END-EXEC.
+
+      * T016 OK S0202 - Insert con nomi espliciti di colonne e altre al default
+          EXEC SQL INSERT INTO TB0001
+                       (CHARACTER01,CHARACTER02)
+                VALUES 'CHR0102'
+          END-EXEC.
+
+      * T017 OK S0203 - Insert con nomi espliciti di colonne e altre al default
+          EXEC SQL INSERT INTO TB0001
+                       (SMALLINT01)
+                VALUES 2 * (SELECT MAX(SMALLINT05) FROM TB0003)
+          END-EXEC.
+
+      * T018 OK S0204 - Insert  semplice riga con tutti default definiti
+          EXEC SQL INSERT INTO TB0001 
+                    OVERRIDING USER VALUE
+                    VALUES DEFAULT
+          END-EXEC.
+
+      * T019 OK S0205 - Insert  semplice con include a NULL 
+          EXEC SQL INSERT INTO TB0001
+                  INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+                  VALUES NULL
+           END-EXEC.
+
+      * T020 OK S0206 - Insert  semplice con include a NULL + opzioni
+          EXEC SQL INSERT INTO TB0001
+                  INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+                  OVERRIDING USER VALUE
+                  VALUES NULL
+           END-EXEC.
+
+      * T021 OK S0207 - Insert  con valori da altra tabella
+          EXEC SQL INSERT INTO TB0001
+          	      SELECT * FROM TB003
+          	       WHERE CHARACTER01 = 'AA'
+          END-EXEC.
+
+      * T022 OK S0208 - Insert  con valori da altra tabella + opzioni
+          EXEC SQL INSERT INTO TB0001
+          	      SELECT * FROM TB003
+          	       WHERE CHARACTER01 = 'AA'
+          	       WITH CS
+          	       QUERYNO 7
+          END-EXEC.
+
+      * T023 OK S0209 - Insert  con valori da altra tabella e common table expression
+          EXEC SQL INSERT INTO TB0001
+                    WITH TBX (CHARACTER01, SMALLINT03) AS 
+                      (SELECT CHARACTER01, SMALLINT03 
+                          FROM TB003
+          	             WHERE CHARACTER01 = 'AA'
+                      ) 
+        	      SELECT * FROM TB001
+          	       WHERE CHARACTER01 = 'AA'
+          	       WITH RR  
+          END-EXEC.
+
+      * T024 OK S0210 - Insert multiplo di righe
+          EXEC SQL INSERT INTO TB0001
+                       (CHARACTER01,CHARACTER02,SMALLINT01,SMALLINT02)
+                VALUES DEFAULT
+                   FOR 10 ROWS
+          END-EXEC.
+
+      * T025 OK S0211 - Insert multiplo di righe
+          EXEC SQL INSERT INTO TB0001
+                       (CHARACTER01,CHARACTER02,SMALLINT01,SMALLINT02)
+                VALUES NULL
+                   FOR 10 ROWS
+                ATOMIC
+          END-EXEC.
+
+      * T026 OK S0212 - Insert multiplo di righe
+          EXEC SQL INSERT INTO TB0001
+                       (CHARACTER01,CHARACTER02,SMALLINT01,SMALLINT02)
+                VALUES ('CHR01','CHR02',345,+24)
+                   FOR :NUM-ROWS ROWS
+                   NOT ATOMIC CONTINUE ON SQLEXCEPTION
+          END-EXEC.
+
+
+
+      * T030 OK S0301 - Update searched no where con casi set completi
+           EXEC SQL UPDATE TB0001
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5     ,
+                    SMALLINT02       = (SELECT COUNT(*) FROM TB0001
+                                          WHERE CHARACTER01 = 'A'
+                                       )  ,
+                    SMALLINT03       = NULL  ,
+                    SMALLINT04       = SMALLINT04 + 2   
+           END-EXEC.
+
+      * T031 OK S0302 - Update searched no where + opzioni
+           EXEC SQL UPDATE TB0001
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5     
+             SKIP LOCKED DATA
+             WITH RR
+            END-EXEC.
+
+      * T032 OK S0303 - Update searched no where + opzioni
+           EXEC SQL UPDATE TB0001
+             SET   (CHARACTER01,SMALLINT01)  = (DEFAULT,SMALLINT03*2) ,
+                    SMALLINT04               = 5 ,
+                   (CHARACTER02,CHARACTER03) = (SELECT CHARACTER02
+                                                       CHARACTER03
+                                                 FROM TB0003 
+                                                 WHERE SMALLINT01 = 5) ,
+                    SMALLINT05 = 10 
+             WITH CS
+             SKIP LOCKED DATA
+            END-EXEC.
+
+      * T033 OK S0304 - Update searched no where + period
+           EXEC SQL UPDATE TB0001
+             FOR PORTION OF BUSINESS_TIME FROM 1 TO 10
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5     
+           END-EXEC.
+
+      * T034 OK S0305 - Update searched no where + corr-name
+           EXEC SQL UPDATE TB0001
+             A
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5     
+           END-EXEC.
+
+      * T035 OK S0305 - Update searched no where + include
+           EXEC SQL UPDATE TB0001
+             INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5     
+           END-EXEC.
+
+      * T036 OK S0306 - Update searched si where + period + corr-name + include
+           EXEC SQL UPDATE TB0001
+             FOR PORTION OF BUSINESS_TIME FROM 1 TO 10
+             A
+             INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5  
+             WHERE CHARACTER01 = 'VA'  
+             WITH CS
+             SKIP LOCKED DATA
+             QUERYNO 78
+           END-EXEC.
+
+
+      * T037 OK S0307 - Update positioned semplice
+           EXEC SQL UPDATE TB0001
+              SET    CHARACTER04  = :COLS-TB0001.CHARACTER04  ,
+                     SMALLINT01   = 5  
+              WHERE CURRENT OF C1 
+           END-EXEC.
+
+
+      * T038 OK S0308 - Update positioned semplice + corr-name
+           EXEC SQL UPDATE TB0001
+              A
+              SET    CHARACTER04  = 'JJ'  ,
+                     SMALLINT01   = 5  
+              WHERE CURRENT OF C1 
+           END-EXEC.
+
+      * T039 OK S0309 - Update positioned semplice + for rows
+           EXEC SQL UPDATE TB0001
+              SET    CHARACTER04  = 'JJ'  ,
+                     SMALLINT01   = 5  
+              WHERE CURRENT OF C1 
+                FOR ROW 10 OF ROWSET
+           END-EXEC.
+
+      * T040 OK S0309 - Update positioned semplice + for rows
+           EXEC SQL UPDATE TB0001
+              SET    CHARACTER04  = 'JJ'  ,
+                     SMALLINT01   = 5  
+              WHERE CURRENT OF C1 
+                FOR ROW :NUM-ROWS OF ROWSET
+           END-EXEC.
+
+
+
+      * T045 OK S0401 - Delete searched no where di tutte le righe
+           EXEC SQL DELETE FROM TB0001
+           END-EXEC.
+
+
+      * T046 OK S0402 - Delete searched no where con opzione set completa
+           EXEC SQL DELETE FROM TB0001
+             SET    CHARACTER04      = :COLS-TB0001.CHARACTER04  ,
+                    SMALLINT01       = 5     ,
+                    SMALLINT02       = (SELECT COUNT(*) FROM TB0001
+                                          WHERE CHARACTER01 = 'A'
+                                       )  ,
+                    SMALLINT03       = NULL  ,
+                    SMALLINT04       = SMALLINT04 + 2   
+           END-EXEC.
+
+      * T047 OK S0403 - Delete searched no where + opzioni
+           EXEC SQL DELETE FROM TB0001
+             SKIP LOCKED DATA
+             WITH RR
+            END-EXEC.
+
+      * T048 OK S0404 - Delete searched no where + opzioni
+           EXEC SQL DELETE FROM TB0001
+             WITH CS
+             SKIP LOCKED DATA
+            END-EXEC.
+
+      * T049 OK S0405 - Delete searched no where + period
+           EXEC SQL DELETE FROM TB0001
+             FOR PORTION OF BUSINESS_TIME FROM 1 TO 10
+           END-EXEC.
+
+      * T050 OK S0406 - Delete searched + where + corr-name
+           EXEC SQL DELETE FROM TB0001
+             A
+             WHERE CHARACTER01 = 'VA'  
+           END-EXEC.
+
+      * T051 OK S0407 - delete searched + where + include
+           EXEC SQL DELETE FROM TB0001
+             INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+             WHERE CHARACTER01 = 'VA' 
+           END-EXEC.
+
+      * T052 OK S0408 - Delete searched + where + period + corr-name + include
+           EXEC SQL DELETE FROM TB0001
+             FOR PORTION OF BUSINESS_TIME FROM 1 TO 10
+             A
+             INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+             WHERE CHARACTER01 = 'VA'  
+             WITH CS
+             SKIP LOCKED DATA
+             QUERYNO 78
+           END-EXEC.
+
+      * T053 OK S0409 - Delete positioned semplice
+           EXEC SQL DELETE FROM TB0001
+              WHERE CURRENT OF C1 
+           END-EXEC.
+
+
+      * T054 OK S0410 - Delete positioned semplice + corr-name
+           EXEC SQL DELETE FROM TB0001
+              A
+              WHERE CURRENT OF C1 
+           END-EXEC.
+
+      * T055 OK S0411 - Delete positioned semplice + for rows
+           EXEC SQL DELETE FROM TB0001
+              WHERE CURRENT OF C1 
+                FOR ROW 10 OF ROWSET
+           END-EXEC.
+
+      * T056 OK S0412 - Delete positioned semplice + for rows
+           EXEC SQL DELETE FROM TB0001
+              WHERE CURRENT OF C1 
+                FOR ROW :NUM-ROWS OF ROWSET
+           END-EXEC.
+
+
+      * T060 OK S0501 - Lock table  semplice
+           EXEC SQL LOCK TABLE TB0001
+                    IN EXCLUSIVE MODE
+           END-EXEC.
+
+      * T061 OK S0502 - Lock table  semplice
+           EXEC SQL LOCK TABLE TB0001
+                    IN SHARE MODE
+           END-EXEC.
+
+      * T062 OK S0503 - Lock table  + option
+           EXEC SQL LOCK TABLE TB0001
+                    PARTITION 2
+                    IN SHARE MODE
+           END-EXEC.
+
+
+      * T065 OK 0601 - Declare cursor semplice con tutte le colonne
+           EXEC SQL DECLARE C1 
+                            NO SCROLL
+                            CURSOR
+                            FOR SELECT   *
+                                  FROM TB0001
+                                 WHERE (CHARACTER1  = :CHARACTER1  AND
+                                        SMALLINT02  = 5)
+                                 ORDER BY CHARACTER01,
+                                          CHARACTER03
+           END-EXEC.
+
+      * T066 OK S0602 - Declare cursor semplice + options
+           EXEC SQL DECLARE C1 
+                            ASENSITIVE SCROLL
+                            CURSOR
+                            WITHOUT HOLD
+                            WITHOUT RETURN
+                            WITHOUT ROWSET POSITIONING
+                            FOR SELECT   *
+                                  FROM TB0001
+                                 WHERE (CHARACTER1  = :CHARACTER1  AND
+                                        SMALLINT02  = 5)
+                                 ORDER BY CHARACTER01,
+                                          CHARACTER03
+           END-EXEC.
+
+      * T067 OK S0603 - Declare cursor semplice + options
+           EXEC SQL DECLARE C1 
+                            INSENSITIVE SCROLL
+                            CURSOR
+                            WITH HOLD
+                            WITH RETURN
+                            WITH ROWSET POSITIONING
+                            FOR SELECT   *
+                                  FROM TB0001
+                                 WHERE (CHARACTER1  = :CHARACTER1  AND
+                                        SMALLINT02  = 5)
+                                 ORDER BY CHARACTER01,
+                                          CHARACTER03
+           END-EXEC.
+
+      * T068 OK S0604 - Declare cursor semplice + options
+           EXEC SQL DECLARE C1 
+                            SENSITIVE SCROLL
+                            CURSOR
+                            WITHOUT HOLD
+                            WITH RETURN TO CALLER
+                            WITH ROWSET POSITIONING
+                            FOR SELECT   *
+                                  FROM TB0001
+                                 WHERE (CHARACTER1  = :CHARACTER1  AND
+                                        SMALLINT02  = 5)
+                                 ORDER BY CHARACTER01,
+                                          CHARACTER03
+           END-EXEC.
+
+      * T069 OK S0605 - Declare cursor semplice + options
+           EXEC SQL DECLARE C1 
+                            SENSITIVE DYNAMIC SCROLL
+                            CURSOR
+                            WITH RETURN TO CLIENT
+                            FOR SELECT   *
+                                  FROM TB0001
+                                 WHERE (CHARACTER1  = :CHARACTER1  AND
+                                        SMALLINT02  = 5)
+                                 ORDER BY CHARACTER01,
+                                          CHARACTER03
+           END-EXEC.
+
+      * T070 OK S0606 - Declare cursor semplice + options
+           EXEC SQL DECLARE C1 
+                            SENSITIVE STATIC SCROLL
+                            CURSOR
+                            FOR SELECT   *
+                                  FROM TB0001
+                                 WHERE (CHARACTER1  = :CHARACTER1  AND
+                                        SMALLINT02  = 5)
+                                 ORDER BY CHARACTER01,
+                                          CHARACTER03
+                            FOR UPDATE OF CHARACTER03,CHARACTER04
+           END-EXEC.
+
+      * T075 OK S0701 - Open cursor semplice
+           EXEC SQL OPEN C1     END-EXEC.
+
+      * T076 OK S0702 - Open cursor con host-var
+           EXEC SQL OPEN C2
+                    USING :CHARACTER01,:CHARACTER02
+           END-EXEC.
+
+      * T077 OK S0703 - Open cursor con descriptor
+           EXEC SQL OPEN C2
+                    USING DESCRIPTOR DSCPTE-C2
+           END-EXEC.
+
+      * T080 OK S0801 - Close cursor
+           EXEC SQL CLOSE C1     END-EXEC.
+
+      * T085 OK S0901 - Fetch semplice  minimale
+           EXEC SQL FETCH C1  END-EXEC.
+           IF SQLCODE NOT = 0
+             MOVE SQLCODE  TO XXX-SQLCODE.
+
+           IF SQLCODE = 100
+             IF IND > 0
+                MOVE 0        TO XXX-SQLCODE.
+
+      * T086 OK S0902 - Fetch semplice  minimale
+           EXEC SQL FETCH      C1 AFTER END-EXEC.
+           EXEC SQL FETCH FROM C1 BEFORE END-EXEC.
+
+
+      * T087 OK S0903 - Fetch row-positioned
+           EXEC SQL FETCH NEXT              C1 END-EXEC.
+           EXEC SQL FETCH PRIOR             C1 END-EXEC.
+           EXEC SQL FETCH FIRST             C1 END-EXEC.
+           EXEC SQL FETCH LAST              C1 END-EXEC.
+           EXEC SQL FETCH CURRENT           C1 END-EXEC.
+           EXEC SQL FETCH CURRENT CONTINUE  C1 END-EXEC.
+           EXEC SQL FETCH ABSOLUTE :NUM-ROW C1 END-EXEC.
+           EXEC SQL FETCH ABSOLUTE 5        C1 END-EXEC.
+           EXEC SQL FETCH RELATIVE :NUM-ROW C1 END-EXEC.
+           EXEC SQL FETCH RELATIVE 5        C1 END-EXEC.
+  
+      * T088 OK S0904 - Fetch rowset-positioned
+           EXEC SQL FETCH NEXT ROWSET       C1 END-EXEC.
+           EXEC SQL FETCH PRIOR ROWSET      C1 END-EXEC.
+           EXEC SQL FETCH FIRST ROWSET      C1 END-EXEC.
+           EXEC SQL FETCH LAST ROWSET       C1 END-EXEC.
+           EXEC SQL FETCH CURRENT ROWSET    C1 END-EXEC.
+           EXEC SQL FETCH ROWSET 
+                             STARTING AT ABSOLUTE 6
+                                      FROM  C1
+           END-EXEC.
+           EXEC SQL FETCH ROWSET 
+                          STARTING AT RELATIVE :NUM-ROW
+                                            C1
+           END-EXEC.
+ 
+      * T089 OK S0904 - Fetch row-positioned + options
+           EXEC SQL FETCH INSENSITIVE               C1 NEXT END-EXEC.
+           EXEC SQL FETCH INSENSITIVE WITH CONTINUE C1 NEXT END-EXEC.
+           EXEC SQL FETCH             WITH CONTINUE C1 NEXT END-EXEC.
+           EXEC SQL FETCH SENSITIVE                 C1 NEXT END-EXEC.
+           EXEC SQL FETCH SENSITIVE   WITH CONTINUE NEXT 
+                                                    C1 END-EXEC.
+  
+ 
+      * T090 OK S0905 - Fetch single-row con into host-vars
+           EXEC SQL FETCH  C1
+                           INTO :CHARACTER01,SMALLINT03
+           END-EXEC.
+
+      * T091 OK S0906 - Fetch single-row con into descriptor
+           EXEC SQL FETCH  C2
+                           INTO DESCRIPTOR DSCPTE-C2
+           END-EXEC.
+
+      * T092 OK S0907 - Fetch multiple-row con into host-vars-array
+           EXEC SQL FETCH  C2
+                    FOR 10 ROWS
+                    INTO :AR-CHARACTER01,AR-SMALLINT03
+           END-EXEC.
+
+      * T093 OK S0908 - Fetch multiple-row con into descriptor
+           EXEC SQL FETCH  C2
+                    FOR :NUM-ROWS ROWS
+                    INTO DESCRIPTOR DSCPTE-C2
+           END-EXEC.
+
+      * T100 -- S1001 - Merge source-table single-row
+      *    EXEC SQL MERGE  INTO TB003 AS T3
+      *           USING (VALUES  NULL) 
+      *              AS AC (CHARACTER01, CHARACTER02)
+      *              ON (T3.CHARACTER01 = AC.CHARACTER01)
+      *           WHEN     MATCHED THEN UPDATE SET CHARACTER02 = 'MOD'
+      *           WHEN NOT MATCHED THEN INSERT (CHARACTER01, CHARACTER02)
+      *                                 VALUES (AC.CHARACTER01, AC.SMALLINT03)
+      *    END-EXEC.
+      *  
+      * T101 -- S1002 - Merge source-table single-row
+      *    EXEC SQL MERGE  INTO TB003 AS T3
+      *           USING (VALUES  'DFLT') 
+      *              AS AC (CHARACTER01, CHARACTER02)
+      *              ON (T3.CHARACTER01 = AC.CHARACTER01)
+      *           WHEN     MATCHED THEN UPDATE SET CHARACTER02 = 'MOD'
+      *           WHEN NOT MATCHED THEN INSERT (CHARACTER01, CHARACTER02)
+      *                                 VALUES (AC.CHARACTER01, AC.SMALLINT03)
+      *    END-EXEC.
+      *  
+      * T102 -- S1003 - Merge source-table single-row
+      *    EXEC SQL MERGE  INTO TB003 AS T3
+      *           USING (VALUES  'DFLT01','DFLT02') 
+      *              AS AC (CHARACTER01, CHARACTER02)
+      *              ON (T3.CHARACTER01 = AC.CHARACTER01)
+      *           WHEN     MATCHED THEN UPDATE SET CHARACTER02 = 'MOD'
+      *           WHEN NOT MATCHED THEN INSERT (CHARACTER01, CHARACTER02)
+      *                                 VALUES (AC.CHARACTER01, AC.SMALLINT03)
+      *    END-EXEC.
+      *  
+      * T103 -- S1004 - Merge source-table multiple-row + options
+      *    EXEC SQL MERGE  INTO TB003 AS T3
+      *           USING (VALUES (:AR-CHARACTER01, :AR-SMALLINT03
+      *                           FOR :NUM-ROWS ROWS) 
+      *                 )
+      *              AS AC (CHARACTER01, CHARACTER02)
+      *              ON (T3.CHARACTER01 = AC.CHARACTER01)
+      *           WHEN     MATCHED THEN UPDATE SET SMALLINT03 = 0
+      *           WHEN NOT MATCHED THEN INSERT (CHARACTER01, SMALLINT03)
+      *                                 VALUES (AC.CHARACTER01, AC.SMALLINT03)
+      *           NOT ATOMIC CONTINUE ON SQLEXCEPTION
+      *           QUERYNO 21
+      *     END-EXEC.
+      *  
+      * T104 -- S1005 - Merge source-table multiple-row + options
+      *    EXEC SQL MERGE  INTO TB003   T3
+      *           USING (VALUES (:AR-CHARACTER01, :AR-SMALLINT03
+      *                           FOR 3 ROWS) 
+      *                 )
+      *              AS AC (CHARACTER01, SMALLINT03)
+      *              ON (T3.CHARACTER01 = AC.CHARACTER01)
+      *           WHEN     MATCHED THEN UPDATE SET SMALLINT04 = T3.SMALLINT04 + AC.SMALLINT03
+      *           WHEN NOT MATCHED THEN INSERT (CHARACTER01, SMALLINT03)
+      *                                 VALUES (AC.CHARACTER01, AC.SMALLINT03)
+      *           QUERYNO 21
+      *           NOT ATOMIC CONTINUE ON SQLEXCEPTION
+      *     END-EXEC.
+      *  
+      * T105 -- S1006 - Merge source-table multiple-row + include
+      *    EXEC SQL MERGE  INTO TB003   T3
+      *           INCLUDE(CHARACTER01 CHAR, SMALLINT01 INTEGER)
+      *           USING (VALUES (:AR-CHARACTER01, :AR-SMALLINT03
+      *                           FOR 3 ROWS) 
+      *                 )
+      *              AS AC (CHARACTER01, SMALLINT03)
+      *              ON (T3.CHARACTER01 = AC.CHARACTER01)
+      *           WHEN     MATCHED THEN UPDATE SET SMALLINT04 = T3.SMALLINT04 + AC.SMALLINT03
+      *           WHEN NOT MATCHED THEN INSERT (CHARACTER01, SMALLINT03)
+      *                                 VALUES (AC.CHARACTER01, AC.SMALLINT03)
+      *     END-EXEC.
+         
+
+
+  

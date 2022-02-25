@@ -1,0 +1,38 @@
+#--------------------------------------------------------------------
+# Pilot di Test funzione di SourceDetect unit test Sql Script
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+UPDATE_DB_ENABLED
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_DETECT_SOURCE_TYPE_ENABLED
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+
+#--------------------------------------------------------------------------
+# Estrazione script sql (sistema Z e sottosistema ZZ)
+#--------------------------------------------------------------------------
+
+# Z/ZZ
+SYSTEM_VALUE Z
+SUB_SYSTEM_VALUE ZZ
+OBJECT_TYPE_INCLUDE_ALL
+LIBRARY TESTSQLSCRIPT E:\Amrita\Amrita-Java\AmritaFramework\UnitTestSqlScript\
+
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_LIBRARY_SCAN		 	 
+START

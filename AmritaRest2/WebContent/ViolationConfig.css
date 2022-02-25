@@ -1,0 +1,139 @@
+@charset "ISO-8859-1";
+
+html, body {
+  height:100%;
+  width:100%;  
+  margin:0;
+  padding:0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main table of the SPA Viewer application */
+#mainTable {
+  width: calc(100% - 1px);
+  height: 100%;
+  border: 1px,solid, black;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+#mainTableRowHeader {
+  vertical-align: top;  
+  width: 100%;
+  height: 30px;;
+}
+#headerSystem {
+  height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 150%;
+}	
+#headerCellTh {
+  border: 1px solid black;  
+  font-size: xx-large;
+  height: 30px;
+}
+
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  border: 1px solid black;
+} 
+
+#containerTbluserLink{
+  border-collapse:collapse;	
+  margin: 0;
+  padding:0;
+}  
+
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+
+
+#mainTableRowBody {vertical-align: top; width: 100%; border-collapse: collapse; padding: 0;}
+  #tdViolations {width: 45%; height: 100%; border: 1px solid black; margin: 0;}
+    #divViolations {width: 100%;}
+    #tbViolationsSel {width: 100%; border-collapse: collapse;}
+    table#tbViolationsSel td,th {padding: 0;  border: 1px solid black;}
+	    .tdHeaderLeft {width: 250px;  font-size: medium;  border: 1px solid black;}
+	    #selSubSys {width: 100%; font-weight: bold;}
+	    #selIdConfig {width: 100%; font-weight: bold;}
+	    #selQualityFactor {width: 100%; font-weight: bold;}
+	    #selQualityCharacteristic {width: 100%; font-weight: bold;}
+	#divTbViolationRule {width: 100%; height: 450px; overflow-Y: auto;}  /* Height changed by JavaScript */
+	  #tbViolationRule {width: 100%; border-collapse: collapse; max-height: 500px; height: 500px; }
+	  #tbViolationRule {padding: 0;  border: 1px solid black; font-size: 75%; font-weight: bold; height:15px;  max-height:15px; background-color: grey}
+	  table#tbViolationRule td { background-color: white; padding: 0;  border: 1px solid black;   height:10px;}
+	    .trViolationRule {height: 15px}
+		    .tdViolationRule {font-weight : bold; font-size: 75%; }
+		    .tdViolationEnabled {width: 30px; text-align: center; font-size:100%;}
+  #tdDetail {height: 100%; border: 1px solid black;}
+    #tbDetail {border-collapse: collapse;}
+      #trDetailQuality {height: 30%}
+        #tdDetailQualityFactor {width:300px; margin:0; padding:0;}
+          #divDetailQualityFactor {border: 1px solid black;}
+          .preQuality { margin:6.3}
+          .classChkbx {}
+        #tdDetailQualityCharacteristic {width: 100%;}
+          #divDetailQualityCharacteristic {}
+      #trDetailRemediation {height: 30%} 
+        #tdDetailRemediation {width: 100%;border: 1px solid black;}      
+          #tbDetailRemediation {width: 100%; border-collapse: collapse;}
+            #tdRemediationSeverity {border: 1px solid black;} 
+                #tbRemediationSeverity {height: 120px; width: 100%; border: 1px solid black; border-collapse: collapse; margin-top:0; margin-bottom: auto; vertical-align:top;}             
+            #tdRemediationType {border: 1px solid black;} 
+               #tbRemediationType {height: 120px; width: 100%; border: 1px solid black; border-collapse: collapse; margin-top:0; margin-bottom: auto; vertical-align:top;}             
+            #tdRemediationCost {border: 1px solid black;} 
+               #tbRemediationCost {height: 120px; width: 100%; border: 1px solid black; border-collapse: collapse; margin-top:0; margin-bottom: auto; vertical-align:top;}             
+            #tdRemediationThreshold {border: 1px solid black; }                             
+               #tbThreshold {height: 120px; width: 100%; border: 1px solid black; border-collapse: collapse; margin-top:0; margin-bottom: auto; vertical-align:top;}
+               #tbThreshold {height: 120px; width: 100%; border: 1px solid black; border-collapse: collapse; margin-top:0; margin-bottom: auto; vertical-align:top;}
+               table#tbThreshold td { background-color: white; padding: 0;  border: 1px solid black; height:10px; }
+                .thresholdHdr {width: 50px; font-size: medium;}
+                .thresholdCom {width: 150px;}
+                #thresholdId {}
+                #thresholdRange {}
+                #thresholdLow {}
+                #thresholdHigh {}
+      #trDetailMaintEstim {height: 30%} 
+        #tdDetailMaintEstim {width: 100%;border: 1px solid black;}      
+      
+ 
+
+
+.btnFunction {
+  height: 35px;
+  width: 100%;
+  margin-top:0px;
+  margin-bottom:0px; 
+  margin-top:0px;
+  font-size: 110%;
+  font-weight: bold; 
+  font-family: Arial, Helvetica, sans-serif;}
+
+#logout:hover {
+  opacity: 0.8;
+  color: red;
+}
+
+.divHeader {color: white; background-color:grey; font-size: large; font-style: bold; text-align: center; border: 1px solid black;}
+.divHeaderLight {color: white; background-color:grey; font-size: small; font-style: bold; text-align: center; border: 1px solid black;}
+
+.alignTop {margin-top: 0; margin-bottom: auto; } 
+.alignBottom {margin-top: auto; margin-bottom: 0; } 
+
+.selected {  
+  background-color: yellow;
+}

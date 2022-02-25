@@ -1,0 +1,40 @@
+     ******************************************************************
+      * DCLGEN TABLE(VTTAB190)                                         *
+      *        LIBRARY(ALBEDOP.DB2.COPY(VTTAB190))                     *
+      *        ACTION(REPLACE)                                         *
+      *        LANGUAGE(COBOL)                                         *
+      *        STRUCTURE(VTTAB190)                                     *
+      *        QUOTE                                                   *
+      * ... IS THE DCLGEN COMMAND THAT MADE THE FOLLOWING STATEMENTS   *
+      ******************************************************************
+           EXEC SQL DECLARE VTTAB190 TABLE
+           ( T190_CODSOC                    INTEGER NOT NULL,
+             T190_CATEGORIA                 CHAR(1) NOT NULL,
+             T190_COD_TABELLA               CHAR(3) NOT NULL,
+             T190_CHIAVE1                   CHAR(10) NOT NULL,
+             T190_CHIAVE2                   CHAR(10) NOT NULL,
+             T190_CHIAVE3                   CHAR(10) NOT NULL,
+             T190_DESCRIZ                   CHAR(40) NOT NULL,
+             T190_DATI                      VARCHAR(1000) NOT NULL,
+             T190_FIN_VALIDITA              CHAR(10) NOT NULL
+           ) END-EXEC.
+           
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE VTTAB190                           *
+      ******************************************************************
+       01  VTTAB190.
+           10 T190-CODSOC          PIC S9(9) USAGE COMP.
+           10 T190-CATEGORIA       PIC X(1).
+           10 T190-COD-TABELLA     PIC X(3).
+           10 T190-CHIAVE1         PIC X(10).
+           10 T190-CHIAVE2         PIC X(10).
+           10 T190-CHIAVE3         PIC X(10).
+           10 T190-DESCRIZ         PIC X(40).
+           10 T190-DATI.
+              49 T190-DATI-LEN     PIC S9(4) USAGE COMP.
+              49 T190-DATI-TEXT    PIC X(1000).
+           10 T190-FIN-VALIDITA    PIC X(10).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 9       *
+      ******************************************************************
+   

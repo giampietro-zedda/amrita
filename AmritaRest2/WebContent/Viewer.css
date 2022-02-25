@@ -1,0 +1,193 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Main table of the SPA Viewer application */
+#mainTable {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+}
+
+#headerLineTable{
+  width: 100%;
+  border-collapse:collapse;
+  margin: 0;
+  background-color: orange;
+  font-size: xx-large;
+  height: 30px;
+  border: 1px solid black;
+} 
+
+#containerTbluserLink{
+  border-collapse:collapse;	
+  margin: 0;
+  padding:0;
+}  
+
+#headerLeftTh{
+ text-align: left;
+ vertical-align: middle;
+ font-size: xx-large;
+ font-weight: bold;
+}  
+#headerCenterTh{
+ text-align: center;
+ vertical-align: middle;
+ font-size: x-large;
+ font-weight: bold;
+}  
+#headerRightTh{
+} 
+
+#leftMainTableCell {
+  border: 1px solid black;
+  vertical-align: top;
+  width: 300;
+  height:100%;  
+}
+
+#leftTableDiv {
+  vertical-align: top;
+  width: auto;
+  height: 96%;
+  width:auto;
+  overflow-y: auto;
+}
+
+
+#countTable {
+  border-collapse:collapse;
+  border:0;
+}
+
+#lblCountObjects {
+  border:0;
+}
+
+#countObjects {
+ color: green;
+ font-size: medium; 
+ width: inherit
+}
+
+/* Table containing objects */
+#leftTableList {
+  border-collapse: collapse; 
+  border: 1px solid black;   
+  width: auto;
+  padding: 0px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;   
+  font-family:monospace;
+}
+
+table#leftTableList th {
+  background-color: gray;
+  color:white;
+  border: 1px solid black;
+}
+  
+.btnLeft {
+  height: 25px;
+  width: 280;
+  margin-top:0px;
+  margin-bottom:0px;  
+  font-size: small; 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.leftTableRowC0 { 
+  border: 1px solid black; 
+  font-size: small;
+  font-family: monospace; 	
+  width:1%;
+}
+
+.leftTableRowC1 { 
+  border: 1px solid black; 
+  font-size: small;
+  font-family: monospace; 	
+  width:1%;
+}
+
+.leftTableRowC2 { 
+  border: 1px solid black; 
+  font-size: small;
+  font-family: monospace; 	
+  width:auto;
+}
+
+.leftTableRowC3 { 
+  border: 1px solid black; 
+  width: 150px; 
+  font-size: small; 
+  font-family: monospace;	
+}
+
+/* Activated on row selection */
+.selected {
+  background-color: yellow;
+}
+
+#centerMainTableCell {
+  border: 1px solid black; 
+  width: auto;  
+}
+
+#iframeCenter {
+  border: none;
+  width: 100%;
+  height: 100%;  
+}
+
+#lefttMenuTable {
+  border: none; 
+  widht: 100%; 
+  margin-top:5px; 
+  border-collapse: collapse; 
+}
+
+#rightMenuTable {
+  border: none; 
+  widht: 100%; 
+  margin-top:5px; 
+  border-collapse: collapse; 
+}
+
+#rightMainTableCell {
+  border: 1px solid black; 
+  vertical-align: top;
+  width: 20%;
+  height: 100%;  
+}
+	
+.btnRight {
+  height: 38px;
+  width: 320px;
+  margin-top:0px;
+  margin-bottom:0px;  
+  font-size: small; 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.rightHelpTable {
+  vertical-align: top;		
+  margin-left:0px;
+  margin-top:5px;
+ 
+}
+
+.iframeHelp {
+  vertical-align: top;		
+}
+
+

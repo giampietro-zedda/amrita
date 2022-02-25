@@ -1,0 +1,32 @@
+//SRK44D  JOB AIRK00000,'S. AUT. 21',MSGCLASS=K,CLASS=B,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//*---------------------------------------------------------------------
+//* RICEZIONE FLUSSO TDF02 - C N C - INFORMAZIONI FISCALI RICEZ.ESITI
+//*---------------------------------------------------------------------
+//*
+//   EXEC SRK41R,                  FASE DI DEMAND SU AMBIENTE MULTIB
+//        FASEMUL='RYDFR',                            DCB FILES
+//        NOMEFIL='CXXOS.DSPXRK.PEBG0.AUFT.RICTDF02.S(0)', DATACLAS GDG
+//        DCB='(RECFM=FB,LRECL=256,BLKSIZE=27904)',
+//        NOMEGDG='RK.GDG.RICTDF02',
+//*                  NOME GDG X ELABOR.
+//        DATACL='FB256'
+//*
+//P01.SYSUT1  DD DISP=OLD,DSN=&NOMEGDG(0)             +1 IN ACCODAMENTO
+//            DD DISP=OLD,DSN=&NOMEFIL
+//*
+//*---------------------------------------------------------------------
+//************************************************************
+//*PROSTART
+//*DESCRIZIONE   : RICEZIONE FLUSSO FILE TRANSFER TDF02
+//*-----------
+//*SCHEDULAZIONE : DEMAND DA XRY/R1*CXY
+//*-------------
+//*VINCOLO TP    : NO
+//*----------
+//*DUMP          : SOSPENDERE E SEGNALARE
+//*----
+//*PROSEND

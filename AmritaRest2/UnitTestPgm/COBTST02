@@ -1,0 +1,3052 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance     
+      *      Reverse
+      *       Integrated
+      *         Tecnology 
+      *           Application
+      *
+      *================================================================
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.     COBTST02.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: Unit test esaustivo logiche dinamiche di pgm.
+      *                 : Lo scopo è di testare tutti i casi di valori
+      *                 : dinamici risolti nello stesso programma,
+      *                 : attraverso assegnazioni, recupero da file
+      *                 : esterni etc.
+      *                 : L'informazione di istruzione dinamiche non 
+      *                 : risolta viene inserite nel flag della tabella
+      *                 : DFLD e le informazioni dettagliate sono
+      *                 : caricate nelle strutture interne del pgm 
+      *                 : serializzato.
+      *                 : Non vengono testate situazioni di stress
+      *                 : dal punto di vista della complessità di
+      *                 : visita dei grafi, ma solo la capacità di
+      *                 : soluzione locale del codice dinamico.
+      *                 : I test sono numerati progressivamente e
+      *                 : attivati con perform.
+      *                 : Le istruzioni dinamiche da risolvere hanno
+      *                 : sempre indicato come commento i campi ultimi
+      *                 : di trasformazione, i loro valori e i valori
+      *                 : cumulativi individuati.
+      *                 :
+      *                 :
+      *                 :
+      *                 :
+      *                 :
+      *                 :
+      *  Scritto il    	: 26-10-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================       
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+ 
+      * Test T032 Select file da cui prendere il nome di una coda TS
+           SELECT OPTIONAL T032FILE    ASSIGN TO T032VSM1
+              ORGANIZATION IS INDEXED
+              ACCESS MODE IS RANDOM.
+
+      * Test T065 Select file da cui prendere il nome di un programma
+           SELECT OPTIONAL T065FILE    ASSIGN TO T065VSM1
+              ORGANIZATION IS INDEXED
+              ACCESS MODE IS RANDOM.
+ 
+       DATA DIVISION.
+       FILE SECTION.
+      *
+       FD  T032FILE
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  T032-REC-VSAM                   PIC  X(80).
+      *
+ 
+       FD  T065FILE
+           LABEL RECORD STANDARD
+           RECORDING MODE F
+           BLOCK CONTAINS 0 RECORDS.
+       01  T065-REC-VSAM                   PIC  X(100).
+      *
+ 
+       WORKING-STORAGE SECTION.
+       
+       01 FILLER.
+      * Nome programma, file ...
+          05 TXXX-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T002-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T003-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T004-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T005-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T006-FLD-SINGLE              PIC X(8) VALUE 'T006DFLT'.
+          05 T007-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T021-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T025-FLD-SINGLE              PIC X(8).
+          05 T029-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T030-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T031-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T032-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T033-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T034-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T035-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T036-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T037-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T038-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T039-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T040-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T041-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T042-FLD-SINGLE              PIC X(8) VALUE SPACE.
+          05 T056-FLD-SINGLE              PIC X(8) VALUE SPACE.
+
+      * Campi di servizio e trasformazione specifici per test
+          05 T007-FLDX8                   PIC X(8).
+          05 T008-FLDX8                   PIC X(8).
+          05 T009-FLDX8                   PIC X(8).
+          05 T010-FLDX6                   PIC X(6).
+          05 T010-FLDX8                   PIC X(8).
+          05 T011-FLDX8                   PIC X(8).
+          05 T012-FLDX8                   PIC X(8).
+          05 T013-FLDX8                   PIC X(8).
+          05 T014-FLDX8                   PIC X(8).
+          05 T015-FLDX8                   PIC X(8) VALUE 'T015DFLT'.
+          05 T016-FLDX8                   PIC X(8) VALUE 'T016DFLT'. 
+          05 T017-FLDX8                   PIC X(8).
+          05 T018-FLDX8                   PIC X(8) VALUE 'T018DFLT'.
+          05 T019-FLDX8                   PIC X(8) VALUE 'T019DFLT'.
+          05 T020-FLDX8                   PIC X(8) VALUE 'T020DFLT'.
+          05 T021-FLDX8                   PIC X(8) VALUE 'T021DFLT'.
+          05 T022-FLDX8                   PIC X(8) VALUE 'T022DFLT'.
+          05 T023-FLDX8                   PIC X(8) VALUE 'T023DFLT'.
+          05 T024-FLDX8                   PIC X(8).
+          05 T025-FLDX8                   PIC X(8) VALUE 'T025DFLT'.
+          05 T029-FLDX8                   PIC X(8).
+          05 T030-FLDX8                   PIC X(8).
+          05 T031-FLDX8                   PIC X(8).
+          05 T033-FLDX8                   PIC X(8).
+          05 T040-FLDX8                   PIC X(8).
+          05 T049-FLDX8                   PIC X(8).
+
+      * Campo costante per test T001-T002-T003-T004
+          05 T001-FLD01      PIC X(8)   VALUE 'T001DYN1'.
+          05 T002-FLD01      PIC X(8)   VALUE 'T002DYN1'.
+          05 T003-FLD01-GT   PIC X(10)  VALUE 'T003DYN1ZZ'.
+          05 T003-FLD01-LT   PIC X(7)   VALUE 'T003DYN'.
+
+      * Campi per test T007
+          05 T007-FLD-GRP.
+             07 T007-GRP-SUBFLD1          PIC X(4) VALUE SPACES.
+             07 T007-GRP-SUBFLD2          PIC X(2) VALUE '00'.
+             07 T007-GRP-SUBFLD3          PIC X(2) VALUE 'ZZ'.
+ 
+      * Campi costante e vari per test T009
+          05 T009-FLD01      PIC X(8)   VALUE 'T009DYN1'.
+          05 T009-FLD02      PIC X(8)   VALUE 'T009DYN2'.
+          05 T009-FLDX81     PIC X(8)   VALUE SPACE.
+          05 T009-FLDX82     PIC X(8)   VALUE SPACE.
+       
+      * Campi costante per test T010
+          05 T010-FLD01      PIC X(8)   VALUE 'T010DYN1'.
+          05 T010-FLD02      PIC X(8)   VALUE 'T010DYN1'.
+ 
+      * Campi per test T011
+          05 T011-FLD01      PIC X(8)   VALUE 'T011DYN1'.
+          05 T011-FLD-GRP.    
+             07 T011-FLDG01  PIC X(8)   VALUE 'T011DFLT'. 
+             07 T011-FLDG02  PIC X(8)   VALUE SPACE.
+
+      * Campi per test T012
+
+      *    Gruppo 1 contenente il Sender
+           05 T012-C1        PIC X(8)   VALUE 'T012DYN1'.
+           05 T012-C2        PIC X(8)   VALUE 'T012DYN2'.
+           05 T012-C3        PIC X(8)   VALUE 'T012DYN3'.
+           05 T012-C4        PIC X(8)   VALUE 'T012DYN4'.
+           05 T012-C5        PIC X(8)   VALUE 'T012DYN5'.
+           05 T012-C6        PIC X(8)   VALUE 'T012DYN6'.
+           05 T012-FLDX8-2   PIC X(8)   VALUE 'T012DFLT'.   
+           05 T012-FLDX8-3   PIC X(8)   VALUE 'T012DFL3'. 
+           05 T012-FLDX8-4   PIC X(8)   VALUE 'T012DFL4'.
+           05 T012-FLDX8-5   PIC X(8)   VALUE 'T012DFL5'.
+           05 T012-FLD-GRP1.    
+             07 FILLER       PIC X(4)   VALUE SPACE.
+             07 T012-FLD01   PIC X(8)   VALUE SPACE.
+             
+      *      Gruppo 2 contenente il Sender
+             07 T012-FLD-GRP2. 
+      *        Sender 1 elementare
+                09 T012-FLDX8-1 PIC X(8)  VALUE 'T012DFL1'.
+                
+      *         Sender 2 di gruppo
+                09 T012-FLDX8-2-GRP.
+                   11 T012-FLDX8-2-1 PIC X(8)  VALUE SPACE.
+                   11 T012-FLDX8-2-2 PIC X(4)  VALUE SPACE.
+
+      *         Redefine sender con campo semplice
+                09 T012-FLDX8-RED1 REDEFINES T012-FLDX8-1 PIC X(8).
+                
+      *         Redefine sender con campo di gruppo
+                09 T012-FLDX8-RED2-GRP REDEFINES T012-FLDX8-1.
+                   11 T012-FLDX8-RED2-GRP-F1 PIC X(8) VALUE SPACE.
+                   
+      *      Redefine gruppo 2 contenente sender con campo semplice
+             07 T012-FLD-GRP2-RED1 REDEFINES T012-FLD-GRP2 PIC X(10). 
+             
+      *      Redefine gruppo 2 contenente sender con campo di gruppo
+             07 T012-FLD-GRP2-RED2 REDEFINES T012-FLD-GRP2.
+                09 T012-FLD-GRP2-RED2-F1 PIC X.
+                09 T012-FLD-GRP2-RED2-F2 PIC X(9).
+
+
+                     
+      * Campi per test T013
+           05 T013-FLD-GRP.    
+             07 T013-FLD01   PIC X(8)   VALUE SPACE.
+             07 T013-FLD02   PIC X(8)   VALUE SPACE.
+             07 T013-FLD03   PIC X(8)   VALUE SPACE.
+
+      * Campi per test T014 OF
+           05 T014-FLD-GRP1.    
+             07 T014-FLD01   PIC X(8)   VALUE SPACE.
+             07 T014-FLD02   PIC X(8)   VALUE SPACE.
+             07 T014-FLD03   PIC X(8)   VALUE SPACE.
+           05 T014-FLD-GRP2.    
+             07 T014-FLD01   PIC X(8)   VALUE SPACE.
+             07 T014-FLD02   PIC X(8)   VALUE SPACE.
+             07 T014-FLD03   PIC X(8)   VALUE SPACE.
+             
+      * Campi per test T015
+           05 T015-FLD-GRP.    
+             07 T015-FLD01   PIC X(8)   VALUE 'T015DYN1'.
+             07 T015-FLD02   PIC X(8)   VALUE SPACE.
+             07 T015-FLD03   PIC X(8)   VALUE 'T015DYN3'.
+
+      * Campi per test T016
+           05 T016-FLD-GRP.    
+             07 T016-FLD01   PIC X(8)   VALUE SPACE.
+             07 T016-FLD02   PIC X(8)   VALUE SPACE.
+             07 T016-FLD03   PIC X(8)   VALUE 'T016DFLT'.
+
+      * Campi per gestione test T017 
+           05 T017-FIELDS.
+	          07 T017-MAP                 PIC X(8).     
+	          07 T017-MAPSET              PIC X(8).     
+
+
+      * Tabella una dimensione per test T018
+          05 T018-TB2-VALUE.
+             07 FILLER                    PIC X(8) VALUE 'T018TBD1'.
+             07 FILLER                    PIC X(8) VALUE 'T018TBD2'.
+             07 FILLER                    PIC X(8) VALUE 'T018TBD3'.
+             07 FILLER                    PIC X(8) VALUE 'T018TBD4'.
+             
+      * Tabella due dimensioni per test T019
+          05 T019-TB3-VALUE.
+             07 FILLER       PIC X(24) VALUE 'T019TBD1T019TBD5T019TBD9'.
+             07 FILLER       PIC X(24) VALUE 'T019TBD2T019TBD6T019TBDA'.
+             07 FILLER       PIC X(24) VALUE 'T019TBD3T019TBD7T019TBDB'.
+             07 FILLER       PIC X(24) VALUE 'T019TBD4T019TBD8T019TBDC'.
+             
+      * Tabella una dimensione per test su tabella T020
+          05 T020-TB2-VALUE.
+             07 FILLER                    PIC X(8) VALUE 'T020TBD1'.
+             07 FILLER                    PIC X(8) VALUE 'T020TBD2'.
+              
+      * Tabella una dimensione per test su tabella T021
+          05 T021-TB2-VALUE.
+             07 FILLER                    PIC X(8) VALUE 'T021TBD1'.
+             07 FILLER                    PIC X(8) VALUE 'T021TBD2'.
+             07 FILLER                    PIC X(8) VALUE 'T021TBD3'.
+             07 FILLER                    PIC X(8) VALUE 'T021TBD4'.
+
+      * Tabella una dimensione per test T055
+          05 T055-TB1-VALUE.
+             07 FILLER                    PIC X(4) VALUE 'AA01'.
+             07 FILLER                    PIC X(4) VALUE 'AA02'.
+             07 FILLER                    PIC X(4) VALUE 'BB03'.
+             07 FILLER                    PIC X(4) VALUE 'BB04'.
+             07 FILLER                    PIC X(4) VALUE 'BB99'.
+ 
+      * Tabella due dimensioni per test T056
+          05 T056-TB3-VALUE.
+             07 FILLER       PIC X(24) VALUE 'T056TBD1T056TBD5T056TBD9'.
+             07 FILLER       PIC X(24) VALUE 'T056TBD2T056TBD6T056TBDA'.
+             07 FILLER       PIC X(24) VALUE 'T056TBD3T056TBD7T056TBDB'.
+             07 FILLER       PIC X(24) VALUE 'T056TBD4T056TBD8T056TBDC'.
+             
+             
+      * Tabella 1 dimensione             
+          05 T055-TB1-VALUE-RED REDEFINES T055-TB1-VALUE.
+             07 T055-EL-TB1-OCC1 OCCURS 5.
+                09 T055-EL-TB1.
+                   11 T055-TB1-XX         PIC XX.
+                   11 T055-TB1-99         PIC 99.
+                   
+      * Tabella 2 dimensioni
+          05 T055-TB1-VALUE-RED2 REDEFINES T055-TB1-VALUE.
+             07 T055-EL-TB1-OCC1 OCCURS 5.
+                09 T055-EL-TB1-OCC2  OCCURS 4.
+                   11 T055-TB1-X          PIC X.
+                              
+      * Tabella T056 2 dimensione con definizione in element Occurs               
+           05 T056-TB3-VALUE-RED REDEFINES T056-TB3-VALUE.
+             07 T056-EL-TB3-OCC1 OCCURS 4.
+                09 T056-EL-TB3-OCC2 OCCURS 3.
+                   11 T056-TB3-PGM        PIC X(8).
+
+      * Tabella T018 1 dimensione con definizione in statement Occurs            
+           05 T018-TB2-VALUE-RED REDEFINES T018-TB2-VALUE.
+             07 T018-EL-TB2-OCC1 OCCURS 4 PIC X(8).
+             
+      * Tabella T018 1 dimensione con definizione in element Occurs            
+          05 T018-TB2-VALUE-RED REDEFINES T018-TB2-VALUE.
+             07 T018-EL-TB2-OCC1-PGM OCCURS 4.
+                09 T018-TB2-PGM           PIC X(8).
+
+      * Tabella T019 2 dimensione con definizione in element Occurs               
+          05 T019-TB3-VALUE-RED REDEFINES T019-TB3-VALUE.
+             07 T019-EL-TB3-OCC1 OCCURS 4.
+                09 T019-EL-TB3-OCC2 OCCURS 3.
+                   11 T019-TB3-PGM        PIC X(8).
+                   
+      * Tabella T020 1 dimensione con definizione in statement Occurs               
+           05 T020-TB2-VALUE-RED REDEFINES T020-TB2-VALUE.
+             07 T020-EL-TB2-OCC1 OCCURS 2 PIC X(8).
+             
+      * Tabella T021 1 dimensione con definizione in statement Occurs               
+           05 T021-TB2-VALUE-RED REDEFINES T021-TB2-VALUE.
+             07 T021-EL-TB2-OCC1 OCCURS 4 PIC X(8).
+             
+
+      * Campo di gruppo per test T049 (spreaded)
+          05 T049-FLD-GRP1.
+             07 T049-GRP1-SUBFLD1         PIC X    VALUE 'X'.
+             07 T049-GRP1-SUBFLD2         PIC X(3) VALUE 'X5X'.
+             07 T049-GRP1-SUBFLD3         PIC X(2) VALUE '33'.
+             07 T049-GRP1-SUBFLD4         PIC X(2) VALUE '44'.
+
+      * Campo di gruppo per test T050
+          05 T050-FLD-GRP1.
+             07 T050-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+             07 T050-GRP1-SUBFLD2         PIC X(3) VALUE '050'.
+             07 T050-GRP1-SUBFLD3         PIC X(4) VALUE 'DYN1'.
+
+      * Campo di gruppo per test T051
+          05 T051-FLD-GRP1.
+             07 T051-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+             07 T051-GRP1-SUBFLD1-GRP.
+                09 T051-GRP1-SUBFLD2      PIC X(3) VALUE '051'.
+                09 T051-GRP1-SUBFLD3      PIC X(4) VALUE 'DYN1'.
+
+      * Campo di gruppo per test T052
+         05 T052-FLD-GRP1.
+            07 T052-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+            07 T052-GRP1-SUBFLD2         PIC XXX  VALUE SPACE.
+            07 T052-GRP1-SUBFLD3         PIC XX   VALUE 'DF'.
+            07 T052-GRP1-SUBFLD4         PIC X(2) VALUE 'DF'.
+
+      * Campi Per test T053
+         05 T053-FLDX7                   PIC X(7).
+         05 T053-FLD-GRP1.
+            07 T053-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+            07 T053-GRP1-SUBFLD2         PIC XXX  VALUE SPACE.
+            07 T053-GRP1-SUBFLD3         PIC XX   VALUE SPACE.
+            07 T053-GRP1-SUBFLD4         PIC XX VALUE SPACE.
+
+      * Campi per test T055
+          05 T055-X2.
+             07 FILLER                     PIC XX.
+          05 T055-X9 REDEFINES T055-X2     PIC 99.
+          05 T055-X2-RED REDEFINES T055-X2 PIC XX.
+          05 T055-FLD-GRP2.
+             07 T055-GRP2-SUBFLD1         PIC X    VALUE 'T'.
+             07 T055-GRP2-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T055-GRP2-GRP. 
+                09 T055-GRP2-SUBFLD3      PIC XX   VALUE 'DF'.
+                09 T055-GRP2-SUBFLD4      PIC XX   VALUE 'DF'.
+                          
+      * Campi per test T056
+          05 T056-FLD-GRP2.
+             07 T056-GRP2-SUBFLD1         PIC X    VALUE 'T'.
+             07 T056-GRP2-SUBFLD2         PIC XXX  VALUE SPACE.
+             07 T056-GRP2-SUBFLD3         PIC XX   VALUE SPACE.
+             07 T056-GRP2-SUBFLD4         PIC XX   VALUE SPACE.
+                          
+
+      * Campo di gruppo per test T057
+          05 T057-FLD-GRP2.
+             07 T057-GRP2-SUBFLD1         PIC X    VALUE 'T'.
+             07 T057-GRP2-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T057-GRP2-GRP. 
+                09 T057-GRP2-SUBFLD3      PIC XX   VALUE SPACE.
+                09 T057-GRP2-SUBFLD4      PIC XX   VALUE SPACE.
+ 
+      * Campo di gruppo per test T058
+          05 T058-FLD-GRP1.
+             07 T058-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+             07 T058-GRP1-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T058-GRP1-GRP. 
+                09 T058-GRP1-SUBFLD3      PIC XX   VALUE SPACE.
+                09 T058-GRP1-SUBFLD4      PIC XX   VALUE SPACE.
+                
+      * Campo di gruppo di servizio per test T058
+          05 T058-FLD-GRP12.
+             07 T058-GRP12-SUBFLD3        PIC XX   VALUE SPACE.
+             07 T058-GRP12-SUBFLD4        PIC XX   VALUE SPACE.
+                              
+      * Campo di gruppo per test T059
+          05 T059-FLD-GRP1.
+             07 T059-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+             07 T059-GRP1-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T059-GRP1-GRP. 
+                09 T059-GRP1-SUBFLD3      PIC XX   VALUE SPACE.
+                09 T059-GRP1-SUBFLD4      PIC XX   VALUE SPACE.
+
+      * Campo di gruppo di servizio per test T059
+          05 T059-FLD-GRP12.
+             07 FILLER                    PIC X(4) VALUE SPACE.
+             07 T059-GRP12-SUBFLD3        PIC XX   VALUE SPACE.
+             07 T059-GRP12-SUBFLD4        PIC XX   VALUE SPACE.
+                              
+      * Campo di gruppo per test T060
+          05 T060-FLD-GRP2.
+             07 T060-GRP2-SUBFLD1         PIC X    VALUE 'T'.
+             07 T060-GRP2-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T060-GRP2-GRP. 
+                09 T060-GRP2-SUBFLD3      PIC XX   VALUE 'DD'.
+                09 T060-GRP2-SUBFLD4      PIC XX   VALUE SPACE.
+              
+      * Campo di gruppo  per test T060
+          05 T060-FLD-GRP1.
+             07 T060-GRP1-SUBFLD3         PIC XX   VALUE SPACE.
+             07 T060-GRP1-SUBFLD4         PIC XX   VALUE SPACE.
+
+      * Campo di gruppo per test T061
+          05 T061-FLD-GRP1.
+             07 T061-GRP1-SUBFLD1         PIC X    VALUE 'T'.
+             07 T061-GRP1-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T061-GRP1-SUBFLD3         PIC XX   VALUE SPACE.
+             07 T061-GRP1-SUBFLD4         PIC XX   VALUE SPACE.
+
+      * Campo per test T062
+          05 T062-FLDX4                   PIC X(4) VALUE SPACE.
+
+      * Campo di gruppo per test T063
+          05 T063-FLD-GRP2.
+             07 T063-GRP2-SUBFLD1         PIC X    VALUE 'T'.
+             07 T063-GRP2-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T063-GRP2-GRP. 
+                09 T063-GRP2-SUBFLD3      PIC XX   VALUE SPACE.
+                09 T063-GRP2-SUBFLD4      PIC XX   VALUE SPACE.
+
+      * Campo di gruppo per test T065
+          05 T065-FLD-GRP2.
+             07 T065-GRP2-SUBFLD1         PIC X    VALUE 'T'.
+             07 T065-GRP2-SUBFLD2         PIC X(3) VALUE SPACE.
+             07 T065-GRP2-GRP. 
+                09 T065-GRP2-SUBFLD3      PIC XX   VALUE SPACE.
+                09 T065-GRP2-SUBFLD4      PIC XX   VALUE SPACE.
+
+                   
+      * Campi per test passasggio da numerico ad alfanumerico e redefines
+          05 TXXX-X8.
+             07 TXXX-98                    PIC 9(8).
+             07 TXXX-98X REDEFINES TXXX-98 PIC X(8).
+          05 TXXX-X2.
+             07 FILLER                     PIC XX.
+          05 TXXX-X9 REDEFINES TXXX-X2     PIC 99.
+          05 TXXX-X2-RED REDEFINES TXXX-X2 PIC XX.
+          
+      * Campi di servizio vari e trasformazione generici
+          05 TXXX-KEY                     PIC X(10).
+          05 TXXX-IOAREA                  PIC X(100).
+          05 TXXX-FLDX1                   PIC X.
+          05 TXXX-FLDX2                   PIC X(2).
+          05 TXXX-FLDX3                   PIC X(3).
+          05 TXXX-FLDX4                   PIC X(4).
+          05 T034-FLDX4                   PIC X(4).
+          05 T035-FLDX4                   PIC X(4).
+          05 TXXX-FLDX5                   PIC X(5).
+          05 TXXX-FLDX6                   PIC X(6).
+          05 TXXX-FLDX7                   PIC X(7).
+          05 TXXX-FLDX8                   PIC X(8).
+          05 T057-FLDX8                   PIC X(8).
+          05 T059-FLDX8                   PIC X(8).
+          05 TXXX-FLDX82                  PIC X(8).
+          05 TXXX-FLDN1                   PIC 9(3).
+          05 TXXX-FLDN2                   PIC 9(7)  COMP-3.
+          05 TXXX-FLDN3                   COMP.
+          05 TXXX-SPACE                   PIC X(4) VALUE SPACE.
+          05 TXXX-ZERO                    PIC X(2) VALUE ZEROES.
+          05 TXXX-A                       PIC X    VALUE 'A'.
+          05 TXXX-ZZ                      PIC XX   VALUE 'ZZ'.
+          05 TXXX-88                      PIC X    VALUE SPACE.
+	          88 TXXX-88-A VALUE 'A'. 
+	          88 TXXX-88-B VALUE 'B'. 
+	          88 TXXX-88-C VALUE 'C'. 
+	          88 TXXX-88-D VALUE 'D'. 
+ 
+          
+      * Campi per gestione test T029-T030-T031
+      * Ioarea lng=100
+        01 T0XX-IOAREA.
+	         05 T0XX-TIPO-REC                PIC X.     
+	         05 T0XX-FLD01                   PIC X(8).     
+	         05 T0XX-FLD02                   PIC 9(5).     
+	         05 T0XX-FILE-NAME               PIC X(8).     
+	         05 T0XX-PGM-NAME                PIC X(8).     
+	         05 T0XX-TS-NAME                 PIC X(8).     
+	         05 T0XX-PREFIX                  PIC XX.     
+	         05 T0XX-DATI                    PIC X(60).     
+          
+      * Campi per gestione test T029 
+      * Ioarea lng=100
+        01 T029-IOAREA.
+	         05 T029-TIPO-REC                PIC X.     
+	         05 T029-FLD01                   PIC X(8).     
+	         05 T029-FLD02                   PIC 9(5).     
+	         05 T029-FILE-NAME               PIC X(8).     
+	         05 T029-PGM-NAME                PIC X(8).     
+	         05 T029-TS-NAME                 PIC X(8).     
+	         05 T029-PREFIX                  PIC XX.     
+	         05 T029-DATI                    PIC X(60).     
+          
+      * Campi per gestione test T030 
+      * Ioarea lng=100
+        01 T030-IOAREA.
+	         05 T030-TIPO-REC                PIC X.     
+	         05 T030-FLD01                   PIC X(8).     
+	         05 T030-FLD02                   PIC 9(5).     
+	         05 T030-FILE-NAME               PIC X(8).     
+	         05 T030-PGM-NAME                PIC X(8).     
+	         05 T030-TS-NAME                 PIC X(8).     
+	         05 T030-PREFIX                  PIC XX.     
+	         05 T030-DATI                    PIC X(60).     
+          
+      * Campi per gestione test T031 
+      * Ioarea lng=100
+        01 T031-IOAREA.
+	         05 T031-TIPO-REC                PIC X.     
+	         05 T031-FLD01                   PIC X(8).     
+	         05 T031-FLD02                   PIC 9(5).     
+	         05 T031-FILE-NAME               PIC X(8).     
+	         05 T031-PGM-NAME                PIC X(8).     
+	         05 T031-TS-NAME                 PIC X(8).     
+	         05 T031-PREFIX                  PIC XX.     
+	         05 T031-DATI                    PIC X(60).     
+
+      * Campi per gestione test T032 
+      * Ioarea lng=80
+        01 T032-IOAREA.
+	         05 T032-TIPO-REC                PIC X.     
+	         05 FILLER                       PIC X(11).     
+	         05 T032-TS-NAME                 PIC X(8).     
+             05 FILLER                       PIC X(60).
+
+      * Campi per gestione test T033 
+      * Ioarea lng=100
+        01 T033-IOAREA.
+	         05 T033-TIPO-REC                PIC X.     
+	         05 T033-FLD01                   PIC X(8).     
+	         05 T033-FLD02                   PIC 9(5).     
+	         05 T033-FILE-NAME               PIC X(8).     
+	         05 T033-PGM-NAME                PIC X(8).     
+	         05 T033-TS-NAME                 PIC X(8).     
+	         05 T033-PREFIX                  PIC XX.     
+	         05 T033-DATI                    PIC X(60).     
+
+      * Campi per gestione test T037 - logiche spreaded 
+         01 T037-PGM-NAME.
+	         05 T037-PGM-PREFIX                PIC X(4).     
+	         05 T037-PGM-ID                    PIC X(3).     
+	         05 T037-PGM-SUFFIX                PIC X(1).     
+
+      * Campi per gestione test T038 - logiche spreaded 
+         01 T038-PGM-NAME.
+	         05 T038-PGM-PREFIX                PIC X(4).     
+	         05 T038-PGM-ID                    PIC X(3).     
+	         05 T038-PGM-SUFFIX                PIC X(1).     
+
+      * Campi per gestione test T040
+      * Ioarea lng=100
+        01 T040-IOAREA.
+	       05 T040-TIPO-REC                 PIC X.     
+	       05 T040-FLD01                    PIC X(8).     
+	       05 T040-FLD02                    PIC 9(5).     
+	       05 T040-FILE-NAME                PIC X(8).     
+	       05 T040-PGM-NAME                 PIC X(8).     
+	       05 T040-TS-NAME                  PIC X(8).     
+	       05 T040-PREFIX                   PIC XX.     
+	       05 T040-DATI                     PIC X(60).     
+
+      * Campi per gestione test T041
+        01 T041-WS-CSA.
+             07 T041-WS-CSA-COD             PIC X.
+             07 T041-WS-CSA-FILE-NAME       PIC X(8).
+             07 T041-WS-CSA-FILE-NAME2      PIC X(8).
+
+      * Campi per gestione test T042
+        01 T042-DFHCOMMAREA.
+           05 T042-FILE-NAME                PIC X(8).
+           05 T042-FILE-NAME2               PIC X(8).
+           05 T042-TS-NAME                  PIC X(8).
+           05 T042-PGM-NAME                 PIC X(8).
+           05 T042-PGM-NAME2                PIC X(8).
+           05 T042-MAP                      PIC X(8).
+           05 T042-MAPSET                   PIC X(8).
+           05 T042-TRANSID                  PIC X(4).
+          
+      * Campi per gestione test T043
+        01 T043-DFHCOMMAREA.
+           05 FILLER                        PIC X(8).
+           05 T043-PGM-NAME                 PIC X(8).
+           05 T043-MAP                      PIC X(8).
+           05 T043-MAPSET                   PIC X(8).
+  
+      * Campi per gestione test T044 - logiche spreaded 
+        01 T044-PGM-NAME-GROUP.
+	         05 T044-PGM-PREFIX                PIC X(4).     
+	         05 T044-PGM-ID                    PIC X(3).     
+	         05 T044-PGM-SUFFIX                PIC X(1). 
+	             
+      * Campi per gestione test T045 - logiche spreaded con pointer 
+        01 T045-PGM-NAME                      PIC X(8).
+        01 T045-POINTER  USAGE POINTER.
+
+      * Campi per gestione test T046
+        01 T046-DFHCOMMAREA.
+           05 T046-FILE-NAME                PIC X(8).
+           05 T046-FILE-NAME2               PIC X(8).
+           05 T046-POINTER    USAGE POINTER.
+           05 FILLER                        PIC X(8).
+        01 T046-PGM-NAME                    PIC X(8).
+          
+      * Campi per gestione test T047
+       01 T047-TWA.
+           05 T047-FILE-NAME                PIC X(8).
+           05 T047-FILE-NAME2               PIC X(8).
+           05 T047-POINTER    USAGE POINTER.
+           05 FILLER                        PIC X(8).
+       01 T047-POINTER-WORK  USAGE POINTER.
+       01 T047-PGM-NAME                     PIC X(8).
+
+          
+      * Area working per test T047
+       01 T047-WS-SPREADED.
+          05 FILLER                      PIC X(8).
+          05 T047-WS-SPREADED-FILE       PIC X(8).
+      * Pos=17
+          05 T047-WS-SPREADED-PGM-NAME   PIC X(8).
+          05 T047-WS-SPREADED-MAP        PIC X(8).
+
+      * Campi per gestione test T048
+       01 T048-WS-CSA.
+           05 T048-FILE-NAME                PIC X(8).
+           05 T048-FILE-NAME2               PIC X(8).
+           05 T048-POINTER    USAGE POINTER.
+           05 FILLER                        PIC X(8).
+       01 T048-POINTER-WORK  USAGE POINTER.
+       01 T048-PGM-NAME                     PIC X(8).
+
+          
+      * Area working per test T048
+       01 T048-WS-SPREADED.
+          05 FILLER                      PIC X(8).
+          05 T048-WS-SPREADED-FILE       PIC X(8).
+      * Pos=17
+          05 T048-WS-SPREADED-PGM-NAME   PIC X(8).
+          05 T048-WS-SPREADED-MAP        PIC X(8).
+
+      * Campi per gestione test T049
+        01 T049-DFHCOMMAREA.
+           05 T049-DFHCOMMAREA-FILE-NAME    PIC X(8).
+           05 T049-DFHCOMMAREA-FILE-NAME2   PIC X(8).
+           05 T049-DFHCOMMAREA-TS-NAME      PIC X(8).
+           05 T049-DFHCOMMAREA-PGM-NAME     PIC X(8).
+           05 T049-DFHCOMMAREA-PGM-NAME2    PIC X(8).
+           05 T049-DFHCOMMAREA-MAP          PIC X(8).
+           05 T049-DFHCOMMAREA-MAPSET       PIC X(8).
+           05 T049-DFHCOMMAREA-TRANSID      PIC X(4).
+           05 T049-DFHCOMMAREA-SUBFLD1      PIC X.
+           05 T049-DFHCOMMAREA-SUBFLD2      PIC X(3).
+           05 T049-DFHCOMMAREA-SUBFLD3      PIC X(2).
+           05 T049-DFHCOMMAREA-SUBFLD4      PIC X(2).
+          
+
+      * Campi per gestione test T063 
+      * Ioarea lng=100
+       01 T063-IOAREA.
+	         05 T063-TIPO-REC                PIC X.     
+	         05 T063-FLD01                   PIC X(8).     
+	         05 T063-FLD02                   PIC 9(5).     
+	         05 T063-FILE-NAME               PIC X(8).     
+	         05 T063-PGM-NAME                PIC X(8).     
+	         05 T063-TS-NAME                 PIC X(8).     
+	         05 T063-PREFIX                  PIC XX.     
+	         05 T063-DATI                    PIC X(60).     
+
+      * Campi per gestione test T065 
+      * Ioarea lng=100
+       01 T065-IOAREA.
+	         05 T065-TIPO-REC                PIC X.     
+	         05 T065-FLD01                   PIC X(8).     
+	         05 T065-FLD02                   PIC 9(5).     
+	         05 T065-FILE-NAME               PIC X(8).     
+	         05 T065-PGM-NAME                PIC X(8).     
+	         05 T065-TS-NAME                 PIC X(8).     
+	         05 T065-PREFIX                  PIC XX.     
+	         05 T065-DATI                    PIC X(60).     
+	         
+	         
+       01 WS-DFHCOMMAREA                   PIC X(4096). 
+       01 WS-TWA                           PIC X(2000).
+       01 WS-CSA                           PIC X(2000).
+       
+      * Per test T047 t048 t049 
+       01 POINTER-TWA USAGE POINTER.
+       01 POINTER-CSA USAGE POINTER.
+ 
+       LINKAGE SECTION.
+      * Info generiche di linkage (param 1)
+       01 LK-PARM.
+          05 LK-PARM-LUNG                PIC S9(04) COMP.
+          05 LK-TIPO-ELAB                PIC X(03).
+          05 LK-DATA-ELAB-MENO1          PIC X(06).
+          05 LK-ADDRESS-DYN-AREA-POINTER  USAGE POINTER.
+          05 LK-SPREADED-PGM-SUFFIX-0    PIC X.
+          
+      * Info per logiche spreaded in pgm chiamanti (param 2)
+       01 LK-DYNAMIC-SPREADED.
+          05 LK-SPREADED-FILE-NAME           PIC X(8).
+          05 LK-SPREADED-FILE-NAME2          PIC X(8).
+          05 LK-SPREADED-TS-NAME             PIC X(8). 
+          05 LK-SPREADED-TS-NAME2            PIC X(8). 
+      * Pos=33
+          05 LK-SPREADED-PGM-NAME            PIC X(8).
+      * Pos=41
+          05 LK-SPREADED-PGM-PREFIX          PIC X(4).
+      * Pos=45
+          05 LK-SPREADED-PGM-ID              PIC X(3).
+      * Pos=48
+          05 LK-SPREADED-PGM-SUFFIX          PIC X.
+          05 LK-SPREADED-MAP                 PIC X(8).
+          05 LK-SPREADED-MAPSET              PIC X(8).
+          05 LK-SPREADED-TRANSID             PIC X(4).
+      * Pos=69
+          05 LK-SPREADED-PGM-PREFIX-T044     PIC X(4).
+      * Pos=73
+          05 LK-SPREADED-PGM-ID-T044         PIC X(3).
+      * Pos=76
+          05 LK-SPREADED-PGM-SUFFIX-T044     PIC X.
+      *
+
+
+      * Info per logiche spreaded in pgm chiamanti (param 3)
+       01 LK-DYNAMIC-BY-SET-ADDRESS.
+          05 LK-BY-SET-FILE-NAME         PIC X(8).
+          05 LK-BY-SET-FILE-NAME2        PIC X(8).
+          05 LK-BY-SET-TS-NAME           PIC X(8).
+          05 LK-BY-SET-PGM-NAME          PIC X(8).
+          05 LK-BY-SET-PGM-PREFIX        PIC X(4).
+          05 LK-BY-SET-PGM-ID            PIC X(3).
+          05 LK-BY-SET-PGM-SUFFIX        PIC X.
+          05 LK-BY-SET-MAP               PIC X(8).
+          05 LK-BY-SET-MAPSET            PIC X(8).
+          05 LK-BY-SET-TRANSID           PIC X(4).
+
+      * Area linkage per test T045
+       01 LK-SPREADED-T045.
+          05 FILLER                      PIC X(8).
+          05 LK-SPREADED-FILE-T045       PIC X(8).
+      * Pos=17
+          05 LK-SPREADED-PGM-NAME-T045   PIC X(8).
+          05 LK-SPREADED-MAP-T045        PIC X(8).
+          
+      * Area linkage per test T046
+       01 LK-SPREADED-T046.
+          05 FILLER                      PIC X(8).
+          05 LK-SPREADED-FILE-T046       PIC X(8).
+      * Pos=17
+          05 LK-SPREADED-PGM-NAME-T046   PIC X(8).
+          05 LK-SPREADED-MAP-T046        PIC X(8).
+          
+      * Area linkage per test T047
+       01 LK-SPREADED-T047.
+          05 FILLER                      PIC X(8).
+          05 LK-SPREADED-FILE-T047       PIC X(8).
+      * Pos=17
+          05 LK-SPREADED-PGM-NAME-T047   PIC X(8).
+          05 LK-SPREADED-MAP-T047        PIC X(8).
+          
+      * Area linkage per test T048
+       01 LK-SPREADED-T048.
+          05 FILLER                      PIC X(8).
+          05 LK-SPREADED-FILE-T048       PIC X(8).
+      * Pos=17
+          05 LK-SPREADED-PGM-NAME-T048   PIC X(8).
+          05 LK-SPREADED-MAP-T048        PIC X(8).
+          
+      * Dfhcommarea Cics
+       01 DFHCOMMAREA                    PIC X(4096).
+       
+      * TWA Cics
+       01 TWA-AREA.
+       
+      * Campi per gestione test T039
+          05 T039-TWA.
+             07 FILLER                        PIC X(20).
+             07 T039-TWA-PGM-NAME             PIC X(8).
+             
+      * Campi per gestione test T040
+          05 T040-TWA.
+             07 T040-TWA-FILE-NAME            PIC X(8).
+             07 T040-TWA-PGM-NAME             PIC X(8).
+             
+      * Campi per gestione test T049
+          05 T049-TWA.
+             07 T049-TWA-FILE-NAME            PIC X(8).
+             07 T049-TWA-FILE-NAME2           PIC X(8).
+             07 T049-TWA-POINTER    USAGE POINTER.
+             07 FILLER                        PIC X(8).
+             07 T049-TWA-SUBFLD1              PIC X.
+             07 T049-TWA-SUBFLD2              PIC X(3).
+      * Pos=77
+             07 T049-TWA-SUBFLD3              PIC X(2).
+      * Pos=79
+             07 T049-TWA-SUBFLD4              PIC X(2).
+
+      * CSA Cics
+       01 CSA-AREA.
+        
+      * Campi per gestione test T041
+          05 T041-CSA.
+             07 T041-CSA-COD                  PIC X.
+             07 T041-CSA-FILE-NAME            PIC X(8).
+             07 T041-CSA-FILE-NAME2           PIC X(8).
+              
+      * Campi per gestione test T048
+          05 T048-CSA.
+             07 T048-CSA-FILE-NAME            PIC X(8).
+             07 T048-CSA-FILE-NAME2           PIC X(8).
+             07 T048-CSA-POINTER    USAGE POINTER.
+             
+      * Campi per gestione test T049
+          05 T049-CSA.
+             07 FILLER                        PIC X(8).
+             07 T049-CSA-SUBFLD1              PIC X.
+      * Pos=47
+             07 T049-CSA-SUBFLD2              PIC X(3).
+      * Pos=50
+             07 T049-CSA-SUBFLD3              PIC X(2).
+      * Pos=52
+             07 T049-CSA-SUBFLD4              PIC X(2).
+       
+       
+       PROCEDURE DIVISION USING LK-PARM, LK-DYNAMIC-SPREADED.
+      
+      *--------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati individuati nel pgm 
+      * attraverso assegnazioni dirette e/o indirette e/o parziali
+      *-------------------------------------------------------------------- 
+      
+      * TXXX Assegnazioni iniziali campi e sottocampi per i vari test
+           PERFORM TXXX-INITIAL-ASSIGN
+      
+      * T001 OK  Campo singolo con Value e nessuna trasformazione
+           PERFORM T001-SINGLE-VALUE
+           
+      * T002 OK  Campo singolo con Move da campo con Value in path singolo
+      *          campi invio/ricezione stessa lunghezza
+           PERFORM T002-SINGLE-MOVE
+           
+      * T003 OK  Campo singolo con Move da campo con Value in path multipli
+      *          campo invio di lunghezza > ricezione -> troncamento
+      *          campo invio di lunghezza < ricezione -> fill con spaces
+           PERFORM T003-SINGLE-MOVE
+           
+      * T004 OK  Campo singolo con Move ZERO, SPACES, LOW-VALUE, HIGH-VALUE
+           PERFORM T004-SINGLE-MOVE-FIGURATIVE
+            
+      * T005 OK  Campo singolo con Move da literal  in path singolo
+           PERFORM T005-SINGLE-MOVE
+ 
+      * T006 OK  Campo singolo con Move da literal  in path multipli
+      *          literal invio/ricezione stessa lunghezza
+      *          Literal + lunga -> troncamento
+           PERFORM T006-SINGLE-MOVE
+             
+      * T007 OK   Campo singolo con assegnazione a campo di gruppo
+           PERFORM T007-SINGLE-MOVE-GROUP-FIELDS
+           
+      * T008 OK  Campo singolo con Move di trasformazione multiple in path multipli
+      *          da literal a campo a campo finale (literal diverse in path diversi)
+           PERFORM T008-SINGLE-MOVE
+           
+      * T009 OK  Campo singolo con Move di trasformazione multiple in path multipli
+      *          da campo con value a campo a campo finale (stesse lunghezze)
+           PERFORM T009-SINGLE-MOVE
+           
+      * T010 OK  Campo singolo con Move di trasformazione multiple in path singolo
+      *          da campo con value a campo a campo finale (lunghezze diverse)
+      *          Si testa la pos/lng propagata nelle trasformazioni
+           PERFORM T010-SINGLE-MOVE
+           
+      * T011 OK  Campo singolo con Move di trasformazione multiple in path multipli
+      *          da campo con vaslue a gruppo e da gruppo a campo finale (primo campo)
+      *          da literal a campo a gruppo e da gruppo a campo finale (primo campo)
+           PERFORM T011-SINGLE-MOVE
+           
+      * T012 OK  Assegnazione valori indirettamente da campi ridefiniti e/o di gruppo
+           PERFORM T012-SINGLE-MOVE
+           
+      * T013 OK Campo singolo con Move di trasformazione multiple in path multipli
+      *          da campo con value a campo a gruppo e da campo del gruppo a campo finale 
+           PERFORM T013-SINGLE-MOVE
+           
+      * T014 OK  Campo singolo espresso con OF con Move Corr in path singolo
+           PERFORM T014-SINGLE-MOVE
+           
+      * T015 OK  Campo singolo con Move (pos:lng) in path multipli
+      *          Campo singolo con Move (pos:) in path multipli  
+      *          Campo singolo con Move (:lng) in path multipli       
+           PERFORM T015-SINGLE-MOVE
+           
+      * T016 OK  Campo singolo in gruppo con Move implicite via gruppo
+            PERFORM T016-SINGLE-MOVE
+           
+      * T017 OK  Campi singoli per valori operandi multipli Map e mapset in Cics Send
+           PERFORM T017-SINGLE-MOVE-FROM-CICS-SEND
+           
+      * T018 OK  Campo singolo con Move (literal) da tb 1 dim  redefined con Value
+           PERFORM T018-SINGLE-MOVE-TB
+           
+      * T019 OK  Campo singolo con Move (literal1,literal2) da tb 2 dim redefined con Value
+           PERFORM T019-SINGLE-MOVE-TB
+           
+      * T020 OK  Campo singolo con Move (index) da tb 1 dim redefined con Value
+           PERFORM T020-SINGLE-MOVE-TB
+            
+      * T021 OK  Campo singolo con Move da tb (pos:lng) di tb redefined con Value
+      *          Campo singolo con Move da tb (   :lng) di tb redefined con Value
+      *          Campo singolo con Move da tb (pos:   ) di tb redefined con Value
+           PERFORM T021-SINGLE-MOVE-TB
+           
+      * T022 OK  Campo singolo per test inserimento default value
+           PERFORM T022-SINGLE-MOVE 
+           
+      * T023 OK   Campo singolo per test NON inserimento default value
+      *           Si utilizzano IF mutuamente esclusive
+           PERFORM T023-SINGLE-MOVE 
+           
+      * T024 OK   Campo singolo per test NON inserimento default value
+      *           Si utilizzano Evaluate WHEN mutuamente esclusive
+           PERFORM T024-SINGLE-MOVE 
+      
+      * T025 OK   Campo singolo per test inserimento default value
+      *           Il sottocampo NON è valorizzato direttamente
+            PERFORM T025-SINGLE-MOVE 
+           
+      * T026 Free
+      * T027 Free
+      * T028 Free
+ 
+           
+      *------------------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati individuati fuori dal programma 
+      * in colonne esterne codificate in DVAE (Vsam, Sql, Terminali, Code Ts, etc)
+      * In questo programma di test si verifica il solo inserimento nelle strutture
+      * dinamiche. 
+      * I valori effettivi saranno individuati in programmi diversi con
+      * la funzione LOGIC_SPREADED, da eseguire a valle di questa elaborazione.
+      *------------------------------------------------------------------------------
+           
+      * T029 OK  Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE/DCXM
+      *          File Vsam esterno a sua volta acceduto dinamicamente stesso programma.
+      *          Da Ioarea Vsam a campo a campo finale (stesse lunghezze) 
+           PERFORM T029-SINGLE-MOVE-FROM-VSAM
+           
+      * T030 OK  Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE/DCXM
+      *          File Vsam esterno a sua volta acceduto staticamente stesso programma.
+      *          Da Ioarea Vsam a campo a campo finale (stesse lunghezze) 
+           PERFORM T030-SINGLE-MOVE-FROM-VSAM
+           
+      * T031 OK  Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE
+      *          Da Ioarea Vsam a campo a campo finale (pos:lng). Si prende una porzione di colonna 
+           PERFORM T031-SINGLE-MOVE-FROM-VSAM
+           
+      * T032 OK  Campo singolo con Move da campo su file Vsam letto con Cobol Read
+           PERFORM T032-SINGLE-MOVE-FROM-VSAM-COBOL
+           
+      * T033 OK  Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE
+      *          Nome File Vsam esterno a sua volta in coda Ts dinamica risolta in stesso pgm
+      *          Da Ioarea Vsam a campo a campo finale (stesse lunghezze) 
+           PERFORM T033-SINGLE-MOVE-FROM-CICS-TS
+           
+      * T034 OK  Campo singolo con Move da campo EIBTRMID con valori codificati in colonna DVAE
+      *          Da EIBTRMID a campo a campo finale (stesse lunghezze) 
+           PERFORM T034-SINGLE-MOVE-FROM-CICS-SYSTEM
+           
+      * T035 OK Campo singolo con Move da campo EIBTRNID con valori codificati in colonna DVAE
+      *          Da EIBTRNID a campo a campo finale (stesse lunghezze) 
+           PERFORM T035-SINGLE-MOVE-FROM-CICS-SYSTEM
+
+
+      *------------------------------------------------------------------------------
+      * Test su singolo campo dinamico con risultati da individuare spreaded
+      * in programmi chiamanti a fronte di Linkage/DFHCOMMAREA/TWA/CSA o Using Parm
+      * I valori effettivi saranno individuati in programmi diversi con
+      * la funzione LOGIC_SPREADED, da eseguire a valle di questa elaborazione.
+      *------------------------------------------------------------------------------
+           
+           
+      * T036 OK  Campo singolo con Move da Linkage in Using
+      *          Da sottocampo in parm Using a campo finale
+           PERFORM T036-SPREADED-MOVE-FROM-USING
+           
+      * T037 OK  Sottocampi nome pgm da chiamante con Move da Linkage in Using
+      *          Da sottocampi in parm Using, indirettamente, a campi finali
+           PERFORM T037-SPREADED-MOVE-FROM-USING
+ 
+      * T038 OK   Campo singolo con Move da Linkage in Using
+           PERFORM T038-SPREADED-MOVE-FROM-USING
+
+      * T039 OK   Campo singolo con Move da Cics TWA 1 livello caller
+           PERFORM T039-SPREADED-MOVE-FROM-CICS-TWA
+           
+      * T040 OK   Campo singolo con Move da Cics TWA 2 livelli caller
+           PERFORM T040-SPREADED-MOVE-FROM-CICS-TWA
+           
+      * T041 OK   Campo singolo con Move da Cics CSA 2 livelli caller
+           PERFORM T041-SPREADED-MOVE-FROM-CICS-CSA
+            
+      * T042 OK  Campo singolo con Move da Linkage DFHCOMMAREA
+      *          Da DFHCOMMAREA a campo working a campo finale
+      *          Utilizzo di campi di commarea strutturata in campi anche nel chiamante
+           PERFORM T042-SPREADED-MOVE-FROM-DFHCOMMAREA
+            
+      * T043 OK  Campo singolo con Move da Linkage DFHCOMMAREA
+      *          Da DFHCOMMAREA a campo working a campo finale
+      *          Utilizzo di commarea non strutturata in campi nel chiamante
+           PERFORM T043-SPREADED-MOVE-FROM-DFHCOMMAREA
+            
+      * T044 OK  Campo singolo con sottocampi con Move da Linkage in Using
+           PERFORM T044-SPREADED-MOVE-FROM-USING
+            
+      * T045 OK  Campo singolo con move da linkage indirizzata da pointer in Using
+           PERFORM T045-SPREADED-FROM-LINKAGE-POINTER-USING
+             
+      * T046 OK  Campo singolo con move da linkage indirizzata da pointer in DFHCOMMAREA
+           PERFORM T046-SPREADED-FROM-LINKAGE-POINTER-COMM
+             
+      * T047 OK  Campo singolo con move da linkage indirizzata da pointer in Cics TWA
+           PERFORM T047-SPREADED-FROM-LINKAGE-POINTER-TWA
+             
+      * T048 OK  Campo singolo con move da linkage indirizzata da pointer in Cics CSA
+           PERFORM T048-SPREADED-FROM-LINKAGE-POINTER-CSA
+             
+      * T049 OK  Campo singolo da move gruppo risolto spreaded
+      *          Sottocampo risolto in DFHCOMMAREA da chiamante 1 liv
+      *          Sottocampo risolto in TWA da chiamante 1 liv
+      *          Sottocampo risolto in CSA da chiamante 2 liv
+           PERFORM T049-SPREADED-GROUP-MIXED
+ 
+ 
+ 
+      *--------------------------------------------------------------------
+      * Test su campo dinamico di gruppo con risultati individuati nel pgm 
+      * attraverso assegnazioni dirette e/o indirette e/o parziali.
+      * Si tratta dei test PRECEDENTI combinati insieme per campi dinamici
+      * di gruppo. Ogni valore individuato per un sottocampo elementare 
+      * viene moltiplicato per gli altri, al fine di produrre l'insieme 
+      * di valori complessivo.
+      * Viene memorizzata l'imformazione per ogni sottocampo, se è stato
+      * risolto oppure no, e quale sia l'origine dell'ultima assegnazione.
+      * Per esempio può essere un campo di Linkage da valorizzare con i
+      * programmi chiamanti o un campo di un Vsam, di cui valorizzare il
+      * valore nella tabella DVAE o ancora una parte di terminale Cics.
+      * vengono simulate le varie trasformazioni dei sottocampi con le
+      * conseguenti (pos:lng)
+      *-------------------------------------------------------------------- 
+           
+      * T050 OK  Gruppo 1 livello con sottocampi elementari con value
+      *          Solo un livello di struttura
+           PERFORM T050-GROUP
+           
+      * T051 OK  Gruppo 2 livelli con sottocampi elementari con value
+      *          Struttura a 2 livelli
+           PERFORM T051-GROUP
+           
+      * T052 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni T002-T042 Move semplici
+           PERFORM T052-GROUP
+           
+      * T053 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni T002-T042 Move (pos:lng)
+      *          Sottocampi con trasformazioni T002-T042 Move (pos:)
+           PERFORM T053-GROUP
+           
+      * T054 Free
+            
+      * T055 OK  Gruppo con sottocampi con value + assegnazioni da tb 1 dim
+           PERFORM T055-GROUP
+           
+      * T056 OK  Gruppo con sottocampi con value + assegnazioni da tb 2 dim
+           PERFORM T056-GROUP
+ 
+      * T057 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni da campo a gruppo
+           PERFORM T057-GROUP
+ 
+      * T058 OK Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni da gruppo a campo
+      *          Precedenti trasformazioni da campi del gruppo
+           PERFORM T058-GROUP
+           
+      * T059 OK Gruppo con sottocampi con value + assegnazioni multiple
+      *         Sottocampi con trasformazioni e propagazione (pos:lng) a literal
+            PERFORM T059-GROUP
+ 
+      * T060 OK?? Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni e propagazione a altri gruppi
+           PERFORM T060-GROUP
+ 
+      * T061 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni da EIBTRMID 
+      *          Sottocampi con trasformazioni da EIBTRMID(pos:lng)
+           PERFORM T061-GROUP
+           
+      * T062 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni da EIBTRNID
+      *          Sottocampi con trasformazioni da EIBTRNID(pos:lng)
+           PERFORM T062-GROUP
+ 
+      * T063 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampo con trasformazione da Ioarea Vsam
+      *          Sottocampo con trasformazioni da EIBTRMID
+           PERFORM T063-GROUP
+ 
+      * T064 --- Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni T032 da Ioarea Sql
+           PERFORM T064-GROUP
+           
+      * T065 OK  Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni T031 da Ioarea Vsam Cics
+           PERFORM T065-GROUP
+           
+           STOP RUN.
+ 
+ 
+      *------------------------------------------------------------------
+      * Inizializzazione iniziale campi valida per tutti i test e path
+      *------------------------------------------------------------------
+       TXXX-INITIAL-ASSIGN.
+       
+      * Test T002 - Assegnazione campo con value programma
+           MOVE T002-FLD01 TO TXXX-FLD-SINGLE.
+        
+       TXXX-EX. EXIT.
+ 
+      *------------------------------------------------------------------
+      * T001 Campo singolo con Value e nessuna trasformazione
+      * Valori attesi: T001DYN1
+      *------------------------------------------------------------------
+       T001-SINGLE-VALUE.
+       
+           CALL T001-FLD01.
+       
+       T001-EX. EXIT.
+       
+      *------------------------------------------------------------------
+      * T002 Campo singolo con Move da campo con Value in path singolo
+      * Valori attesi: T002DYN1
+      *------------------------------------------------------------------
+       T002-SINGLE-MOVE.
+       
+             MOVE T002-FLD01 TO T002-FLD-SINGLE.
+             MOVE 6 TO TXXX-FLDN2.
+             CALL T002-FLD-SINGLE.
+       
+       T002-EX. EXIT.
+   
+       
+      *------------------------------------------------------------------
+      * T003 Campo singolo con Move da campo con Value 
+      *      campo invio di lunghezza > ricezione -> troncamento
+      *      campo invio di lunghezza < ricezione -> fill a space
+      * Valori attesi: T003DYN, T003DYN1
+      *------------------------------------------------------------------
+       T003-SINGLE-MOVE.
+           
+           IF TXXX-FLDN2 = 0
+              MOVE T003-FLD01-GT TO T003-FLD-SINGLE
+           ELSE
+              MOVE T003-FLD01-LT TO T003-FLD-SINGLE
+           END-IF
+           
+           EXEC CICS WRITE 
+                FILE(T003-FLD-SINGLE) 
+                FROM(TXXX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+           
+       T003-EX. EXIT.
+       
+      *------------------------------------------------------------------
+      * T004 Campo singolo con Move ZERO, SPACES, LOW-VALUE, HIGH-VALUE 
+      * Valori attesi: '        '         , '00000000' 
+      *                h'0000000000000000', h'FFFFFFFFFFFFFF'
+      *------------------------------------------------------------------
+       T004-SINGLE-MOVE-FIGURATIVE.
+           
+           IF TXXX-FLDN2 = 0
+              MOVE SPACES TO T004-FLD-SINGLE
+           END-IF
+           
+           IF TXXX-FLDN2 = 1
+              MOVE ZERO TO T004-FLD-SINGLE
+           END-IF
+           
+           IF TXXX-FLDN2 = 1
+              MOVE LOW-VALUES TO T004-FLD-SINGLE
+           END-IF
+           
+           IF TXXX-FLDN2 = 1
+              MOVE HIGH-VALUES TO T004-FLD-SINGLE
+           END-IF
+            
+           EXEC CICS DELETE 
+                FILE(T004-FLD-SINGLE) 
+                FROM(TXXX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+           
+       T004-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T005 Campo singolo con Move da literal  in path singolo
+      *      Nessun troncamento o fill
+      * Valori attesi: T005DYN1
+      *------------------------------------------------------------------
+       T005-SINGLE-MOVE.
+       
+           MOVE 'T005DYN1' TO T005-FLD-SINGLE.
+       
+           EXEC CICS READNEXT 
+                FILE(T005-FLD-SINGLE) 
+                INTO(TXXX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+       T005-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T006 Campo singolo con Move da literal  in path singolo
+      *      Literal + lunga -> troncamento
+      *      Literal + corta -> fill con spaces
+      *      Non viene generato il valore di default in quanto si tratta
+      *        di assegnazioni condizionali mutuamente esclusive
+      *      Si testa che l'assegnazione fatta nel test T007 NON influenzi
+      *        questo test in quanto non esiste un path valido a supporto
+      * Valori attesi: T006DYN1, T006DYN, T006D
+      *------------------------------------------------------------------
+       T006-SINGLE-MOVE.
+                    
+           IF TXXX-FLDN2 = 100
+              MOVE "T006DYN1ZZZ" TO T006-FLD-SINGLE
+           ELSE
+             IF TXXX-FLDN2 = 200
+                MOVE "T006DYN" TO T006-FLD-SINGLE
+             ELSE
+                IF TXXX-FLDN2 = 300
+                   MOVE "T006D" TO T006-FLD-SINGLE
+                END-IF
+             END-IF   
+           END-IF
+           
+           MOVE ZERO TO TXXX-FLDN2.
+           
+           EXEC CICS REWRITE
+                FILE(T006-FLD-SINGLE) 
+                FROM(TXXX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+       T006-EX. EXIT.
+       
+       
+      *----------------------------------------------------------------------
+      * T007  Campo singolo con assegnazione a campo di gruppo con sottocampi
+      *       Si testa la valorizzazione di un sottocampo che nel corso
+      *         delle trasformazioni viene assegnato a un campo di gruppo.
+      *         Si verifica che il focus si sposti sui singoli campi componenti 
+      *         il gruppo, con ricomposizione finale dei valori trovati per i
+      *         singoli componenti.
+      *       Si testa che la posizione/lunghezza nel sottocampo origine
+      *         rifletta l'assegnazione indiretta
+      *       Si testa che venga attribuito il valore di default per i
+      *         campi componenti il gruppo che assegna il sottocampo di
+      *         cui trovare i valori.
+      *         
+      * Valori attesi: T00700ZZ, T00700AA, T00700BB 
+      *                T00701ZZ, T00701AA, T00701BB 
+      *                T00702ZZ, T00702BB, T00702BB 
+      *----------------------------------------------------------------------
+       T007-SINGLE-MOVE-GROUP-FIELDS.
+
+           MOVE 'T007'  TO  T007-GRP-SUBFLD1.
+      
+      * Estensione test T006.
+      * Si verifica che l'assegnazione seguente NON viene presa in considerazione
+      * in quanto non raggiungibile dai path per il test T006.        
+           IF TXXX-FLDN1 = 10
+              MOVE "T006T007" TO T006-FLD-SINGLE
+           END-IF 
+
+           IF TXXX-FLDN1 = 1
+              MOVE '01' TO T007-GRP-SUBFLD2
+           END-IF 
+           
+           IF TXXX-FLDN1 = 2
+              MOVE '02' TO T007-GRP-SUBFLD2
+           END-IF 
+
+           IF TXXX-FLDN1 = 1
+              MOVE 'AA' TO T007-GRP-SUBFLD3
+           END-IF 
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'BB' TO T007-GRP-SUBFLD3
+           END-IF 
+
+           
+           MOVE T007-FLD-GRP TO T007-FLDX8.
+
+           EXEC CICS LINK
+                PROGRAM(T007-FLDX8) 
+           END-EXEC.
+
+       T007-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T008 Campo singolo con Move di trasformazione multiple in path multipli
+      *       da literal a campo a campo finale (literal diverse in path diversi)
+      * Valori attesi: T008DYN1, T008DYN2, T008DYN3
+      *------------------------------------------------------------------
+       T008-SINGLE-MOVE.
+       
+           IF TXXX-FLDN1 = 1
+              MOVE 'T008DYN1' TO T008-FLDX8
+           ELSE 
+           IF TXXX-FLDN1 = 2
+              MOVE 'T008DYN2' TO T008-FLDX8
+              NEXT SENTENCE
+           ELSE 
+           IF TXXX-FLDN1 = 3
+              MOVE 'T008DYN3' TO T008-FLDX8.
+
+           MOVE 1 TO TXXX-FLDN2.
+           
+           EXEC CICS LINK
+                PROGRAM(T008-FLDX8) 
+           END-EXEC.
+           
+       T008-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------------
+      * T009 Campo singolo con Move di trasformazione multiple in path multipli
+      *      da campo con value a campo (2 trasformazioni) a campo finale 
+      *      Trasformazioni stesse lunghezze
+      * Valori attesi: T009DYN1, T009DYN2 
+      *------------------------------------------------------------------------
+       T009-SINGLE-MOVE.
+       
+           MOVE T009-FLD01 TO T009-FLDX81
+           IF TXXX-FLDN1 = 1
+              MOVE 1 TO TXXX-FLDN2.
+           MOVE T009-FLD02 TO T009-FLDX82
+       
+           IF TXXX-FLDN1 = 1
+              MOVE T009-FLDX81 TO TXXX-FLDX82
+           ELSE  
+              MOVE T009-FLDX82 TO TXXX-FLDX82
+           END-IF
+           
+           MOVE TXXX-FLDX82 TO T009-FLDX8.
+           MOVE 1 TO TXXX-FLDN2.
+           
+           EXEC CICS XCTL
+                PROGRAM(T009-FLDX8) 
+           END-EXEC.
+       
+       T009-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T010 Campo singolo con Move di trasformazione multiple in path singolo
+      *      da campo con value a campo a campo finale (lunghezze diverse)
+      *      Si testa la pos/lng propagata nelle trasformazioni modificata
+      *         in modo implicito senza reference modification
+      * Valori attesi: T010DY 
+      *------------------------------------------------------------------
+       T010-SINGLE-MOVE.
+      
+      * Troncamento a 6 crt con riempimento spaces
+           MOVE T010-FLD01 TO T010-FLDX6
+           
+      * Da questo momento il campo ricevente viene trattato da (1:6)
+           MOVE 1 TO TXXX-FLDN2.
+           
+      * Equivale a Move T010-FLDX8(1:6)
+           MOVE T010-FLDX6 TO T010-FLDX8.
+           
+           EXEC CICS XCTL
+                PROGRAM(T010-FLDX8) 
+           END-EXEC.
+       T010-EX. EXIT.
+       
+      *------------------------------------------------------------------
+      * T011 Campo singolo con Move di trasformazione multiple in path singolo
+      *      da literal a campo a gruppo e da gruppo a campo finale (primo campo).
+      *      Il valore di default T011DFLT non viene portato in output in quanto
+      *      esiste in ogni caso un'assegnazione del sottocampo origine
+      * Valori attesi: T011DYN1, T011DYN2, T011DYN3
+      *------------------------------------------------------------------
+       T011-SINGLE-MOVE.
+
+      * Valorizzazione campo di gruppo assegnato implicitamente 
+      * con Move literal e campo con value 
+           IF TXXX-FLDN1 = 1
+              MOVE T011-FLD01 TO T011-FLD-GRP
+           ELSE   
+              MOVE 'T011DYN2' TO T011-FLD-GRP.
+              
+      * Valorizzazione campo elementare del gruppo, assegnato implicitamente
+           IF TXXX-FLDN1 = 2
+              MOVE 'T011DYN3' TO T011-FLDG01
+           END-IF  
+       
+           MOVE 1 TO TXXX-FLDN2.
+           
+      * L'analisi si sposta sul campo di gruppo
+           MOVE T011-FLD-GRP TO T011-FLDX8.
+           
+           EXEC CICS XCTL
+                PROGRAM(T011-FLDX8) 
+           END-EXEC.
+ 
+       T011-EX. EXIT.
+       
+       
+      *---------------------------------------------------------------------------
+      * T012 Assegnazione valori indirettamente da campi ridefiniti e/o  di gruppo. 
+      *      Test assegnazioni indirette del sottocampo origine
+      *      Test assegnazioni diretta del sottocampo origine integrata da quelle
+      *        indirette
+      *      Test scarto assegnazioni non valide.
+      *      Test assegnazioni su campi redefines anche di gruppi contenenti il
+      *        sottocampo origine
+      *      Test assegnazioni su campi di gruppo con ref/mod contenenti il
+      *        sottocampo origine
+      *      Test assegnazioni ref/mod con troncamento del valore propagato
+      *
+      * Valori attesi: T012DFLT  Valore di default
+      *                T012DYN   Da move troncata su gruppo con sender ref mod
+      *                T012DYN1  Da move diretta su sender
+      *                T012DYN2  Da redefines sender elementare
+      *                T012DYN3  Da campo di gruppo contenente il sender
+      *                T012DYN4  Da campo sotto redefines di gruppo di sender
+      *
+      * N.B. Test molto complesso anche difficilmente rilevabile nel mondo reale.
+      *----------------------------------------------------------------------------
+       T012-SINGLE-MOVE.
+       
+      * Assegnazione valore di default incondizionato
+           MOVE 'T012DFLT' TO T012-FLDX8-1. 
+      
+      * Assegnazione diretta 
+      * Valore assegnato backward 'T012DYN1'
+           IF TXXX-FLDN1 = 1
+              MOVE T012-C1 TO T012-FLDX8-1
+           END-IF     
+       
+      * Assegnazione indiretta su redefines del canpo
+      * Valore assegnato backward 'T012DYN2'
+           IF TXXX-FLDN1 = 2
+              MOVE T012-C2 TO T012-FLDX8-RED1
+           END-IF
+           
+      * Assegnazione indiretta su gruppo contenente il campo  
+      * Valore assegnato backward 'T012DYN3' 
+           IF TXXX-FLDN1 = 3
+               MOVE T012-C3 TO T012-FLD-GRP1(13:8)
+           END-IF  
+           
+      * Assegnazione indiretta su gruppo contenente il campo con troncamento
+      * Valore assegnato backward 'T012DYN' 
+           IF TXXX-FLDN1 = 4
+               MOVE T012-C5 TO T012-FLD-GRP2(1:7)
+           END-IF  
+
+      * Assegnazione indiretta su campo in gruppo ridefinente il campo target
+      * Valore assegnato backward 'T012DYN4' 
+           IF TXXX-FLDN1 = 4
+               MOVE T012-C4 TO T012-FLDX8-RED2-GRP-F1
+           END-IF  
+
+           MOVE 1 TO TXXX-FLDN2.
+           
+           EXEC CICS XCTL
+                PROGRAM(T012-FLDX8-1) 
+           END-EXEC.
+ 
+       
+       T012-EX. EXIT.
+
+
+
+
+       
+       
+      *------------------------------------------------------------------
+      * T013 Campo singolo con Move di trasformazione multiple in path singolo
+      *      da campo con value a campo a gruppo e da campo del gruppo a campo finale 
+      *      Si testa la valorizzazione dall'inerno di una stringa
+      *      Si testa l'annullamento di valori overridati da assegnazioni
+      *        successive 
+      * Valori attesi: T013DYN1 
+      *------------------------------------------------------------------
+       T013-SINGLE-MOVE.
+      
+      * L'assegnazione successiva al sottocampo origine viene overridata
+      * da una assegnazione successiva incondizionata.
+      * Il valore NON viene portato in output. 
+           IF TXXX-FLDN1 = 1
+               MOVE 'T013DYN2' TO T013-FLDX8
+           END-IF
+        
+      * L'assegnazione successiva al sottocampo trasformato viene overridata
+      * da una assegnazione successiva incondizionata.
+      * Il valore NON viene portato in output. 
+           IF TXXX-FLDN1 = 2
+               MOVE 'T013DYN3' TO T013-FLD02
+           END-IF
+        
+      * Assegnazione indiretta di T013-FLD02 attraverso un gruppo
+      * Si testa il recupero della corretto valore dalla stringa
+      * corrispondente al campo sotto il gruppo
+           MOVE '12345678T013DYN112345678' TO T013-FLD-GRP
+           
+           MOVE 1 TO TXXX-FLDN2.
+           
+      * Assegnazione finale sottocampo origine
+           MOVE T013-FLD02 TO T013-FLDX8.
+           
+           EXEC CICS XCTL
+                PROGRAM(T013-FLDX8) 
+           END-EXEC.
+        
+       T013-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T014 Campo singolo espresso con OF con Move Corr in path multipli
+      *      Si testa l'assegnazione di valori con clausola OF.
+      * Valori attesi: T014DYN1, T014DYN2
+      *------------------------------------------------------------------
+       T014-SINGLE-MOVE.
+ 
+           IF TXXX-FLDN1 = 1
+              MOVE 'T014DYN1' TO T014-FLD02 OF T014-FLD-GRP1
+              MOVE 2 TO TXXX-FLDN2
+           ELSE   
+              MOVE 'T014DYN2' TO T014-FLD02 OF T014-FLD-GRP1.
+
+           MOVE CORR T014-FLD-GRP1 TO T014-FLD-GRP2.
+           MOVE 1 TO TXXX-FLDN2.
+           
+           MOVE T014-FLD02 OF T014-FLD-GRP2  TO T014-FLDX8.
+
+           EXEC CICS LINK
+                PROGRAM(T014-FLDX8) 
+           END-EXEC.
+        
+       T014-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T015 Si testano trasformazioni referemce modification su campo
+      *      di gruppo che portano alla modifica integrale di un campo
+      *      (receiver) dalla prima posizione.
+      *      In dettaglio si testa:
+      *      Campo singolo con Move (pos:lng) in path multipli
+      *      Campo singolo con Move (1:lng) in path singolo
+      *      Campo singolo con Move (pos:) in path singolo
+      * Valori attesi  : T015DFLT, T015DYN, T015DYN1, T015DYN2, T015DYN3
+      *------------------------------------------------------------------
+       T015-SINGLE-MOVE.
+  
+           IF TXXX-FLDN1 = 1 
+      *       Viene considerata la stringa troncata a 'T015DYN'
+              MOVE 'T015DYN1' TO T015-FLD02
+              MOVE T015-FLD-GRP(9:7)  TO T015-FLDX8
+           END-IF
+           
+           IF TXXX-FLDN1 = 2 
+              MOVE 'T015DYN2' TO T015-FLD02
+              MOVE T015-FLD-GRP(9:16)  TO T015-FLDX8
+           END-IF
+           
+           IF TXXX-FLDN1 = 3 
+      *        Equivale a Move 'T015DYN3' To T015-FLD02 e quindi a T015-FLDX8
+               MOVE T015-FLD-GRP(17:)  TO T015-FLDX8
+           END-IF
+           
+           IF TXXX-FLDN1 = 4 
+      *        Equivale a Move 'T015DYN1' To T015-FLD01 e quindi a T015-FLDX8
+               MOVE T015-FLD-GRP(1:8)  TO T015-FLDX8
+           END-IF
+ 
+           EXEC CICS LINK
+                PROGRAM(T015-FLDX8) 
+           END-EXEC.
+        
+       T015-EX. EXIT.
+       
+      
+      *--------------------------------------------------------------------
+      * T016 Si testano trasformazioni dove il campo origine è dentro un
+      *        gruppo e viene assegnato direttamente il gruppo con ref/mod.
+      *      Si testa che venga attribuito il corretto valore di default
+      *        a fronte di assegnazioni condizionate indirette del 
+      *        sottocampo con successiva assegnazione DIRETTA del sottocampo
+      *        origine. Il valore di default viene impostando analizzando
+      *        i receiver impliciti di T016-FLD-GRP(17:8) ovvero T016-FLD03.
+      * Valori attesi: T016DFLT, T016DYN1, T016DYN2
+      *--------------------------------------------------------------------
+       T016-SINGLE-MOVE.
+  
+           IF TXXX-FLDN1 = 1 
+               MOVE 'T016DYN1' TO T016-FLD03
+           END-IF
+           
+           IF TXXX-FLDN1 = 2 
+              MOVE 'T016DYN2' TO T016-FLD03
+           END-IF
+           
+      * Assegna indirettamente T016-FLD03
+           MOVE T016-FLD-GRP(17:8) TO T016-FLDX8.
+           
+           EXEC CICS LINK
+                PROGRAM(T016-FLDX8) 
+           END-EXEC.
+        
+       T016-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T017 Campi singoli per Map e mapset in Cics Sendp
+      *      Si testa la soluzione contemporanea di due parametri, MAP e MAPSET.
+      * Valori attesi per MAP	: T017MAP1, T017MAP2
+      * Valori attesi per MAPSET: T017MPS1, T017MPS2
+      *-----------------------------------------------------------------------------------------
+       T017-SINGLE-MOVE-FROM-CICS-SEND.
+
+           MOVE 'T017MAP1' TO T017-MAP.
+           MOVE 'T017MPS1' TO T017-MAPSET.
+
+           IF TXXX-FLDN1 = 2
+               MOVE 'T017MAP2' TO T017-MAP 
+           END-IF  
+
+           IF TXXX-FLDN1 = 3
+               MOVE 'T017MPS2' TO T017-MAPSET
+           END-IF  
+
+           EXEC CICS SEND
+                MAP(T017-MAP)
+                MAPSET(T017-MAPSET)
+           END-EXEC.
+       
+       T017-EX. EXIT.
+       
+      *------------------------------------------------------------------
+      * T018 Campo singolo con Move (i1) da tb 1 dim  redefined con Value
+      * Valori attesi: T018DFLT, T018TBD2, T018TBD3
+      *------------------------------------------------------------------
+       T018-SINGLE-MOVE-TB.
+           
+      * PGMTBDY2
+           IF TXXX-FLDN1 = 1
+               MOVE T018-EL-TB2-OCC1(2)  TO T018-FLDX8
+           END-IF  
+           
+       * PGMTBDY3
+           IF TXXX-FLDN1 = 2 
+              MOVE T018-TB2-PGM(3)  TO T018-FLDX8
+           END-IF
+       
+           EXEC CICS LINK
+                PROGRAM(T018-FLDX8) 
+           END-EXEC.
+        
+       T018-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T019 Campo singolo con Move (i1,i2) da tb 2 dim redefined con Value
+      * Valori attesi: T019DFLT, T019TBD7 
+      *------------------------------------------------------------------
+       T019-SINGLE-MOVE-TB.
+       
+      * PGMTBDY7
+           IF TXXX-FLDN1 = 2 
+              MOVE T019-TB3-PGM(3, 2)  TO T019-FLDX8
+           END-IF
+       
+           EXEC CICS LINK
+                PROGRAM(T019-FLDX8) 
+           END-EXEC.
+        
+       T019-EX. EXIT.
+       
+       
+      *------------------------------------------------------------------
+      * T020 Campo singolo con Move da tb (index) di tb redefined con Value
+      *      Si testa che se il campo di tabella è indexato da un campo,
+      *      vengono estratti tutti i valori definiti nella tabella.
+      * Valori attesi: T020DFLT, T020DYN1, T020TBD1, T020TBD2
+      *------------------------------------------------------------------
+       T020-SINGLE-MOVE-TB.
+       
+      * PGMTBDY1
+           IF TXXX-FLDN1 = 1
+               MOVE 'T020DYN1'  TO T020-FLDX8
+           END-IF  
+           IF TXXX-FLDN1 = 2
+               MOVE T020-EL-TB2-OCC1(TXXX-FLDN3)  TO T020-FLDX8
+           END-IF  
+          
+           EXEC CICS LINK
+                PROGRAM(T020-FLDX8) 
+           END-EXEC.
+       
+       
+       T020-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------
+      * T021 Campo singolo con Move da tb (pos:lng) di tb redefined con Value
+      *      Si testa l'estrazione di specifici elementi di tabella
+      * Valori attesi: T021DFLT, T021TBD1, T021TBD2, T021TBD3
+      *-----------------------------------------------------------------------
+       T021-SINGLE-MOVE-TB.
+       
+      * PGMTBDY1
+           IF TXXX-FLDN1 = 1
+               MOVE T021-EL-TB2-OCC1(1)(1:8)  TO T021-FLDX8
+           END-IF  
+           IF TXXX-FLDN1 = 2
+               MOVE T021-EL-TB2-OCC1(2)(1:8)  TO T021-FLDX8
+           END-IF  
+           IF TXXX-FLDN1 = 3
+               MOVE T021-EL-TB2-OCC1(3)(1:)  TO T021-FLDX8
+           END-IF  
+         
+           EXEC CICS LINK
+                PROGRAM(T021-FLDX8) 
+           END-EXEC.
+       
+       T021-EX. EXIT.
+  
+
+      *------------------------------------------------------------------------
+      * T022 Campo singolo per test inserimento default value.
+      *      Si testa l'inserimento del valore di default del sottocampo quando
+      *      tutte le trasformazioni sono condizionali, sotto IF o WHEN.
+      *      Il sottocampo è assegnato direttamente SENZA trasformazioni
+      * Valori attesi: T022DFLT, T022DYN1, T022DYN2, T022DYN3
+      *------------------------------------------------------------------------
+       T022-SINGLE-MOVE.
+      
+      * Assegnazione condizionale con When
+           EVALUATE TRUE
+             WHEN TXXX-FLDN1 = 1
+                 MOVE 'T022DYN1' TO T022-FLDX8
+           END-EVALUATE
+           
+      * Assegnazione condizionale con IF
+           IF TXXX-FLDN1 = 2
+              MOVE 'T022DYN2' TO T022-FLDX8.
+              
+      * Assegnazione condizionale con IF
+           IF TXXX-FLDN1 = 3
+              MOVE 'T022DYN3' TO T022-FLDX8
+           END-IF
+           
+           MOVE 1 TO TXXX-FLDN2.
+           
+           EXEC CICS XCTL
+                PROGRAM(T022-FLDX8) 
+           END-EXEC.
+       
+       T022-EX. EXIT.
+       
+      *------------------------------------------------------------------------
+      * T023 Campo singolo per test NON inserimento default value.
+      *      Si testa il NON inserimento del valore di default del sottocampo 
+      *      quando sono presenti assegnazioni condizionali mutuamente esclusive.
+      *      Il sottocampo è assegnato direttamente SENZA trasformazioni
+      * Valori attesi: T023DYN1, T023DYN2
+      *------------------------------------------------------------------------
+       T023-SINGLE-MOVE.
+      
+      * Assegnazione mutuamente esclusiva con IF
+           IF TXXX-FLDN1 = 2
+              MOVE 'T023DYN1' TO T023-FLDX8
+           ELSE
+              MOVE 'T023DYN2' TO T023-FLDX8
+           END-IF
+                      
+           MOVE 1 TO TXXX-FLDN2.
+           
+           EXEC CICS XCTL
+                PROGRAM(T023-FLDX8) 
+           END-EXEC.
+       
+       T023-EX. EXIT.
+    
+       
+      *------------------------------------------------------------------------
+      * T024 Campo singolo per test NON inserimento default value.
+      *      Si testa il NON inserimento del valore di default del sottocampo 
+      *      quando sono presenti assegnazioni condizionali mutuamente esclusive.
+      *      Si utilizzano Evaluate When per le assegnazioni condizionali
+      *      Il sottocampo è assegnato DIRETTAMENTE SENZA trasformazioni
+      *      Non viene generato il valore di default in quanto il sottocampo
+      *      T024-FLDX8 non ha Value clause.
+      * Valori attesi: T024DYN1, T024DYN2
+      *------------------------------------------------------------------------
+       T024-SINGLE-MOVE.
+      
+      * Assegnazione mutuamente esclusiva con Evaluate When
+           EVALUATE TRUE
+              WHEN TXXX-FLDN1 = 1
+                   MOVE 'T024DYN1' TO T024-FLDX8
+              WHEN TXXX-FLDN1 = 2
+                   MOVE 'T024DYN2' TO T024-FLDX8
+           END-EVALUATE
+                      
+           MOVE 1 TO TXXX-FLDN2.
+           
+           EXEC CICS LINK
+                PROGRAM(T024-FLDX8) 
+           END-EXEC.
+       
+       T024-EX. EXIT.
+       
+
+      *------------------------------------------------------------------------
+      * T025 Campo singolo per test inserimento default value
+      *      Si testa L'inserimento del valore di default del sottocampo 
+      *      quando NON sono presenti assegnazioni condizionali mutuamente esclusive.
+      *      e il sottocampo è assegnato INDIRETTAMENTE CON trasformazioni
+      *      Il valore di default da assegnare non è quello del sottocampo ma
+      *      quello del campo che assegna il sottocampo, prima dell'istruzione
+      *      dinamica.
+      * Valori attesi: T025DFLT, T025DYN1, T025DYN2
+      *------------------------------------------------------------------------
+       T025-SINGLE-MOVE.
+      
+      * Assegnazione condizionale
+           IF TXXX-FLDN1 = 1
+              MOVE 'T025DYN1' TO T025-FLDX8
+           END-IF
+           
+      * Assegnazione condizionale
+           IF TXXX-FLDN1 = 2
+              MOVE 'T025DYN2' TO T025-FLDX8
+           END-IF
+                      
+           MOVE 1 TO TXXX-FLDN2.
+           MOVE T025-FLDX8  TO  T025-FLD-SINGLE.
+           
+           EXEC CICS XCTL
+                PROGRAM(T025-FLD-SINGLE) 
+           END-EXEC.
+       
+       T025-EX. EXIT.
+    
+
+      
+      *-----------------------------------------------------------------------------------------
+      * T029 Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE
+      *      File Vsam esterno acceduto dinamicamente, a sua volta da risolvere
+      *      Da Ioarea Vsam a campo a campo finale (stesse lunghezze) 
+      *      Si testa il recupero di valori da una colonna esterna di un file codificata in DVAE
+      *      File external Vsam individuato T029VSM1
+      *      File fisico mappato per T029VSM1 in DCXM T029.VSAM.DVAEFIL1
+      * Valori attesi: T029TSD1, T029TSD2 
+      *-----------------------------------------------------------------------------------------
+       T029-SINGLE-MOVE-FROM-VSAM.
+       
+           MOVE 'T029VSM1' TO T029-FLD-SINGLE
+           MOVE 'KEY01' TO TXXX-KEY 
+           MOVE 100 TO TXXX-FLDN2.
+           
+      * File in cui si trova il nome della coda TS nel campo T029-TS-NAME  sotto T029-IOAREA        
+           EXEC CICS READ 
+                FILE(T029-FLD-SINGLE) 
+                INTO(T029-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+           MOVE T029-TS-NAME TO T029-FLDX8.
+
+
+      * Il nome della coda è nel file 'T029VSM1'  da pos 31 (1-based)
+      * In DVAE è codificata la colonna che interessa
+      * Il test individua il nome della coda nella ioarea del file Vsam 
+      * Individua la colonna (pos 31, lng 8) nella tabella DVAE
+      * Estrae il valori trovati e li utilizza come valori per il nome della coda
+      * per l'inserimento di oggetti e relazioni (T29TSD1 e  T029TSD2)
+           EXEC CICS READQ TS
+                QUEUE(T029-FLDX8)
+                INTO(T029-IOAREA) 
+           END-EXEC.
+         
+       T029-EX. EXIT.
+       
+      *-----------------------------------------------------------------------------------------
+      * T030 Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE
+      *      File Vsam esterno acceduto staticamente e risolto nel programma.
+      *      Da Ioarea Vsam a campo a campo finale (stesse lunghezze) 
+      *      Si testa il recupero di valori da una colonna esterna di un file codificata in DVAE
+      *      File external Vsam individuato T030VSM1
+      *      File fisico mappato per T030VSM1 in DCXM T030.VSAM.DVAEFIL1
+      * Valori attesi: T030TSD1, T030TSD2 
+      *-----------------------------------------------------------------------------------------
+       T030-SINGLE-MOVE-FROM-VSAM.
+       
+      * File in cui si trova il nome della coda TS nel campo T030-TS-NAME  sotto T030-IOAREA        
+           EXEC CICS READ 
+                FILE('T030VSM1') 
+                INTO(T030-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+           MOVE T030-TS-NAME TO T030-FLDX8.
+ 	
+
+      * Il nome della coda è nel file 'T030VSM1'  da pos 31 (1-based)
+      * In DVAE è codificata la colonna che interessa
+      * Il test individua il nome della coda nella ioarea del file Vsam 
+      * Individua la colonna (pos 31, lng 8) nella tabella DVAE
+      * Estrae il valori trovati e li utilizza come valori per il nome della coda
+      * per l'inserimento di oggetti e relazioni (T030TSD1 e  T030TSD2)
+           EXEC CICS READQ TS
+                QUEUE(T030-FLDX8)
+                INTO(T0XX-IOAREA) 
+           END-EXEC.
+         
+       T030-EX. EXIT.
+           
+ 
+     
+       
+      *-----------------------------------------------------------------------------------------
+      * T031 Campo singolo con Move da campo su file Vsam esterno con valori colonna in DVAE
+      *      Da Ioarea Vsam file T031VSM1 a campo a campo finale (pos:lng). 
+      *      Si testa il recupero di una porzione di colonna come valore esterno 
+      * Valori attesi per file			 : T031VSM1 
+      * Valori attesi per coda Ts in file: T031TSD1, T031TSD2
+      *-----------------------------------------------------------------------------------------
+       T031-SINGLE-MOVE-FROM-VSAM.
+       
+           MOVE 'T031VSM1' TO T031-FLD-SINGLE
+           MOVE 'KEY01' TO TXXX-KEY 
+           MOVE 100 TO TXXX-FLDN2.
+           
+      * File in cui si trova il nome della coda TS dentro T031-DATI          
+           EXEC CICS READ 
+                FILE(T031-FLD-SINGLE) 
+                INTO(T031-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+           MOVE T031-DATI(11:8) TO T031-FLDX8.
+           MOVE 200 TO TXXX-FLDN1.
+
+
+      * Il nome della coda è nel file 'T031VSM1'  nel campo T031-DATI 
+      * In DVAE è codificata la colonna che interessa .
+      * Il test individua il nome della coda nella ioarea del file Vsam 
+      * Individua la colonna (pos 41, lng 60) nella tabella DVAE
+      * Estrae il valori trovati e li utilizza come valori per il nome della coda
+      * a partire da col 11 per 8 bytes, per l'inserimento di oggetti e relazioni 
+      * (T031TSD1 e  T031TSD2)
+      
+           EXEC CICS READQ TD
+                QUEUE(T031-FLDX8)
+                INTO(TXXX-IOAREA) 
+           END-EXEC.
+
+       T031-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T032 Campo singolo con Move da campo su file Vsam letto con Cobol Read
+      *      Da Ioarea Vsam file T032VSM1 a campo a campo finale. 
+      *      Si testa il recupero di una colonna come valore esterno di un file Vsam in DVAE.
+      *      Si testa il recupero del/dei nome/i esterno/i attraverso le relazioni impostate
+      *      dall'analisi del jcl. Si parte dalla dd esterna in select T032VSM1.
+      * Valori attesi: T032TSD1, T032TSD2, TS32TSD3 
+      *-----------------------------------------------------------------------------------------
+       T032-SINGLE-MOVE-FROM-VSAM-COBOL.
+       
+           READ T032FILE.
+           MOVE 100 TO TXXX-FLDN2.
+           MOVE T032-REC-VSAM TO T032-IOAREA.
+           MOVE T032-TS-NAME TO T032-FLD-SINGLE.
+           
+           
+      * Il nome della coda è nel file 'T032VSM1'  nel campo T032-TS-NAME 
+      * In DVAE è codificata la colonna che interessa .
+      * Il test individua il nome della coda nella ioarea del file Vsam 
+      * Individua la colonna (pos 13, lng 8) nella tabella DVAE
+      * Estrae il valori trovati e li utilizza come valori per il nome della coda
+      
+           EXEC CICS READQ TD
+                QUEUE(T032-FLD-SINGLE)
+                INTO(TXXX-IOAREA) 
+           END-EXEC.
+       
+        T032-EX. EXIT.
+       
+      
+      
+       
+      *-----------------------------------------------------------------------------------------
+      * T033 Campo singolo con Move da campo su Coda  Ts esterna con valori colonna in DVAE
+      *      Da Ioarea Ts a campo a campo finale (stesse lunghezze) 
+      *      I nomi del file vengono presi dalla coda ts T033TSQ1, codificata in DVAE per
+      *      il campo T033-FILE-NAME (pos=15, lng=8)
+      * Valori attesi: T033VSM1, T033VSM2
+      *-----------------------------------------------------------------------------------------
+       T033-SINGLE-MOVE-FROM-CICS-TS.
+       
+           MOVE 'T033TSQ1' TO T033-FLDX8
+           MOVE 100 TO TXXX-FLDN2.
+           
+      * Coda TS in cui si trova il nome del file 
+      * La colonna T033-FILE-NAME a pos 15 lng 8 contiene il nome del file Vsam 
+           EXEC CICS READQ TS
+                QUEUE(T033-FLDX8)
+                INTO(T033-IOAREA) 
+           END-EXEC.
+           
+      * Trasformazione campo nome file da ioarea TS      
+           MOVE T033-FILE-NAME TO T033-FLD-SINGLE.
+           
+           EXEC CICS READ 
+                FILE(T033-FLD-SINGLE) 
+                INTO(T0XX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+       T033-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T034 Campo singolo con Move da campo EIBTRMID con valori codificati in colonna DVAE
+      *      Da EIBTRMID a campo a campo finale (stesse lunghezze) 
+      * Valori attesi: TRM1, TRM2
+      *-----------------------------------------------------------------------------------------
+       T034-SINGLE-MOVE-FROM-CICS-SYSTEM.
+
+      * I valori per il terminale sono codificati in DVAE come colonna EIBTRMID per il Cics
+           MOVE EIBTRMID TO T034-FLDX4.
+           MOVE ZERO TO TXXX-FLDN2.
+           MOVE T034-FLDX4 TO T034-FLD-SINGLE.
+
+      * Vengono generati tutti gli oggetti e relazioni per le transazioni con il nome terminale 
+           EXEC CICS RETURN 
+                TRANSID(T034-FLD-SINGLE) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+        
+       T034-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T035 Campo singolo con Move da campo EIBTRNID con valori codificati in colonna DVAE
+      *      Da EIBTRNID a campo a campo finale (stesse lunghezze) 
+      * Valori attesi: TRN1, TRN2
+      *-----------------------------------------------------------------------------------------
+       T035-SINGLE-MOVE-FROM-CICS-SYSTEM.
+
+      * I valori per il terminale sono codificati in DVAE come colonna EIBTRNID per il Cics
+           MOVE EIBTRNID TO T035-FLDX4.
+           MOVE ZERO TO TXXX-FLDN2.
+           MOVE T035-FLDX4 TO T035-FLD-SINGLE.
+
+      * Vengono generati tutti gli oggetti e relazioni per le transazioni con il nome terminale 
+           EXEC CICS RETURN 
+                TRANSID(T035-FLD-SINGLE) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+        
+       T035-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T036 Campo singolo con nome completo pgm da Move da Linkage in Using
+      *      Da sottocampo in Using a campo finale
+      *      Si testa la valorizzazione della stuttura di ultima assegnazione FROM_PARM_USING #2
+      *         da risolvere nel programma chiamante COBTST03 con logica spreaded
+      *         Il campo LK-SPREADED-PGM-NAME si trova a pos 1-based 33 parm #2
+      *      Si testa qui la trasformazione da area di Linkage a gruppo di working
+      *         e da un campo di questi a quello finale che genera la relazione .
+      * Valori attesi: T036PGM1, T036PGM2, T036PGM3
+      *-----------------------------------------------------------------------------------------
+       T036-SPREADED-MOVE-FROM-USING.
+       
+      * Valori impostati nel pgm chiamante COBTST03
+      
+      * call parm#2 pos=33
+           MOVE LK-SPREADED-PGM-NAME TO T036-FLD-SINGLE.
+           MOVE 2 TO TXXX-FLDN1.
+           
+           CALL T036-FLD-SINGLE.
+
+       T036-EX. EXIT.
+
+
+      *-----------------------------------------------------------------------------------------
+      * T037 Sottocampi nome pgm da chiamante con Move da Linkage in Using
+      *      Si testa la valorizzazione della stuttura di ultima assegnazione FROM_PARM_USING #2
+      *         da risolvere nei programmi chiamanti con logica spreaded
+      *      Si verifica, in quanto i campi di linkage sono comuni ai test T037 e T038
+      *         che siano validi solo i valori del test T037
+      * Valori attesi prefix: T037 
+      * Valori attesi id    : P37 
+      * Valori attesi suffix: 1, 2, 3, 4 
+      * Valori attesi       : T037P371, T037P372, T037P373, T037P374
+      *-----------------------------------------------------------------------------------------
+       T037-SPREADED-MOVE-FROM-USING.
+       
+      * Valori impostati nel pgm chiamante COBTST03
+           MOVE LK-SPREADED-PGM-PREFIX TO  T037-PGM-PREFIX.
+           MOVE LK-SPREADED-PGM-ID     TO  T037-PGM-ID.
+           MOVE LK-SPREADED-PGM-SUFFIX TO  T037-PGM-SUFFIX.
+ 
+           MOVE T037-PGM-NAME TO T037-FLD-SINGLE.
+ 
+           CALL T037-FLD-SINGLE.
+            
+       T037-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T038 Valorizzazione sottocampi in programmi chiamanti diversi
+      *      Si testa il caso di programma passthru (COBTST03) per un sottocampo 
+      *         (T038-PGM-SUFFIX, ultimo nel primo parametro) da risolvere nel programma 
+      *         chiamante il chiamante  questo programma (COBTST04) 
+      *         e altri sottocampi risolti nel programma immediatamente chiamante (COBTST03)
+      *         con la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori attesi prefix: T038 
+      * Valori attesi id    : P38 
+      * Valori attesi suffix: A, B, C, D 
+      * Valori attesi: T038P38A, T038P38B, T038P38C, T038P38D
+      *-----------------------------------------------------------------------------------------
+       T038-SPREADED-MOVE-FROM-USING.
+           
+      * Valori impostati nel pgm chiamante COBTST03 e COBTST04
+      
+      * Parm#2 di procedure using risolti in COBTST03
+           MOVE LK-SPREADED-PGM-PREFIX TO  T038-PGM-PREFIX.
+           MOVE LK-SPREADED-PGM-ID     TO  T038-PGM-ID.
+      
+      * Parm#1 pos 14 di procedure using risolto in COBTST04
+      * COBTST03 è in questo caso solo di passthru
+           MOVE LK-SPREADED-PGM-SUFFIX-0 TO  T038-PGM-SUFFIX.
+           
+           MOVE T038-PGM-NAME TO T038-FLD-SINGLE.
+           
+           CALL T038-FLD-SINGLE.
+            
+       T038-EX. EXIT.
+   
+      *---------------------------------------------------------------------------------
+      * T039 Valorizzazione sottocampo da Cics TWA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA 
+      *        Il campo di TWA viene valorizzato nel programma chiamante (COBTST03)
+      *      Si testa il corretto indirizzamento della TWA con individuazione 
+      *         ultima assegnazione.
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST03
+      *            COBTST02 
+      *
+      * Valori attesi: T0390001, T0390002
+      *---------------------------------------------------------------------------------- 
+       T039-SPREADED-MOVE-FROM-CICS-TWA.
+           
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+      
+           MOVE T039-TWA-PGM-NAME TO T039-FLD-SINGLE.
+           
+           CALL T039-FLD-SINGLE.
+            
+       T039-EX. EXIT.
+   
+   
+      *---------------------------------------------------------------------------------
+      * T040 Valorizzazione sottocampo da Cics TWA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di TWA 
+      *        Il campo di TWA viene valorizzato nel programma chiamante (COBTST04)
+      *      Si testa il corretto indirizzamento della TWA con individuazione 
+      *         ultima assegnazione.
+      *      Si testa la corretta valorizzazione nel pgm caller 2 livelli (COBTST04)
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02 
+      *
+      * Valori attesi: T0400001, T0400002
+      *---------------------------------------------------------------------------------- 
+       T040-SPREADED-MOVE-FROM-CICS-TWA.
+           
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+      
+           MOVE T040-TWA-FILE-NAME TO T040-FLD-SINGLE.
+           
+           EXEC CICS READ 
+                FILE(T040-FLD-SINGLE) 
+                INTO(T0XX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+            
+       T040-EX. EXIT.
+   
+   
+      *---------------------------------------------------------------------------------
+      * T041 Valorizzazione sottocampo da Cics CSA
+      *      Si testa il caso di valorizzazione anche indiretta da un campo di CSA 
+      *        Il campo di CSA viene valorizzato nel programma chiamante (COBTST04)
+      *      Si testa il corretto indirizzamento della CSA con individuazione 
+      *         ultima assegnazione.
+      *      Si testa la corretta valorizzazione nel pgm caller 2 livelli (COBTST04)
+      *      Si utilizza la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02 
+      *
+      * Valori attesi: T0410001, T0410002
+      *---------------------------------------------------------------------------------- 
+       T041-SPREADED-MOVE-FROM-CICS-CSA.
+           
+      * Recupero indirizzo CSA da Cics
+      * Indirizzamento CSA con Api Cics
+           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF CSA-AREA) 
+                USING(POINTER-CSA)
+           END-EXEC
+      
+           MOVE T041-CSA  TO  T041-WS-CSA.
+      
+           MOVE T041-WS-CSA-FILE-NAME TO T041-FLD-SINGLE.
+           
+           EXEC CICS READ 
+                FILE(T041-FLD-SINGLE) 
+                INTO(T0XX-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+            
+       T041-EX. EXIT.
+   
+   
+   
+   
+      *-----------------------------------------------------------------------------------------
+      * T042 Campo singolo con nome pgm da Linkage DFHCOMMAREA
+      *      Da DFHCOMMAREA a campo working 
+      *      Si testa la valorizzazione della struttura di ultima assegnazione FROM_DFHCOMMAREA
+      *         pos=25, lng=8 1-based
+      *         da risolvere nei programmi chiamanti Cics con logica spreaded.
+      *      I valori sono impostati dal programma chiamante COBTST03, direttamente in campi
+      *        della commarea.
+      *      I programmi chiamanti hanno effettuato Cics Link/Xctl a questo programma
+      * Valori attesi: T042PGM1, T042PGM2, T042PGM3
+      *-----------------------------------------------------------------------------------------
+       T042-SPREADED-MOVE-FROM-DFHCOMMAREA.
+      
+      * Dfhcommarea passata dal Cics 
+           MOVE DFHCOMMAREA TO WS-DFHCOMMAREA.
+           MOVE 2 TO TXXX-FLDN1.
+           
+      * Definizione per test T042
+           MOVE WS-DFHCOMMAREA TO T042-DFHCOMMAREA.
+           
+           EXEC CICS LINK
+                PROGRAM(T042-PGM-NAME)
+           END-EXEC.
+
+       T042-EX. EXIT.
+  
+      *-----------------------------------------------------------------------------------------
+      * T043 Campo singolo con nome pgm da Linkage DFHCOMMAREA
+      *      Da DFHCOMMAREA a campo working 
+      *      Si testa la valorizzazione della struttura di ultima assegnazione FROM_DFHCOMMAREA
+      *         pos=9, lng=8 1-based
+      *         da risolvere nei programmi chiamanti Cics con logica spreaded.
+      *      I valori sono impostati dal programma chiamante COBTST03, indirettamente in campi
+      *        della commarea. Il programma chiamante dichiara una COMMAREA non strutturata.
+      *      I programmi chiamanti hanno effettuato Cics Link/Xctl a questo programma
+      * Valori attesi: T043P431, T042P432
+      *-----------------------------------------------------------------------------------------
+       T043-SPREADED-MOVE-FROM-DFHCOMMAREA.
+      
+      * Dfhcommarea passata dal Cics 
+           MOVE DFHCOMMAREA TO WS-DFHCOMMAREA.
+           MOVE 5 TO TXXX-FLDN1.
+           
+      * Definizione per test T043
+           MOVE WS-DFHCOMMAREA TO T043-DFHCOMMAREA.
+           
+           EXEC CICS LINK
+                PROGRAM(T043-PGM-NAME)
+           END-EXEC.
+
+       T043-EX. EXIT.
+  
+
+      *-----------------------------------------------------------------------------------------
+      * T044 Campo singolo con sottocampi con Move da Linkage in Using
+      *      Si testa il caso di logiche spreaded relative a un campo di gruppo con sottocampi.
+      *      Si verifica la corretta composizione finale dei valori da quelli congruenti
+      *         dei vari sottocampi.
+      *      Si testano anche valorizzazioni parziali, con reference modification, dei
+      *         vari sottocampi costituenti il campo di cui trovare i valori.
+      *      Si testano valorizzazioni spreaded parziali da literal, tabella e file
+      *      Si individuano i valori fino a 2 livelli chiamanti.
+      *         con la seguente sequenza di richiamo:
+      *          COBTST04
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori attesi: T044P44A, T044P44B, T044P44C
+      *                T044Q44A, T044Q44B, T044Q44C
+      *                T044R44A, T044R44B, T044R44C
+      *-----------------------------------------------------------------------------------------
+       T044-SPREADED-MOVE-FROM-USING.
+           
+      * Valori impostati nel pgm chiamante COBTST03 e COBTST04
+      
+      * Parm#2 di procedure using risolti in COBTST03
+           MOVE LK-SPREADED-PGM-PREFIX-T044 TO  T044-PGM-PREFIX.
+           MOVE LK-SPREADED-PGM-ID-T044     TO  T044-PGM-ID.
+      
+      * COBTST03 è in questo caso solo di passthru, il campo viene risolto in COBTST04
+           MOVE LK-SPREADED-PGM-SUFFIX-T044 TO  T044-PGM-SUFFIX.
+           
+           CALL T044-PGM-NAME-GROUP.
+            
+       T044-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T045 Campo singolo con Move da Linkage e pointer in parm Using
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato in un parametro Using di procedure.
+      *      Si verifica la corretta individuazione del pointer di indirizzamento
+      *         del sottocampo
+      *      L'struzione è risolta nel programma chiamante con la sequenza.
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori attesi: T0450001, T0450002, T0450003
+      *-----------------------------------------------------------------------------------------
+       T045-SPREADED-FROM-LINKAGE-POINTER-USING.
+           
+           IF TXXX-FLDN1 = 1
+      *       Trasformazione pointer in Parm#1 pos=11
+              SET T045-POINTER TO LK-ADDRESS-DYN-AREA-POINTER
+           ELSE
+      *       Scartato
+              SET ADDRESS OF LK-DYNAMIC-BY-SET-ADDRESS
+               TO LK-ADDRESS-DYN-AREA-POINTER
+           END-IF
+           
+      * Indirizzamento area contenente il campo con pointer in Parm#1 pos=11
+           SET ADDRESS OF LK-SPREADED-T045 TO T045-POINTER
+           IF TXXX-FLDN1 = 1
+              MOVE 5 TO TXXX-FLDN1
+           END-IF
+       
+      * Assegnazione da area linkage indirizzata da pointer passato in using  
+           MOVE LK-SPREADED-PGM-NAME-T045 TO  T045-PGM-NAME.
+           
+           CALL T045-PGM-NAME.
+            
+       T045-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T046 Campo singolo con Move da Linkage e pointer in DFHCOMMAREA
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato nella DFHCOMMAREA cics.
+      *      Il programma deve essere chiamato con Link/Xctl
+      *      Si verifica la corretta individuazione del pointer di indirizzamento
+      *         del sottocampo
+      *      L'struzione è risolta nel programma chiamante con la sequenza.
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori attesi: T046DFLT, T0460001, T0460002
+      *-----------------------------------------------------------------------------------------
+       T046-SPREADED-FROM-LINKAGE-POINTER-COMM.
+           
+      * Da area Cics in linkage a working       
+           MOVE DFHCOMMAREA TO WS-DFHCOMMAREA.
+           
+      * Identifica T046-POINTER
+           IF TXXX-FLDN1 = 1
+               MOVE WS-DFHCOMMAREA TO T046-DFHCOMMAREA
+           END-IF
+           
+      * Indirizzamento area contenente il campo con pointer in DFHCOMMAREA
+           SET ADDRESS OF LK-SPREADED-T046 TO T046-POINTER
+           IF TXXX-FLDN1 = 1
+              MOVE 5 TO TXXX-FLDN1
+           END-IF
+       
+      * Assegnazione da area linkage indirizzata da pointer passato in DFHCOMMAREA  
+           MOVE LK-SPREADED-PGM-NAME-T046 TO  T046-PGM-NAME.
+           
+           CALL T046-PGM-NAME.
+            
+       T046-EX. EXIT.
+
+      *-----------------------------------------------------------------------------------------
+      * T047 Campo singolo con Move da Linkage e pointer in Cics TWA
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato nella TWA cics, non esplicitamente.
+      *      Il programma deve essere chiamato con Link/Xctl
+      *      Si verifica la corretta individuazione del pointer di indirizzamento
+      *         del sottocampo
+      *      L'struzione è risolta nel programma chiamante con la sequenza.
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori attesi: T047DFLT, T0470001, T0470002
+      *-----------------------------------------------------------------------------------------
+       T047-SPREADED-FROM-LINKAGE-POINTER-TWA.
+      
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+
+      * Da area Cics in linkage a working
+      * Identifica T047-POINTER
+           MOVE TWA-AREA TO WS-TWA.
+           MOVE WS-TWA TO T047-TWA
+       
+      * Indirizzamento area contenente il campo con pointer in Cics TWA
+           SET ADDRESS OF LK-SPREADED-T047 TO T047-POINTER
+           IF TXXX-FLDN1 = 1
+              MOVE 5 TO TXXX-FLDN1
+           END-IF
+       
+      * Assegnazione da area linkage indirizzata da pointer passato in TWA  
+           MOVE LK-SPREADED-PGM-NAME-T047 TO  T047-PGM-NAME.
+           
+           CALL T047-PGM-NAME.
+            
+       T047-EX. EXIT.
+
+
+      *-----------------------------------------------------------------------------------------
+      * T048 Campo singolo con Move da Linkage e pointer in Cics CSA
+      *      Si testa il caso di logiche spreaded relative a un singolo sottocampo.
+      *      Il sottocampo è definito in linkage e l'area è indirizzata da un pointer.
+      *      Il pointer è dichiarato nella CSA cics, non esplicitamente.
+      *      Il programma deve essere chiamato con Link/Xctl
+      *      Si verifica la corretta individuazione del pointer di indirizzamento
+      *         del sottocampo
+      *      L'struzione è risolta nel programma chiamante con la sequenza.
+      *            COBTST03 
+      *              COBTST02
+      *
+      * Valori attesi: T048DFLT, T0480001, T0480002
+      *-----------------------------------------------------------------------------------------
+       T048-SPREADED-FROM-LINKAGE-POINTER-CSA.
+      
+      * Recupero indirizzo CSA da Cics
+      * Indirizzamento CSA con istruzione Cobol
+           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.
+           SET ADDRESS OF CSA-AREA TO POINTER-CSA.
+            
+      * Di servizio, non influente
+           MOVE 5 TO TXXX-FLDN1
+           
+      * Identifica T048-POINTER
+           IF TXXX-FLDN1 = 1
+               MOVE T048-CSA  TO T048-WS-CSA
+           END-IF
+      
+      * Indirizzamento area contenente il campo con pointer in Cics CSA
+           SET ADDRESS OF LK-SPREADED-T048 TO T048-POINTER
+           IF TXXX-FLDN1 = 1
+              MOVE 5 TO TXXX-FLDN1
+           END-IF
+       
+      * Assegnazione da area linkage indirizzata da pointer passato in CSA  
+           MOVE LK-SPREADED-PGM-NAME-T048 TO  T048-PGM-NAME.
+           
+           CALL T048-PGM-NAME.
+            
+       T048-EX. EXIT.
+
+
+
+      *-----------------------------------------------------------------------------------------
+      * T049 Campo gruppo risolto spreaded nei pgm chiamanti
+      *      Si testano in modo integrato vari tipi di assegnazioni spreaded.
+      *      Si testano contemporaneamente valorizzazione da DFHCOMMAREA, TWA e CSA
+      *         effettuati a vari livelli di programma chiamante 
+      * Valori attesi: T0493141, T0493142, T0493141, T0493142
+      *-----------------------------------------------------------------------------------------
+       T049-SPREADED-GROUP-MIXED.
+ 
+      * Recupero indirizzo TWA da Cics
+      * Indirizzamento TWA con Api Cics
+           EXEC CICS ADDRESS TWA(POINTER-TWA) END-EXEC.
+           EXEC CICS ADDRESS 
+                SET(ADDRESS OF TWA-AREA) 
+                USING(POINTER-TWA)
+           END-EXEC
+      
+      * Recupero indirizzo CSA da Cics
+      * Indirizzamento CSA con SET Cobol
+           EXEC CICS ADDRESS CSA(POINTER-CSA) END-EXEC.
+           SET ADDRESS OF CSA-AREA TO POINTER-CSA.
+           
+      * Costante
+          MOVE 'T'  TO T049-GRP1-SUBFLD1.
+
+      * Da Cics DFHCOMMAREA passata dal Cics a area di working 
+      * Valorizzato in COBTST03 a '049'   
+           MOVE DFHCOMMAREA               TO WS-DFHCOMMAREA.
+           MOVE 5 TO TXXX-FLDN1.
+           MOVE WS-DFHCOMMAREA            TO  T049-DFHCOMMAREA.
+           MOVE T049-DFHCOMMAREA-SUBFLD2  TO  T049-GRP1-SUBFLD2.
+          
+      * Da Cics TWA, valorizzato in caller COBTST03 a '31','32'
+           MOVE T049-TWA-SUBFLD3  TO  T049-GRP1-SUBFLD3.
+             
+      * Da Cics CSA, valorizzato in caller COBTST04 a '41','42'
+           MOVE  T049-CSA-SUBFLD4 TO  T049-GRP1-SUBFLD4.
+
+      * Da campo di gruppo a campo singolo specifico
+           MOVE  T049-FLD-GRP1  TO  T049-FLDX8.
+           
+           EXEC CICS LINK 
+                PROGRAM(T049-FLDX8) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+       T049-EX. EXIT.
+  
+       
+      *-----------------------------------------------------------------------------------------
+      * T050 Gruppo 1 livello con sottocampi elementari con value
+      *      Solo un livello di struttura per il sottocampo.
+      *      Ogni sottocampo ha un Value. Si testa la composizione del campo finale
+      *      come moltiplicazione dei valori dei sottocampi, senza assegnazioni di trasformazione
+      * Valori attesi: T050DYN1
+      *-----------------------------------------------------------------------------------------
+       T050-GROUP.
+  
+           EXEC CICS LINK 
+                PROGRAM(T050-FLD-GRP1) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+       
+       T050-EX. EXIT.
+       
+       
+    
+      *-----------------------------------------------------------------------------------------
+      * T051 Gruppo 1 livello con sottocampi elementari con value
+      *      Due livello di struttura per il sottocampo.
+      *      Ogni sottocampo ha un Value. Si testa la composizione del campo finale
+      *      come moltiplicazione dei valori dei sottocampi, senza assegnazioni di trasformazione
+      * Valori attesi: T051DYN1
+      *-----------------------------------------------------------------------------------------
+       T051-GROUP.
+  
+           EXEC CICS LINK 
+                PROGRAM(T051-FLD-GRP1) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+       
+       T051-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T052 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni T002-T042 Move semplici + Value
+      *      Si testa la moltiplicazione di valori dei sottocampi in path diversi
+      * Valori attesi: T05201AA, T05202AA, T05203AA
+      *              : T05201BB, T05202BB, T05203BB
+      *              : T05201DF, T05202DF, T05203DF
+      *              : T052DFAA, T052DFBB, T052DFDF
+      *-----------------------------------------------------------------------------------------
+       T052-GROUP.
+       
+      * Numero test
+           MOVE '052'  TO T052-GRP1-SUBFLD2.
+           MOVE 'AA'   TO T052-GRP1-SUBFLD4.
+ 
+           IF TXXX-FLDN1 = 1
+               MOVE '01'  TO T052-GRP1-SUBFLD3
+           END-IF  
+           IF TXXX-FLDN1 = 2
+               MOVE '02'  TO T052-GRP1-SUBFLD3
+           END-IF  
+           IF TXXX-FLDN1 = 3
+               MOVE '03'  TO T052-GRP1-SUBFLD3
+               MOVE 'BB'  TO T052-GRP1-SUBFLD4
+           END-IF  
+       
+           Call T052-FLD-GRP1.
+        
+       T052-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T053 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Si Sottocampi con trasformazioni T002-T042 Move (pos:lng)
+      *      Si Sottocampi con trasformazioni T002-T042 Move (pos:)
+      *      Si Sottocampi con trasformazioni T002-T042 Move (pos:lng)
+      *      No assegnazioni indirette attraverso campi di gruppo
+      *      No valore esterno da risolvere in Linkage.
+      *      No valore esterno da recuperare su DVAE
+      *      No valore da tabella interna.
+      * Valori attesi: T053KK01, T053KK02, T053KK05, T053KK99, T053KK9Z, T053KKMM   
+      *-----------------------------------------------------------------------------------------
+       T053-GROUP.
+       
+      * Numero test
+           MOVE '053' TO T053-GRP1-SUBFLD2.
+           MOVE 'KK'  TO T053-GRP1-SUBFLD3.
+   
+           MOVE '05MM99Z'  TO T053-FLDX7.
+           MOVE '99'  TO T053-GRP1-SUBFLD4
+           
+           IF TXXX-FLDN1 = 1
+               MOVE '01'  TO T053-GRP1-SUBFLD4
+           END-IF  
+           IF TXXX-FLDN1 = 2
+               MOVE '02'  TO T053-GRP1-SUBFLD4
+           END-IF  
+           IF TXXX-FLDN1 = 3
+               MOVE T053-FLDX7(3:2)  TO T053-GRP1-SUBFLD4
+           END-IF  
+           IF TXXX-FLDN1 = 4
+               MOVE T053-FLDX7(6:)   TO T053-GRP1-SUBFLD4
+           END-IF  
+           IF TXXX-FLDN1 = 5
+               MOVE T053-FLDX7(1:2)  TO T053-GRP1-SUBFLD4
+           END-IF  
+           IF TXXX-FLDN1 = 6
+               MOVE T053-FLDX7(1:4)  TO T053-GRP1-SUBFLD4
+           END-IF  
+           
+           EXEC CICS LINK 
+                PROGRAM(T053-FLD-GRP1) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+       
+       T053-EX. EXIT.
+       
+       
+        
+      *-----------------------------------------------------------------------------------------
+      * T055 Gruppo con sottocampi con value + assegnazioni da tb 1 dimensione
+      *      Sottocampi con trasformazioni T002-T042 Move (idx)
+      *      Si testa il recupero di un elemento specifico di una tabella.
+      *      Si testa il recupero di tutti gli elementi di una tabella.
+      *      Si testa il recupero di tutti gli elementi di una tabella 
+      *         con trasformazione da 99 a XX
+      *      Si testa il recupero di una porzione di elemento specifico con (pos:lng)
+      *
+      * Valori attesi: T055AABB, T055AA04, T055A0BB, T055A004, T055BBBB, T055BB04
+      *                T055AADF, T055A0DF, T055BBDF, T055DFBB, T055DF04, T055DFDF
+      *-----------------------------------------------------------------------------------------
+       T055-GROUP.
+
+      * Numero test
+           MOVE '055' TO T055-GRP2-SUBFLD2.
+       
+      * Equivale a tutti i valori della colonna, ovvero AA e BB
+           IF TXXX-FLDN1 = 1
+              MOVE T055-TB1-XX(TXXX-FLDN1) TO T055-GRP2-SUBFLD3
+           END-IF
+           
+      * Test estrazione 'A0' dal secondo elemento tabella
+           IF TXXX-FLDN1 = 1
+              MOVE T055-EL-TB1(2)(2:2) TO T055-GRP2-SUBFLD3
+           END-IF
+           
+      * Equivale alla costante BB 
+          IF TXXX-FLDN1 = 2
+             MOVE T055-TB1-XX(3) TO T055-GRP2-SUBFLD4
+          END-IF  
+ 
+      * Test trasformazione elemento  tabella da 9 a X per valore 04
+           IF TXXX-FLDN1 = 2
+              MOVE T055-TB1-99(4) TO T055-X9
+              MOVE T055-X2 TO T055-GRP2-SUBFLD4
+           END-IF
+           
+           EXEC CICS LINK 
+                PROGRAM(T055-FLD-GRP2) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+
+       T055-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T056 Gruppo con sottocampi con value + assegnazioni da tb 2 dim
+      *      Sottocampi con trasformazioni T002-T042 Move (id1, idx2) 2 dim
+      *
+      * Valori attesi: T056T2D1, T056T2D5, T056T2D9 
+      *                T056T2D2, T056T2D6, T056T2DA
+      *                T056T2D3, T056T2D7, T056T2DB
+      *                T056T2D4, T056T2D8, T056T2DC
+      *                T056TBD1, T056TBD5, T056TBD9 
+      *                T056TBD2, T056TBD6, T056TBDA
+      *                T056TBD3, T056TBD7, T056TBDB
+      *                T056TBD4, T056TBD8, T056TBDC
+      *-----------------------------------------------------------------------------------------
+       T056-GROUP.
+      
+      * Numero test
+           MOVE '056' TO T056-GRP2-SUBFLD2.
+      
+      * Costante
+           MOVE 'T2' TO T056-GRP2-SUBFLD3.
+ 
+      * Viene estratto il valore specifico T056TBDA
+      * Valorizzsa indirettamente T056-GRP2-SUBFLD3 a 'TB'
+      * Valorizzsa indirettamente T056-GRP2-SUBFLD4 a 'DA'
+           IF TXXX-FLDN1 = 2
+              MOVE T056-TB3-PGM(2,3) TO T056-FLD-GRP2
+           END-IF
+            
+      * Vengono estratti tutti i valori finali D1,D2,..,DC
+           MOVE T056-TB3-PGM(TXXX-FLDN1, TXXX-FLDN2)(7:2) 
+             TO T056-GRP2-SUBFLD4.
+            
+           EXEC CICS LINK 
+                PROGRAM(T056-FLD-GRP2) 
+                COMMAREA(WS-DFHCOMMAREA) 
+           END-EXEC.
+       T056-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T057 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni da campo a gruppo
+      * Valori attesi: T057AABB, T057CCBB, T057AADD, T057CCDD
+      *-----------------------------------------------------------------------------------------
+       T057-GROUP.
+       
+      * Numero test
+           MOVE '057' TO T057-GRP2-SUBFLD2.
+           MOVE 1 TO TXXX-FLDN1.
+           
+      * Da literal a campo     
+           MOVE 'AABB' TO T057-FLDX8.
+           MOVE 2 TO TXXX-FLDN1.
+           
+      * Da campo a gruppo     
+           MOVE T057-FLDX8 TO T057-GRP2-GRP.
+           
+      * Trasformazioni condizionali sottocampi gruppo
+           IF TXXX-FLDN1 = 2
+              MOVE 'CC' TO T057-GRP2-SUBFLD3
+           END-IF
+           
+           IF TXXX-FLDN1 = 2
+              MOVE 'DD' TO T057-GRP2-SUBFLD4
+           END-IF
+           
+           MOVE 3 TO TXXX-FLDN1.
+           
+           CALL T057-FLD-GRP2.
+           
+        T057-EX. EXIT.
+
+
+      *-----------------------------------------------------------------------------------------
+      * T058 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni da gruppo a gruppo
+      * Valori attesi: T058AABB, T058AADD, T058AA02
+      *                T058CCBB, T058CCDD, T058CC02
+      *                T05801BB, T05801DD, T0580102
+      *-----------------------------------------------------------------------------------------
+       T058-GROUP.
+       
+      * Numero test
+           MOVE '058' TO T058-GRP1-SUBFLD2.
+           MOVE 1 TO TXXX-FLDN1.
+ 
+      * Valori impostati a livello di gruppo
+           MOVE 'AABB'   TO T058-FLD-GRP12
+           
+           IF TXXX-FLDN1 = 1
+               MOVE 'CCDD'   TO T058-FLD-GRP12
+           END-IF  
+            
+      * Trasformazioni condizionali sottocampi gruppo           
+           IF TXXX-FLDN1 = 2
+               MOVE '01'   TO T058-GRP12-SUBFLD3
+           END-IF 
+             
+           IF TXXX-FLDN1 = 2
+               MOVE '02'   TO T058-GRP12-SUBFLD4
+           END-IF   
+      
+      * Da gruppo a gruppo, la ricerca passa a T058-GRP1-SUBFLD3 e TO T058-GRP1-SUBFLD4
+           MOVE T058-FLD-GRP12 TO T058-GRP1-GRP.
+      
+           CALL T058-FLD-GRP1.
+           
+       T058-EX. EXIT.
+
+       
+      *-----------------------------------------------------------------------------------------
+      * T059 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni e propagazione (pos:lng) a literal
+      * Valori attesi: T059TTUU 
+      *-----------------------------------------------------------------------------------------
+       T059-GROUP.
+
+      * Numero test
+           MOVE '059' TO T059-GRP1-SUBFLD2.
+           MOVE 1 TO TXXX-FLDN1.
+
+      * L' origine è la literal
+           MOVE '????TTUU'  TO T059-FLDX8.
+           MOVE 0           TO TXXX-FLDN1.
+          
+      * La trasformazione passa a T059-FLDX8(5:2) e T059-FLDX8(7:2)
+           MOVE T059-FLDX8 TO T059-FLD-GRP12.
+           MOVE 5          TO TXXX-FLDN2.
+          
+      * La trasformazione passa a T059-GRP1-SUBFLD12 e T059-GRP1-SUBFLD22
+           MOVE T059-GRP12-SUBFLD3 TO T059-GRP1-SUBFLD3.
+           MOVE T059-GRP12-SUBFLD4 TO T059-GRP1-SUBFLD4.
+  
+           CALL T059-FLD-GRP1.
+
+       T059-EX. EXIT.
+       
+      *-----------------------------------------------------------------------------------------
+      * T060 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni e propagazione a altri gruppi
+      *      Si verifica che il valore iniziale del sottocampo T060-GRP2-SUBFLD4, 'DD' NON viene
+      *         portato in output in quanto la MOVE T060-FLD-GRP1 TO T060-GRP2-GRP è incondizionata
+      *         e posizionata PRIMA, dell'istruzione dinamica che ha generato il default a 'DD'
+      * Valori attesi: T060A1B1, T060A1B2, T060A1B3, T060A2B1, T060A2B2, T060A2B3
+      *-----------------------------------------------------------------------------------------
+       T060-GROUP.
+
+      * Numero test
+           MOVE '060' TO T060-GRP2-SUBFLD2.
+           MOVE 1 TO TXXX-FLDN1.
+
+      * La valorizzazione si propaga, con le move sottostanti,
+      * fino ai sottocampi di T060-GRP2-GRP
+           MOVE 'A1' TO T060-GRP1-SUBFLD3
+           MOVE 'B1' TO T060-GRP1-SUBFLD4
+
+      * La valorizzazione si propaga, con la move condizionata,
+      * fino ai sottocampi di T060-GRP2-GRP attraverso il gruppo
+      * T060-FLD-GRP1
+           IF TXXX-FLDN1 = 3
+              MOVE 'A2B2' TO T060-FLD-GRP1
+           END-IF
+     
+      * La ricerca si sposta sul gruppo sender T060-FLD-GRP1
+      * e sui suoi sottocampi T060-GRP1-SUBFLD3 T060-GRP1-SUBFLD4   
+           MOVE T060-FLD-GRP1 TO T060-GRP2-GRP.
+      
+      * Assegnazione condizionale sul sottocampo finale 
+      * Dal momento che non ci sono altre assegnazioni incondizionate
+           IF TXXX-FLDN1 = 4
+              MOVE 'B3' TO T060-GRP2-SUBFLD4
+           END-IF
+       
+      * La ricerca è sul gruppo T060-GRP2-GRP 
+      * e sui suoi sottocampi T060-GRP2-SUBFLD3 T060-GRP2-SUBFLD4
+           EXEC CICS LINK 
+                PROGRAM(T060-FLD-GRP2)
+           END-EXEC.     
+       
+       T060-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T061 Gruppo con sottocampi con value + assegnazioni multiple
+      *      (1) Sottocampi con trasformazioni da EIBTRxID(pos:lng)
+      *      (2) Sottocampi con trasformazioni da EIBTRMID composte
+      *      Si testa il recupero dei valori Cics dalla tabella DVAE e la valorizzazione
+      *      della struttura di ultima assegnazione come di una colonna EIBTRxID (pos,lng)
+      * Valori attesi: T061M1N1,  T061M1N2, T061M2N1,  T061M2N2
+      *-----------------------------------------------------------------------------------------
+       T061-GROUP.
+  
+      * Numero test
+           MOVE '061' TO T061-GRP1-SUBFLD2.
+           MOVE 1 TO TXXX-FLDN1.
+  
+      * Sottocampi con trasformazioni da EIBTRxID(pos:lng)     
+           MOVE EIBTRMID(3:2) TO T061-GRP1-SUBFLD3.
+           MOVE EIBTRNID(3:2) TO T061-GRP1-SUBFLD4.
+            
+           EXEC CICS LINK
+                     PROGRAM(T061-FLD-GRP1)
+           END-EXEC.
+  
+       T061-EX. EXIT.
+       
+      *-----------------------------------------------------------------------------------------
+      * T062 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampi con trasformazioni da EIBTRMID composte
+      *      Si testa il recupero dei valori Cics dalla tabella DVAE e la valorizzazione
+      *      della struttura di ultima assegnazione come di una colonna EIBTRxID (pos,lng)
+      *      Si testa la completa valorizzazione di un sottocampo con reference modification
+      * Valori attesi: T621, T622
+      *-----------------------------------------------------------------------------------------
+       T062-GROUP.
+  
+      * Sottocampi con trasformazioni da EIBTRMID e reference modification
+           MOVE 'T'           TO T062-FLDX4(1:1)
+           MOVE '62'          TO T062-FLDX4(2:2)
+           MOVE EIBTRMID(4:1) TO T062-FLDX4(4:1)
+        
+           EXEC CICS ABEND
+                ABCODE(T062-FLDX4)
+           END-EXEC.
+       
+       T062-EX. EXIT.
+       
+      *-----------------------------------------------------------------------------------------
+      * T063 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampo con trasformazione da Ioarea Vsam
+      *      Sottocampo con trasformazioni da EIBTRMID
+      *      Si testa la composizione del nome del programma in parte da un file esterno T063VSM1
+      *         da posizione 39 per 2 bytes,e in parte dal codice terminale.
+      *      Entrambe le informazioni sono memorizzate nella tabella DVAE
+      * Valori attesi: T063P1M1, T063P1M2, T063P2M1, T063P2M2,
+      *-----------------------------------------------------------------------------------------
+       T063-GROUP.
+       
+      * Numero test
+           MOVE '063' TO T063-GRP2-SUBFLD2.
+           
+      * File in cui si trova il campo T063-PREFIX  
+      * a pos=39 del file T063VSM1         
+           EXEC CICS READ 
+                FILE('T063VSM1') 
+                INTO(T063-IOAREA) 
+                RIDFLD(TXXX-KEY) 
+           END-EXEC.
+       
+           MOVE T063-PREFIX   TO T063-GRP2-SUBFLD3.
+           MOVE EIBTRMID(3:2) TO T063-GRP2-SUBFLD4.
+           
+           EXEC CICS LINK 
+                PROGRAM(T063-FLD-GRP2)
+           END-EXEC.     
+           
+       T063-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T064 ??? Gruppo con sottocampi con value + assegnazioni multiple
+      *          Sottocampi con trasformazioni T032 da Ioarea Sql
+      *-----------------------------------------------------------------------------------------
+       T064-GROUP.
+       T064-EX. EXIT.
+       
+       
+      *-----------------------------------------------------------------------------------------
+      * T065 Gruppo con sottocampi con value + assegnazioni multiple
+      *      Sottocampo con trasformazione da Ioarea Vsam
+      *      Si testa l'individuazione del file fisico attraverso le relazioni con il file esterno
+      *      Il file a cui si fa riferimento è sempre quello acceduto da Cics DVAEFIL1 
+      *         la ddnasme associasta al programma è DDFIDX01
+      * Valori attesi: T065C1ZZ, T065F1ZZ, T065P1ZZ, T065P2ZZ, T065P3ZZ
+      *-----------------------------------------------------------------------------------------
+       T065-GROUP.
+       
+      * Numero test
+           MOVE '065' TO T065-GRP2-SUBFLD2.
+           MOVE 'F1'  TO T065-GRP2-SUBFLD3.
+           
+      * File in cui si trova il campo T065-PREFIX  
+      * a pos=39 del file descritto da T065VSM1    
+           READ T065FILE INTO T065-IOAREA.
+      
+      * Porta in output un valore condizionale
+           IF TXXX-FLDN1 = 4
+              MOVE 'C1'   TO T065-GRP2-SUBFLD3
+           END-IF
+           
+      * Porta in output tutti i valori della colonna 
+           IF TXXX-FLDN1 = 4
+              MOVE T065-PREFIX   TO T065-GRP2-SUBFLD3
+           END-IF
+           
+           MOVE 'ZZ' TO T065-GRP2-SUBFLD4.
+           CALL T065-FLD-GRP2.
+
+       T065-EX. EXIT.

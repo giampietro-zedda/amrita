@@ -1,0 +1,95 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test post analisi processi a livello di programma
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_UPDATE_DB_ENABLED
+
+
+# Opzioni generali di analisi 
+OPT_UPDATE_DB_ENABLED
+OPT_DETECT_DEAD_CODE_DISABLED
+OPT_PGM_GRAPH_CREATION_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+
+# Opzioni per forzatura rianalisi e scrittura tracciato copy
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni per tracciati copy e where used campi in copy
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_DISABLED
+OPT_COPY_DEF_ON_DB_ENABLED
+
+# Categorie di misurazioni e metriche non di base (incluse nell'analisi)
+OPT_METRICS_ALL_DISABLED           	        
+OPT_METRICS_MCCABE_HALSTEAD_DISABLED          
+OPT_METRICS_COMPLEXITY_STRUCTURE_ENABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_ENABLED       
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED                
+
+# Info per user exit
+CUSTOMER_CODE FIAT
+CUSTOMER_INFO SRC-PGM
+SYSTEM_BY_EXIT
+SUB_SYSTEM_BY_EXIT
+
+# Librerie sorgenti programmi e copy e search copy included
+LIBRARY FIAT-CPY      F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy\
+LIBRARY FIAT-CPY-SGM  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy_sgm\
+LIBRARY FIAT-CPY-SQB  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\cpy_sqb\
+LIBRARY FIAT-SRC-CICS F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\src_cics\
+LIBRARY FIAT-SRC-BAT  F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\src_bat\
+LIBRARY FIAT-SRC-SORT F:\Lavoro\Assioma\FIAT-Assesment\sources\cobol_12152\cobol\sort\
+
+# Sequenza di search per copy include
+LIBRARY_SOURCE_SEARCH FIAT-CPY
+LIBRARY_SOURCE_SEARCH FIAT-CPY-SGM
+LIBRARY_SOURCE_SEARCH FIAT-SRC-CICS
+
+# Identificazione oggetti da analizzare
+SYSTEM_VALUE KR
+SUB_SYSTEM_VALUE UK
+#OBJECT_TYPE_PGM_COBOL *ALL*  
+OBJECT_TYPE_PGM_COBOL *SINGLE* KRUKB001
+
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+# Attivazione processo
+PROCESS_PGM_LEVEL	 
+START
+
+
+#--------------------------------------------------------------------------
+# Esempi di direttive
+#--------------------------------------------------------------------------
+
+#COPY_TO_FORCE_RE_BUILD_ON_DB UX00000
+#OBJECT_TYPE_COPY_COBOL_DATA *ALL*  
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* UXH1100
+#OBJECT_TYPE_PGM_COBOL *ALL* 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXO3150
+#OBJECT_TYPE_PGM_COBOL *ALL* fromName ToName 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP12   logiche exception
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UXZZP13   logiche exception
+#FILTER_ON_OBJECT_NAME 1 CO
+#EXCLUDE_OBJECT_NAME_RANGE FromName ToName
+EXCLUDE_OBJECT_NAME UXQRN03   

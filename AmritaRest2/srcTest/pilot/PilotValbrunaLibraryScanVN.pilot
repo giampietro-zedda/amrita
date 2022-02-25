@@ -1,0 +1,160 @@
+#--------------------------------------------------------------------
+# VALBRUNA Pilot di Test funzione di SourceDetect VN/AN
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5  
+              
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_DETECT_SOURCE_TYPE_ENABLED
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+OPT_SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+OPT_UPDATE_DB_ENABLED
+
+CUSTOMER_CODE VALBRUNA
+CUSTOMER_INFO TEST
+USER_EXIT_CLASS UserExitValbruna
+
+# VN-AN/AT/BD/....
+SYSTEM_VALUE VN
+SUB_SYSTEM_BY_EXIT
+
+#FILTER_ON_OBJECT_NAME 1 AN
+#FILTER_ON_OBJECT_NAME 1 BD 
+#FILTER_ON_OBJECT_NAME 1 CF 
+#FILTER_ON_OBJECT_NAME 1 CG 
+#FILTER_ON_OBJECT_NAME 1 CO 
+#FILTER_ON_OBJECT_NAME 1 DA 
+#FILTER_ON_OBJECT_NAME 1 DB 
+#FILTER_ON_OBJECT_NAME 1 DI 
+#FILTER_ON_OBJECT_NAME 1 DJ 
+#FILTER_ON_OBJECT_NAME 1 DK 
+#FILTER_ON_OBJECT_NAME 1 DS 
+#FILTER_ON_OBJECT_NAME 1 DW 
+#FILTER_ON_OBJECT_NAME 1 FA 
+#FILTER_ON_OBJECT_NAME 1 FB 
+#FILTER_ON_OBJECT_NAME 1 FC 
+#FILTER_ON_OBJECT_NAME 1 FD 
+#FILTER_ON_OBJECT_NAME 1 FE 
+#FILTER_ON_OBJECT_NAME 1 FG 
+#FILTER_ON_OBJECT_NAME 1 FI 
+#FILTER_ON_OBJECT_NAME 1 FK 
+#FILTER_ON_OBJECT_NAME 1 FM 
+#FILTER_ON_OBJECT_NAME 1 FR  
+#FILTER_ON_OBJECT_NAME 1 FS  
+#FILTER_ON_OBJECT_NAME 1 FU 
+#FILTER_ON_OBJECT_NAME 1 FY 
+#FILTER_ON_OBJECT_NAME 1 GT 
+#FILTER_ON_OBJECT_NAME 1 HE 
+#FILTER_ON_OBJECT_NAME 1 HO 
+#FILTER_ON_OBJECT_NAME 1 IC 
+#FILTER_ON_OBJECT_NAME 1 IN 
+#FILTER_ON_OBJECT_NAME 1 LE 
+#FILTER_ON_OBJECT_NAME 1 MA 
+#FILTER_ON_OBJECT_NAME 1 MP 
+#FILTER_ON_OBJECT_NAME 1 MT 
+#FILTER_ON_OBJECT_NAME 1 MV 
+#FILTER_ON_OBJECT_NAME 1 MU 
+#FILTER_ON_OBJECT_NAME 1 OC 
+#FILTER_ON_OBJECT_NAME 1 OF 
+#FILTER_ON_OBJECT_NAME 1 OM 
+#FILTER_ON_OBJECT_NAME 1 OS 
+#FILTER_ON_OBJECT_NAME 1 PC 
+#FILTER_ON_OBJECT_NAME 1 PL 
+#FILTER_ON_OBJECT_NAME 1 PM 
+#FILTER_ON_OBJECT_NAME 1 QC 
+#FILTER_ON_OBJECT_NAME 1 QF 
+#FILTER_ON_OBJECT_NAME 1 RE 
+#FILTER_ON_OBJECT_NAME 1 RM 
+#FILTER_ON_OBJECT_NAME 1 RT 
+#FILTER_ON_OBJECT_NAME 1 SA 
+#FILTER_ON_OBJECT_NAME 1 SC 
+#FILTER_ON_OBJECT_NAME 1 SE 
+#FILTER_ON_OBJECT_NAME 1 SH 
+#FILTER_ON_OBJECT_NAME 1 SK 
+#FILTER_ON_OBJECT_NAME 1 SM 
+#FILTER_ON_OBJECT_NAME 1 SO 
+#FILTER_ON_OBJECT_NAME 1 ST 
+#FILTER_ON_OBJECT_NAME 1 TB 
+#FILTER_ON_OBJECT_NAME 1 TS 
+#FILTER_ON_OBJECT_NAME 1 UT 
+#FILTER_ON_OBJECT_NAME 1 UX 
+#FILTER_ON_OBJECT_NAME 1 VA 
+#FILTER_ON_OBJECT_NAME 1 VM 
+
+# Elenco file trattati
+FILE_OUTPUT ValbrunaLibScanVN2.txt
+
+# Sequenza librerie in search per copy/pgm/mappe
+LIBRARY PVN-VN-COPY  C:\Personale\Amrita-2019-Valbruna\pvn\copy
+LIBRARY PVN-VN-PGM   C:\Personale\Amrita-2019-Valbruna\pvn\source
+LIBRARY PVN-VN-BMS   C:\Personale\Amrita-2019-Valbruna\pvn\mapp
+LIBRARY PVN-VN-SQL   C:\Personale\Amrita-2019-Valbruna\pvn\sql
+
+LIBRARY PER-VN-COPY  C:\Personale\Amrita-2019-Valbruna\per\copy
+LIBRARY PER-VN-PGM   C:\Personale\Amrita-2019-Valbruna\per\source
+LIBRARY PER-VN-BMS   C:\Personale\Amrita-2019-Valbruna\per\mapp
+LIBRARY PER-VN-SQL   C:\Personale\Amrita-2019-Valbruna\per\sql
+
+LIBRARY CER-VN-COPY  C:\Personale\Amrita-2019-Valbruna\cer\copy
+LIBRARY CER-VN-PGM   C:\Personale\Amrita-2019-Valbruna\cer\source
+LIBRARY CER-VN-BMS   C:\Personale\Amrita-2019-Valbruna\cer\mapp
+LIBRARY CER-VN-SQL   C:\Personale\Amrita-2019-Valbruna\cer\sql
+
+LIBRARY STD-VN-COPY  C:\Personale\Amrita-2019-Valbruna\std\copy
+LIBRARY STD-VN-PGM   C:\Personale\Amrita-2019-Valbruna\std\source
+LIBRARY STD-VN-BMS   C:\Personale\Amrita-2019-Valbruna\std\mapp
+LIBRARY STD-VN-SQL   C:\Personale\Amrita-2019-Valbruna\std\sql
+
+LIBRARY_SOURCE_SEARCH PVN-VN-COPY
+LIBRARY_SOURCE_SEARCH PVN-VN-PGM
+LIBRARY_SOURCE_SEARCH PVN-VN-BMS
+LIBRARY_SOURCE_SEARCH PVN-VN-SQL
+
+LIBRARY_SOURCE_SEARCH PER-VN-COPY
+LIBRARY_SOURCE_SEARCH PER-VN-PGM
+LIBRARY_SOURCE_SEARCH PER-VN-BMS
+LIBRARY_SOURCE_SEARCH PER-VN-SQL
+
+LIBRARY_SOURCE_SEARCH CER-VN-COPY
+LIBRARY_SOURCE_SEARCH CER-VN-PGM
+LIBRARY_SOURCE_SEARCH CER-VN-BMS
+LIBRARY_SOURCE_SEARCH CER-VN-SQL
+
+LIBRARY_SOURCE_SEARCH STD-VN-COPY
+LIBRARY_SOURCE_SEARCH STD-VN-PGM
+LIBRARY_SOURCE_SEARCH STD-VN-BMS
+LIBRARY_SOURCE_SEARCH STD-VN-SQL
+
+
+OBJECT_TYPE_INCLUDE_ALL
+
+#-STD-COPY          AN    BD CF CG    DA DB DG DI DJ DK DM DS DW FA    FC                FM    FS       GT       IC IN LE MA MP MT MV    OC OF OM OS PC PL PM QC    RE RM RT    SC    SH SK    SO ST TB TS UT 
+#-STD-BMS           AN    BD             DB          DK          FA                      FM                      IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT          SH SK    SO ST TB    UT 
+#-STD-COB           AN    BD             DB          DK          FA FB    FD FE          FM FR    FU FY    HE    IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT          SH SK    SO ST TB    UT 
+#-STD-SQL           AN    BD CF       DA DB    DI DJ    DM    DW FA                      FM                      IC IN    MA MP MT MV    OC OF OM    PC PL PM QC    RE RM RT    SC    SH SK    SO ST TB    UT 
+#-PER-COPY          AN    BD       CO    DB                      FA    FC          FI FK FM    FS    FY GT       IC IN    MA MP    MV MU OC OF       PC       QC QF RE RM    SA SC    SH SK    SO    TB TS UT 
+#-PER-BMS           AN                   DB                      FA                      FM                      IC       MA MP    MV    OC OF                         RM             SH SK    SO          UT UX    VM
+#-PER-COB           AN             CO    DB                      FA       FD FE FG       FM    FS FU FY    HE    IC       MA MP    MV    OC OF       PC PL PM QC       RM RT SA SC    SH SK SM SO    TB    UT    VA VM
+#-PER-SQL   
+#-PVN-COPY          AN AT          CO    DB    DI                FA    FC                               GT    HO IC IN    MA       MV    OC OF                         RM RT    SC SE SH SK    SO    TB TS UT    VA VM 
+#-PVN-BMS           AN                   DB                      FA                                              IC       MA             OC OF                         RM             SH SK SM             UT    VA VM
+#-PVN-COB       AG  AN             CO    DB                      FA                      FM                      IC       MA       MV    OC OF OM          PM          RM RT          SH SK SM SO    TB    UT    VA VM
+#-PVN-SQL           AN                                           FA                      FM                         IN    MA       MV                                  RM                                  UT    VA 
+#                   AN AT BD CF CG CO DA DB DG DI DJ DK DM DS DW FA FB FC FD FE FG FI FK FM FR FS FU FY GT HE HO IC IN LE MA MP MT MV MU OC OF OM OS PC PL PM QC QF RE RM RT SA SC SE SH SK SM SO ST TB TS UT UX VA VM
+
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_LIBRARY_SCAN	
+	 	 
+START

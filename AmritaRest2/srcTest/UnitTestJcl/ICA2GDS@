@@ -1,0 +1,25 @@
+//ICA2GDS@ PROC AP='''',
+//             WAITTIME=120,
+//             PDAYONLY=NO,
+//             WTIFDOWN=NO,
+//             BATFORCE=NO,
+//             ERRORIGN=NO,
+//             SBLOPROC='N/A',
+//             COMMCICS='N/A',
+//             COMMBATC='='
+//***********************************************************
+//*    ICA2CIC@
+//***********************************************************
+//CGDICA2  EXEC Y6EXCIN,CEN=O,CENN=1,
+//             SBLOPROC=SBLOICA2,
+//             RAM=X,SOC=I,AMB=H,CEN=O,PFX=IC,
+//             FOR='DUMMY,',
+//             CICSID=A2,
+//             WAITTIME=&WAITTIME,
+//             PDAYONLY=&PDAYONLY,
+//             WTIFDOWN=&WTIFDOWN,
+//             BATFORCE=&BATFORCE,
+//             ERRORIGN=&ERRORIGN,
+//             COMMCICS=&AP&COMMCICS&AP,
+//             COMMBATC=&AP&COMMBATC&AP
+//         PEND

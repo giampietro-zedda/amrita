@@ -1,0 +1,33 @@
+       IDENTIFICATION DIVISION.
+      * R0118_AVOID_PROGRAM_ID_UNEQUAL_FILE_NAME
+       PROGRAM-ID.     GPPGM001.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: Programma per Unit test CALL  STATIC
+      *                 : a programma i stesso/diverso sistema/sottosistema
+      *                 : sys=Z subSys=GP
+      *  Scritto il    	: 04-11-2019
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================       
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       DATA DIVISION.     
+       WORKING-STORAGE SECTION.     
+           COPY COPY01.
+           COPY COPY03.
+        01 FILLER.
+           05 SQLCODE-TO-TEST PIC S9(9) COMP-5 VALUE 0.
+           88 SQLCODE-OK VALUE 0.
+           
+          
+       PROCEDURE DIVISION.
+       MAIN-LABEL.
+           CALL 'COBTST01'.
+           CALL 'GPPGM002'.
+           STOP RUN.

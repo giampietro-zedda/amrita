@@ -1,0 +1,394 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>Object Analysis Information Detail</title>
+<link rel="stylesheet" type="text/css" href="ViewerAnalysisInfo.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+  <div id="objectAnalysisInfoDiv"> </div>   
+	<table class='clsForm' id='objectAnalysisInfoTable' >
+	  <tr>
+	    <th colspan='2'>Object Analysis Info Key</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>System</td>
+	    <td class='clsFormC2Info'><div id="system"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>SubSystem</td>
+	    <td class='clsFormC2Info'><div id="subSystem"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Object Name</td>
+	    <td class='clsFormC2Info'><div id="idObject"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Type Object</td>
+	    <td class='clsFormC2Info'><div id="typeObject"></div></td>
+	  </tr>
+	</table>
+	
+	<table class='clsForm' id='objectAnalysisErrorTable'>
+	  <tr>
+	    <th colspan='2'>Dimensional Data Counters</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Size in Bytes</td>
+	    <td class='clsFormC2Info'><div id="sizeBytes"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Comment Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsCommTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Empty Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsEmptyTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Blank Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsBlankTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Comment Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsCommData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Data Division Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Data Division Empty Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsEmptyData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Data Division Blank Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsBlankData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Data Division Data Definitions</td>
+	    <td class='clsFormC2Info'><div id="numDefData"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Data Definition in Copy</td>
+	    <td class='clsFormC2Info'><div id="numDefDataCopy"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Procedure Division Comment Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsCommProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Procedure Division Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Procedure Division Empty Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsEmptyProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Procedure Division Blank Rows</td>
+	    <td class='clsFormC2Info'><div id="numRowsBlankProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Procedure Division Statements</td>
+	    <td class='clsFormC2Info'><div id="numStmtProc"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Procedure Division Data Definition</td>
+	    <td class='clsFormC2Info'><div id="numDefDataProgram"></div></td>
+	  </tr>
+	</table>
+
+	<table class='clsForm' id='objectAnalysisErrorTable'>
+	  <tr>
+	    <th colspan='2'>Analysis Elapsed Time (ms)</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Analysis Date</td>
+	    <td class='clsFormC2Info'><div id="dtAnalysis"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Analysis Start Time</td>
+	    <td class='clsFormC2Info'><div id="tmStartAnalysis"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Analysis End Time</td>
+	    <td class='clsFormC2Info'><div id="tmEndAnalysis"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Analysis Total Elapsed time</td>
+	    <td class='clsFormC2Info'><div id="msElapsedTot"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Parsing Elapsed</td>
+	    <td class='clsFormC2Info'><div id="msParsing"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Post Parsing Operations Elapsed</td>
+	    <td class='clsFormC2Info'><div id="msPostParsingOperations"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Program Graph Creation</td>
+	    <td class='clsFormC2Info'><div id="msGraphCreation"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Dynamic Code Solving</td>
+	    <td class='clsFormC2Info'><div id="msDynamicCodeSolving"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Metrics Computing</td>
+	    <td class='clsFormC2Info'><div id="msMetricComputing"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Violation Detecting</td>
+	    <td class='clsFormC2Info'><div id="msViolationDetecting"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Serialization Program</td>
+	    <td class='clsFormC2Info'><div id="msSerializationPgm"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Object Table Update</td>
+	    <td class='clsFormC2Info'><div id="msUpdObject"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Relation Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsRelation"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Relation Origin Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsRelationOrigin"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Where Used Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsWhereUsed"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>CopyEntity Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsCopyEntity"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>MetricValue Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsMetric"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>MetricViolation Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsMetricViolation"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>DynamicField Table Insert</td>
+	    <td class='clsFormC2Info'><div id="msInsDynamicField"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Tables Delete</td>
+	    <td class='clsFormC2Info'><div id="msDbDelete"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Total Tables Update</td>
+	    <td class='clsFormC2Info'><div id="msDbUpdate"></div></td>
+	  </tr>
+	</table>
+	
+	<table class='clsForm' id='objectAnalysisErrorTable'>
+	  <tr>
+	    <th colspan='2'>Counters Tables Rows Inserted</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Object </td>
+	    <td class='clsFormC2Info'><div id="cntInsObject"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Relation</td>
+	    <td class='clsFormC2Info'><div id="cntInsRelation"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>RelationOrigin</td>
+	    <td class='clsFormC2Info'><div id="cntInsRelationOrigin"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>WhereUsed</td>
+	    <td class='clsFormC2Info'><div id="cntInsWhereUsed"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>CopyEntity</td>
+	    <td class='clsFormC2Info'><div id="cntInsCopyEntity"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Metric</td>
+	    <td class='clsFormC2Info'><div id="cntInsMetric"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>MetricViolation</td>
+	    <td class='clsFormC2Info'><div id="cntInsMetricViolation"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>DynamicField</td>
+	    <td class='clsFormC2Info'><div id="cntInsDynamicField"></div></td>
+	  </tr>
+	</table>
+	
+	<table class='clsForm' id='objectAnalysisErrorTable'>
+	  <tr>
+	    <th colspan='2'>Analysis Errors Flags</th>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Is Java Exception</td>
+	    <td class='clsFormC2Info'><div id="withException"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Is Cobol Parsing Errors</td>
+	    <td class='clsFormC2Info'><div id="withAnyCobolParsingErrors"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Is Sql Parsing Errors</td>
+	    <td class='clsFormC2Info'><div id="withAnySqlParsingErrors"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Is Cics Precompiler Parsing Errors</td>
+	    <td class='clsFormC2Info'><div id="withAnyCicsParsingErrors"></div></td>
+	  </tr>
+	  <tr>
+	    <td class='clsFormC1Info'>Is DL1 Parsing Errors</td>
+	    <td class='clsFormC2Info'><div id="withAnyDL1ParsingErrors"></div></td>
+	  </tr>
+	</table>
+	
+</body>
+
+<script type="text/javascript">
+"use strict";
+var baseurl = 'http://localhost:8080/AmritaRest2/rest';
+var urlObjectAnalysisInfoGET = 'objectAnalysisInfo';
+var objJson = null;
+var winViewer = null;
+var objConfig = null;      // Configuration object
+var objActive = null;      // Current selected object in viewer
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+   winViewer=window.opener;
+   objConfig=winViewer.getConfig();
+   objActive=winViewer.getObjSelRow();
+   getJsonResponseAnalysisInfoGET();
+}	
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function getJsonResponseAnalysisInfoGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+ 	var url = objConfig.baseUrl + "/" + urlObjectAnalysisInfoGET + "/"+ objConfig.user + "/" + objActive.sys + "/" + objActive.subSys + "/" + objActive.idObject + "/" + objActive.typeObjectN  ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseAnalysisInfo(xmlhttp);};
+}
+
+function handleJsonResponseAnalysisInfo(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   objJson=JSON.parse(xmlhttp.responseText);       
+       if (objJson.length>0){
+    	   loadTable(objJson);
+       }  
+    } 
+}
+	
+function loadTable(obj) {
+   document.getElementById('system').innerHTML = obj[0].sys;   
+   document.getElementById('subSystem').innerHTML = obj[0].subSystem; 
+   document.getElementById('idObject').innerHTML = obj[0].idObject; 
+   document.getElementById('typeObject').innerHTML = obj[0].typeObject; 
+   document.getElementById('sizeBytes').innerHTML = obj[0].sizeBytes; 
+   document.getElementById('numRowsCommTot').innerHTML = obj[0].numRowsCommTot; 
+   document.getElementById('numRowsTot').innerHTML = obj[0].numRowsTot; 
+   document.getElementById('numRowsEmptyTot').innerHTML = obj[0].numRowsEmptyTot; 
+   document.getElementById('numRowsBlankTot').innerHTML = obj[0].numRowsBlankTot; 
+   document.getElementById('numRowsCommData').innerHTML = obj[0].numRowsCommData; 
+   document.getElementById('numRowsData').innerHTML = obj[0].numRowsData; 
+   document.getElementById('numRowsEmptyData').innerHTML = obj[0].numRowsEmptyData; 
+   document.getElementById('numRowsBlankData').innerHTML = obj[0].numRowsBlankData; 
+   document.getElementById('numRowsCommProc').innerHTML = obj[0].numRowsCommProc; 
+   document.getElementById('numRowsProc').innerHTML = obj[0].numRowsProc; 
+   document.getElementById('numRowsEmptyProc').innerHTML = obj[0].numRowsEmptyProc; 
+   document.getElementById('numRowsBlankProc').innerHTML = obj[0].numRowsBlankProc; 
+   document.getElementById('numStmtProc').innerHTML = obj[0].numStmtProc; 
+   document.getElementById('numDefData').innerHTML = obj[0].numDefData; 
+   document.getElementById('numDefDataProgram').innerHTML = obj[0].numDefDataProgram; 
+   document.getElementById('numDefDataCopy').innerHTML = obj[0].numDefDataCopy; 
+   document.getElementById('dtAnalysis').innerHTML = obj[0].dtAnalysis; 
+   document.getElementById('tmStartAnalysis').innerHTML = obj[0].tmStartAnalysis; 
+   document.getElementById('tmEndAnalysis').innerHTML = obj[0].tmEndAnalysis; 
+   document.getElementById('msElapsedTot').innerHTML = obj[0].msElapsedTot; 
+   document.getElementById('msParsing').innerHTML = obj[0].msParsing; 
+   document.getElementById('msPostParsingOperations').innerHTML = obj[0].msPostParsingOperations; 
+   document.getElementById('msGraphCreation').innerHTML = obj[0].msGraphCreation; 
+   document.getElementById('msDynamicCodeSolving').innerHTML = obj[0].msDynamicCodeSolving; 
+   document.getElementById('msMetricComputing').innerHTML = obj[0].msMetricComputing; 
+   document.getElementById('msViolationDetecting').innerHTML = obj[0].msViolationDetecting; 
+   document.getElementById('msSerializationPgm').innerHTML = obj[0].msSerializationPgm; 
+   document.getElementById('msUpdObject').innerHTML = obj[0].msUpdObject; 
+   document.getElementById('msInsRelation').innerHTML = obj[0].msInsRelation; 
+   document.getElementById('msInsRelationOrigin').innerHTML = obj[0].msInsRelationOrigin; 
+   document.getElementById('msInsWhereUsed').innerHTML = obj[0].msInsWhereUsed; 
+   document.getElementById('msInsCopyEntity').innerHTML = obj[0].msInsCopyEntity; 
+   document.getElementById('msInsMetric').innerHTML = obj[0].msInsMetric; 
+   document.getElementById('msInsMetricViolation').innerHTML = obj[0].msInsMetricViolation; 
+   document.getElementById('msInsDynamicField').innerHTML = obj[0].msInsDynamicField; 
+   document.getElementById('msDbDelete').innerHTML = obj[0].msDbDelete; 
+   document.getElementById('msDbUpdate').innerHTML = obj[0].msDbUpdate; 
+   document.getElementById('cntInsObject').innerHTML = obj[0].cntInsObject; 
+   document.getElementById('cntInsRelation').innerHTML = obj[0].cntInsRelation;
+   document.getElementById('cntInsRelationOrigin').innerHTML = obj[0].cntInsRelationOrigin; 
+   document.getElementById('cntInsWhereUsed').innerHTML = obj[0].cntInsWhereUsed; 
+   document.getElementById('cntInsCopyEntity').innerHTML = obj[0].cntInsCopyEntity; 
+   document.getElementById('cntInsMetric').innerHTML = obj[0].cntInsMetric; 
+   document.getElementById('cntInsMetricViolation').innerHTML = obj[0].cntInsMetricViolation; 
+   document.getElementById('cntInsDynamicField').innerHTML = obj[0].cntInsDynamicField; 
+   document.getElementById('withException').innerHTML = obj[0].withException; 
+   document.getElementById('withAnyCobolParsingErrors').innerHTML = obj[0].withAnyCobolParsingErrors; 
+   document.getElementById('withAnySqlParsingErrors').innerHTML = obj[0].withAnySqlParsingErrors; 
+   document.getElementById('withAnyCicsParsingErrors').innerHTML = obj[0].withAnyCicsParsingErrors; 
+   document.getElementById('withAnyDL1ParsingErrors').innerHTML = obj[0].withAnyDL1ParsingErrors; 
+}
+
+</script>
+
+</html>

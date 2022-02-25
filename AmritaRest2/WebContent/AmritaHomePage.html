@@ -1,0 +1,430 @@
+<html>
+<head>
+<title>AmritaMenu</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="AmritaHomePage.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+	<table  id='mainTable'>
+	  
+	  <!-- First Header Row -->
+      <tr>
+         <td colspan='3'>
+			  <table id='headerLineTable'>
+				   <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Main</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id=logout>logout</td>
+					             <td id='linkMain'  align="right"><a href="AmritaSite/pages/index.html">Info</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+				   </tr>
+			  </table> 
+         </td>    
+      </tr>
+
+	  <!-- Second Row containing 2 cells -->
+	  <tr>	  
+		    <!-- First cell with central main frame -->
+		    <td id='leftMainTableCell'> 
+		 	    <div id='divLeft'>
+		  	         <table id='menuTable'>
+		  	         	<tr><td><input class='btnFunction' type="button" id='btnAnalyzer'      value="Analyzer"  onclick='onclick_btnAnalyzer(this.id);'      /></td></tr>
+		  	         	<tr><td><input class='btnFunction' type="button" id='btnViewer'        value="Viewer"    onclick='onclick_btnViewer(this.id);'        /></td></tr>
+		  	         	<tr><td><input class='btnFunction' type="button" id='btnInspector'     value="Inspector" onclick='onclick_btnInspector(this.id);'     /></td></tr>
+		  	         	<tr><td><input class='btnFunction' type="button" id='btnAssesment'     value="Assesment" onclick='onclick_btnAssesment(this.id);'     /></td></tr>
+		  	         	<tr><td><input class='btnFunction' type="button" id='btnAutodoc'       value="Auto-Doc"  onclick='onclick_btnAutodoc(this.id);'       /></td></tr>
+		  	         	<tr><td><input class='btnFunction' type="button" id='btnAutomaintener' value="Impact/Logic Analysis" onclick='onclick_btnAutomaintener(this.id);' /></td></tr>
+		  	         </table>
+		  	    </div> 
+		    </td>
+		    
+		     <!-- Third cell with right menu frame -->
+		    <td id='rightMainTableCell'>  
+		  	    <div id='divRight'>
+		  	       Text area right side, descriptions, etc
+		  	    </div> 
+	    
+	    </td>
+	  </tr>
+	</table>
+
+
+<script type="text/javascript">
+"use strict";
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlUserGET = 'user'
+var objConfig=null; 			// Object Config
+var userInp="";
+var winOpenViewer=null;
+var winOpenAnalyzer=null;
+var winOpenInspector=null;
+var winOpenAssesment=null;
+var isLoginDone=false;
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+
+function afterLoaded() {	
+	userInp = sessionStorage.getItem("user");		
+	hostName = sessionStorage.getItem("hostName");		
+	baseUrl = sessionStorage.getItem("baseUrl");		
+
+	/* Get config and start processes */
+	loadUserObject();   // --> objConfig
+} 
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function loadUserObject() {
+	
+	// Ajax server request to get Objects
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlUserGET + "/"+ userInp 
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseUser(xmlhttp);};
+} 
+
+function handleJsonResponseUser(xmlhttp) {
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   var objects=JSON.parse(xmlhttp.responseText);
+	   
+	   if (objects.length == 0) {	
+			  alert("User not found on database");
+			  return;
+	   }
+	   
+	   objConfig = new Config(
+                                 objects[0].user
+                  			   , ""     // sys 
+                  			   , ""     // subSys
+                  			   , baseUrl
+                               , objects[0].companyCode 
+                               , objects[0].company 
+                               , objects[0].userType  
+                               , objects[0].userStatus  
+                               , objects[0].language  
+                               , objects[0].pwd  
+                               , objects[0].country  
+                               , objects[0].mail  
+                               , objects[0].mailInfo  
+                               , objects[0].phone  
+                               , objects[0].referManager  
+                               , objects[0].referTech  
+                               , objects[0].analyzerEnabled  
+                               , objects[0].viewerEnabled 
+                               , objects[0].inspectorEnabled  
+                               , objects[0].assesmentEnabled  
+                               , objects[0].countLogin   			
+                               , objects[0].dtActivation  
+                               , objects[0].tmActivation  
+                               , objects[0].dtExpiration  
+                               , objects[0].tmExpiration  
+                               , objects[0].dtFirstLogin  
+                               , objects[0].dtFirstLogin  
+                               , objects[0].dtLastLogin  
+                               , objects[0].tmLastLogin  
+                               , objects[0].pathConfigFile  
+                               , objects[0].pathRoot  
+                               , objects[0].pathUser  
+                               , objects[0].pathPilot  
+                  			   // Directories relative a root o WEB-INF da file di configurazione generale
+                               , objects[0].dirResources  
+                               , objects[0].dirWork  
+                               , objects[0].dirDatabase       
+                               , objects[0].dirJclInput  
+                               , objects[0].dirCobolSrcPgmInput  
+                               , objects[0].dirCobolSrcCopyInput  
+                               , objects[0].dirCobolPgm  
+                               , objects[0].dirCobolCopy  
+                               , objects[0].dirJcl  
+                               , objects[0].dirSqlScript  	 
+                               , objects[0].dirCobolGraph  
+                               , objects[0].dirPilot  
+                               , objects[0].dirLog  
+                               , objects[0].dirOutput  
+                  			   // Ottimizzazione processi ed elaborazioni,  allocazione di arrays,  collections, map
+                               , objects[0].limitMaxLinesScanFindingSourceType 
+                               , objects[0].limitMaxSources  
+                               , objects[0].limitMaxSourcesInput  
+                               , objects[0].limitMaxSourcesToProcess  
+                               , objects[0].limitMaxObjects  
+                               , objects[0].limitMaxObjectsInput 
+                               , objects[0].limitMaxObjectsToProcess 
+                               , objects[0].debugThresholdMemoryGarbage  
+                               , objects[0].debugSourcesDetectedFreqGarbage  
+                               , objects[0].debugActive  
+                               , objects[0].logVerbose  
+                               , objects[0].preferredVisitMethod  
+                               , objects[0].preferredCachingLevel  
+                               , objects[0].preferredCachingSupport  
+                  			   //  Database
+                               , objects[0].dataBaseType  
+                               , objects[0].dataBaseName  
+                               , objects[0].dataBaseUser  
+                               , objects[0].dataBasePwd  
+                               , objects[0].dataBaseDriver  
+                               , objects[0].dataBaseAccessType  
+                               , objects[0].dataBaseUrl  
+                               , objects[0].dataBaseMaxConn  
+                               , objects[0].dataBaseCommitBlockUpdates  
+                               , objects[0].dataBaseLogAnySql 
+                  			   // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+                               , objects[0].pilotDefaultSource  
+                               , objects[0].pilotDefaultProcess  
+                               , objects[0].userExitClass
+                               , objects[0].userTypeOrdinal 
+                               , objects[0].userStatusOrdinal                                                
+ 	     	  					 );
+	}
+	   
+}
+
+function onclick_btnAnalyzer(clicked_id) {	
+	winOpenAnalyzer = window.open("Analyzer.html","_blank");
+} 
+
+function onclick_btnViewer(clicked_id) {	
+	winOpenViewer = window.open("Viewer.html","_blank");	 
+} 
+
+function onclick_btnInspector(clicked_id) {	
+	winOpenInspector = window.open("Inspector.html","_blank");
+} 
+
+function onclick_btnAssesment(clicked_id) {	
+	winOpenAssesment = window.open("Assesment.html","_blank");
+} 
+
+function onclick_btnAutodoc(clicked_id) {	
+	winOpenAssesment = window.open("Autodoc.html","_blank");
+} 
+
+function onclick_btnAutomaintener(clicked_id) {	
+	winOpenAssesment = window.open("Automaintener.html","_blank");
+} 
+
+/**
+ * Coomon definitions for all pages
+ */
+//Defines Object configuration data available to all pages
+function Config( 
+		      user
+			 ,sys 
+			 ,subSys
+			 ,baseurl
+			 
+             ,companyCode 
+             ,company 
+             ,userType  
+             ,userStatus  
+             ,language  
+             ,pwd  
+             ,country  
+             ,mail  
+             ,mailInfo  
+             ,phone  
+             ,referManager  
+             ,referTech  
+             ,analyzerEnabled  
+             ,viewerEnabled 
+             ,inspectorEnabled  
+             ,assesmentEnabled  
+             ,countLogin   			
+             ,dtActivation  
+             ,tmActivation  
+             ,dtExpiration  
+             ,tmExpiration  
+             ,dtFirstLogin  
+             ,tmFirstLogin  
+             ,dtLastLogin  
+             ,tmLastLogin  
+
+             ,pathConfigFile  
+             ,pathRoot  
+             ,pathUser  
+             ,pathPilot  
+	
+			 // Directories relative a root o WEB-INF da file di configurazione generale
+             ,dirResources  
+             ,dirWork  
+             ,dirDatabase       
+             ,dirJclInput  
+             ,dirCobolSrcPgmInput  
+             ,dirCobolSrcCopyInput  
+             ,dirCobolPgm  
+             ,dirCobolCopy  
+             ,dirJcl  
+             ,dirSqlScript  	 
+             ,dirCobolGraph  
+             ,dirPilot  
+             ,dirLog  
+             ,dirOutput  
+
+			 // Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+             ,limitMaxLinesScanFindingSourceType 
+             ,limitMaxSources  
+             ,limitMaxSourcesInput  
+             ,limitMaxSourcesToProcess  
+             ,limitMaxObjects  
+             ,limitMaxObjectsInput 
+             ,limitMaxObjectsToProcess 
+             ,debugThresholdMemoryGarbage  
+             ,debugSourcesDetectedFreqGarbage  
+             ,debugActive  
+             ,logVerbose  
+             ,preferredVisitMethod  
+             ,preferredCachingLevel  
+             ,preferredCachingSupport  
+
+			 //  Database
+             ,dataBaseType  
+             ,dataBaseName  
+             ,dataBaseUser  
+             ,dataBasePwd  
+             ,dataBaseDriver  
+             ,dataBaseAccessType  
+             ,dataBaseUrl  
+             ,dataBaseMaxConn  
+             ,dataBaseCommitBlockUpdates  
+             ,dataBaseLogAnySql 
+	
+			 // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+             ,pilotDefaultSource  
+             ,pilotDefaultProcess  
+             ,userExitClass
+             
+             ,userTypeOrdinal 
+             ,userStatusOrdinal 
+				)  {
+	
+	    this.user = user;  
+	    this.sys = sys;  
+	    this.subSys = subSys; 
+	    this.baseurl = baseurl;
+	    
+		// User Data
+		this.companyCode = companyCode; 							 // Codice societa 
+		this.company = company; 									 // Descrizione societa 
+		this.userType = userType;            			     		 // Tipologia utente forward (T052)
+		this.userStatus = userStatus;            	 				 // Stato utente forward (T051)
+		this.language = language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+		this.pwd = pwd;          								 	 // Password
+		this.country = country; 									 // Country IT, .. 
+		this.mail = mail; 											 // Mail principale  
+		this.mailInfo = mailInfo; 									 // Mail per info anomali  
+		this.phone = phone; 										 // Telefono di riferimento  
+		this.referManager = referManager; 							 // Riferimento manager 
+		this.referTech = referTech; 								 // Riferimento tecnico 
+		this.analyzerEnabled = analyzerEnabled; 					 // True user can view Analyzer 
+		this.viewerEnabled = viewerEnabled; 						 // True user can view Viewer 
+		this.inspectorEnabled = inspectorEnabled; 					 // True user can view Inspector 
+		this.assesmentEnabled = assesmentEnabled; 					 // True user can view Assesment 
+		this.countLogin =countLogin; 								 // Counter login effettuati       			
+		this.dtActivation = dtActivation;  							 // Data attivazione AAAAMMGG'
+		this.tmActivation = tmActivation;  						     // Ora  attivazione HHMMSSCC'
+		this.dtExpiration = dtExpiration;  							 // Data disattivazione AAAAMMGG'
+		this.tmExpiration = tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+		this.dtFirstLogin = dtFirstLogin;  							 // Data primo login AAAAMMGG'
+		this.tmFirstLogin = tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+		this.dtLastLogin = dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+		this.tmLastLogin = tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	    this.pathConfigFile = pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+	    this.pathRoot = pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+	    this.pathUser = pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+	    this.pathPilot = pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+	 	
+		// Directories relative a root o WEB-INF da file di configurazione generale
+		this.dirResources = dirResources;                            //Resource'
+		this.dirWork = dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+		this.dirDatabase = dirDatabase;                              // Database'		              
+		this.dirJclInput = dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+		this.dirCobolSrcPgmInput = dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+		this.dirCobolSrcCopyInput = dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+		this.dirCobolPgm = dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+		this.dirCobolCopy = dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+		this.dirJcl = dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcethis.X =  .jclIncludethis.X =  .jclProc)'		 
+		this.dirSqlScript = dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+		this.dirCobolGraph = dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+		this.dirPilot = dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+		this.dirLog = dirLog;                                  		 // Log
+		this.dirOutput = dirOutput;                              	 // Output per funzioni che producono text'
+
+		// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+		this.limitMaxLinesScanFindingSourceType = limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+		this.limitMaxSources =  limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+		this.limitMaxSourcesInput = limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+		this.limitMaxSourcesToProcess = limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+		this.limitMaxObjects =  limitMaxObjects;                   	 	// Abilitazione limitazione agli oggetti processati'
+		this.limitMaxObjectsInput = limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+		this.limitMaxObjectsToProcess = limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+		this.debugThresholdMemoryGarbage = debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+		this.debugSourcesDetectedFreqGarbage = debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+		this.debugActive = debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+		this.logVerbose = logVerbose;                               	// Dettaglio log operazioni Sql e informative'
+		this.preferredVisitMethod = preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+		this.preferredCachingLevel = preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+		this.preferredCachingSupport = preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+		//  Database
+		this.dataBaseType = dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+		this.dataBaseName = dataBaseName;                            // Nome database (DbAmrita)'
+		this.dataBaseUser = dataBaseUser;                            // User (GZEDDA)'
+		this.dataBasePwd = dataBasePwd;                              // Pwd (giampietro4)'
+		this.dataBaseDriver = dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+		this.dataBaseAccessType = dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+		this.dataBaseUrl = dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+		this.dataBaseMaxConn = dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+		this.dataBaseCommitBlockUpdates = dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+		this.dataBaseLogAnySql = dataBaseLogAnySql;                 // Log istruzioni Sql come messaggi informativi'
+	    	
+		// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+		this.pilotDefaultSource = pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+		this.pilotDefaultProcess = pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+		this.userExitClass = userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+		// Ordinal
+		this.userTypeOrdinal = userTypeOrdinal;            			  // Tipologia utente forward (T052)
+		this.userStatusOrdinal = userStatusOrdinal;            	 	  // Stato utente forward (T051)
+}
+
+</script>
+</body>
+</html>

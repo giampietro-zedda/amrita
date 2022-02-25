@@ -1,0 +1,1702 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="rest.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+	<h1>Amrita</h1>
+	<h2>Criteria</h2>
+
+	<form method="POST"
+		action="http://localhost:8080/AmritaRest2/rest/objectForm" 
+		enctype="application/x-www-form-urlencoded" name="formObject"
+		id="formObject" onsubmit="getJsonResponseObjectPOST(this); return true;">
+
+		<table class="clsCriteria" id="criteria">
+			<tr>
+				<td>System :</td>
+				<td><input type="text" id="sys" name="sys" size="1" /></td>
+				<td> <select id="sysD" name="sysD" onChange="onChangeSys()" style="width: 350px; height: 20px;"></select> </td>
+			</tr>
+			<tr>
+				<td>SubSystem :</td>
+				<td><input type="text" id="subSys" name="subSys" size="1" /></td>
+				<td> <select id="subSysD" name="subSysD" onChange="onChangeSubSys()" style="width: 350px; height: 20px;"></select> </td>
+			</tr>
+			<tr>
+				<td>Type Object :</td>
+				<td><input type="text" id="typeObject" name="typeObject" size="1" /></td>
+				<td> <select id="typeObjectD" name="typeObjectD" onChange="onChangeTypeObject()" style="width: 350px; height: 20px; "></select> </td>
+			</tr>
+			<tr>
+				<td>Status Object :</td>
+				<td><input type="text" id="statusObject" name="statusObject"size="1" /></td>
+				<td> <select id="statusObjectD" name="statusObjectD" onChange="onChangeStatusObject()" style="width: 350px; height: 20px;"></select> </td>
+			</tr>
+			<tr>
+				<td>Like id :</td>
+				<td></td>
+				<td><input type="text" id="idObjectLike" name="idObjectLike"  size="49"/></td>
+			</tr>
+		</table>
+        <p> 
+	   	<input type="button" value="Get Objects By Get"  size="30" onclick="getJsonResponseObjectGET()" />
+	    <input type="submit" value="Get Objects By Post" size="30"/> 
+	</form>
+ 	
+<div id="divObjectList">	
+	<p>
+	<h2>Objects List</h2>	
+    <table>
+       <tr>
+         <td>Count</td>
+         <td><div id="countObjects">0</div></td>
+         <td><div id="procObjects" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>   
+   	<div id="objectTable" >
+</div>
+
+<div id="divOptionTable">
+	<h2>Object Option List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjOptions"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countObjectOptions">0</div></td>
+         <td><div id="procOptions" class="clsProcStatus"></div></td>  
+       </tr>
+    </table>
+    </div> 
+    <br>    
+   	<div id="optionTable" tabindex="0"></div> 
+</div>
+
+<div id="divRelationTable">   	   	
+	<h2>Relation List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjRelations"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countRelations">0</div></td>
+         <td><div id="procRelations" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>
+   	<div id="relationTable" tabindex="0"></div> 
+</div>
+ 
+<div id="divRelationOrigin">   	
+	<h2>Relation Origin Instruction List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjRelationOrigin"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countRelationOrigin">0</div></td>
+         <td><div id="procRelationOrigin" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="relationOriginTable" tabindex="0"></div> 
+</div>
+   	
+<div id="divCopyEntity">   	
+	<h2>Copy/Entity Field List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjCopyEntity"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countCopyEntity">0</div></td>
+         <td><div id="procCopyEntity" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="copyEntityTable" tabindex="0"></div> 
+</div>
+
+<div id="divWhereUsed">   
+	<h2>Where Used List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjhereUsed"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countWhereUsed">0</div></td>
+         <td><div id="procWhereUsed" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="whereUsedTable" tabindex="0"></div> 
+</div>  
+
+<div id="divDynamicField">   
+	<h2>Dynamic Code Instructions</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjDynamicField"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countDynamicField">0</div></td>
+         <td><div id="procDynamicField" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="dynamicFieldTable" tabindex="0"></div> 
+</div>  
+
+<div id="divDynamicFieldSub">   
+	<h2>Dynamic subfields List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjDynamicFieldSub"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countDynamicFieldSub">0</div></td>
+         <td><div id="procDynamicFieldSub" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="dynamicFieldSubTable" tabindex="0"></div> 
+</div>  
+
+<div id="divDynamicFieldSubValue">   
+	<h2>Dynamic subfield Values List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjDynamicFieldSubValue"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countDynamicFieldSubValue">0</div></td>
+         <td><div id="procDynamicFieldSubValue" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="dynamicFieldSubValueTable" tabindex="0"></div> 
+</div>  
+
+<div id="divObjectAnalysisError">   
+	<h2>Analysis Error List</h2>	
+    <table>
+       <tr>
+         <td><div id="idObjAnalysisErrors"> </div></td>
+         <td>Count</td>
+         <td><div id="countObjectAnalysisErrors">0</div></td>
+         <td><div id="procObjectAnalysisErrors" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="objectAnalysisErrorsTable" tabindex="0"></div> 
+</div>  
+   	   	
+<div id="divMetricViolation">   
+	<h2>Metric Violation List</h2>	
+    <table>
+       <tr>
+         <td><div id="idMetricViolation"> </div></td>	  
+         <td>Count</td>
+         <td><div id="countMetricViolation">0</div></td>
+         <td><div id="procMetricViolation" class="clsProcStatus"></div></td>
+       </tr>
+    </table>
+    <br>    
+   	<div id="metricViolationTable" tabindex="0"></div> 
+</div>  
+   	   	
+</body>
+
+
+<script type="text/javascript">
+"use strict";
+var baseurl = 'http://localhost:8080/AmritaRest2/rest';
+var urlObjectGET = baseurl + '/object'
+var urlObjectOptionGET = baseurl + '/objectOption'
+var urlObjectAnalysisErrorGET = baseurl + '/objectAnalysisError'
+var urlObjectAnalysisInfoGET = baseurl + '/objectAnalysisInfo'
+var urlRelationGET = baseurl + '/relation'
+var urlRelationOriginGET = baseurl + '/relationOrigin'
+var urlCopyEntityGET = baseurl + '/copyEntityDefinition'
+var urlWhereUsedGET = baseurl + '/whereUsed'
+var urlDynamicFieldGET = baseurl + '/dynamicField'
+var urlDynamicFieldSubGET = baseurl + '/dynamicFieldSub'
+var urlDynamicFieldSubValueGET = baseurl + '/dynamicFieldSubValue'
+var urlMetricValueGET = baseurl + '/metricValue'
+var urlMetricViolationGET = baseurl + '/metricViolation'
+var urlObjectPOST = baseurl + '/objectForm';    // X Test
+var urlEnumGET = baseurl + '/enum'
+
+// On object selection
+var iSelObject = 0;
+var sysCur = "";
+var subSysCur = "";
+var idObjectCur = "";   // & dynamicField
+var typeObjectCur = ""; // & dynamicField
+var typeSourceCur = "";
+var statusCur = "";
+
+//On relation selection
+var iSelRelation = 0;
+var idObjectACur = "";
+var typeObjectACur = "";
+var typeSourceACur = "";
+var relationCur = "";
+var idObjectBCur = "";
+var typeObjectBCur = "";
+var typeSourceBCur = "";
+var objects1 = null;
+
+//On relationOrigin selection
+var iSelRelationOrigin = 0;
+var numInstrOriginCur=0
+
+//On copyEntity selection
+var iSelCopyEntity = 0;
+var numSeqCur=0
+var idFieldCur=""         // dynamicField & whereUsed  too
+
+//On dynamicField selection
+var iSelDynamicField = 0;
+var numInstrCur = 0;
+var typeObjectNCur = 0;   
+
+//On dynamicFieldSub selection
+var iSelDynamicFieldSub = 0;
+var idFieldSubCur=""  
+
+//On obhectAnalysisError selection
+var rowNumCur = 0;
+var numInstrCur = 0;  
+
+//On metricViolations selection
+ var sectionCur = "";
+ var typeViolationCur = "";
+
+
+//To open windows forms
+var winJsonObjectErr=null;         // Json Object to Pass to Open Window
+var winOpenErr=null;               // Reference to the open window 
+var winJsonObjectInfo=null;        // Json Object to Pass to Open Window
+var winOpenInfo=null;              // Reference to the open window 
+var winJsonMetricValue=null;       // Json Object to Pass to Open Window
+var winOpenMetricValue=null;       // Reference to the open window 
+var winJsonMetricViolation=null;   // Json Object to Pass to Open Window
+var winOpenMetricViolation=null;   // Reference to the open window 
+var winJsonSourceViewer=null;      // Json Object to Pass to Open Window
+var winOpenSourceViewer=null;      // Reference to the open window 
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+ 	  loadSysD();
+ 	  loadSubSysD();
+ 	  loadEnumObjectStatusFromDb("EnumObjectStatus", statusObjectD);
+ 	  loadEnumObjectFromDb("EnumObject", typeObjectD);
+ }
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+
+function getJsonResponseObjectGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var subSys = document.getElementById("subSys").value;
+	var typeObject = document.getElementById("typeObject").value;
+	var statusObject = document.getElementById("statusObject").value;
+	var idObjectLike = document.getElementById("idObjectLike").value;
+	if (idObjectLike == "") { 
+		idObjectLike = "*"; 
+	}
+	var url = urlObjectGET + "/"+ sys + "/" + subSys + "/" + typeObject + "/"+ statusObject + "/"+ idObjectLike + "/*";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObject(xmlhttp);};
+	document.getElementById("procObjects").innerHTML = "Processing ...";
+	document.getElementById("countObjects").innerHTML = 0;
+	document.getElementById('objectTable').innerHTML = " ";
+}
+
+function getJsonResponseObjectPOST (oForm) {
+	alert("AJAXSubmit1");
+	if (!oForm.action) { return; }
+ 	createRequest();
+//	xmlhttp.responseType = 'json';  ?? non funziona anche cosi
+  	xmlhttp.overrideMimeType("application/json");
+    xmlhttp.open("POST", oForm.action, true);    
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+ 	xmlhttp.setRequestHeader("Content-type", "application/xwww-form-urlencoded");
+    xmlhttp.onreadystatechange  = handleJsonResponseObject;
+ 	xmlhttp.send(new FormData(oForm));
+}
+
+function handleJsonResponseObject(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countObjects").innerHTML = objects.length;
+		   document.getElementById("procObjects").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listObjects'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>Sys</th>"
+	                  +      "<th>SubSys</th>"
+	                  +      "<th>idObject</th>"
+	                  +      "<th>typeObject</th>"	                  
+	                  +      "<th>typeSource</th>"
+	                  +      "<th>status</th>"
+	                  +      "<th>Owner</th>"
+	                  +      "<th></th>"
+	                  +      "<th></th>"
+	                  +      "<th></th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div>"
+	                 +              "<button class='clsButtonSel' id='idObjectOptButton_"    + i + "' onclick='onclick_idObjectOptButton(this.id);' >O</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectRelButton_"    + i + "' onclick='onclick_idObjectRelButton(this.id);' >R</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectAnaButton_"    + i + "' onclick='onclick_idObjectAnaButton(this.id);' >A</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectFldButton_"    + i + "' onclick='onclick_idObjectFldButton(this.id);' >F</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectDynButton_"    + i + "' onclick='onclick_idObjectDynButton(this.id);' >D</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectErrButton_"    + i + "' onclick='onclick_idObjectErrButton(this.id);' >E</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectMetButton_"    + i + "' onclick='onclick_idObjectMetButton(this.id);' >M</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectVioButton_"    + i + "' onclick='onclick_idObjectVioButton(this.id);' >V</button>"
+	                 +              "<button class='clsButtonSel' id='idObjectSrcButton_"    + i + "' onclick='onclick_idObjectSrcButton(this.id);' >S</button>"
+	    	         +      "</div>"
+         	         +    "</td>"
+	     	         +    "<td id='system_"         + i + "'>" + objects[i].system            + "</td>" 
+	       	         +    "<td id='subSystem_"      + i + "'>" + objects[i].subSystem         + "</td>" 
+	      	         +    "<td id='idObject_"       + i + "'>" + objects[i].idObject          + "</td>" 
+	      	         +    "<td id='typeObject_"     + i + "'>" + objects[i].typeObject        + "</td>" 
+	     	         +    "<td id='typeSource_"     + i + "'>" + objects[i].typeSource        + "</td>" 
+	     	         +    "<td id='status_"         + i + "'>" + objects[i].status            + "</td>" 
+	     	         +    "<td id='subSystemOwner_" + i + "'>" + objects[i].subSystemOwner    + "</td>" 
+	     	         +    "<td id='typeObjectN_"    + i + "'>" + objects[i].typeObjectOrdinal + "</td>" 
+	     	         +    "<td id='typeSourceN_"    + i + "'>" + objects[i].typeSourceOrdinal + "</td>" 
+	     	         +    "<td id='statusN_"        + i + "'>" + objects[i].statusOrdinal     + "</td>" 
+	     	         +  "</tr>"
+	     	         
+	     	         if (i==0) {
+	     	        	  iSelObject=0;
+	     	        	  sysCur = objects[i].system;
+	     	        	  subSysCur = objects[i].subSystem;
+	     	        	  idObjectCur = objects[i].idObject;
+	     	        	  typeObjectCur = objects[i].typeObjectOrdinal;
+	     	        	  typeSourceCur = objects[i].typeSourceOrdinal;
+	     	        	  statusCur = objects[i].statusOrdinal;
+					 }
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('objectTable').innerHTML = tbl;
+		   document.getElementById("countObjects").innerHTML = objects.length;
+		   document.getElementById("procObjects").innerHTML = "Processed";
+		   
+		   // Clear following sections
+		   clearTabes();
+    }	
+}
+
+function getJsonResponseObjectOptionGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlObjectOptionGET + "/"+ sysCur + "/" + subSysCur + "/" + typeObjectCur + "/"+ idObjectCur + "/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectOption(xmlhttp);};
+	document.getElementById("procOptions").innerHTML = "Processing ...";
+	document.getElementById("countObjectOptions").innerHTML = 0;
+	clearTabes();
+}
+
+function handleJsonResponseObjectOption(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countObjectOptions").innerHTML = objects.length;
+		   document.getElementById("procOptions").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listObjectOptions'>"
+	    	          +    "<tr>"
+	                  +      "<th>Option</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   
+	    	   main  += "<tr>"
+	     	         +    "<td id='option_"         + i + "'>" + objects[i].option         + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom; 
+		   document.getElementById('optionTable').innerHTML = tbl;
+		   document.getElementById("countObjectOptions").innerHTML = objects.length;
+		   document.getElementById("procOptions").innerHTML = "Processed";
+   }	
+}
+
+/* Direct relationships */
+function getJsonResponseRelation1GET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlRelationGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur  + "/" +  typeObjectCur + "/*/*/*/*/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {if (xmlhttp.readyState==4 && xmlhttp.status==200){	                                         
+		                                         objects1=JSON.parse(xmlhttp.responseText);
+		                                         getJsonResponseRelation2GET(objects1)
+	                                         }
+	                                        };
+	document.getElementById("procRelations").innerHTML = "Processing ...";
+	document.getElementById("idObjRelations").innerHTML = idObjectCur;	
+	document.getElementById("countRelations").innerHTML = 0;
+}
+
+function getJsonResponseRelation2GET(objects1) {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlRelationGET + "/"+ sysCur + "/" + "*" + "/*/*/*/*/" + idObjectCur  + "/" +  typeObjectCur + "/*";
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelation2(xmlhttp, objects1);};
+	document.getElementById("procRelations").innerHTML = "Processing ...";
+	document.getElementById("idObjRelations").innerHTML = idObjectCur;	
+	document.getElementById("countRelations").innerHTML = 0;
+}
+
+
+function handleJsonResponseRelation2(xmlhttp, objects1) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   objects=objects1.concat(objects);
+		   clearCurRelation();
+		   document.getElementById("countRelations").innerHTML = objects.length;
+		   document.getElementById("procRelations").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listRelations'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>idObjectA</th>"
+	                  +      "<th>typeObjectA</th>"
+	                  +      "<th>Relation</th>"
+	                  +      "<th>idObjectB</th>"
+	                  +      "<th>typeObjectB</th>"
+	                  +      "<th></th>"
+	                  +      "<th></th>"
+	                  +      "<th></th>"
+	                  +      "<th></th>"
+	                  +      "<th></th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           if (i==0) {
+   	         	  iSelRelation=0;
+   	        	  subSysCur = objects[i].subSystem;
+   	        	  idObjectACur = objects[i].idObjectA;
+   	        	  typeObjectACur = objects[i].typeObjectAOrdinal;
+   	              typeSourceACur = objects[i].typeSourceAOrdinal;	 	  	  
+   	        	  relationCur = objects[i].relationOrdinal;
+   	              idObjectBCur = objects[i].idObjectB;
+   	              typeObjectBCur = objects[i].typeObjectBOrdinal;
+   	              typeSourceBCur = objects[i].typeSourceBOrdinal;   	           
+   	            }
+	           
+   	           main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div id='btnwrap2 class='clsBtnwrap''>"
+	                 +              "<button class='clsButtonSel' id='idRelationSelButton_"    + i + "' onclick='onclick_idRelationSelButton(this.id);' >I</button>"
+	    	         +      "</div>"
+         	         +    "</td>"
+	     	         +    "<td id='subSysRel_"         + i + "'>" + objects[i].subSystem          + "</td>" 
+	     	         +    "<td id='idObjectA_"         + i + "'>" + objects[i].idObjectA          + "</td>" 
+	     	         +    "<td id='typeObjectA_"       + i + "'>" + objects[i].typeObjectA        + "</td>" 
+	     	         +    "<td id='relation_"          + i + "'>" + objects[i].relation           + "</td>" 
+	     	         +    "<td id='idObjectB_"         + i + "'>" + objects[i].idObjectB          + "</td>" 
+	     	         +    "<td id='typeObjectB_"       + i + "'>" + objects[i].typeObjectB        + "</td>" 
+	     	         +    "<td id='typeObjectAN_"      + i + "'>" + objects[i].typeObjectAOrdinal + "</td>" 
+	     	         +    "<td id='relationN_"         + i + "'>" + objects[i].relationOrdinal    + "</td>" 
+	     	         +    "<td id='typeObjectBN_"      + i + "'>" + objects[i].typeObjectBOrdinal + "</td>" 	     	         
+	     	         +    "<td id='typeSourceAN_"      + i + "'>" + objects[i].typeSourceAOrdinal + "</td>" 
+	     	         +    "<td id='typeSourceBN_"      + i + "'>" + objects[i].typeSourceBOrdinal + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('relationTable').innerHTML = tbl;
+		   document.getElementById("countRelations").innerHTML = objects.length;
+		   document.getElementById("procRelations").innerHTML = "Processed";
+		   //Because asyncronous operation
+		   //loadRelationOriginTable();		   
+    }	
+}
+
+function getJsonResponseRelationOriginGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlRelationOriginGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectACur +  "/" + typeObjectACur + "/*/" + relationCur + "/" + idObjectBCur + "/" + typeObjectBCur + "/*" ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseRelationOrigin(xmlhttp);};
+	document.getElementById("procRelationOrigin").innerHTML = "Processing ...";
+	document.getElementById("idObjRelationOrigin").innerHTML = idObjectBCur;	
+	document.getElementById("countRelationOrigin").innerHTML = 0;
+}  
+
+function handleJsonResponseRelationOrigin(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countRelationOrigin").innerHTML = objects.length;
+		   document.getElementById("procRelationOrigin").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listRelationsOrigin'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>idObjectA</th>"
+	                  +      "<th>#Instr</th>"
+	                  +      "<th>Pgm Area</th>"
+	                  +      "<th>Category</th>"
+	                  +      "<th>Source</th>"
+	                  +      "<th>Precompiler</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           if (i==0) {
+   	        	  iSelRelationOrigin=0;
+   	        	  numInstrOriginCur = objects[i].numInstrOrigin;
+    	       }
+   	           
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap1' id='btnwrap4'>"
+	                 +              "<button class='clsButtonSel' id='idRelationOriginSelButton_"    + i + "' onclick='onclick_idRelationOriginSelButton(this.id);' >D</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='subSys_"                + i + "'>" + objects[i].subSystem            + "</td>" 
+	     	         +    "<td id='idObjectA_"             + i + "'>" + objects[i].idObjectA            + "</td>" 
+	     	         +    "<td id='numInstrOrigin_"        + i + "'>" + objects[i].numInstrOrigin       + "</td>" 
+	     	         +    "<td id='instrProgramArea_"      + i + "'>" + objects[i].instrProgramArea     + "</td>" 
+	     	         +    "<td id='instrCategory_"         + i + "'>" + objects[i].instrCategory        + "</td>" 
+	     	         +    "<td id='relationSource_"        + i + "'>" + objects[i].relationSource       + "</td>" 
+	     	         +    "<td id='instrTypePrecompiler_"  + i + "'>" + objects[i].instrTypePrecompiler + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('relationOriginTable').innerHTML = tbl;
+		   document.getElementById("idObjRelationOrigin").innerHTML = idObjectBCur;	
+		   document.getElementById("countRelationOrigin").innerHTML = objects.length;
+		   document.getElementById("procRelationOrigin").innerHTML = "Processed";
+    }	
+}
+
+
+function getJsonResponseCopyEntityGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlCopyEntityGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur +  "/" + typeObjectCur ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseCopyEntity(xmlhttp);};
+	document.getElementById("procCopyEntity").innerHTML = "Processing ...";
+	document.getElementById("countCopyEntity").innerHTML = 0;
+} 
+
+function handleJsonResponseCopyEntity(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countCopyEntity").innerHTML = objects.length;
+		   document.getElementById("procCopyEntity").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listCopyEntity'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>Object</th>"
+	                  +      "<th>#</th>"
+	                  +      "<th>Id</th>"
+	                  +      "<th>Lvl</th>"
+	                  +      "<th>Occ</th>"
+	                  +      "<th>Lng</th>"
+	                  +      "<th>Pos</th>"
+	                  +      "<th>Int</th>"
+	                  +      "<th>Dec</th>"
+	                  +      "<th>Sign</th>"
+	                  +      "<th>Grp</th>"
+	                  +      "<th>ItemLng</th>"
+	                  +      "<th>ItemType</th>"
+	                  +      "<th>Digit</th>"
+	                  +      "<th>Scale</th>"
+	                  +      "<th>NotNull</th>"
+	                  +      "<th>WithDflt</th>"
+	                  +      "<th>Dflt</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           if (i==0) {
+   	        	  iSelCopyEntity=0;
+   	        	  numSeqCur = objects[i].numSeq;
+    	       }
+   	           
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap' id='btnwrap3'>"
+	                 +              "<button class='clsButtonSel' id='idCopyEntitySelButton_"    + i + "' onclick='onclick_idCopyEntitySelButton(this.id);' >W</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='subSystem_"     + i + "'>" + objects[i].subSystem    + "</td>" 
+	     	         +    "<td id='idObject_"      + i + "'>" + objects[i].idObject     + "</td>"
+	     	         +    "<td id='numSeq_"        + i + "'>" + objects[i].numSeq       + "</td>" 
+	     	         +    "<td id='idField_"       + i + "'>" + objects[i].idField      + "</td>" 
+	     	         +    "<td id='level_"         + i + "'>" + objects[i].level        + "</td>" 
+	     	         +    "<td id='occurs_"        + i + "'>" + objects[i].occurs       + "</td>" 
+	     	         +    "<td id='lngBytes_"      + i + "'>" + objects[i].lngBytes     + "</td>" 
+	     	         +    "<td id='pos_"           + i + "'>" + objects[i].lngBytes     + "</td>" 
+	     	         +    "<td id='numInt_"        + i + "'>" + objects[i].numInt       + "</td>" 
+	     	         +    "<td id='numDec_"        + i + "'>" + objects[i].numDec       + "</td>" 
+	     	         +    "<td id='sighed_"        + i + "'>" + objects[i].signed       + "</td>" 
+	     	         +    "<td id='groupField_"    + i + "'>" + objects[i].groupField   + "</td>" 
+	     	         +    "<td id='itemLang_"      + i + "'>" + objects[i].itemLang     + "</td>" 
+	     	         +    "<td id='itemType_"      + i + "'>" + objects[i].itemType     + "</td>" 
+	     	         +    "<td id='numDigit_"      + i + "'>" + objects[i].numDigit     + "</td>" 
+	     	         +    "<td id='scale_"         + i + "'>" + objects[i].scale        + "</td>" 
+	     	         +    "<td id='notNull_"       + i + "'>" + objects[i].notNull      + "</td>" 
+	     	         +    "<td id='withDefault_"   + i + "'>" + objects[i].withDefault  + "</td>" 
+	     	         +    "<td id='defaultValue_"  + i + "'>" + objects[i].defaultValue + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('copyEntityTable').innerHTML = tbl;
+		   document.getElementById("countCopyEntity").innerHTML = objects.length;
+		   document.getElementById("procCopyEntity").innerHTML = "Processed";
+    }	
+}
+
+function getJsonResponseWhereUsedGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlWhereUsedGET + "/"+ sysCur + "/" + "*" + "/" + idObjectCur + "/" + typeObjectCur + "/" + idFieldCur + "/" + numSeqCur ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseWhereUsed(xmlhttp);};
+	document.getElementById("procWhereUsed").innerHTML = "Processing ...";
+	document.getElementById("countWhereUsed").innerHTML = 0;
+} 
+
+function handleJsonResponseWhereUsed(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countWhereUsed").innerHTML = objects.length;
+		   document.getElementById("procWhereUsed").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listWhereUsed'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>Pgm</th>"
+	                  +      "<th>Field</th>"
+	                  +      "<th>#Inst</th>"
+	                  +      "<th>Local</th>"
+	                  +      "<th>Ioarea</th>"
+	                  +      "<th>Copy</th>"
+	                  +      "<th>typeWhereUsed</th>"
+	                  +      "<th>typeAlias</th>"
+	                  +      "<th>Ioarea pos.</th>"
+	                  +      "<th>usedBytes</th>"
+	                  +      "<th>Int</th>"
+	                  +      "<th>Dec</th>"
+	                  +      "<th>signed</th>"
+	                  +      "<th>instrType</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           if (i==0) {
+   	        	  iSelCopyEntity=0;
+   	        	  numSeqCur = objects[i].numSeq;
+    	       }
+   	           
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap' id='btnwrap3'>"
+	                 +              "<button class='clsButtonSel' id='idWhereUsedSelButton_"    + i + "' onclick='onclick_idWhereUsedSelButton(this.id);' >D</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='subSys_"           + i + "'>" + objects[i].subSystem     + "</td>" 
+	     	         +    "<td id='idObjectRefer_"    + i + "'>" + objects[i].idObjectRefer + "</td>" 
+	     	         +    "<td id='idField_"          + i + "'>" + objects[i].idField       + "</td>" 
+	     	         +    "<td id='numInstrRefer_"    + i + "'>" + objects[i].numInstrRefer + "</td>" 
+	     	         +    "<td id='idAliasLocal_"     + i + "'>" + objects[i].idAliasLocal  + "</td>" 
+	     	         +    "<td id='idIoarea_"         + i + "'>" + objects[i].idIoarea      + "</td>" 
+	     	         +    "<td id='idObjectCopy_"     + i + "'>" + objects[i].idObjectCopy  + "</td>" 
+	     	         +    "<td id='typeWhereUsed_"    + i + "'>" + objects[i].typeWhereUsed + "</td>" 
+	     	         +    "<td id='typeAlias_"        + i + "'>" + objects[i].typeAlias     + "</td>" 
+	     	         +    "<td id='posInIoarea_"      + i + "'>" + objects[i].posInIoarea   + "</td>" 
+	     	         +    "<td id='usedBytes_"        + i + "'>" + objects[i].usedBytes     + "</td>" 
+	     	         +    "<td id='numInt_"           + i + "'>" + objects[i].numInt        + "</td>" 
+	     	         +    "<td id='numDec_"           + i + "'>" + objects[i].numDec        + "</td>" 
+	     	         +    "<td id='signed_"           + i + "'>" + objects[i].signed        + "</td>" 
+	     	         +    "<td id='instrType_"        + i + "'>" + objects[i].instrType     + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('whereUsedTable').innerHTML = tbl;
+		   document.getElementById("countWhereUsed").innerHTML = objects.length;
+		   document.getElementById("procWhereUsed").innerHTML = "Processed";
+    }	
+}
+
+
+function getJsonResponseDynamicFieldGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlDynamicFieldGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectCur + "/" + "*" + "/" + "*" ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseDynamicField(xmlhttp);};
+	document.getElementById("procDynamicField").innerHTML = "Processing ...";
+	document.getElementById("countDynamicField").innerHTML = 0;
+} 
+
+function handleJsonResponseDynamicField(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countDynamicField").innerHTML = objects.length;
+		   document.getElementById("procDynamicField").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listDynamicField'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>Pgm</th>"
+	                  +      "<th>#Inst</th>"
+	                  +      "<th>Field Name</th>"	                  
+	                  +      "<th>#def</th>"
+	                  +      "<th>Light</th>"
+	                  +      "<th>solved</th>"
+	                  +      "<th>Full</th>"
+	                  +      "<th>Wait</th>"
+	                  +      "<th>Spreaded</th>"	                  
+	                  +      "<th>Type</th>"
+	                  +      "<th>PreComp</th>"
+	                  +      "<th>Oprnd</th>"
+	                  +      "<th></th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           if (i==0) {
+   	        	  iSelDynamicField=0;
+    	       }
+   	            
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap' id='btnwrap3'>"
+	                 +              "<button class='clsButtonSel' id='idDynamicFieldSelButton_"    + i + "' onclick='onclick_idDynamicFieldSelButton(this.id);' >S</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='subSysD_"                 + i + "'>" + objects[i].subSystem             + "</td>" 
+	     	         +    "<td id='idObjectD_"               + i + "'>" + objects[i].idObject              + "</td>" 
+	     	         +    "<td id='numInstrD_"               + i + "'>" + objects[i].numInstr              + "</td>" 
+	     	         +    "<td id='idFieldD_"                + i + "'>" + objects[i].idField               + "</td>" 	     	         
+	     	         +    "<td id='numFieldD_"               + i + "'>" + objects[i].numField              + "</td>" 
+	     	         +    "<td id='light_"                   + i + "'>" + objects[i].light                 + "</td>" 
+	     	         +    "<td id='solved_"                  + i + "'>" + objects[i].solved                + "</td>" 
+	     	         +    "<td id='solvedFull_"              + i + "'>" + objects[i].solvedFull            + "</td>" 
+	     	         +    "<td id='waitingForData_"          + i + "'>" + objects[i].waitingForData        + "</td>" 
+	     	         +    "<td id='spreaded_"                + i + "'>" + objects[i].spreaded              + "</td>" 
+	     	         +    "<td id='instrCobolType_ "         + i + "'>" + objects[i].instrCobolType        + "</td>" 
+	     	         +    "<td id='instrPrecompType_"        + i + "'>" + objects[i].instrPrecompType      + "</td>" 
+	     	         +    "<td id='instrPrecompOprndType_"   + i + "'>" + objects[i].instrPrecompOprndType + "</td>" 
+	     	         +    "<td id='typeObjectN2_"            + i + "'>" + objects[i].typeObjectOrdinal     + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('dynamicFieldTable').innerHTML = tbl;
+		   document.getElementById('idObjDynamicField').innerHTML = idObjectCur;
+		   document.getElementById("countDynamicField").innerHTML = objects.length;
+		   document.getElementById("procDynamicField").innerHTML = "Processed";
+    }	
+}		
+		
+
+function getJsonResponseDynamicFieldSubGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlDynamicFieldSubGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectCur + "/" + numInstrCur + "/" + idFieldCur ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseDynamicFieldSub(xmlhttp);};
+	document.getElementById("procDynamicFieldSub").innerHTML = "Processing ...";
+	document.getElementById("countDynamicFieldSub").innerHTML = 0;
+} 
+
+function handleJsonResponseDynamicFieldSub(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countDynamicFieldSub").innerHTML = objects.length;
+		   document.getElementById("procDynamicFieldSub").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listDynamicFieldSub'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>Pgm</th>"
+	                  +      "<th>#Inst</th>"
+	                  +      "<th>Field Name</th>"	
+	                  +      "<th>SubField Name</th>"		                  
+	                  +      "<th>#def</th>"
+	                  +      "<th>Size</th>"
+	                  +      "<th>Type</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+   	           if (i==0) {
+   	        	  iSelCopyEntity=0;
+   	        	  numSeqCur = objects[i].numSeq;
+    	       }
+   	           
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap' id='btnwrap5'>"
+	                 +              "<button class='clsButtonSel' id='idDynamicFieldSubSelButton_"    + i + "' onclick='onclick_idDynamicFieldSubSelButton(this.id);' >V</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='subSysS_"                 + i + "'>" + objects[i].subSystem             + "</td>" 
+	     	         +    "<td id='idObjectS_"               + i + "'>" + objects[i].idObject              + "</td>" 
+	     	         +    "<td id='numInstrS_"               + i + "'>" + objects[i].numInstr              + "</td>" 
+	     	         +    "<td id='idFieldS_"                + i + "'>" + objects[i].idField               + "</td>" 	     	         
+	     	         +    "<td id='idSubFieldS_"             + i + "'>" + objects[i].idSubField            + "</td>" 	     	         
+	     	         +    "<td id='numdSubFieldS_"           + i + "'>" + objects[i].numSubField           + "</td>" 
+	     	         +    "<td id='sizeSubField_"            + i + "'>" + objects[i].sizeSubField          + "</td>" 
+	     	         +    "<td id='typeSubField_"            + i + "'>" + objects[i].typeSubField          + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('dynamicFieldSubTable').innerHTML = tbl;
+		   document.getElementById("countDynamicFieldSub").innerHTML = objects.length;
+		   document.getElementById("procDynamicFieldSub").innerHTML = "Processed";
+    }	
+}		
+		
+
+function getJsonResponseDynamicFieldSubValueGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlDynamicFieldSubValueGET + "/"+ sys + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectNCur + "/" + numInstrCur + "/" + idFieldCur + "/" + idFieldSubCur ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseDynamicFieldSubValue(xmlhttp);};
+	document.getElementById("procDynamicFieldSub").innerHTML = "Processing ...";
+	document.getElementById("countDynamicFieldSub").innerHTML = 0;
+} 
+
+function handleJsonResponseDynamicFieldSubValue(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countDynamicFieldSubValue").innerHTML = objects.length;
+		   document.getElementById("procDynamicFieldSubValue").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listDynamicFieldSubValue'>"
+	    	          +    "<tr>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>Pgm</th>"
+	                  +      "<th>#Inst</th>"
+	                  +      "<th>Field</th>"	
+	                  +      "<th>SubField</th>"		                  
+	                  +      "<th>Progr</th>"
+	                  +      "<th>Value</th>"
+	                  +      "<th>Pos</th>"
+	                  +      "<th>Lng</th>"
+	                  +      "<th>Pgm From</th>"
+	                  +      "<th>#Inst From</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	     	         +    "<td id='subSysS_"                 + i + "'>" + objects[i].subSystem             + "</td>" 
+	     	         +    "<td id='idObjectS_"               + i + "'>" + objects[i].idObject              + "</td>" 
+	     	         +    "<td id='numInstrS_"               + i + "'>" + objects[i].numInstr              + "</td>" 
+	     	         +    "<td id='idFieldS_"                + i + "'>" + objects[i].idField               + "</td>" 	     	         
+	     	         +    "<td id='idSubFieldS_"             + i + "'>" + objects[i].idSubField            + "</td>" 	     	         	     	         
+	     	         +    "<td id='progr_"                   + i + "'>" + objects[i].progr                 + "</td>" 
+	     	         +    "<td id='value_"                   + i + "'>" + objects[i].value                 + "</td>" 
+	     	         +    "<td id='posInSubField_"           + i + "'>" + objects[i].posInSubField         + "</td>" 
+	     	         +    "<td id='lngInSubField__"          + i + "'>" + objects[i].lngInSubField         + "</td>" 
+	     	         +    "<td id='idObjectFrom_"            + i + "'>" + objects[i].idObjectFrom          + "</td>" 
+	     	         +    "<td id='numInstrFrom_"            + i + "'>" + objects[i].numInstrFrom          + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('dynamicFieldSubValueTable').innerHTML = tbl;
+		   document.getElementById("countDynamicFieldSubValue").innerHTML = objects.length;
+		   document.getElementById("procDynamicFieldSubValue").innerHTML = "Processed";
+    }	
+}		
+
+function getJsonResponseAnalysisErrorsListGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlObjectAnalysisErrorGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectCur + "/" + "*" ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseAnalysisErrors(xmlhttp);};
+	document.getElementById("procObjectAnalysisErrors").innerHTML = "Processing ...";
+	document.getElementById("countObjectAnalysisErrors").innerHTML = 0;	
+}
+
+
+function handleJsonResponseAnalysisErrors(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countObjectAnalysisErrors").innerHTML = objects.length;
+		   document.getElementById("procObjectAnalysisErrors").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listObjectAnalysisErrors'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>sys</th>"
+	                  +      "<th>subSys</th>"
+	                  +      "<th>idObject</th>"
+	                  +      "<th>TypeObject</th>"
+	                  +      "<th>#Instr</th>"	
+	                  +      "<th>#Row</th>"		                  
+	                  +      "<th>TokenError</th>"
+	                  +      "<th>TypeProcessAnalysis</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap' id='btnwrap5'>"
+	                 +              "<button class='clsButtonSel' id='idObjectAnalysisErrorsFormSelButton_"    + i + "' onclick='onclick_idObjectAnalysisErrorsFormSelButton(this.id);' >S</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='sysE_"                    + i + "'>" + objects[i].system                 + "</td>" 
+	     	         +    "<td id='subSysE_"                 + i + "'>" + objects[i].subSystem              + "</td>" 
+	     	         +    "<td id='idObjectE_"               + i + "'>" + objects[i].idObject               + "</td>" 
+	     	         +    "<td id='typeObjectE_"             + i + "'>" + objects[i].typeObject             + "</td>" 
+	     	         +    "<td id='numInstrE_"               + i + "'>" + objects[i].numInstr               + "</td>" 
+	     	         +    "<td id='rowNumE_"                 + i + "'>" + objects[i].rowNum                 + "</td>" 
+	     	         +    "<td id='tokenErrorE_"             + i + "'>" + objects[i].tokenError             + "</td>" 
+	     	         +    "<td id='typeProcessAnalysisE_"    + i + "'>" + objects[i].typeProcessAnalysis    + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('objectAnalysisErrorsTable').innerHTML = tbl;
+		   document.getElementById("countObjectAnalysisErrors").innerHTML = objects.length;
+		   document.getElementById("procObjectAnalysisErrors").innerHTML = "Processed";
+    }	
+}	
+
+function getJsonResponseAnalysisErrorWindowGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlObjectAnalysisErrorGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectCur + "/" + rowNumCur ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseAnalysisErrorWindow(xmlhttp);};
+}
+
+function handleJsonResponseAnalysisErrorWindow(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   winJsonObjectErr=JSON.parse(xmlhttp.responseText);
+       if (winJsonObjectErr.length==0){
+    	   winOpenErr.close();
+    	   return;
+       }  
+       if (winOpenErr != null && !winOpenErr.closed) {
+    	   winOpenErr.loadTable(winJsonObjectErr);
+    	   winOpenErr.focus();
+       } else {
+    	   winOpenErr=window.open("ViewerAnalysisError.html","_blank", "width=800,height=700");
+	   }
+       
+	}
+}	
+
+/* called by ObjectAnalysisError.html to get the Json object */
+function getJsonObjectAnalysisError(){
+   return winJsonObjectErr;
+}
+
+function getJsonResponseAnalysisInfoWindowGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlObjectAnalysisInfoGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectCur  ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseAnalysisInfoWindow(xmlhttp);};
+}
+
+function handleJsonResponseAnalysisInfoWindow(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   winJsonObjectInfo=JSON.parse(xmlhttp.responseText);
+ //      if (winJsonObjectInfo.length==0){return;}  
+ //      if (winOpenInfo != null){winOpenInfo.close("ObjectAnalysisInfo.html");} 
+ //      winOpenInfo=window.open("ObjectAnalysisInfo.html","_blank", "width=600,height=700");
+       
+       
+       if (winJsonObjectInfo.length==0){
+    	   winOpenInfo.close();
+    	   return;
+       }  
+       if (winOpenInfo != null && !winOpenInfo.closed) {
+    	   winOpenInfo.loadTable(winJsonObjectInfo);
+    	   winOpenInfo.focus();
+       } else {
+    	   winOpenInfo=window.open("ViewerAnalysisInfo.html","_blank", "width=600,height=700");
+	   }            
+	}      
+}	
+
+/* called by ObjectAnalysisInfo.html to get the Json object */
+function getJsonObjectAnalysisInfo(){
+   return winJsonObjectInfo;
+}
+
+function getJsonResponseMetricValueWindowGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlMetricValueGET + "/"+ sysCur + "/" + subSysCur  + "/*" + "/" + idObjectCur + "/" + typeObjectCur + "/*"  ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseMetricValueWindow(xmlhttp);};
+}
+
+function handleJsonResponseMetricValueWindow(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   winJsonMetricValue=JSON.parse(xmlhttp.responseText);
+  //     if (winJsonMetricValue.length==0){
+  //  	   winOpenMetricValue.close();
+  //  	   return;
+   //    }  
+       if (winOpenMetricValue != null && !winOpenMetricValue.closed) {
+    	   winOpenMetricValue.loadTable(winJsonMetricValue);
+    	   winOpenMetricValue.focus();
+       } else {
+    	   winOpenMetricValue=window.open("ViewerMetricValues.html","_blank", "width=500,height=700");
+	   }            
+	}
+}	
+
+/* called by MetricValue.html to get the Json object */
+function getJsonMetricValue(){
+   return winJsonMetricValue;
+}
+
+function getJsonResponseMetricViolationGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlMetricViolationGET + "/"+ sysCur + "/" + subSysCur  + "/0" + "/" + idObjectCur + "/" + typeObjectCur + "/*" + "/*" ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseMetricViolation(xmlhttp);};
+	document.getElementById("procMetricViolation").innerHTML = "Processing ...";
+	document.getElementById("countMetricViolation").innerHTML = 0;	
+}
+
+function handleJsonResponseMetricViolation(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+		   document.getElementById("countMetricViolation").innerHTML = objects.length;
+		   document.getElementById("procMetricViolation").innerHTML = "Loading data ...";
+	       var tbltop = "<table class='clsListEntity' id='listMetricViolation'>"
+	    	          +    "<tr>"
+	                  +      "<th>Sel</th>"
+	                  +      "<th>sys</th>"
+	                  +      "<th>subSys</th>"	                  
+	                  +      "<th>scope</th>"
+	                  +      "<th>idObject</th>"
+	                  +      "<th>TypeObject</th>"
+	                  +      "<th>section</th>"	
+	                  +      "<th>typeViolation</th>"	
+	                  +      "<th></th>"	
+	                  +      "<th></th>"
+	                  +      "<th></th>"	                  
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	    	         +    "<td>"
+	    	         +      "<div class='clsBtnwrap' id='btnwrap5'>"
+	                 +              "<button class='clsButtonSel' id='idMetricViolationFormSelButton_"    + i + "' onclick='onclick_idObjectViolationFormSelButton(this.id);' >S</button>"
+	    	         +      "</div>"
+        	         +    "</td>"
+	     	         +    "<td id='sysV_"                   + i + "'>" + objects[i].system                 + "</td>" 
+	     	         +    "<td id='subSysV_"                + i + "'>" + objects[i].subSystem              + "</td>" 
+	     	         +    "<td id='scope_"                  + i + "'>" + objects[i].scope                  + "</td>" 
+	     	         +    "<td id='idObjectV_"              + i + "'>" + objects[i].idObject               + "</td>" 
+	     	         +    "<td id='typeObjectV_"            + i + "'>" + objects[i].typeObject             + "</td>" 
+	     	         +    "<td id='section_"                + i + "'>" + objects[i].section                + "</td>" 
+	     	         +    "<td id='typeViolation_"          + i + "'>" + objects[i].typeViolation          + "</td>" 
+	     	         +    "<td id='scopeN_"                 + i + "'>" + objects[i].scopeOrdinal           + "</td>" 
+	     	         +    "<td id='typeObjectVN_"           + i + "'>" + objects[i].typeObjectOrdinal      + "</td>" 
+	     	         +    "<td id='typeViolationN_"         + i + "'>" + objects[i].typeViolationOrdinal   + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('metricViolationTable').innerHTML = tbl;
+		   document.getElementById("countMetricViolation").innerHTML = objects.length;
+		   document.getElementById("procObjectAnalysisErrors").innerHTML = "Processed";
+    }	
+}	
+
+function getJsonResponseMetricViolationWindowGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlMetricViolationGET + "/"+ sysCur + "/" + subSysCur + "/0"+ "/" + idObjectCur + "/" + typeObjectCur + "/" + sectionCur + "/" + typeViolationCur;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseMetricViolationWindow(xmlhttp);};
+}
+
+function handleJsonResponseMetricViolationWindow(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   winJsonMetricViolation=JSON.parse(xmlhttp.responseText);
+       if (winJsonMetricViolation.length==0){
+    	   winOpenMetricViolation.close();
+    	   return;
+       }  
+       if (winOpenMetricViolation != null && !winOpenMetricViolation.closed) {
+    	   winOpenMetricViolation.loadTable(winJsonMetricViolation);
+    	   winOpenMetricViolation.focus();
+       } else {
+		   winOpenMetricViolation=window.open("MetricViolation.html","_blank", "width=600,height=450");
+	   }
+	}
+}	
+
+/* called by ObjectAnalysisInfo.html to get the Json object */
+function getJsonMetricViolation(){
+   return winJsonMetricViolation;
+}
+
+function getJsonResponseSourceViewerWindowGET() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var sys = document.getElementById("sys").value;
+	var url = urlObjectAnalysisInfoGET + "/"+ sysCur + "/" + subSysCur + "/" + idObjectCur + "/" + typeObjectCur  ;
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSourceViewerWindow(xmlhttp);};
+}
+
+function handleJsonResponseSourceViewerWindow(xmlhttp) {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	   winJsonObjectInfo=JSON.parse(xmlhttp.responseText);
+//     if (winJsonSourceViewer.length==0){return;}  
+       if (winOpenSourceViewer != null){winOpenSourceViewer.close("SourceViewer.html");} 
+       winOpenSourceViewer=window.open("SourceViewer.html","_blank", "width=600,height=700");
+       
+	}
+}	
+function loadSysD() {	
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseurl + "/" + "sys";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var listSys=JSON.parse(xmlhttp.responseText);
+			sysD.disable=true;
+			while (sysD.length != 0) {
+				sysD.remove(0);		
+			}
+		    for (var i=0; i < listSys.length; i++) {
+		 	   var value = listSys[i].idObject;
+		 	   sysD.add(new Option(value, value));
+		 	   if (i == 0) {
+			 		  sys.value = value;
+				   }
+		    }
+		    sysD.disable=false;	
+	    }		 
+	};
+}
+
+function loadSubSysD() {	
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = baseurl + "/" + "subsys";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var listSubSys=JSON.parse(xmlhttp.responseText);
+			subSysD.disable=true;
+			while (subSysD.length != 0) {
+				subSysD.remove(0);		
+			}
+			subSysD.add(new Option("*", "*"));
+		    for (var i=0; i < listSubSys.length; i++) {
+		 	   var value = listSubSys[i].idObject;
+		 	   subSysD.add(new Option(value, value));
+		 	   if (i == 0) {
+		 		  subSys.value = "*";
+			   }
+		    }
+		    subSysD.disable=false;	
+	    }		 
+	};
+}
+
+function loadEnumObjectFromDb() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlEnumGET + "/" + "EnumObject";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var enums=JSON.parse(xmlhttp.responseText);
+			loadSelectGeneric(typeObject, typeObjectD, enums);
+	    }		 
+	};
+}
+
+function loadEnumObjectStatusFromDb() {
+	var xmlhttp;
+	xmlhttp=createRequest();
+	var url = urlEnumGET + "/" + "EnumObjectStatus";
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var enums=JSON.parse(xmlhttp.responseText);
+			loadSelectGeneric(statusObject, statusObjectD, enums);
+	    }	
+	};
+}
+
+function loadSelectGeneric(oSelected, oSelect, list) {
+	oSelect.disable=true;
+	while (oSelect.length != 0) {
+		oSelect.remove(0);		
+	}
+    for (var i=0; i < list.length; i++) {
+ 	   var value = list[i].ordinal + " " + list[i].value;
+ 	   if (value.substring(0,1) == '0') {
+ 		  value='*';
+ 		 oSelected.value = value;
+       }
+ 	   oSelect.add(new Option(value, value));
+    }
+    oSelect.disable=false;	
+}
+
+function loadOptionTable() {
+	  getJsonResponseObjectOptionGET() 
+}
+
+function loadRelationTable() {
+	  getJsonResponseRelation1GET()  
+}
+
+function loadRelationOriginTable() {
+	  getJsonResponseRelationOriginGET() 
+} 
+
+function loadCopyEntityTable() {
+	getJsonResponseCopyEntityGET()
+}  
+
+function loadWhereUsedTable() {
+	  getJsonResponseWhereUsedGET() 
+} 
+
+function loadDynamicFieldTable() {
+	  getJsonResponseDynamicFieldGET() 
+	  document.getElementById('dynamicFieldTable').focus();
+} 
+
+function loadMetricViolationTable() {
+	  getJsonResponseMetricViolationGET() 
+	  document.getElementById('metricViolationTable').focus();
+} 
+
+function loadDynamicFieldSubTable() {
+	getJsonResponseDynamicFieldSubGET() 
+    iSelDynamicFieldSub = 0; 
+	idFieldSubCur = document.getElementById("idSubFieldS_"   + iSelDynamicFieldSub).textContent;
+	if (idFieldSubCur == "") {
+	   idFieldSubCur = "*"
+    }
+    document.getElementById('dynamicFieldSubTable').focus();
+} 
+
+function loadDynamicFieldSubValueTable() {
+	getJsonResponseDynamicFieldSubValueGET() 
+} 
+
+function  loadAnalysisErrorsListTable() {
+	getJsonResponseAnalysisErrorsListGET() 
+}
+
+function onclick_idObjectOptButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	  typeSourceCur = document.getElementById("typeSourceN_" + iSelObject).textContent;
+	  statusCur = document.getElementById("statusN_"         + iSelObject).textContent;
+	  
+      document.getElementById("optionTable").innerHTML =  " ";
+      document.getElementById("idObjOptions").innerHTML = idObjectCur;
+	  loadOptionTable();
+ 	  document.getElementById('optionTable').focus();
+}
+
+function onclick_idObjectAnaButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	  
+	  getJsonResponseAnalysisInfoWindowGET();
+}
+
+/* Relations list load activation */
+function onclick_idObjectRelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	  typeSourceCur = document.getElementById("typeSourceN_" + iSelObject).textContent;
+	  statusCur = document.getElementById("statusN_"         + iSelObject).textContent;
+	  
+      document.getElementById("relationTable").innerHTML =  " ";
+      document.getElementById("relationOriginTable").innerHTML =  " ";
+
+	  loadRelationTable();
+ 	  document.getElementById('relationTable').focus();
+
+} 
+
+function onclick_idObjectFldButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystemOwner_"  + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;  
+	  loadCopyEntityTable();  
+	  document.getElementById('copyEntityTable').focus();
+}
+
+function onclick_idObjectDynButton(clicked_id) {
+      var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystemOwner_"  + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+  	  loadDynamicFieldTable();
+	  document.getElementById('dynamicFieldTable').focus();
+}
+
+function onclick_idRelationSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  subSysCur = document.getElementById("subSysRel_"         + iSelObject).textContent;
+	  idObjectACur = document.getElementById("idObjectA_"      + iSelObject).textContent;
+	  typeObjectACur = document.getElementById("typeObjectAN_" + iSelObject).textContent;
+	  relationCur = document.getElementById("relationN_"       + iSelObject).textContent;
+	  idObjectBCur = document.getElementById("idObjectB_"      + iSelObject).textContent;
+	  typeObjectBCur = document.getElementById("typeObjectBN_" + iSelObject).textContent;
+	  loadRelationOriginTable();
+	  document.getElementById('relationOriginTable').focus();
+}
+
+function onclick_idRelationOriginSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+}
+      
+function onclick_idCopyEntitySelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelCopyEntity = clicked_id.substr(i+1); 
+	  numSeqCur=0;
+	  idFieldCur="";
+
+	  numSeqCur = document.getElementById("numSeq_"      + iSelCopyEntity).textContent;
+	  idFieldCur = document.getElementById("idField_"    + iSelCopyEntity).textContent;
+ 	  loadWhereUsedTable();
+  	  document.getElementById('whereUsedTable').focus();
+}
+
+function onclick_idWhereUsedSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+}
+
+function onclick_idDynamicFieldSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelDynamicField = clicked_id.substr(i+1); 
+	  subSysCur = document.getElementById("subSysD_"           + iSelDynamicField).textContent;
+	  idObjectCur = document.getElementById("idObjectD_"       + iSelDynamicField).textContent;
+	  typeObjectNCur = document.getElementById("typeObjectN2_" + iSelDynamicField).textContent;
+	  numInstrCur = document.getElementById("numInstrD_"       + iSelDynamicField).textContent;
+	  idFieldCur = document.getElementById("idFieldD_"         + iSelDynamicField).textContent;
+	  loadDynamicFieldSubTable();
+	  document.getElementById('"dynamicFieldSubTable"').focus();
+}
+
+function onclick_idDynamicFieldSubSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelDynamicFieldSub = clicked_id.substr(i+1); 
+	  idFieldSubCur = document.getElementById("idSubFieldS_"   + iSelDynamicFieldSub).textContent;
+	  if (idFieldSubCur == "") {
+		  idFieldSubCur = "*"
+  	  }
+      loadDynamicFieldSubValueTable();
+	  document.getElementById('dynamicFieldSubValueTable').focus();
+}
+
+function onclick_idObjectErrButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	  
+      document.getElementById("idObjAnalysisErrors").innerHTML = idObjectCur;
+	  loadAnalysisErrorsListTable();
+	  document.getElementById('objectAnalysisErrorsTable').focus();
+}
+
+function onclick_idObjectMetButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	    
+	  getJsonResponseMetricValueWindowGET();
+
+}
+
+function onclick_idObjectVioButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	  
+      document.getElementById("idMetricViolation").innerHTML = idObjectCur;
+	  loadMetricViolationTable();
+	  document.getElementById('metricViolationTable').focus();
+}
+
+function onclick_idObjectViolationFormSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("sysV_"                     + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSysV_"               + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObjectV_"           + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectVN_"      + iSelObject).textContent;
+	  sectionCur = document.getElementById("section_"              + iSelObject).textContent;
+	  typeViolationCur = document.getElementById("typeViolationN_" + iSelObject).textContent;
+
+	  getJsonResponseMetricViolationWindowGET();
+}
+
+function onclick_idObjectSrcButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("system_"             + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSystem_"       + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObject_"      + iSelObject).textContent;
+	  typeObjectCur = document.getElementById("typeObjectN_" + iSelObject).textContent;
+	  
+	  getJsonResponseSourceViewerWindowGET();
+
+}
+
+
+function onclick_idObjectAnalysisErrorsFormSelButton(clicked_id) {
+	  var i = clicked_id.indexOf("_");
+	  iSelObject = clicked_id.substr(i+1); 
+	  sysCur = document.getElementById("sysE_"               + iSelObject).textContent;
+	  subSysCur = document.getElementById("subSysE_"         + iSelObject).textContent;
+	  idObjectCur = document.getElementById("idObjectE_"     + iSelObject).textContent;
+//	  typeObjectCur = document.getElementById("typeObjectE_" + iSelObject).textContent;
+	  rowNumCur = document.getElementById("rowNumE_"         + iSelObject).textContent;
+	  numInstrCur = document.getElementById("numInstrE_"     + iSelObject).textContent;
+
+	  getJsonResponseAnalysisErrorWindowGET();
+}
+
+
+function onChangeSys() {
+	sys.value = sysD.value;
+}
+
+function onChangeSubSys() {
+	subSys.value = subSysD.value;
+}
+
+function onChangeTypeObject() {
+	var selx = typeObjectD.value;
+	typeObject.value = selx.substring(0,2);
+	if (typeObject.value == '0') {
+		typeObject.value = '*'
+	}
+}
+
+function onChangeStatusObject() {
+	var selx = statusObjectD.value;
+	statusObject.value = selx.substring(0,2);
+	if (statusObject.value == '0') {
+		statusObject.value = '*'
+	}
+}
+
+function clearCurRelation() {
+	idObjectACur = "";
+	typeObjectACur = "0"
+    typeSourceACur = "0";
+	relationCur = "0";
+	idObjectBCur = "";
+	typeObjectBCur = "0"
+    typeSourceBCur = "0";
+}
+
+function clearTabes() {
+    // Clear sections following objects
+    document.getElementById("optionTable").innerHTML = " ";
+    document.getElementById("relationTable").innerHTML =  " ";
+    document.getElementById("relationOriginTable").innerHTML =  " ";
+    document.getElementById("copyEntityTable").innerHTML =  " ";
+    document.getElementById("whereUsedTable").innerHTML =  " ";
+    document.getElementById("dynamicFieldTable").innerHTML =  " ";
+    document.getElementById("dynamicFieldSubTable").innerHTML =  " ";
+    document.getElementById("dynamicFieldSubValueTable").innerHTML =  " "; 
+    document.getElementById("objectAnalysisErrorsTable").innerHTML =  " ";
+}
+
+
+</script>
+</html>

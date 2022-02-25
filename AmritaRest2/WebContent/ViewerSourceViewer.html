@@ -1,0 +1,396 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<title>Source Viewer</title>
+<link rel="stylesheet" type="text/css" href="ViewerSourceViewer.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+    <div  id="divTopMenuTable"> 
+	  <table id='topMenuTable'>
+		 <tr>
+		    <td class='tdTopMenuTable'> <input class='btnReturn' type="button" id='btnReturn'  value="<<"     onclick='onclick_btnReturn(this.id);' />  </td>
+		    <td class='tdTopMenuTable'id='typeSource'>PGM</td>
+		    <td class='tdTopMenuTable'id='idSource'>Test</td>
+		 </tr> 
+	  </table>       
+	</div>
+	<div  id="divTbRows">   
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Wait for loading ...</h3>	
+	</div>
+	
+</body>
+
+<script type="text/javascript">
+"use strict";
+const OBJECT_PGM_COBOL ="1";	  			    // 01 Sorgenti Cobol 
+const OBJECT_COPY_COBOL_PROC ="9";	  			// 09 Sorgenti Copy Cobol Procedure Division
+const OBJECT_COPY_COBOL_DATA ="10";	  			// 10 Sorgenti Copy Cobol Data Division
+const OBJECT_COPY_COBOL_ENV = "11";		        // 11 Sorgenti Copy Cobol Environment Division
+const OBJECT_COPY_COBOL_ID = "12";		        // 12 Sorgenti Copy Cobol Identification Division
+const OBJECT_SQL_SCRIPT = "42";                 // 42 DB2 Script Sql con DDL, Commands etc., membro di libreria 
+const OBJECT_JCL_JOB = "54";           	        // 54 JCL source name con scheda job non definizione proc e non include
+const OBJECT_JCL_PROC = "55";      	            // 55 JCL source name con definizione proc  
+const OBJECT_JCL_INCLUDE = "56";       	        // 56 JCL source incluso in jcl o altre include
+const OBJECT_CICS_BMS_SOURCE = "70";            // 70 BMS source name
+const OBJECT_SOURCE_MEMBER = "89";	  			// 89 Membro di libreria sorgente
+
+var userInp="amrita";        // Replaced by storageSession variable
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+
+var urlSourceGET = 'source';   
+var urlIdxProgramGET = 'idxProgramInstr';
+var winOpener=null;         // Viewer/inspector reference
+var winViewer=null;         // Viewer/inspector reference
+var objConfig=null;         // Configurator Object
+var winFunc=null;           // ViewerRelations/ViewerWereUsed/Viewer/DynamicCode/ViewerCrudMatrix
+var jsonArray = null;       // Service
+var objects=[];             // JsonArray 
+var arIdxProgram = []; 		// Index Program Instructions
+var arRowDescriptor = [];   // Rows source  
+var typeObjectN;
+var idObject;
+
+// Input parameters is SessionStorage
+var sourceCaller = "";
+var sourceSubSys = "";
+var sourceIdObject = "";
+var sourceTypeObject = "";
+var sourceTypeObjectN = "";
+var sourceNumInstr = "";
+var sourceRowStart = "";
+var sourceRowEnd = "";
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {
+  userInp = localStorage.getItem("user");		
+  hostName = localStorage.getItem("hostName");		
+  baseUrl = localStorage.getItem("baseUrl");		
+
+  winViewer=window.opener;
+  winFunc=winViewer;
+  if (window.name != "iframeCenter") {
+	  if (winViewer != null) {
+		  winViewer=winViewer.getWinViewer();
+	  }
+  }
+  objConfig=winViewer.getConfig();
+  winViewer.hideSource();
+  
+  // Get parameters set by the caller
+  sourceCaller = localStorage.getItem("sourceCaller");
+  sourceSubSys = localStorage.getItem("sourceSubSys");
+  sourceIdObject = localStorage.getItem("sourceIdObject");
+  sourceTypeObject = localStorage.getItem("sourceTypeObject");
+  sourceTypeObjectN = localStorage.getItem("sourceTypeObjectN");
+  sourceNumInstr = localStorage.getItem("sourceNumInstr");
+  sourceRowStart = localStorage.getItem("sourceRowStart");
+  sourceRowEnd = localStorage.getItem("sourceRowEnd");
+  
+  idObject = sourceIdObject;
+  typeObjectN = sourceTypeObjectN;
+  document.getElementById("idSource").innerHTML=idObject;
+  
+  switch (typeObjectN) {
+  case OBJECT_PGM_COBOL:
+		document.getElementById("typeSource").innerHTML='Program';
+		break;
+  case OBJECT_COPY_COBOL_PROC:
+		document.getElementById("typeSource").innerHTML='Copy Proc Div';
+		break;
+  case OBJECT_COPY_COBOL_DATA:
+		document.getElementById("typeSource").innerHTML='Copy Data Div';
+		break;
+  case OBJECT_COPY_COBOL_ENV:
+		document.getElementById("typeSource").innerHTML='Copy Env Div';
+		break;
+  case OBJECT_COPY_COBOL_ID:
+		document.getElementById("typeSource").innerHTML='Copy Id Div';
+		break;
+  case OBJECT_CICS_BMS_SOURCE:
+		document.getElementById("typeSource").innerHTML='Cics BMS';
+		break;
+  case OBJECT_SOURCE_MEMBER:
+		document.getElementById("typeSource").innerHTML='Library Source Member';
+		break;
+  case OBJECT_SQL_SCRIPT:
+		document.getElementById("typeSource").innerHTML='Sql Script';
+		break;
+  case OBJECT_JCL_JOB:
+		document.getElementById("typeSource").innerHTML='Jcl Job';
+		break;
+  case OBJECT_JCL_PROC:
+		document.getElementById("typeSource").innerHTML='Jcl Proc';
+		break;
+  case OBJECT_JCL_INCLUDE:
+		document.getElementById("typeSource").innerHTML='Jcl Include';
+		break;
+  default:
+		document.getElementById("typeSource").innerHTML='';
+		break;
+  }
+  
+  // Index instr/rows potrebbe non essere presente
+  loadIdxProgram();	// --> loadSource();
+ 
+}
+
+function loadIdxProgram() {
+	getJsonResponseIdxProgramGET(); 
+}
+
+/* Called by loadIdxProgram() */
+function loadSource() {
+	getJsonResponseSourceGET(); 
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function getJsonResponseIdxProgramGET() {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlIdxProgramGET + "/" + userInp + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseIdxProgram(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseIdxProgram(xmlhttp, jsonArray) {
+	var idxFile = "";
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   if (typeObjectN != OBJECT_COPY_COBOL_PROC && typeObjectN != OBJECT_COPY_COBOL_DATA) {
+				   arIdxProgram=[];
+				   loadSource();	
+				   return;
+			   }
+		   } else {
+			   idxFile=xmlhttp.responseText;
+			   arIdxProgram = idxFile.split("|");
+		   }		   
+		   loadSource();			
+    }	
+}
+
+function getJsonResponseSourceGET() {
+	var xmlhttp;
+	
+	xmlhttp=createRequest();
+	var url = baseUrl + "/" + urlSourceGET + "/" + userInp + "/" + objConfig.sys + "/" + sourceSubSys + "/" + typeObjectN + "/" + idObject ;
+
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSource(xmlhttp, jsonArray);};
+}
+
+function handleJsonResponseSource(xmlhttp, jsonArray) {
+	var rowStartOrigin = 0;
+	var rowEndOrigin = 0;
+	var rowStartIdx = 0;
+	var rowEndIdx = 0;
+	var arIdx = [];
+	var iIdx = 0;
+	var numInstr = 0;
+	var strng = "";
+	var expand = "";
+	var division = "";
+	
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   if (xmlhttp.responseText.substr(0,2) == "KO") {
+			   alert("File Not Found - "+xmlhttp.responseText.substr(2));
+		   }
+		   objects=JSON.parse(xmlhttp.responseText);
+		   arRowDescriptor = new Array(RowDescriptor);
+	       
+	       var tbltop = "<div  id='divTbRows'> <table id='tbRows'>";
+		   var main = ""; 
+		   var spaces="";
+		   var iEnd=0;
+		   var iIdx=0;     
+
+		   // Ahead per gestione numero istruzione programma
+		   if ((typeObjectN == OBJECT_PGM_COBOL || typeObjectN == OBJECT_COPY_COBOL_DATA) && arIdxProgram.length > 0) {
+			   strng = arIdxProgram[iIdx];
+			   try {
+				   arIdx = strng.split(" ");
+			} catch (e) {
+				var j;
+				j=0;
+			}
+			   rowStartIdx = parseInt(arIdx[0]);
+			   rowEndIdx = parseInt(arIdx[1]);
+			   numInstr =  arIdx[2];
+			   if (arIdx.length == 4) {
+				   expand = arIdx[3];
+			   }
+			   if (arIdx.length == 5) {
+				   expand = arIdx[4];
+			   }
+		   } else {
+			   rowEndIdx = 9999;
+			   numInstr = "";
+		   }
+		   
+		   // Scan rows from server
+	       for (var i=0; i < objects.length; i++) {
+	    	   
+	    	   // Find proper Instruction number
+	    	   while (i > rowEndIdx && iIdx < arIdxProgram.length ) {
+	    		   iIdx++;
+    			   strng = arIdxProgram[iIdx];
+    			   try {
+    				   arIdx = strng.split(" ");
+				} catch (e) {
+					var jj=0;
+					jj=0;
+				}
+    			  
+    			   rowStartIdx = parseInt(arIdx[0]);
+    			   rowEndIdx = parseInt(arIdx[1]);
+    			   numInstr =  parseInt(arIdx[2]);
+			   }
+	    	   	    	   
+	    	   spaces="";
+	    	   // Pointer to last full char
+	    	   for (iEnd = objects[i].row.length-1; iEnd > 0; iEnd--) {
+				  if ( objects[i].row.charAt(iEnd) != " ") {
+					 break;
+				  }
+			   }
+	    	   // Space till the first non space char 
+     	  
+	    	   for (var ji = 0; ji < iEnd; ji++) {
+				  if ( objects[i].row.charAt(ji) != " ") {
+					  break;
+				  }	    		   
+				  spaces+="&nbsp;"
+			   }
+ 	    	   
+	    	   main  +=   "<tr class='trAll'       id=r"   + i  + " tabindex='0' >"
+	     	         +      "<td class='nRow'      id=nR"  + i  + " tabindex='0' >"          + i                    + "</td>" 
+	     	         +      "<td class='nInstr'    id=nI"  + i  + " tabindex='0' >"          + numInstr             + "</td>" 
+ 	     	         +      "<td class='row'       id=row" + i  + " tabindex='0' >" + spaces + objects[i].row       + "</td>" 
+	     	         +    "</tr>"
+
+ 	       }   
+	       
+	       var tblBottom = '</table> </div>'
+		   var tbl = tbltop + main + tblBottom;	 
+	       
+		   rowStartOrigin = parseInt(sourceRowStart);
+		   rowEndOrigin =  parseInt(sourceRowEnd);
+	       
+	       // Show source and position on first instruction row
+	       document.getElementById('divTbRows').innerHTML = tbl;
+	       document.getElementById('nR'  + rowStartOrigin).focus();
+
+           // Select instruction rows
+           for (var i = rowStartOrigin; i <= rowEndOrigin; i++) {
+        	   document.getElementById("row" + i).classList.add("selected"); 
+		   }
+    }	
+}
+
+function onclick_btnReturn(clicked_id) {	
+	// make visible div sections hidden in current window container
+	// make hidden  div containing ViewerSourceViewer
+	winFunc.hideSource();
+} 
+
+
+// Row descriptor server
+function RowDescriptor(
+					   plusMinus 
+ 					  ,nInstr 
+					  ,nRow  
+ 					  ,commLeft  
+					  ,row  
+					  ,commRight 
+			
+					// Data from source analysis
+					  ,copyName  
+					  ,isDeadCode  
+					  ,isDeadCodeUnreachable  
+					  ,isEntryPrecompiler  
+					  ,isLabelOrSection  
+					  ,isCopyStmt 
+					  ,numInstrRelated 
+					  ,numEntryOwnerConditional 
+					  ,rowStartSource
+					  ,rowEndSource)  { 	
+
+this.plusMinus = plusMinus;
+this.nInstr = nInstr;
+this.nRow = nRow;  
+this.commLeft = commLeft;  
+this.row = row;  
+this.commRight = commRight; 
+
+	// Data from source analysis
+this.copyName = copyName;  
+this.isDeadCode = isDeadCode;  
+this.isDeadCodeUnreachable = isDeadCodeUnreachable;  
+this.isEntryPrecompiler = isEntryPrecompiler;  
+this.isLabelOrSection = isLabelOrSection; 
+this.isCopyStmt = isCopyStmt; 
+this.numInstrRelated  = numInstrRelated;
+this.numEntryOwnerConditional = numEntryOwnerConditional; 
+this.rowStartSource = rowStartSource; 
+this.rowEndSource = rowEndSource; 
+}
+
+</script>
+
+</html>

@@ -1,0 +1,41 @@
+boolean isFound = false;
+IDAOObject eoDAO = (MySQLDAOImplObject) AmritaStartup.sqlFactory.getDAOObject(true,true, ucfg);
+isFound=eoDAO.read(eo);	
+res=eoDAO.read(object);
+
+
+MySQLDAOImplSqlGenericRs eoDAO = (MySQLDAOImplSqlGenericRs) AmritaStartup.sqlFactory.getDAOSqlGenericRs(false,true, ucfg);
+
+
+// Composizione Where di lettura oggetto stesso sistema e <> sottosistema, owner
+whereCondition =  "      idObject = '" + copyName  + "'"
+			   +  " AND sys =  '" + this.di.systemInput  + "'" 
+			   +  " AND subSys = subSysOwner " 
+			   +  " AND typeObject =  " + EnumObject.OBJECT_SOURCE_MEMBER.ordinal();
+
+ar_objEntity = dbei.readSetEntity(entityObject, whereCondition, "");
+IDAOObject eoDAO = (MySQLDAOImplObject) AmritaStartup.sqlFactory.getDAOObject(true,true, ucfg);
+al_objEntity = eoDAO.readSetEntityWhere(whereCondition, "");
+
+
+// Esempio attivazione listener e ricerca posizione su click
+  	 window.addEventListener('DOMContentLoaded', () => {
+  	    document.querySelectorAll('.tdScreenLayout').forEach(el => {
+  	        let characters = el['innerText'].split('');
+  	        el.innerHTML = '';
+  	        characters.forEach(char => {
+  	            let span = document.createElement('span');
+  	            span.innerText = char;
+  	            span.addEventListener('click', function () {
+  	                let position = 0;
+  	                let el = this;
+  	                while (el.previousSibling !== null) {
+  	                    position++;
+  	                    el = el.previousSibling;
+  	                }
+  	                console.log(this.innerHTML + ':' + position);
+  	            });
+  	            el.appendChild(span);
+  	        });
+  	    });
+  	});  	 

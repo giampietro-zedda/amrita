@@ -1,0 +1,59 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="Work1.css"/>
+<style>  
+</style>  
+</head>
+<body>
+
+<div> 
+  test File Upload
+</div>
+
+<form method="post" action="#" onsubmit="uploadImage">
+    <input type="file" name="imgFile" >
+    <input type="submit" id="submit" value="upload">
+</form>
+
+<script>
+
+var file = document.getElementById('id of your input:file').files[0];
+var ajax = new XMLHttpRequest;
+
+var formData = new FormData;
+formData.append('imagefile', file);
+
+ajax.upload.addEventListener("progress", myProgressHandler, false);
+ajax.addEventListener('load', myOnLoadHandler, false);
+ajax.open('POST', 'http://localhost:8080/AmritaRest2/rest/upliadFile', true);
+ajax.send(formData);
+
+function myProgressHandler(event) {
+  //your code to track upload progress
+  var p = Math.floor(event.loaded/event.total*100);
+  document.title = p+'%';
+}
+
+function myOnLoadHandler(event) {
+  // your code on finished upload
+  alert (event.target.responseText);
+}
+
+function featuresCheck() {
+  var res = window.XMLHttpRequest && window.FormData && window.addEventListener;
+  if (res) return true; else return false;
+}
+
+/* and test it in your code */
+if (featuresCheck()) {
+  // use ajax upload
+  }
+else {
+  // use simple file uploader
+  }
+</script>
+
+
+</body>
+</html>

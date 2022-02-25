@@ -1,0 +1,48 @@
+#--------------------------------------------------------------------
+# Pilot di Test funzione di SourceDetect su procedura ASSEGNI
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive generali sempre valide
+#--------------------------------------------------------------------------
+
+SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+UPDATE_DB_ENABLED
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+
+#--------------------------------------------------------------------------
+# Direttive di esecuzione sempre valide
+#--------------------------------------------------------------------------
+
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_DETECT_SOURCE_TYPE_ENABLED
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+
+#--------------------------------------------------------------------------
+# Estrazione programmi Cobol di unit test (sistema Z e sottosistema ZZ)
+# Caricamento libtrerie copy e programmi (la stessa)
+#--------------------------------------------------------------------------
+
+# Z/ZZ
+SYSTEM_VALUE S
+SUB_SYSTEM_VALUE UX
+OBJECT_TYPE_INCLUDE_ALL
+FILE_PATH F:\SPaolo\Sources\LTM0T.SAE.SOURCE\UX10100
+FILE_PATH F:\SPaolo\Sources\LTM0T.SAE.SOURCE\UX10001C
+FILE_PATH F:\SPaolo\Sources\LTM0T.SAE.SOURCE\UX80001
+FILE_PATH F:\SPaolo\Sources\LTM0T.SAE.SOURCE\UXZZW00
+
+#LIBRARY TESTCOPY F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+
+
+FUNCTION_LIBRARY_SCAN		 	 
+START

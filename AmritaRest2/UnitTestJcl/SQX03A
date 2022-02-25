@@ -1,0 +1,23 @@
+//SQX03A   JOB AFQX000N7,'QX CQD  ',MSGCLASS=K,CLASS=B,REGION=0M,
+//      SCHENV=SCDB2L
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//           EXEC SQX03A,
+//     GG=LETACPUA,
+//           DSNAME='DGP0OC.TS0G0.DATIDETT.TDB007(0)',
+//           DSFLUSSO='TDB007GD'
+//*-------------------------------------------------------------------
+//* CQD - CONTROLLO QUALITA DATO - FASE DI NORMALIZZAZIONE
+//*       FLUSSO TDB OUPTUT: TDB007 GIORNALIERO
+//*-------------------------------------------------------------------
+//*
+//************************************************************
+//*PROSTART
+//*PROGETTO      :  CQD - CONTROLLO QUALITA DATO
+//*DESCRIZIONE   :  PROCEDURE DI NORMALIZZAZIONE DEL FLUSSO TDB OUTPUT
+//*SCHEDULAZIONE :  GIORNALIERA
+//*VINCOLO TP    :  NO
+//*DUMP          :  SOSPENDERE
+//*PROSEND
+//************************************************************

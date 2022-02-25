@@ -1,0 +1,20 @@
+//SPCCT6 JOB AFPC00000,'C.C.C.   2',MSGCLASS=K,CLASS=B,SCHENV=SCDB0A
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//      EXEC SPCCT6,REGION=0M,
+//      SCHEDA=LOPS0.INPUT(PC100M00),
+//      GG=LETACPUA
+//************************************************************
+//*PROSTART
+//* DESCRIZIONE      : INTEGRAZIONE CONDIZIONI CARTE
+//*                    CARICAMENTO RAPPORTI/CONVEZIONI - TB06R009
+//* -----------
+//* SCHEDULAZIONE    : TRIGGER DA ???????
+//* -------------
+//* VINCOLI TP       : NO
+//* ----------
+//*DUMP              : SOSPENDERE E SEGNALARE
+//*----
+//*PROSEND
+//************************************************************

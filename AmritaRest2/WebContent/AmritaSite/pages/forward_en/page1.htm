@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>e-Amrita</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body link="#000000" vlink="#000000" alink="#000000">
+<table width="1169" height="605" align="center" bgcolor="#E3E2E1">
+  <tr> 
+    <td height="102" colspan="4"> 
+      <div align="left"><a href="../index_en.htm"><img src="nome_4.jpg" width="816" height="100" border="0"></a></div></td>
+    <td width="1">&nbsp;</td>
+    <td colspan="2" rowspan="2" bgcolor="#BEBEBE">
+<div align="left"> 
+        <p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">The 
+          snippet on the left shows the declarative nature of a Forward application. 
+          There are more than 120 <em><font color="#0000FF">ON_EVENT</font></em> 
+          condition and more the 150 <em><font color="#0000FF">DO</font></em> 
+          actions, to satisfy all common functional needs.<br>
+          <br>
+          When a specific or procedural task must be executed it's possible to 
+          call a resusable application method by means of <font color="#0000FF">DO_EXEC_METHOD 
+          </font>action.<br>
+          A reusable application method is a java method dynamically called runtime 
+          by reflection, with only two parameters: <em>System</em> and <em>Function</em> 
+          objects.<br>
+          <br>
+          System allows you to get and/or to manipulate all current runtime application 
+          informations and Function to get the function descriptor, to alter the 
+          normal flow and to set the Forward data Model, implementing the <strong>MVC</strong> 
+          pattern..<br>
+          <br>
+          Because of <em><strong>FSD</strong></em> is an elementary data driven 
+          development system, based on pseudo code and declaratives, many normally 
+          common errors done are avoided.<br>
+          <br>
+          Mainly, when a data is not showed, an event is not triggered or a data 
+          is not updated, may be that simply you have wrong the name of the elementary 
+          data.<br>
+          <br>
+          Furthermore, may be that the user interface control is not compatible 
+          with the data base item with the same name.</font><font size="2" face="Arial, Helvetica, sans-serif"><a href="index.htm"><br>
+          </a>data, retrieved by a logical data view.<br>
+          <br>
+          <a href="index.htm"> <strong><font color="#0000FF">Prev</font></strong></a> 
+          <a href="page2.htm"><font color="#0000FF"><strong>Next</strong></font></a></font></p>
+      </div></td>
+  </tr>
+  <tr> 
+    <td rowspan="2" bgcolor="#CCCCCC">&nbsp;</td>
+    <td width="274" rowspan="2" bgcolor="#DFDFDF"><p align="justify"><font size="2" face="Arial, Helvetica, sans-serif">Function 
+        structure and rules are coded like a <strong>pseudo code</strong>, organized 
+        by not procedural events and actions to perform, called by <em>Forward</em> 
+        <em><strong>FSD</strong></em> (function specification and documentation).<br>
+        To say that what normally it's only documentation and general specification, 
+        for <em>Forward</em> is the final application.<br>
+        <br>
+        Indeed <em><strong>FSD</strong></em> is an object, realized with an original 
+        use of Java, without external descriptors, XML configuration or technical 
+        skill required.<br>
+        <br>
+        Taking a look to a Forward application, it's difficult to understand that 
+        <em> <strong>FSD</strong></em> is java code and not a textual descriptor.<br>
+        <br>
+        Hence <em><strong>FSD</strong></em> is both a model direcltly executable 
+        and an application descriptor and lets to realize the java based cross 
+        platform portability.<br>
+        <br>
+        At the end <em><strong>FSD</strong></em> is a set of <em><strong>declaratives</strong></em> 
+        of user interface components and coded events and actions to perform when 
+        events occur.</font></p>
+      </td>
+    <td width="5" height="377">&nbsp;</td>
+    <td width="523"><div align="left"><font color="#000099" size="2"><font color="#0000FF">BEGIN_FUNCTION_SPECIFICATION</font>(&quot;<font color="#330000" size="3">ObjectsSelection</font>&quot;, 
+        <font color="#CC0000">CUSTOM</font>, <font color="#CC0000">INQUIRY</font>);<br>
+        <strong><br>
+        </strong><font color="#0000FF">BEGIN_FORM</font>(&quot;<font color="#330000" size="3">FormObjects</font>&quot;, 
+        EnumForwardOption.<font color="#CC0000">FORM_TYPE_START</font>); <br>
+        <strong>-- </strong><font color="#0000FF">PANELS_STRUCTURE</font>(&quot;<font color="#330000" size="3">MainContainer</font>&quot;, 
+        .<font color="#CC0000">CONTAINER</font>, &quot;<font color="#330000" size="3">paNorth</font>&quot;, 
+        &quot;<font color="#330000" size="3">paCenter</font>&quot;); <br>
+        <strong>-- </strong><font color="#0000FF">PANELS_STRUCTURE</font>(&quot;paNorth&quot;, 
+        <font color="#CC0000">DETAIL</font>, <font color="#CC0000">BOX_LAYOUT</font>);<br>
+        ... <br>
+        <font color="#0000FF">END_FORM</font>();<br>
+        <br>
+        <font color="#0000FF">BEGIN_PANEL_DETAIL_CONTENT</font>(&quot;<font color="#000000">paNorth</font>&quot;, 
+        &quot;<font color="#000000">Pilot</font>&quot;);<br>
+        <br>
+        <strong>-- </strong><font color="#0000FF">COMPONENT</font>(new <font color="#CC0000">JLabel</font>(), 
+        &quot;<font color="#000000">lb_title</font>&quot;, 0, &quot;<font color="#000000">OBJECT 
+        SELECTION</font>&quot;); <br>
+        <strong>-- </strong><font color="#0000FF">COMPONENT</font>(new<font color="#CC0000"> 
+        JPanel</font>(), &quot;<font color="#000000">paPilot</font>&quot;, 1); 
+        // subpanel<br>
+        ... <br>
+        <font color="#0000FF">END_PANEL_DETAIL_CONTENT</font><font color="#000000">()</font>;<br>
+        <br>
+        </font><font color="#000099" size="2"><font color="#0000FF">BEGIN_EVENTS</font><strong><font color="#000000">()</font>;</strong><br>
+        <strong>-- </strong><font color="#0000FF">ON_EVENT</font>(<font color="#CC0000">ON_FUNCTION_INITIAL</font>, 
+        &quot;&quot;, <br>
+        <strong>----</strong><font color="#0000FF">DO_COMBOBOX_POPULATE_FROM_DB</font>(&quot;<font color="#000000">cb_system</font>&quot;, 
+        &quot;<font color="#000000">LdvSystem</font>&quot;, &quot;<font color="#000000">systemValue</font>&quot;));<br>
+        ...<br>
+        <strong>-- </strong><font color="#0000FF">ON_EVENT</font>(<font color="#CC0000">ON_CLICK</font>, 
+        &quot;<font color="#000000">bt_cancel</font>&quot;, <strong><br>
+        ---- </strong><font color="#0000FF">DO_FUNCTION_SET_VAR</font><strong>(&quot;</strong><font color="#000000">FunctionLookUpObjects</font>&quot;, 
+        &quot;<font color="#000000">system</font>&quot;, &quot;&quot;) <br>
+        <font color="#0000FF">END_EVENTS</font>(); <br>
+        <br>
+        <font color="#0000FF">END_FUNCTION_SPECIFICATION</font>; </font></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td height="54">&nbsp;</td>
+    <td colspan="4" bgcolor="#FF9933"> <div align="center"><strong><font size="4"><em>Forward 
+        allows you to write pseudo code in the analysis domain against hard instructions 
+        programming code</em></font></strong></div></td>
+  </tr>
+  <tr> 
+    <td width="3" height="21">&nbsp;</td>
+    <td colspan="5"><font size="2" face="Arial, Helvetica, sans-serif">Copyright 
+      e-Amrita 2012</font></td>
+    <td width="316"><div align="center"><font size="3" face="Arial, Helvetica, sans-serif"><strong>English 
+        -<a href="../forward_it/page1.htm"> Italian</a></strong></font></div></td>
+  </tr>
+</table>
+</body>
+</html>

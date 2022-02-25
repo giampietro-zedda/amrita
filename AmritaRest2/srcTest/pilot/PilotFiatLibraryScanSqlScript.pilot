@@ -1,0 +1,40 @@
+#--------------------------------------------------------------------
+# Pilot SourceDetect Sql Script Assioma/Fiat
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+UPDATE_DB_ENABLED
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED
+OPT_DETECT_SOURCE_TYPE_ENABLED 
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+
+#--------------------------------------------------------------------------
+# Estrazione script sql (sistema e sottosistema non classificati)
+#--------------------------------------------------------------------------
+
+# Il source con sql DDL è comune a tutti i sistemi e sottosistemi 
+SYSTEM_VALUE *
+SUB_SYSTEM_VALUE *
+CUSTOMER_CODE FIAT
+CUSTOMER_INFO SCRIPT-DDL
+OBJECT_TYPE_INCLUDE_ALL
+LIBRARY FIAT-SCRIPT-SQL F:\Lavoro\Assioma\FIAT-Assesment\sources\ddlScript\
+
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_LIBRARY_SCAN		 	 
+START

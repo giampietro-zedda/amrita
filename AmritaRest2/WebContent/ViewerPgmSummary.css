@@ -1,0 +1,100 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    overflow-y: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#divHeader {height: 30px; border: 2px solid #0000a0; background-color: gray; color: black; font-family:monospace; font-size: x-large; padding: 0; margin-bottom: 10px; text-align: center;margin-left: 2px; margin-right: 2px;}	
+#divToolBar{height: 30px; margin-left: 2px; margin-right: 2px;}
+  #tbToolBarPgm {width: 100%; height: 100%; border: 1px solid black; border-bottom: 0; border-spacing: 0;} 
+    #tdSelSubSys {width: 150px; border: 1px solid black;} 
+      #selSubSys {width: 100% ; height:100%; font-weight: bold;} 
+    #tdSelPgm {width: 90px;border: 1px solid black;} 
+      #selPgm {width: 100%;  height:100%;  font-weight: bold;} 
+    #tdBtnHTMLExport {width: 30px;border: 1px solid black;} 
+      #btnHTMLExport {width: 100%; font-weight: bold; font-size: small; padding: 1px;  margin-left: 2px; } 
+    #tdBtnShowOnBrowser {width: 30px;border: 1px solid black;} 
+      #btnShowOnBrowser {width: 100%; font-weight: bold; font-size: small; padding: 1px;} 
+    #tdAllPgmHdr {width: 30px;} 
+      #allPgmHdr {width: 100%; font-weight: bold; font-size: medium; padding: 1px;} 
+
+#docSections {height: 25px; margin: 3px; margin-top: 20px;} 
+  #selSections {height: 100%; font-size:medium; font-weight: bold; margin-left: 2px; margin-right: 2px;} 
+  #msgProcessing {font-size: large;}
+#divContainer {height:calc(100% - 140px);  overflow:auto;}
+  .divHeaderSection {border: 2px solid #0000a0; background-color: gray; color: white; font-weight: bold; font-family:monospace; font-size: x-large; padding: 0; margin: 0px; margin-bottom: 10px; text-align: center; margin-left: 2px; margin-right: 2px;}	
+  .divHTMLBody {margin-bottom: 40px;} 
+  
+  table.tbPgmSummary  {width:100%; font-family:monospace;font-size: medium; border-collapse: collapse;}	
+  table.tbPgmSummary th {border: 1px solid #0000a0; background-color: gray; color: black; font-size: large; padding: 0;}	
+  table.tbPgmSummary td {border: 1px solid #0000a0; padding-left: 2px;}	
+
+  table.tbInfoAmrita    {}	
+  table.tbInfoAmrita th {}	
+  table.tbInfoAmrita td {}	
+  table.tbInfoSource    {}	
+  table.tbInfoSource th {}	
+  table.tbInfoSource td {}	
+  table.tbProgramOptions   {}	
+  table.tbProgramOptions th {}	
+  table.tbProgramOptions td {}	
+  table.tbRelationships   {}	
+  table.tbRelationships th {}	
+  table.tbRelationships td {}	
+  table.tbCopySqlInclude   {}	
+  table.tbCopySqlInclude th {}	
+  table.tbCopySqlInclude td {}	
+  table.tbCrudMatrix   {}	
+  table.tbCrudMatrix th {}	
+  table.tbCrudMatrix td {}	
+  table.tbFileSystemIO   {}	
+  table.tbFileSystemIO th {}	
+  table.tbFileSystemIO td {}	
+  table.tbSourceCoded   {}	
+  table.tbSourceCoded th {}	
+  table.tbSourceCoded td {}	
+    table#tbSourceRows   {border-collapse: collapse; width: 100%;}
+    table.tbSourceCopyRows td{padding:0; }
+      #divSourceCoded {}
+        table.tbSourceRows td{padding:0; }
+        .tbSourceRows {border-collapse: collapse; width: 100%;}	
+          .tbSourceCopyRows {border-collapse: collapse; width: 100%;}	
+		     .nRow{height: 12px; width: 27px; font-style: oblique; font-size: X-small; font-weight: bold; color: grey; background-color:#e8e8e8;}
+             .nInstr {height: 12px; width: 30px; font-style: oblique; font-size: 12; font-weight: bold; color: black; background-color: #e8e8e8;}
+		     .expand {width: 12px; font-size: 90%; font-weight: bold; color: red; background-color: #e8e8e8; padding:0; }
+		     .row{border-right: 1px solid grey; font-style:normal; font-family: monospace; font-size: 85%; text-align: left; color: #54e854; font-weight: bold; background-color: black;}	        
+		     .trDiv {}
+	      .trDiv {display: none; margin:0; } 
+	      #tdDiv {} 
+	      .divTbSourceRowsPgm {display: none; margin:0; overflow: auto;}
+	        .tbSourceCopyRows {border-collapse: collapse; width: 100%;}		        
+  table.tbDynamicCode   {}	
+  table.tbDynamicCode th {}	
+  table.tbDynamicCode td {}	
+  table.tbParSectionXref   {}	
+  table.tbParSectionXref th {}	
+  table.tbParSectionXref td {}	
+  table.tbSymbolsXref   {}	
+  table.tbSymbolsXref th {}	
+  table.tbSymbolsXref td {}	
+  table.tbDeadCode   {}	
+  table.tbDeadCode th {}	
+  table.tbDeadCode td {}	
+  table.tbMetrics   {}	
+  table.tbMetrics th {}	
+  table.tbMetrics td {}	
+    
+  table.tbMetricSection  {width:100%; font-family:monospace; font-size: medium; border-collapse: collapse;}	
+  table.tbMetricSection th {border: 1px solid #0000a0; background-color: gray; color: black; font-size:x-large; padding: 0; margin: 0px;}	
+  table.tbMetricSection td {border: 1px solid #0000a0; padding-left: 2px;}	
+    .clsC1MetricValue {font-weight: 700; width: 55%;}	
+    .clsC2MetricValue {width: 45%;}	
+
+.selected { background-color: yellow;}
+
+

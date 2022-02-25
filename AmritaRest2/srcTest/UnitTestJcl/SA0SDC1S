@@ -1,0 +1,36 @@
+//SA0SDC1S JOB AMA0000N7,'I.T.T.',CLASS=B,MSGCLASS=K,REGION=0M,
+//       SCHENV=SPPO
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//*
+//*ITTSPAZIO
+//*
+//     SET JOBN=A0SDC1S,LIBITT=LOPS0.INPUT.ITT,
+//         EMEITT=LOBS0.INPUT.ITT,
+//         CENN=1,CEN=O,CENSOC=S,BANCA=S,MQ=SPQ9
+//*
+//*    GESTIONE BUSTA
+//*
+//   EXEC SOOOET,TID='C'
+//*
+//*    SMISTATORE
+//*
+//P1 EXEC SOOONN
+//     EXEC SOOOS0,
+//          ITTINP='A0.ST0G0.A0SDD0',
+//          FASE=A0SDC1S1
+//*
+//***************************************
+//*PROSTART
+//* DESCRIZIONE    : I.T.T.
+//*
+//* -----------
+//* VINCOLI TP   : NO
+//* SCHEDULAZIONE: TRIGGERATO DA UTENTE
+//* -----------
+//* DUMP         : IN CASO DI RET. CODE > 04 SU STEP SPZSMIST
+//*                 RILANCIARE DALL'INIZIO. NEGLI ALTRI CASI SOSPENDERE
+//*                 E SEGN
+//*PROSEND
+//***************************************

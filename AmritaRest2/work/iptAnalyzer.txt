@@ -1,0 +1,8 @@
+#
+# Prova estrazione files e librerie
+#
+G:/SPaolo/Sources/LTM0H.SAE.SOURCE/LFA1100
+G:/SPaolo/Sources/LTM0H.SAE.SOURCE/LFA2400
+G:/SPaolo/Sources/LTM0H.SAE.SOURCE/TestDir/
+G:/SPaolo/Sources/X400DB2.TS000.COPYCOB/A0CAIRC
+G:/SPaolo/Sources/X400DB2.TS000.COPYCOB/A0M091W

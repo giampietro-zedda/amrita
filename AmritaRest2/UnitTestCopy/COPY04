@@ -1,0 +1,27 @@
+      *================================================================
+      *  Copyright e-Amrita 2009-2010  Turin - Italy
+      * 
+      *   Automatic   
+      *     Maintenance
+      *      Integrated
+      *        Tecnology 
+      *          Application
+      *
+      *================================================================
+      *==============================================================
+      *  Descrizione	: Unit test copy cobol.
+      *                 : Copy richiamato da COPY0401
+      *                 : Secondo livello di ricorsivitas
+      *                 :  
+      *  Scritto il    	: 16-08-2010
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================
+       
+       
+      * Area di prova
+       01  COPY04-REC.
+           05 COPY04-INIZIO  PIC 99.
+           COPY COPY0401.          
+           05 COPY04-FINE PIC X(05).

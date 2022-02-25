@@ -1,0 +1,149 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test analizzatore Cobol
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY PGMCOB  C:/Personale/Amrita-2019-workspace/Amrita2019/UnitTestPgm
+LIBRARY COPYCOB C:/Personale/Amrita-2019-workspace/Amrita2019/UnitTestCopy
+LIBRARY_SOURCE_SEARCH COPYCOB
+
+#--------------------------------------------------------------------------
+# Opzioni e direttive specifiche di processo
+#--------------------------------------------------------------------------
+
+# Opzioni generali
+OPT_UPDATE_DB_ENABLED
+OPT_DETECT_DEAD_CODE_ENABLED
+OPT_GRAPH_CREATION_ENABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_LIGHT_ENABLED
+OPT_SOLVE_DML_SQL_ENABLED
+
+# Opzioni per forzatura rianalisi e scrittura tracciato copy
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+
+# Opzioni per tracciati copy e where used campi in copy
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_DISABLED
+OPT_COPY_DEF_ON_DB_ENABLED
+
+# Opzioni misurazioni e metriche non di base (incluse nell'analisi)
+OPT_METRICS_ALL_DISABLED           	        
+OPT_METRICS_PGM_DETAIL_ON_DB_ENABLED               
+OPT_METRICS_BASIC_ENABLED               
+OPT_METRICS_DETAIL_ENABLED               
+OPT_METRICS_MCCABE_ENABLED 
+OPT_METRICS_HALSTEAD_ENABLED 
+OPT_METRICS_COMPLEXITY_STRUCTURE_ENABLED      
+OPT_METRICS_COMPLEXITY_FUNCTION_ENABLED       
+OPT_METRICS_FUNCTION_POINT_DISABLED		 
+OPT_METRICS_REHOSTING_DISABLED 
+OPT_METRICS_DETECT_VIOLATIONS_ENABLED
+
+# Violazioni particolari e controlli via exit esterna   (Obsolete non presenti in Enum)         	 	 
+#OPT_CTRL_COB_NAME_PGM_ENABLED                               
+#OPT_CTRL_COB_NAME_FIELD_ENABLED                
+#OPT_CTRL_COB_NAME_SECTION_ENABLED              
+#OPT_CTRL_COB_NAME_PARAGRAPH_ENABLED            
+#OPT_CTRL_COB_NAME_LABEL_ENABLED                
+
+# Compliance 
+OPT_IBM_DB2_MAINFRAME_V10_COMPLIANCE_ENABLED
+OPT_IBM_DB2_AIX_V9_COMPLIANCE_ENABLED
+
+# Librerie sorgenti programmi e copy e search copy included
+LIBRARY CPY  C:/Personale/Amrita-2019-workspace/Amrita2019/UnitTestCopy
+LIBRARY SYS-RESOURCES C:/Personale/Amrita-2019-workspace/Amrita2019/resources
+
+# Sequenza librerie in search per copy include
+LIBRARY_SOURCE_SEARCH CPY
+LIBRARY_SOURCE_SEARCH SYS-RESOURCES
+
+# Suffissi moduli copy nelle librerie in search da cercare nell'ordine  
+FILE_SUFFIX_COPY cpp
+FILE_SUFFIX_COPY sqb
+FILE_SUFFIX_COPY cbl
+
+# Copy da includere per precompilatori
+#COPY_PRECOMPILER CUSTOM WORKING name.suffix
+COPY_PRECOMPILER CICS LINKAGE CICS-EIB.cbl
+COPY_PRECOMPILER CICS WORKING CICS-API.cbl
+
+# Info per user exit a fronte di oggetti inseriti/aggiornati/..
+#CUSTOMER_CODE FIAT
+#CUSTOMER_INFO SRC-PGM
+#SUB_SYSTEM_VALUE
+#SYSTEM_ON_NAME
+#SYSTEM_BY_EXIT
+#SUB_SYSTEM_BY_EXIT
+#SUB_SYSTEM_ON_NAME
+
+# Identificazione oggetti da analizzare
+SYSTEM_INPUT Z
+SUB_SYSTEM_INPUT ZZ
+#SUB_SYSTEM_INPUT GP
+FILTER_ON_OBJECT_NAME 1 CO
+#FILTER_ON_OBJECT_NAME 4 WK
+#FILTER_BY_EXIT
+#FILTER_ON_OBJECT_NAME_RANGE AC ZZ
+#FILTER_DISABLED
+#FILTER_CLEAR
+
+#OBJECT_TYPE_PGM_COBOL *ALL* 
+#OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST01
+#OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST02
+#OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST03
+#OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST04
+#OBJECT_TYPE_PGM_COBOL *SINGLE* COBTST05
+
+#COPY_TO_FORCE_RE_BUILD_ON_DB GPCP0001
+
+OBJECT_TYPE_COPY_COBOL_PROC *ALL*		 
+OBJECT_TYPE_COPY_COBOL_DATA *ALL*  
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* COPY04
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* GPCP0001
+#OBJECT_TYPE_COPY_COBOL_PROC *SINGLE* COPYPRO1	
+#OBJECT_TYPE_COPY_COBOL_ID *ALL*
+#OBJECT_TYPE_COPY_COBOL_ENV *ALL*
+
+
+# Stati validi oggetti da considerare
+INPUT_OBJECTS_STATUS_ALL
+#INPUT_OBJECTS_TO_BE_ANALYZED
+#INPUT_OBJECTS_ANALYZED_WITH_NO_ERRORS
+#INPUT_OBJECTS_ANALYZED_WITH_ERRORS
+#INPUT_OBJECTS_ANALYZED_WITH_EXCEPTION
+#INPUT_OBJECTS_PROCESSED_WITH_NO_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_ERRORS
+#INPUT_OBJECTS_PROCESSED_WITH_EXCEPTION
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 	 
+START

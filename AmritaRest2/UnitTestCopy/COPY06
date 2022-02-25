@@ -1,0 +1,8 @@
+      * Test pgm starting with copy
+      * R0110_AVOID_NOT_STD_PGM_NAME
+      * R0074_AVOID_LOW_DOCUMENTED_PGM_TITLE
+       IDENTIFICATION DIVISION.
+      * R0118_AVOID_PROGRAM_ID_UNEQUAL_FILE_NAME
+       PROGRAM-ID.     COBTSTXX.
+       AUTHOR.         ing. Giampietro Zedda.
+ 

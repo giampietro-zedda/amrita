@@ -1,0 +1,142 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    overflow: auto;
+}
+
+.divHeader {
+	border: 2px solid #0000a0;
+	background-color: gray;  	
+	color: black; 
+	font-family:monospace;
+	font-size: x-large;
+	padding: 0;
+	margin-top: 0px;
+	margin-bottom: 7px;
+	margin-right: 0px;
+	margin-left: 0px; 
+	text-align: center; 
+}	
+	
+
+#divScreenLayout { 
+}
+
+#tbScreenLayout { 
+  width: auto;
+  height:auto;
+  border-collapse:collapse; 
+  font-size:110%;
+  font-family: monospace;
+  background-color: black;
+  color: #54e854;
+  margin-top:7px; 
+  margin-left: auto;
+  margin-right: auto;
+    
+}
+
+.trScreenLayout { 
+  width: 100%;
+  height:auto;
+  border-collapse:collapse; 
+  font-family: monospace; 
+  border: 1px solid black;
+}
+
+.tdScreenLayout {
+  padding:0;
+  border-left: 3px solid #d60cac;
+  border-right: 3px solid #d60cac;
+}
+.tdScreenLayoutTop {
+  border-top: 3px solid #d60cac;
+  border-left: 3px solid #d60cac;
+  border-right: 3px solid #d60cac;
+}
+.tdScreenLayoutBottom {
+  border-bottom: 3px solid #d60cac;
+  border-left: 3px solid #d60cac;
+  border-right: 3px solid #d60cac;
+}
+
+.screenDescriptorHeader  {
+  margin-top: 4px;
+  color: white;
+  font-size: small;
+  text-align: center;
+  background-color: grey;
+  font-weight: bold;
+  border: 1px solid black;
+}	
+
+#divScreenDescriptor {
+  width: 100%;
+  overflow: auto;
+}
+
+#tbScreenDescriptor td {
+  border: 1px solid black;
+  border-left: 0;
+}
+	
+#tbScreenDescriptor  {
+  width: 100%;
+  border-collapse:collapse; 
+  font-size:x-small;    
+}
+
+.screenDescriptorDetailId  {
+  font-size: small;
+  font-weight: bold;
+}
+.screenDescriptorDetailValue {
+   width: 135px;
+   font-size: small;   
+}
+
+#divScreenFields {
+  width: 100%;
+  overflow: auto;
+}
+ 
+
+#tbScreenFields {
+	width: 100%;
+	border-collapse: collapse;
+	font-family:monospace;
+	font-size: small;
+	margin-bottom: 2px;
+	border: 1px solid black;
+}
+
+.tdScreenFields {
+	border: 1px solid black;
+	font-size: medium;
+}
+ 
+th  {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+    color:  black;  
+    background-color: #ded9d9;  
+	padding: 2px;
+	height: 20px;
+	font-weight:bold;
+	font-size:medium
+} 
+
+.bold {  
+  font-weight: bold;
+}
+
+
+.selected {  
+  background-color: yellow;
+}
+
+

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<script type="text/javascript">
+"use strict";
+
+
+var formObject = document.forms.namedItem("formObject");
+formObject.addEventListener('submit', function(ev) {
+
+  var    oData = new FormData(formObject);
+
+  oData.append("CustomField", "This is some extra data");
+
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", "http://localhost:8080/AmritaRest2/rest/objectForm", true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+    	alert(oReq.responseText);
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
+    }
+  };
+
+  oReq.send(oData);
+  ev.preventDefault();
+}, false);
+
+
+
+var baseurl = 'http://localhost:8080/AmritaRest2/rest/object';
+var baseurlF = 'http://localhost:8080/AmritaRest2/rest/objectForm';
+var xmlhttp;
+
+function createRequest() {
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+}
+
+function getJsonResponseObject() {
+ 	createRequest();
+
+	var sys = document.getElementById("sys").value;
+	var subSys = document.getElementById("subSys").value;
+	var typeObject = document.getElementById("typeObject").value;
+	var statusObject = document.getElementById("statusObject").value;
+	var url = baseurl + "/"+ sys + "/" + subSys + "/" + typeObject + "/"+ statusObject;
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObject();};
+}
+
+function handleJsonResponseObject() {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+	       var tbltop = "<table>"
+	    	          +    "<tr>"
+	                  +      "<th>System</th>"
+	                  +      "<th>SubSystem</th>"
+	                  +      "<th>idObject</th>"
+	                  +      "<th>typeObject</th>"
+	                  +      "<th>status</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	     	         +    "<td>" + objects[i].system     + "</td>" 
+	       	         +    "<td>" + objects[i].subSystem  + "</td>" 
+	      	         +    "<td>" + objects[i].idObject   + "</td>" 
+	      	         +    "<td>" + objects[i].typeObject + "</td>" 
+	     	         +    "<td>" + objects[i].typeSource + "</td>" 
+	     	         +    "<td>" + objects[i].status     + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('objectsTable').innerHTML = tbl;
+    }	
+}
+
+
+/* Test con Form */
+
+
+function getJsonResponseObjectF() {
+ 	createRequest();
+
+	var sys = document.getElementById("sys").value;
+	var subSys = document.getElementById("subSys").value;
+	var typeObject = document.getElementById("typeObject").value;
+	var statusObject = document.getElementById("statusObject").value;
+	var url = baseurlF;
+	xmlhttp.open("POST", url, true);
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectF();};
+}
+
+function handleJsonResponseObjectF() {
+	console.log(xmlhttp.responseTex.responseTex);
+	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		   var objects=JSON.parse(xmlhttp.responseText);
+	       var tbltop = "<table>"
+	    	          +    "<tr>"
+	                  +      "<th>System</th>"
+	                  +      "<th>SubSystem</th>"
+	                  +      "<th>idObject</th>"
+	                  +      "<th>typeObject</th>"
+	                  +      "<th>status</th>"
+	                  +    "</tr>"
+		   var main = "";                    
+	       for (var i=0; i < objects.length; i++) {
+	    	   main  += "<tr>"
+	     	         +    "<td>" + objects[i].system     + "</td>" 
+	       	         +    "<td>" + objects[i].subSystem  + "</td>" 
+	      	         +    "<td>" + objects[i].idObject   + "</td>" 
+	      	         +    "<td>" + objects[i].typeObject + "</td>" 
+	     	         +    "<td>" + objects[i].typeSource + "</td>" 
+	     	         +    "<td>" + objects[i].status     + "</td>" 
+	     	         +  "</tr>"
+	       }         
+	       var tblBottom = '</table>'
+		   var tbl = tbltop + main + tblBottom;
+		   document.getElementById('objectsTable').innerHTML = tbl;
+    }	
+}
+
+function AJAXSubmit (oForm) {
+	alert("AJAXSubmit1");
+	if (!oForm.action) { return; }
+ 	createRequest();
+    xmlhttp.open("post", oForm.action);    
+ 	xmlhttp.setRequestHeader("Content-type", "application/xwww-form-urlencoded");
+    xmlhttp.onreadystatechange  = handleJsonResponseObjectF;
+ 	xmlhttp.send(new FormData(oForm));
+}
+
+
+
+
+var form = document.forms.namedItem("formObject");
+form.addEventListener('submit', function(ev) {
+
+  var    oData = new FormData(form);
+
+  oData.append("CustomField", "This is some extra data");
+
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", "http://localhost:8080/AmritaRest2/rest/objectForm", true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+    	alert(oReq.responseText);
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
+    }
+  };
+
+  oReq.send(oData);
+  ev.preventDefault();
+}, false);
+
+
+
+
+</script>
+
+</head>
+<body> 
+   <h1>Amrita </h1>
+   <h2>Objects List</h2>
+   
+   <table>
+   <tr>
+       <td>System :  </td>
+       <td><input type="text" id="sys" size="20"/> </td>
+   </tr>
+   <tr>
+       <td>SubSystem :  </td>
+       <td><input type="text" id="subSys" size="20"/> </td>
+   </tr>
+   <tr>
+       <td>Type Object : </td>
+       <td><input type="text" id="typeObject" size="20"/> </td>
+   </tr>
+   <tr>
+       <td>Status Object : </td>
+       <td><input type="text" id="statusObject" size="20"/> </td>
+   </tr>
+   </table>
+   
+   <br> 
+   <input type="button" value="Get Objects"  onclick="getJsonResponseObject()" />
+   <p>
+
+   <h2>Elements</h2>
+         
+   <div id="objectsTable"> </div>  
+ 
+ 
+ 
+ <form  method="POST" action="http://localhost:8080/AmritaRest2/rest/objectForm" 
+        enctype="application/x-www-form-urlencoded" name="formObject">  
+Enter system:<input type="text" id="sysF" name="sysF"/><br/><br/>  
+Enter subSystem:<input type="text" id="subSysF" name="subSysF"/><br/><br/>  
+Enter idObject:<input type="text"  id="idObjectF" name="idObjectF"/><br/><br/>  
+Enter typeObject:<input type="text" id="typeObjectF" name="typeObjectF"/><br/><br/>  
+Enter statusObject:<input type="text" id="statusObjectF" name="statusObjectF"/><br/><br/>  
+<input type="submit" value="Get Objects"  />  
+</form>  
+ 
+   
+ </body> 
+</html>

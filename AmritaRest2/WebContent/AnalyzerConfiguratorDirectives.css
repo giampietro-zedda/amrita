@@ -1,0 +1,205 @@
+@charset "ISO-8859-1";
+html, body {
+    height:100%;
+    width:100%;
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#divTopHeader{
+	margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#topHeaderTable{
+	border-collapse:collapse;
+}
+
+#topHeader{
+	font-size: x-large;
+	font-weight: bold;
+}
+
+#topHeaderPilot{
+	font-size: large;
+    padding-left: 10px
+}
+
+#divTopToolBar{
+	border: 1px solid black;
+	margin-bottom: 10px;
+	margin-left: 3px;
+	margin-right: 3px;
+	background-color: #fbefef;
+}
+#btnReturn{
+  height: 25px;
+  width: 30px;
+  text-align: center;
+  margin-top:0px;
+  margin-bottom:0px; 
+  font-size: medium; 
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#btnGeneric{
+  height: 25px;
+  width: 60px;
+  text-align: center;
+  margin-top:0px;
+  margin-bottom:0px;  
+  margin-left: 0;
+  margin-right: auto;
+  font-size: medium; 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#divPilot {	
+}
+#divMsgSave {
+}	
+.msgSaveOk {  
+  color: green;
+}
+.msgSaveKo {  
+  color: red;
+}
+
+.tbSection{
+	width: calc(100% - 5px);
+    border-collapse: collapse;
+    margin-left: 3px;
+}
+
+.divHeader {
+	width: auto;
+	height: 25px;
+	text-align: left;
+	font-size: medium;  
+	font-weight: bold;
+	background-color: #727272;
+	color: white; 
+	margin: 3px;
+	margin-Bottom: 5px;
+	border: 2px solid black;
+ }
+ 
+.leftHeader{
+	width: 250px;
+	border: 1px solid black;
+	margin:0;
+	left-padding:10px;
+ }
+ 
+  
+ .leftHeaderInput{
+ 	width:200;
+ }
+ 
+ .leftHeaderInputShort{
+ 	width:120;
+ }
+ 
+ .rightleftHeader{
+ 	width:200;
+ }
+
+ .rightTd{
+	border: 1px solid black;
+	width:500px;
+}
+ 
+.tbContainer{
+	width:auto;
+	padding: 0;
+
+}
+
+.rightTables{
+    width: auto;
+    border: 1px solid black;
+    margin: 0px;
+    border-collapse: collapse;
+}
+
+.inputValueShort{
+    width: 30px;
+
+}
+
+
+.inputValue{
+    width: 75px;
+
+}
+
+.inputValuePre{
+    width: 90px;
+
+}
+
+.inputValueFile{
+    width: 200px;
+
+}
+.inputValueBigger{
+    width: 270px;
+
+}
+
+.descTranscoded {
+    font-weight: bold;
+}
+
+.selectGtLt{
+    width: 70px;
+    min-width: 70px;
+}
+
+.selectGtLtBigger{
+    width: 150px;
+    min-width: 70px;
+}
+
+.selectGtLtPath{
+    width: 250px;
+    min-width: 250px;
+}
+
+.btnGtLt{
+    width: 50px;
+}
+	
+table.rightTables th {  
+    border: 1px solid black; 
+    color:  black;  
+    background-color: #ded9d9;   
+} 
+table.rightTables td {  
+    border: 1px solid black;    
+} 
+  
+  
+  
+  
+.leftAlign{
+	margin-left: 0;
+	margin-Right: auto;
+ }
+.rightAlign{
+	margin-left: auto;
+	margin-Right: 0;
+ }
+ .topAlign{
+	margin-top: 0;
+	margin-bottom: auto;
+ }
+ .bottomAlign{
+	margin-top: auto;
+	margin-bottom: 0;
+ }
+ .noBorders{
+ 	borders:0;
+ }

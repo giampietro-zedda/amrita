@@ -1,0 +1,35 @@
+#--------------------------------------------------------------------
+# Pilot di Unit Test forward 
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_UPDATE_DB_ENABLED
+
+# Internazionalizzazione
+LOCALE_LANGUAGE it
+LOCALE_COUNTRY IT
+
+# Area di appartenenza funzione
+SYSTEM_VALUE SY
+SUB_SYSTEM_VALUE SS
+
+# Info supplementari funzione
+CUSTOMER_CODE AMRITA
+CUSTOMER_INFO TEST
+
+# Funzione da eseguire
+FWD_FUNCTION_START ForwardTest
+
+START

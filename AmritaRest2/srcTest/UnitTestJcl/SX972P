@@ -1,0 +1,63 @@
+//SX972P JOB AVX90S0N7,'USER15',CLASS=B,MSGCLASS=K,REGION=0M,
+//      SCHENV=SCIMST
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//*
+//  INCLUDE MEMBER=SQ3013
+//*
+//**********************************************************************
+//*.CM1   STAMPA MASTRO GENERALE X SITUAZIONE DECADALE
+//*---------------------------------------------------------------------
+//*
+//* TEMPO DI ELAPSED   = ?? MINUTI
+//* PERIODICITA'       = DECADALE - CATENA CA7 "ICGDECAS" SCHID=10
+//* PUNTO DI RESTART   = DA INIZIO PROCEDURA
+//* RESPONSABILE EDP   = CAMPAGNA
+//* DESTINATARIO STAMPE= NUCLEI VARI
+//* ENTE               = CRP
+//*
+//**********************************************************************
+//*
+//ICG13#PR EXEC SX9T99,@FASE=X972P, <<<==== SEMPRE SS
+//    MESE=SS,SOUT=K,
+//   TIPO=EURO,ENTE=CRP,
+//   COND.ICG01QZR=(5,NE),COND.ICG13S03=(5,NE),
+//   COND.ICG70QZR=(5,NE),COND.CGP01200=(5,NE),
+//   COND.CGP00350=(5,NE),COND.ICG13S04=(5,NE),
+//   COND.ICGK6DZR=(5,NE),COND.ICG13S08=(5,NE),
+//   COND.GEP00013=(5,NE),COND.GEP00014=(5,NE),
+//   COND.ICG13U07=(5,NE),COND.ICGQTDZR=(5,NE),
+//   COND.ICG11QPR=(5,NE),COND.ICG79QPR=(5,NE)
+//*
+//*ICG13U04.SYSUT1 DD *
+//*R
+//*  PRIMO BYTE:              "I" ----> IMPIEGHI
+//*  PRIMO BYTE:              "R" ----> RACCOLTA
+//*  PRIMO BYTE:              "G" ----> GRANDI CLIENTI (GRC)
+//*  PRIMO BYTE:              "N" ----> BANCO DI NAPOLI
+//*  PRIMO BYTE:              "V" ----> CARIVE
+//*  PRIMO BYTE:              "B" ----> CARISBO
+//*
+//* ******************************************************************
+//* PASSO DI VERIFICA DUD INSERITO AUTOMATICAMENTE
+//* ******************************************************************
+// IF RC > 0 THEN
+//AUTODUD EXEC PGM=MN06001,
+// PARM='ATTENZIONE >>> PASSO NON VALIDO <<< VEDI MESSAGGI SU SYSPRINT'
+//SYSPRINT   DD SYSOUT=*,DCB=(LRECL=121,RECFM=FBA,BLKSIZE=121)
+// ENDIF
+//*
+//*PROSTART
+//*
+//************************************************************
+//*DESCRIZIONE   :  *** PROSE NON DEFINITA ***
+//*-----------
+//*SCHEDULAZIONE :  DECADALE
+//*-------------
+//*VINCOLO TP    :  NO
+//*----------
+//*DUMP          :  SOSPENDERE
+//*----
+//************************************************************
+//*PROSEND

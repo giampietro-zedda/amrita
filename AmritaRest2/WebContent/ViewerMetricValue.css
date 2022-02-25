@@ -1,0 +1,41 @@
+@charset "ISO-8859-1";
+
+
+table.clsForm  {
+	font-family:monospace;
+	font-size: medium;
+	border-collapse: collapse;
+	width:100%
+}	
+
+table.clsForm th {
+	border: 1px solid #0000a0;
+    background-color: gray;  	
+	color: black; 
+	font-family:monospace;
+	font-size: x-large;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;  
+}	
+
+table.clsForm td {
+	border: 1px solid #0000a0;
+	padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;  
+}	
+
+.clsFormC1MetrValue {
+	font-weight: 700;
+	width: 55%;
+}	
+
+.clsFormC2MetrValue {
+    width: 45%;
+}	
+

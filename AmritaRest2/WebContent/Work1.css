@@ -1,0 +1,145 @@
+@charset "ISO-8859-1";
+
+html, body {
+  height:100%;
+  width:100%;  
+  margin:0;
+  padding:0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Container for tbRows */
+#divTbRows{
+    overflow: auto;	  /* Prevent overflowding table height */
+    height:100%;
+    width:300px;
+    margin:0;
+    padding:0;
+}
+
+
+/* Table containing source rows */
+table#tbRows{
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 0px;
+	height: 100%;
+    width: 600px;
+	font-family: monospace;
+	margin-top: 0px;		
+	margin-Bottom: 0px;		
+	margin-left: 0px;		
+	margin-right: 0px;
+	cellspacing: 0;
+    background-color: white;  
+		
+}
+
+
+
+/* Overall row in tbRows */
+.trAll {
+	margin-top: 0;
+    margin-bottom: 0;
+    height: 15px;
+}
+
+/* +, - at the beginning of the row */
+.pm {
+  	margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* Instruction number */
+.nInstr {
+	margin-top: 0;
+    margin-bottom: 0;	
+	width: 15px;
+	padding	:0;
+	border-left: 0;
+	border-top: 0;
+	border-bottom: 0;
+	border-right: 0;
+	font-style: oblique;
+	font-size: 12;
+	font-weight: bold;
+	color: black;
+    background-color: #e8e8e8;
+}
+
+/* Row number */
+.nRow{
+	margin-top: 0;
+    margin-bottom: 0;	
+	width: 15px;
+	padding	:0;
+	border-left: 0;
+	border-top: 0;
+	border-bottom: 0;
+	border-right: 0;
+	font-style: oblique;
+	font-size: small;
+	font-weight: bold;
+    color: grey;	
+    background-color:#e8e8e8;
+}
+
+/* Comment on the left side cols 1-6 */
+.commLeft{
+	margin-top: 0;
+    margin-bottom: 0;	
+	width: 20px;
+	padding	:0;
+	border-left: 0;
+	border-top: 0;
+	border-bottom: 0;
+	border-right: 1px solid grey;
+	font-style: oblique;
+	font-size: medium;
+	color: grey;
+    background-color: white;
+} 
+
+/* One continuation char at col 7 */
+.comm7 {
+	margin-top: 0;
+    margin-bottom: 0;
+	padding	:0;
+	width: 1px;
+    border-right: 1px solid grey;
+    font-size: medium;
+}
+
+/* Source row cols 8-72 */
+.row{
+	margin-top: 0;
+    margin-bottom: 0;	
+	width: 510px;
+	padding	:0;
+	border-left: 0;
+	border-top: 0;
+	border-bottom: 0;
+	border-right: 1px solid grey;
+	font-style: normal;
+	font-size: medium;
+	text-align: left;
+	color:  blue; 
+	
+}
+
+/* Comment on the right side cols 73-80 */
+.commRight {
+	margin-top: 0;
+    margin-bottom: 0;	
+	width: 20px;
+	padding	:0;
+	border-left: 0;
+	border-top: 0;
+	border-bottom: 0;
+	border-right: 1px solid grey;
+	font-style: oblique;
+	font-size: medium;
+	color: grey;
+    background-color: white;
+	
+}

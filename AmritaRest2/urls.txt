@@ -1,0 +1,32 @@
+mysqldump.exe --defaults-file="c:\users\giamp\appdata\local\temp\tmpz5wgli.cnf"  --host=localhost --protocol=tcp --user=GZEDDA --column-statistics=FALSE --port=3306 --default-character-set=utf8 --skip-triggers "amrita"
+COLLATE=utf8mb4_unicode_ci
+
+http://localhost:8080/AmritaRest2/rest/message 
+http://localhost:8080/AmritaRest2/rest/helloworld/xml
+http://localhost:8080/AmritaRest2/rest/helloworld/text
+http://localhost:8080/AmritaRest2/rest/helloworld/html
+http://localhost:8080/AmritaRest2/rest/ctofservice 
+http://localhost:8080/AmritaRest2/rest/ctofservice/35
+http://localhost:8080/AmritaRest2/rest/ctofservice/35/Secondo
+http://localhost:8080/AmritaRest2/rest/ftocservice 
+http://localhost:8080/AmritaRest2/rest/ftocservice/98
+http://localhost:8080/AmritaRest2/rest/TestRest.html
+
+http://localhost:8080/AmritaRest2/SummaryAnalysis.html
+http://localhost:8080/AmritaRest2/rest/object/KK/*/1/*
+http://localhost:8080/AmritaRest2/rest/testArray
+http://localhost:8080/AmritaRest2/TestRestForm.html
+http://localhost:8080/AmritaRest2/AmritaLogin.html
+http://localhost:8080/AmritaRest2/Analyzer.html
+http://localhost:8080/AmritaRest2/Viewer.html
+http://localhost:8080/AmritaRest2/ViewerRelations.html
+
+http://localhost:8080/AmritaRest2/AmritaLogin.html
+http://localhost:8080/AmritaRest2/AmritaHomePage.html
+http://localhost:8080/AmritaRest2/Analyzer.html
+http://localhost:8080/AmritaRest2/Viewer.html
+http://localhost:8080/AmritaRest2/Inspector.html
+
+netstat -ano | findstr :8080
+taskkill /PID <PID> /F
+

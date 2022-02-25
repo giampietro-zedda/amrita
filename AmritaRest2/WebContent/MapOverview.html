@@ -1,0 +1,728 @@
+<html>
+<head>
+<title>AmritaMap</title>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="MapOverview.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<table  id='mainTable'>
+
+    <!-- Prima riga con testata -->
+    <tr id='mainTableRowHeader'>
+       <td colspan="2"> 
+          <div>
+			  <table id='headerLineTable'>
+				   <tr >
+				    <td id='headerLeftTh'> Amrita</td>
+				    <td id='headerCenterTh'>Main</td>
+				    <td id='headerRightTh'  align="right">
+				          <table id='containerTbluserLink'>
+				            <tr>
+					             <td id='user'  align="left">user</td>
+					             <td id=logout>logout</td>
+					             <td id='linkMain'  align="right"><a href="AmritaSite/pages/index.html">Info</a></td>
+				            </tr>
+				          </table>			
+				    </td>
+				   </tr>
+			  </table>          
+          </div>
+       </td>
+    </tr>
+    
+    <tr id='headerSystem'><td id='companyDesc' colspan="2" >  SYSTEM MAP OVERVIEW </td> </tr>
+ 
+    <!-- Seconda riga con map, oggetti e menu --> 
+    <tr id='mainTableRowBody'>
+       <!-- Sezione grafica -->
+       <td id='tdMap'>          
+          <div>
+			  <table id='topTable'>
+				   <tr id='trTopTable'>
+				     <td id='leftTop'>
+				       <div id='divHdrLeftTop'>Application</div>
+				       <div id='divLeftTop'>
+					  	  <table id='leftTopTable'>
+				  	         <tr class='leftTopSubSysR'> <td class='tdLeftTopSubSys' id='tdLeftTopSubSysR_0' onclick='onclick_leftSubSys(this.id);'> .</td></tr>
+				  	      </table>
+				       </div>
+				    </td>
+				    <td id='tdLeftArrow'>
+				       <table id='leftArrowTable'>
+				          <tr id='trLeftArrow'> <td > <div id='divLeftArrow'>===></div></td></tr>
+				       </table>
+				    </td>
+				    <td id='centerTop'>
+				        <div id='divHdrCenterTop'>Shared Objects</div>
+					    <div id='divCenterTop'>
+				  	  	  <table id='centerTopTable'>
+				  	         <tr class='centerTypeObjR'> <td class='tdCenterTypeObj' id='tdCenterTableR0' >.</td></tr>
+				  	      </table>
+					    </div>
+				    </td>
+				    <td id='tdRightArrow'>
+				       <table id='rightArrowTable'>
+				          <tr id='trRightArrow'> <td > <div id='divRightArrow' ><===</div></td></tr>
+				       </table>
+				    </td>
+				    <td id='rightTop'>
+				       <div id='divHdrRightTop'>Owner</div>
+				       <div id='divRightTop'>
+					  	  <table id='rightTopTable'>
+				  	         <tr class='rightTopSubSysR'> <td class='tdRightTopSubSys' id='tdRghtopSubSysR0' >.</td></tr>
+				  	      </table>
+				       </div>
+				    </td>
+				   </tr>
+			  </table>          
+          </div>  
+       </td> 
+       
+       <!-- Sezione con elenco oggetti e menu -->
+       <td id='tdObjMenu'>
+          <div>
+             <table id='listObjMenuTable'> 
+                 <tr id='trListMenuTable'>
+                     <td id='tdMenu'>
+                        <div id='divMenu'>
+				  	         <table id='menuTable'>
+				  	         	<tr><td><input class='btnFunction' type="button" id='btnViewer'        value="Viewer"    onclick='onclick_btnViewer(this.id);'     /></td></tr>
+				  	         	<tr><td><input class='btnFunction' type="button" id='btnInspector'     value="Inspector" onclick='onclick_btnInspector(this.id);'  /></td></tr>
+				  	         	<tr><td><input class='btnFunction' type="button" id='btnImpact'        value="Impact"    onclick='onclick_btnImpact(this.id);'     /></td></tr>
+				  	         	<tr><td><input class='btnFunction' type="button" id='btnLogic'         value="Logic"     onclick='onclick_btnLogic(this.id);'      /></td></tr>
+				  	         	<tr><td><input class='btnFunction' type="button" id='btnHealth'        value="Health"    onclick='onclick_btnHealth(this.id);'     /></td></tr>
+				  	         	<tr><td><input class='btnFunction' type="button" id='btnAnalyzer'      value="Analyzer"  onclick='onclick_btnAnalyzer(this.id);'   /></td></tr>
+                            </table>
+                        </div>
+                    </td>
+                 </tr> 
+                       
+                 <tr id='trListObjMenuTable'>
+                    <td>
+		                <table class='countTable' id='countObjectsShared'>
+		                    <tr><td id='lblCountObjectsShared'>Count:</td>
+		                        <td id='countObjects'>0</td>
+		                    </tr>
+		                </table>
+                    
+                        <div id='divObjList'>
+  					  	    <table id='objListTable'>
+				  	           <tr id='idObjR_0'> <td class='idObj'> .</td><td class='objStatus'> .</td></tr>
+				  	        </table>			       				       				      			       
+                        </div>
+                     </td>
+                 </tr>
+             </table>
+          </div>     
+       </td>
+    </tr>
+     
+</table>
+
+
+<script type="text/javascript">
+"use strict";
+var hostName = "";
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest';  // Replaced then with actual value
+var urlUserGET = 'user';
+var urlSubSysGET = 'subsys';                                // Sottosistemi definiti nel sistema
+var urlSubSysOwnerUsedGET = 'subSysOwnerUsed';              // Sottosistemi proprietari utilizzati da un sottosistema NON  proprietari
+var urlTypeObjectsSharedGET = 'typeObjectsShared';          // Tipi oggetto condivisi fra sottosistemi proprietari e non
+var urlObjectsSharedGET = 'objectsShared';                  // Tipi oggetto condivisi fra sottosistemi proprietari e non
+
+var userInp="";
+var sys = "";
+var subSys = "";
+var subSysOwner = "";
+var company = "";
+var typeObjectShared = "";
+
+var arLeftSubSys = [];    	        // Sottosistemi del sistema a sinistra
+var arRightSubSys = [];    	        // Sottosistemi del sistema a sinistra
+var arTypeObjectShared = [];    	// Tipi oggetto condivisi
+var arObjectShared = [];    	    // Oggetti condivisi
+
+var iSelLeftSubSystOld = -1;
+var iSelCenterSubSysOld = -1;
+var iSelRightSubSysOld = -1;
+var iSelObjOld = -1;
+
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    afterLoaded();
+	}
+}
+
+
+function afterLoaded() {
+ 	adjustLayout();
+	userInp = localStorage.getItem("user");		
+	sys = localStorage.getItem("sys");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");	
+	company = localStorage.getItem("company");	
+	document.getElementById("companyDesc").innerHTML = company;
+    
+	loadSubSystems();
+} 
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function loadSubSystems() {
+	
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlSubSysGET + "/"+ userInp 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSubSystems(xmlhttp);};
+} 
+
+function handleJsonResponseSubSystems(xmlhttp) {
+
+	var objects = null;
+    var tbltop = "";
+	var tblBottom = "";
+	var tbl = "";	 
+    var main = ""; 
+    var subSysDesc = "";
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arLeftSubSys = objects;
+
+    tbltop = "<table id='leftTopTable'>"
+    main = ""; 
+
+     // Scan rows from server
+     for (var i=0; i < objects.length; i++) {
+    	 
+    	 if (objects[i].idObject == "") {
+    		 continue;
+    	 }
+    	 
+         subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+         if (subSysDesc != "") {
+        	subSysDesc = objects[i].idObject + " " + objects[i].idObjectDescriptor;
+     	}
+         
+	    main  +=  "<tr class='leftTopSubSysR'>";
+	    main  +=    "<td class='tdLeftTopSubSys'  id='tdLeftTopSubSysR" + "_"    + i  + "'" + "' onclick='onclick_leftSubSys(this.id)'>" + subSysDesc  + "</td>";
+	   	main  += "</tr>";	
+     }   
+      
+     tblBottom = '</table>'
+     tbl = tbltop + main + tblBottom;	 
+     
+     document.getElementById("divLeftTop").innerHTML = tbl;		
+     
+     clearObjList();
+}
+
+function loadSubSystemsOwnerUsed() {
+	
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlSubSysOwnerUsedGET + "/"+ userInp + "/" + sys + "/"+ subSys; 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseSubSystemsOwnerUsed(xmlhttp);};
+} 
+
+function handleJsonResponseSubSystemsOwnerUsed(xmlhttp) {
+
+	var objects = null;
+    var tbltop = "";
+	var tblBottom = "";
+	var tbl = "";	 
+    var main = ""; 
+    var subSysShared = "";
+    var subSysDesc = "";
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arRightSubSys = objects;
+
+    tbltop = "<table id='rightTopTable'>"
+    main = ""; 
+
+     // Scan rows from server
+     for (var i=0; i < objects.length; i++) {
+     	 subSysShared = objects[i].subSys;
+       	 subSysDesc = subSysShared;
+       	 
+    	 // Scan subSys on the left
+    	 for (var j = 0; j < arLeftSubSys.length; j++) {
+			if (arLeftSubSys[j].idObject == subSysShared
+			&&  arLeftSubSys[j].idObjectDescriptor != "") {
+				subSysDesc = subSysShared + " " + arLeftSubSys[j].idObjectDescriptor;
+				break;
+			}
+		 }
+
+    	main  +=  "<tr class='rightTopSubSysR'>";
+        main  +=    "<td class='tdRightTopSubSys'  id='tdRightTopSubSysR" + "_"    + i  + "'" + "' onclick='onclick_rightSubSys(this.id)'>" + subSysDesc  + "</td>";
+   	    main  += "</tr>";	
+     }   
+
+     // Nessun sottosistema condiviso, inserisco entry vuoto
+     if (objects.length == 0) {
+    	 main  +=  "<tr class='rightTopSubSysR'>";
+         main  +=    "<td class='tdRightTopSubSys'  id='tdRightTopSubSysR" + "_"    + i  + "'> No Shares</td>";
+   	     main  += "</tr>";	
+	 }
+     
+    tblBottom = '</table>'
+    tbl = tbltop + main + tblBottom;	 
+     
+    document.getElementById("divRightTop").innerHTML = tbl;		
+    
+    clearObjList();
+    
+}
+
+function loadTypeObjectsShared() {
+	
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlTypeObjectsSharedGET + "/"+ userInp + "/" + sys + "/"+ subSysOwner + "/"+ subSys; 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseTypeObjectsShared(xmlhttp);};
+} 
+
+function handleJsonResponseTypeObjectsShared(xmlhttp) {
+
+	var objects = null;
+    var tbltop = "";
+	var tblBottom = "";
+	var tbl = "";	 
+    var main = ""; 
+    var typeObject = "";
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arTypeObjectShared = objects;
+      
+    tbltop = "<table id='centerTopTable'>"
+    main = ""; 
+
+     // Scan rows from server
+     for (var i=0; i < objects.length; i++) {
+    	 typeObject = objects[i].typeObject;
+       	 typeObject = typeObject.replace("OBJECT_", "");
+       	 typeObject = typeObject.replace("_", " ");
+       	 typeObject = typeObject.replace("_", " ");
+       	 typeObject = typeObject.replace("_", " ");
+    	 
+    	 main  +=  "<tr class='centerTypeObjR'>";
+         main  +=    "<td class='tdCenterTypeObj'  id='tdCenterTableR" + "_"    + i  + "'" + "' onclick='onclick_typeObjectShared(this.id)'>" + typeObject  + "</td>";
+   	     main  += "</tr>";	
+      }   
+     
+     // Nessun tipo oggetto condiviso..errore
+     if (objects.length == 0) {
+       	 main  +=  "<tr class='centerTypeObjR'>";
+         main  +=    "<td class='tdCenterTypeObj'  id='tdCenterTableR" + "_"    + i  + "'>" + "ERROR"  + "</td>";
+   	     main  += "</tr>";	
+	 }
+     
+     
+     tblBottom = '</table>'
+     tbl = tbltop + main + tblBottom;	 
+     
+     document.getElementById("divCenterTop").innerHTML = tbl;			
+}
+
+function loadObjectsShared() {
+	
+	var xmlhttp;
+	var url;
+	
+	xmlhttp=createRequest();
+    url = baseUrl + "/" + urlObjectsSharedGET + "/"+ userInp + "/" + sys + "/"+ subSysOwner + "/"+ subSys + "/"+ typeObjectShared; 
+	
+	xmlhttp.open("GET", url, true);
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(null);
+	xmlhttp.onreadystatechange = function() {handleJsonResponseObjectsShared(xmlhttp);};
+} 
+
+function handleJsonResponseObjectsShared(xmlhttp) {
+
+	var objects = null;
+    var tbltop = "";
+	var tblBottom = "";
+	var tbl = "";	 
+    var main = ""; 
+    var idObject = "";
+    var statusObject = "";
+    var i = 0;
+    
+	if (xmlhttp.readyState!=4 || xmlhttp.status!=200){return;}
+
+	objects=JSON.parse(xmlhttp.responseText);
+	arObjectShared = objects;
+
+    tbltop = "<table id='objListTable'>"
+    main = ""; 
+
+     // Scan rows from server
+     for (var i=0; i < objects.length; i++) {
+    	 idObject = objects[i].idObject;
+    	 statusObject = objects[i].statusObject;
+ 
+    	 main  +=  "<tr>";
+         main  +=    "<td class='idObj'      id='idObjR" + "_"     + i  + "'" + "' onclick='onclick_objectShared(this.id)'>" + idObject  + "</td>";
+         main  +=    "<td class='objStatus'  id='statusR" + "_"    + i  + "'" + "' onclick='onclick_objectShared(this.id)'>" + statusObject  + "</td>";
+   	     main  += "</tr>";	
+      }   
+      
+     tblBottom = '</table>'
+     tbl = tbltop + main + tblBottom;	 
+     
+     document.getElementById("divObjList").innerHTML = tbl;			
+     document.getElementById("countObjects").innerHTML = objects.length;			
+}
+
+function clearObjList() {	
+    var tbltop = "";
+	var tblBottom = "";
+	var tbl = "";	 
+    var main = ""; 
+    
+    main  +=  "<tr>";
+    main  +=    "<td class='idObj'      id='idObjR_0'> . </td>";
+    main  +=    "<td class='objStatus'  id='statusR_0'> . </td>";
+    main  += "</tr>";	
+      
+    document.getElementById("divObjList").innerHTML = tbl;			
+    document.getElementById("countObjects").innerHTML = "0";
+    iSelObjOld = -1;
+}
+
+function onclick_btnAnalyzer(clicked_id) {	
+	window.open("Analyzer.html","_blank");
+} 
+
+function onclick_btnViewer(clicked_id) {	
+	window.open("Viewer.html","_blank");	 
+} 
+
+function onclick_btnInspector(clicked_id) {	
+	window.open("Inspector.html","_blank");
+} 
+
+function onclick_btnLogic(clicked_id) {	
+	window.open("Logic.html","_blank");
+} 
+
+function onclick_btnImpact(clicked_id) {	
+	window.open("Impact.html","_blank");
+} 
+
+function onclick_btnHealth(clicked_id) {	
+	window.open("Health.html","_blank");
+} 
+
+
+// Sottosistema owner definiti
+function onclick_leftSubSys(clicked_id) {	
+	var objects = null;
+    var tbltop = "";
+	var tblBottom = "";
+	var tbl = "";	 
+    var main = ""; 
+    var subSysDesc = "";
+	var i = 0;	
+	
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);
+	subSys = arLeftSubSys[i].idObject;	
+	
+	// Casella vuota centrale
+    tbltop = "<table id='centerTopTable'>"
+    main = ""; 
+	main  +=  "<tr class='centerTypeObjR'>";
+    main  +=    "<td class='tdCenterTypeObj'  id='tdCenterTableR" + "_"    + i  + "'" + "' onclick='onclick_typeObjectShared(this.id)'>" + "."  + "</td>";
+	main  += "</tr>";	      
+    tblBottom = '</table>'
+    tbl = tbltop + main + tblBottom;	      
+    document.getElementById("divCenterTop").innerHTML = tbl;				 
+
+	// Casella vuota a destra
+    tbltop = "<table id='rightTopTable'>"
+    main = ""; 
+	main  +=  "<tr class='rightTopSubSysR'>";
+    main  +=    "<td class='tdRightTopSubSys'  id='tdRightTopSubSysR" + "_"    + i  + "'" + "' onclick='onclick_rightSubSys(this.id)'>" + "."  + "</td>";
+	main  += "</tr>";	      
+    tblBottom = '</table>'
+    tbl = tbltop + main + tblBottom;	      
+    document.getElementById("divRightTop").innerHTML = tbl;				
+
+    clearObjList();
+    
+    // Gestione deselezione
+    if (iSelLeftSubSystOld >= 0) {
+    	if (iSelLeftSubSystOld != i) {
+    	    document.getElementById("tdLeftTopSubSysR_"+iSelLeftSubSystOld).classList.remove("sysSelected")
+    	    document.getElementById("tdLeftTopSubSysR_"+iSelLeftSubSystOld).classList.add("tdLeftTopSubSys"); 
+        	document.getElementById("tdLeftTopSubSysR_"+i).classList.remove("tdLeftTopSubSys"); 
+        	document.getElementById("tdLeftTopSubSysR_"+i).classList.add("sysSelected"); 
+        	loadSubSystemsOwnerUsed();
+		} else {
+			document.getElementById("tdLeftTopSubSysR_"+i).classList.remove("sysSelected"); 
+			document.getElementById("tdLeftTopSubSysR_"+i).classList.add("tdLeftTopSubSys"); 
+			iSelLeftSubSystOld = -1;
+			return;
+		}
+    	iSelLeftSubSystOld = i;
+    	return;
+	}
+    
+    // Selezione
+    loadSubSystemsOwnerUsed();
+    iSelLeftSubSystOld = i;
+    document.getElementById("tdLeftTopSubSysR_"+iSelLeftSubSystOld).classList.remove("tdLeftTopSubSys"); 
+    document.getElementById("tdLeftTopSubSysR_"+iSelLeftSubSystOld).classList.add("sysSelected"); 
+       
+} 
+
+// Sottosistema che utilizza il sotttosistema owner
+function onclick_rightSubSys(clicked_id) {	
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);
+	subSysOwner = arRightSubSys[i].subSys;		
+	
+	loadTypeObjectsShared();
+	clearObjList();
+	
+	iSelCenterSubSysOld = -1;
+	
+    // Gestione deselezione
+    if (iSelRightSubSysOld >= 0) {
+    	if (iSelRightSubSysOld != i) {
+    	    document.getElementById("tdRightTopSubSysR_"+iSelRightSubSysOld).classList.remove("sysSelected")
+    	    document.getElementById("tdRightTopSubSysR_"+iSelRightSubSysOld).classList.add("tdRightTopSubSys"); 
+        	document.getElementById("tdRightTopSubSysR_"+i).classList.remove("tdRightTopSubSys"); 
+        	document.getElementById("tdRightTopSubSysR_"+i).classList.add("sysSelected"); 
+		} else {
+			document.getElementById("tdRightTopSubSysR_"+i).classList.remove("sysSelected"); 
+			document.getElementById("tdRightTopSubSysR_"+i).classList.add("tdRightTopSubSys"); 
+			iSelRightSubSysOld = -1;
+			return;
+		}
+    	iSelRightSubSysOld = i;
+    	return;
+	}
+
+    // Selezione
+    iSelRightSubSysOld = i;
+    document.getElementById("tdRightTopSubSysR_"+iSelRightSubSysOld).classList.remove("tdRightTopSubSys"); 
+    document.getElementById("tdRightTopSubSysR_"+iSelRightSubSysOld).classList.add("sysSelected"); 
+} 
+
+// Tipo oggetto condiviso
+function onclick_typeObjectShared(clicked_id) {	
+	var i = 0;
+	
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);	
+	
+	typeObjectShared = arTypeObjectShared[i].typeObjectOrdinal;
+	
+	// Gestione deselezione
+    if (iSelCenterSubSysOld >= 0) {
+    	if (iSelCenterSubSysOld != i) {
+    	    document.getElementById("tdCenterTableR_"+iSelCenterSubSysOld).classList.remove("sysSelected")
+    	    document.getElementById("tdCenterTableR_"+iSelCenterSubSysOld).classList.add("tdCenterTypeObj"); 
+        	document.getElementById("tdCenterTableR_"+i).classList.remove("tdCenterTypeObj"); 
+        	document.getElementById("tdCenterTableR_"+i).classList.add("sysSelected");
+        	loadObjectsShared();	
+		} else {
+			document.getElementById("tdCenterTableR_"+i).classList.remove("sysSelected"); 
+			document.getElementById("tdCenterTableR_"+i).classList.add("tdCenterTypeObj"); 
+			clearObjList();
+			iSelCenterSubSysOld = -1;
+			return;
+		}
+    	iSelCenterSubSysOld = i;
+    	return;
+	}
+
+    // Selezione
+    iSelCenterSubSysOld = i;
+    document.getElementById("tdCenterTableR_"+iSelCenterSubSysOld).classList.remove("tdCenterTypeObj"); 
+    document.getElementById("tdCenterTableR_"+iSelCenterSubSysOld).classList.add("sysSelected"); 
+    loadObjectsShared();	
+    
+ } 
+
+// Nome oggetto condiviso
+function onclick_objectShared(clicked_id) {	
+	var idObject = "";
+	var i = 0;
+
+	i = clicked_id.indexOf("_");
+	i = clicked_id.substr(i + 1);
+
+    // Gestione deselezione
+    if (iSelObjOld >= 0) {
+    	if (iSelObjOld != i) {
+       	    document.getElementById("idObjR_"+iSelObjOld).classList.remove("selected")
+    	    document.getElementById("statusR_"+iSelObjOld).classList.remove("selected"); 
+    	    document.getElementById("idObjR_"+i).classList.add("selected")
+    	    document.getElementById("statusR_"+i).classList.add("selected"); 
+    	    idObject = document.getElementById("idObjR_"+i);
+       	    idObject = document.getElementById("idObjR_"+i).innerHTML;
+       		// Impostazione per viewer
+    	    localStorage.setItem("filterRelIdObjectA", idObject);
+    	    localStorage.setItem("filterRelTypeObjectA", typeObjectShared);
+    	    iSelObjOld = i;
+		}
+     	return;
+	}
+
+    // Selezione
+    iSelObjOld = i;
+    document.getElementById("idObjR_"+iSelObjOld).classList.add("selected"); 	
+    document.getElementById("statusR_"+iSelObjOld).classList.add("selected"); 
+    
+    // Impostazione per viewer
+    idObject = document.getElementById("idObjR_"+iSelObjOld);
+    idObject = document.getElementById("idObjR_"+iSelObjOld).innerHTML;
+    localStorage.setItem("filterRelSubSys", "*");
+	localStorage.setItem("filterRelIdObjectA", idObject);
+	localStorage.setItem("filterRelTypeObjectA", typeObjectShared);
+	localStorage.setItem("filterRelRelation", "*");
+	localStorage.setItem("filterRelIdObjectB", "*");
+	localStorage.setItem("filterRelTypeObjectB", "*");			
+} 
+
+
+
+/* set properties not working just with CSS */
+function adjustLayout() {
+	var maxHeight = "";
+	var maxHeightN = "";
+	var div1 = "";
+	var div1Height = "";
+	var div1HeightN = 0;
+	var div2 = "";
+	var div2Height = "";
+	var div2HeightN = 0;
+	var div3 = "";
+	var div3Height = "";
+	var div3HeightN = 0;
+	var div4 = "";
+	var div4Height = "";
+	var div4HeightN = 0;
+	var div5 = "";
+	var div5Height = "";
+	var div5HeightN = 0;
+	
+	var newHeightN = "";
+	var newHeightT = "";
+	var x = 0;
+	var y = 0;
+
+	maxHeight = document.getElementById("mainTable").clientHeight;
+	maxHeightN = parseInt(maxHeight);
+	
+	// Pgm structure box
+	div1 = document.getElementById("mainTableRowHeader");
+	div1Height = div1.clientHeight;
+	div1HeightN = parseInt(div1Height)
+	div2 = document.getElementById("headerSystem");
+	div2Height = div2.offsetHeight;
+	div2HeightN = parseInt(div2Height)
+	div3 = document.getElementById("divLeftTop");
+	div3Height = div3.offsetHeight;
+	div3HeightN = parseInt(div3Height)
+	div4 = document.getElementById("divMenu");
+	div4Height = div4.offsetHeight;
+	div4HeightN = parseInt(div4Height)
+	div5 = document.getElementById("countObjectsShared");
+	div5Height = div5.offsetHeight;
+	div5HeightN = parseInt(div5Height)
+	
+	newHeightN = maxHeightN - div1HeightN - div2HeightN
+	newHeightT = newHeightN.toString() + "px";
+	
+ 	document.getElementById ( "divLeftTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divCenterTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "divRightTop" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdLeftArrow" ).style.maxHeight = newHeightT;	
+ 	document.getElementById ( "tdRightArrow" ).style.maxHeight = newHeightT;	
+
+	newHeightN = maxHeightN - div1HeightN - div2HeightN - div4HeightN - div5HeightN;
+	newHeightT = newHeightN.toString() + "px";
+	
+	document.getElementById ( "divObjList" ).style.maxHeight = newHeightT;	
+
+}
+
+
+</script>
+</body>
+</html>

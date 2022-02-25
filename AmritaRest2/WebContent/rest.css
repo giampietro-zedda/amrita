@@ -1,0 +1,132 @@
+@charset "ISO-8859-1";
+
+#criteria {
+  border: none;
+  padding: 1px;
+  font-size: medium;
+}
+
+.clsProcStatus {
+  border: none;
+  padding: 10px;
+  font-size: x-large;
+  color: green; 
+}
+
+table, th, td {  
+    border: 1px solid black;  
+    border-collapse: collapse;  
+	padding: 2px;
+}  
+
+table.clslistEntity {
+	border: 1px solid #0000a0;
+	border-collapse: collapse;
+	padding: 0px;
+	width: 70%;
+	font-family:monospace;
+	font-size: x-small;
+}
+
+table.clslistEntity tr:nth-child(odd) {  
+    background-color: #f1eaea;  
+} 
+
+table.clslistEntity th {  
+    color:  black;  
+    background-color: #ded9d9;  
+} 
+
+table.clslistEntity tr:nth-child(odd) th {  
+    color: white;  
+    background-color: gray;  
+} 
+
+table.clsForm  {
+	border: 4px solid #0000a0;
+	font-family:monospace;
+	font-size: medium;
+}	
+
+table.clsForm th {
+	border: 0px solid #0000a0;
+    background-color: gray;  	
+	color: black; 
+	font-family:monospace;
+	font-size: x-large;
+}	
+
+table.clsForm td {
+	border: 1px solid #0000a0;
+}	
+
+.clsFormC1Info {
+	font-weight: 700;
+	width: 300px;
+}	
+
+.clsFormC2Info {
+	width: 200;
+}	
+
+.clsFormC1Err {
+	font-weight: 700;
+	width: 300px;
+}	
+
+.clsFormC2Err {
+	width: 500;
+}	
+
+.clsFormC1MetrValue {
+	font-weight: 700;
+	width: 300;
+}	
+
+.clsFormC2MetrValue {
+	width: 200;
+}	
+
+.clsFormC1MetrVio {
+	font-weight: 700;
+	width: 330px;
+}	
+
+.clsFormC2MetrVio {
+	width: 470;
+}	
+
+.clsBtnwrap {
+    width:60px;  
+} 
+
+#sourceViewerDiv {
+	width: 500;
+    height: 800;	
+}	
+
+.clsFormSrc {
+	width: 500;
+    height: 500;
+	border: 2px solid #0000a0;
+    background-color: gray;  	
+}	
+
+.clsBtnwrap1 {
+    width:20px;  
+} 
+
+#btnwrap3 {
+    width:20px;  
+    btnwrap3
+} 
+
+.clsButtonSel {
+    width:20px;
+    color:purple;  
+    text-align: left; 
+    background-color: yellow;  
+    font-family:monospace;
+	font-size: xx-small;
+} 
+

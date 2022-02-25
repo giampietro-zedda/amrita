@@ -1,0 +1,150 @@
+@charset "ISO-8859-1";
+
+html, body {
+    height:100%;
+    width:100%;;
+    margin:0;
+    padding:0;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-y:hidden;
+}
+
+/* Main table of the SPA Viewer application */
+#mainTable { 
+  vertical-align: top;
+  width: 100%;
+}
+
+.divHeader{
+ height:20px;
+ text-align: center;
+ font-size: medium;
+ background-color: #757560;
+ color: white;
+}  
+
+#tr1{
+	vertical-align: top;  
+	border: 1px solid black;
+}
+
+#td1{  
+	vertical-align: top;
+	width: 13%; 
+	margin:0;
+	padding:0;
+}
+#td2{  
+	vertical-align: top;
+	width: 13%; 
+	margin:0;
+	padding:0;
+}
+#td3{  
+	vertical-align: top;
+	width: 13%; 
+	margin:0;
+	padding:0;
+}
+#td4{  
+	vertical-align: top;
+	width: 13%; 
+	margin:0;
+	padding:0;
+}
+#td5{  
+	vertical-align: top;
+	width: 48%; 
+	margin:0;
+	padding:0;
+}
+#td6{  
+	vertical-align: top;
+	width: 48%; 
+	margin:0;
+	padding:0;
+}
+
+
+
+#divTbTobeAcquired{
+  overflow-y: scroll;
+  border: 1px solid black; 
+  height: 400px;
+}
+
+#divTbTobeAnalyzed{
+  overflow-y: scroll;
+  height:400px;
+}
+
+#divTbInError{
+  overflow-y: scroll;
+  border: 1px solid black;
+  height:400px;  
+}
+
+#divTbInException{
+  overflow-y: scroll;
+  border: 1px solid black;
+  height:400px;  
+}
+
+#divTbWaitingForData{
+  overflow-y: scroll;
+  border: 1px solid black;
+  height:400px;  
+}
+	
+#divTbWaitingForCallers{
+  overflow-y: scroll;
+  border: 1px solid black;
+  height:400px;  
+}	
+
+.countObjects {
+ color: green;
+ font-size: medium; 
+ width: inherit;
+}
+
+/* Table containing objects */
+.tbStatus {
+  border-collapse: collapse;
+}
+	
+.tbStatus td{
+  border: 1px solid black;  
+  padding: 1px;
+  font-family:monospace;
+  font-size: small; 
+}
+
+.tbStatus th{
+  background-color: gray;
+  color:white;
+  border: 1px solid black;
+  font-size: medium; 
+  font-family: Arial, Helvetica, sans-serif ;
+  font-size:small;
+  font-weight:normal;
+}
+
+/* Table containing objects */
+td#td1, td#td2, td#td3, td#td4, td#td5 td#td6  {
+  border-collapse: collapse; 
+  border: 1px solid black;   
+  padding: 0px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;   
+  font-size: medium; 
+  font-family: Arial, Helvetica, sans-serif ;
+}
+
+th#mainTable {
+  background-color: gray;
+  color:white;
+  border: 1px solid black;
+}

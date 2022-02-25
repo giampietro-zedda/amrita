@@ -1,0 +1,26 @@
+//SA1A4ST  JOB AMA0000N7,'PONTE',MSGCLASS=K,CLASS=B,
+//             SCHENV=SC
+//*
+//JCLPROC  JCLLIB ORDER=(LOBS0.PROCLIB,LOPS0.PROCLIB)
+//*
+//* OLD NAME=A1LF3ST
+//*------------------------------------------
+//*    COPIA  SU STRINGA-PONTE (C@XST.)
+//*------------------------------------------
+//IC1    EXEC Y6CST,BANCA=S,
+//       DSN=DOP0A1.ST0M0.A1LF3E,
+//     CEN=O,CENN=1
+//*
+//*
+//*****************************************************************
+//*PROSTART
+//*DESCRIZIONE   : CREAZIONE FILE PER CENTRO STAMPE SU DISCHI PONTE
+//*-----------
+//*SCHEDULAZIONE : TRIGGER DA FASE CREANTE
+//*-------------
+//*VINCOLI TP    : NO
+//*----------
+//*DUMP          : SOSPENDERE
+//*----
+//*PROSEND
+//*****************************************************************

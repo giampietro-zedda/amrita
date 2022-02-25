@@ -1,0 +1,19 @@
+      * R0100_AVOID_COPY_ACROSS_DIVISION
+      * Data:Procedure division division
+  	    
+       LINKAGE SECTION.
+      * R0126_AVOID_LINKAGE_DATA_NOT_IN_COPYBOOK
+       01 LNK-AREA01.
+          05 LNKX01   PIC X(5).
+          
+      * Dfhcommarea Cics
+        01 DFHCOMMAREA                   PIC X(4096).
+ 
+      * R0126_AVOID_LINKAGE_DATA_NOT_IN_COPYBOOK      
+       01 LNK-AREA.
+      * R0125_AVOID_VALUE_CLAUSE_IN_LINKAGE
+          05 LNK01 PIC X VALUE SPACE.
+          05 LNK02 PIC 99.
+      
+          
+       PROCEDURE DIVISION.

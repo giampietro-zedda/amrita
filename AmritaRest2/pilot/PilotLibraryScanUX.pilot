@@ -1,0 +1,49 @@
+#--------------------------------------------------------------------
+# Pilot scan librerie per acquisizione sources UX*
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive generali sempre valide
+#--------------------------------------------------------------------------
+
+SEARCH_SOURCES_FILE_RECURSIVE_ENABLED
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 0
+UPDATE_DB_ENABLED
+FILE_OUTPUT pgmSourcesDetectedUX.txt
+#FILE_OUTPUT copyDataSourcesDetectedUX.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+OPT_DETECT_SOURCE_TYPE_ENABLED
+OPT_FULL_INFO_FILE_SYSTEM_ENABLED
+
+
+#--------------------------------------------------------------------------
+# Acquisizione programmi Cobol UX*
+#--------------------------------------------------------------------------
+
+# S/UX
+SYSTEM_VALUE S
+SUB_SYSTEM_VALUE UX
+#OBJECT_TYPE_INCLUDE_ALL
+OBJECT_TYPE_PGM_COBOL
+#OBJECT_TYPE_COPY_COBOL_DATA
+OBJECT_TYPE_COPY_COBOL_PROC
+
+FILTER_ON_OBJECT_NAME 1 UX 
+LIBRARY PGMUX  F:\SPaolo\Sources\LTM0T.SAE.SOURCE\
+#LIBRARY COPYUX F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+#FILE_PATH E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\UX000000
+
+# Fine unità di identificazione oggetti
+OBJECTS_IDENTIFICATION_UNIT
+
+FUNCTION_LIBRARY_SCAN	
+	 	 
+START

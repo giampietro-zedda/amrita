@@ -1,0 +1,65 @@
+#--------------------------------------------------------------------
+# Analisi UX10100
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------------
+# Direttive sempre valide
+#--------------------------------------------------------------------------
+
+LIMIT_MAX_OBJECTS_DISABLED
+LIMIT_MAX_OBJECTS_INPUT 0
+LIMIT_MAX_OBJECTS_TO_PROCESS 10
+FILE_OUTPUT FileSourcesDetected2.txt
+DATA_BASE_LOG_ANY_SQL_DISABLED
+USER_EXIT_CLASS UserExit
+OPT_STACK_TRACE_ON_PARSING_ERROR_DISABLED
+OPT_VERBOSE_MESSAGES_DISABLED
+THREAD_NAME T1
+THREAD_GROUP G1                         
+THREAD_PRTY 6                          
+THREAD_MAX_SUB_THREADS 5                
+EXECUTION_UNDER_THREAD_ENABLED 
+
+#--------------------------------------------------------------------------
+# Librerie sorgenti programmi e copy e search copy included
+#--------------------------------------------------------------------------
+
+LIBRARY PGMCOB  E:\Amrita\Amrita-Java\AmritaFramework\UnitTestPgm\
+LIBRARY COPYCOB E:\Amrita\Amrita-Java\AmritaFramework\UnitTestCopy\
+LIBRARY COPYCOB2 F:\SPaolo\Sources\X400DB2.TS000.COPYCOB\
+LIBRARY_SOURCE_SEARCH COPYCOB
+LIBRARY_SOURCE_SEARCH COPYCOB2
+
+#--------------------------------------------------------------------------
+# Identificazione oggetti da analizzare
+#--------------------------------------------------------------------------
+
+SYSTEM_VALUE S
+SUB_SYSTEM_VALUE UX
+FILTER_ON_OBJECT_NAME 1 UX
+
+#OBJECT_TYPE_COPY_COBOL_DATA *ALL*  
+#OBJECT_TYPE_PGM_COBOL *ALL*  
+#OBJECT_TYPE_COPY_COBOL_DATA *SINGLE* COPY01
+#COPY_TO_FORCE_RE_BUILD_ON_DB COPY04
+#OBJECT_TYPE_PGM_COBOL *SINGLE* UX10100
+
+#--------------------------------------------------------------------------
+# Opzioni e direttive specifiche di processo
+#--------------------------------------------------------------------------
+
+OPT_DETECT_DEAD_CODE_DISABLED
+OPT_PGM_GRAPH_CREATION_DISABLED
+OPT_SOLVE_DYNAMIC_LOCAL_DISABLED
+OPT_RE_ANALYSIS_COPY_DISABLED
+OPT_RE_BUILD_COPY_DEF_ON_DB_DISABLED
+OPT_UPDATE_DB_ENABLED
+OPT_WHERE_USED_COPY_ITEMS_ON_DB_DISABLED
+OPT_COPY_DEF_ON_DB_ENABLED
+
+#--------------------------------------------------------------------------
+# Attivazione processo
+#--------------------------------------------------------------------------
+
+PROCESS_ANALYZE_SOURCES	 	 
+START

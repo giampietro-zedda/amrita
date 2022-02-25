@@ -1,0 +1,1053 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="AnalyzerConfiguratorUser.css"/>
+<style>  
+</style>  
+</head>
+<body onload=init()>
+
+<div id="divTopHeader">
+	<table id='topHeaderTable'>
+		<tr>
+		   <td id='topHeader'>Installation Dependent User Parameters  </td>
+	    </tr>
+	</table>       
+</div>
+
+<div  id="divTopToolBar"> 
+	<table id='TopToolBarTable'>
+		<tr>
+		   <td> <input class='btnReturn'  		type="button" id='btnReturn'   value="<<"        onclick='onclick_btnReturn(this.id);' />  </td>
+		   <td> <input class='btnGeneric' 		type="button" id='btnClear'    value="Clear"     onclick='onclick_btnClear(this.id);' />  </td>
+		   <td> <input class='btnGeneric' 		type="button" id='btnSave'     value="Save"      onclick='onclick_btnSave(this.id);' />  </td>
+		   <td><div id='divMsgSave' tabindex='0'></div></td>
+	    </tr>
+	</table>       
+</div>
+
+<div class=divHeader>Identification</div>
+<table class='tbSection' id= 'tbIdentification'>
+
+  <tr> 
+       <td class='leftHeader'>User</td>
+  	   <td class='rightTd'> <input   type="text" class='inputValue'  id='user' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Password</td>
+  	   <td class='rightTd'> <input   type="text" class='inputValue'  id='pwd' />  <td>
+  </tr>
+
+  <tr> 
+       <td class='leftHeader'>Company Code (System)</td>
+  	   <td class='rightTd'> <input   type="text" class='inputValue     '  id='companyCode' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Company Description</td>
+  	   <td class='rightTd'> <input   type="text" class='inputValue'  id='company' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Country</td>
+  	   <td class='rightTd'> <input   type="text" class='inputValue'  id='country' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Language (Java locale)</td>
+  	   <td class='rightTd'> <input   type="text" class='inputValue'  id='language' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Contact Mail</td>
+  	   <td class='rightTd'> <input   type="text"  class='inputValue'  id='mail' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Technical Info Mail</td>
+  	   <td class='rightTd'> <input  class='inputValue'  id='mailInfo' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Phone Number</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='phone' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Reference Manager </td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='referManager' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Reference Technical </td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='referTech'/>  <td>
+  </tr>
+</table>
+
+<div class=divHeader>Modules Availability</div>
+<table class='tbSection' id= 'tbModules'>	 
+  <tr> 
+       <td class='leftHeader'>Enabled/Disabled </td>
+  	   <td class='rightTd'> 
+           <input type="checkbox" id="analyzerEnabled" name="analyzerEnabled"     >
+           <label for="analyzerEnabled">Analyzer</label> <br> 
+           <input type="checkbox" id="viewerEnabled" name="viewerEnabled"         >
+           <label for="ObjectStatusToBeAnalyzed">Viewer</label> <br> 
+           <input type="checkbox" id="inspectorEnabled" name="inspectorEnabled"   >
+           <label for="inspectorEnabled">Inspector</label> <br> 
+           <input type="checkbox" id="assesmentEnabled" name="assesmentEnabled"   >
+           <label for="assesmentEnabled">Assesment</label> <br> 
+   	   </td>
+  </tr>
+</table>
+
+<div class=divHeader>Database</div>
+<table class='tbSection' id='tbDatabase'>
+
+  <tr> 
+       <td class='leftHeader'>Type</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBaseType' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Name</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBaseName' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>User</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBaseUser' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Password</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBasePwd' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Driver</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBaseDriver' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Access Type</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBaseAccessType' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>URL</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dataBaseUrl' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Max Allowed Connections</td>
+  	   <td class='rightTd'> <input  type="number"  class='inputValueShort'  id='dataBaseMaxConn' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Max Updates Number Before Commit</td>
+  	   <td class='rightTd'> <input  type="number"  class='inputValueShort'  id='dataBaseCommitBlockUpdates' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Logging</td>
+  	   <td class='rightTd'>   
+  	       <input type="checkbox" id="dataBaseLogAnySql" name="dataBaseLogAnySql"     >
+           <label for="dataBaseLogAnySql">Any Sql Access</label> <br> 
+  	    <td>                   
+  </tr>
+
+</table>	
+<div class=divHeader>System Accesses</div>
+<table class='tbSection' id= 'tbAccesses'>
+
+  <tr> 
+       <td class='leftHeader'>Login Counter</td>
+  	   <td class='rightTd'> <input  type="number"  class='inputValue'  id='countLogin' /></td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Activation</td>
+  	   <td class='rightTd'>   
+   		    <table class='tbContainer' >
+			   <tr> <td>Date</td>
+			        <td><input  type="text"  class='inputValueShort'  id='dtActivation' /> </td>
+               </tr>
+ 			   <tr> <td>Time <br></td>
+			        <td><input  type="text"  class='inputValueShort'  id='tmActivation' /> </td>
+               </tr>
+            </table> 
+   	   <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Expiration</td>
+  	   <td class='rightTd'>   
+   		    <table class='tbContainer' >
+			   <tr> <td>Date</td>
+			        <td><input  type="text"  class='inputValueShort'  id='dtExpiration' /> </td>
+               </tr>
+ 			   <tr> <td>Time <br></td>
+			        <td><input  type="text"  class='inputValueShort'  id='tmExpiration' /> </td>
+               </tr>
+            </table> 
+   	   <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>First Login</td>
+  	   <td class='rightTd'>   
+   		    <table class='tbContainer'>
+			   <tr> <td>Date</td>
+			        <td><input  type="text"  class='inputValueShort'  id='dtFirstlogin' /> </td>
+               </tr>
+ 			   <tr> <td>Time <br></td>
+			        <td><input  type="text"  class='inputValueShort'  id='tmFirstlogin' /> </td>
+               </tr>
+            </table> 
+   	   <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Last Login</td>
+  	   <td class='rightTd'>   
+   		    <table class='tbContainer'>
+			   <tr> <td>Date</td>
+			        <td><input  type="text"  class='inputValueShort'  id='dtLastLogin' /> </td>
+               </tr>
+ 			   <tr> <td>Time <br></td>
+			        <td><input  type="text"  class='inputValueShort'  id='tmLastLogin' /> </td>
+               </tr>
+            </table> 
+   	   <td>
+  </tr>
+</table>
+	
+<div class=divHeader>Control Sources/Objects Paths</div>
+<table class='tbSection' id='tbPathControl'>
+
+  <tr> 
+       <td class='leftHeader'>Application Root</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='pathRoot' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Default Configuration File</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue     '  id='pathConfigFile' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>User Path (next folders are relative to this)</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='pathUser' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Pilot Path</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='pathPilot' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Resources</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue     '  id='dirResources' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Work</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirWork' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Cobol Pgm Source</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirCobolSrcPgmInput' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Cobol Pgm Copy</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirCobolSrcCopyInput' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Cobol Pgm Java Object Serialized</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirCobolPgm' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Cobol Copy Java Object Serialized</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirCobolCopy' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Cobol Pgm Graph Java Object Serialized</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirCobolGraph' />  <td>
+   </tr>
+   <tr> 
+       <td class='leftHeader'>Jcl Source</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirJclInput' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Jcl Java Object Serialized</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirJcl' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>SQL Source Script</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirSqlScript' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Esecution Pilots</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirPilot' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Log</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirLog' />  <td>
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Function Output</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirOutput' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Database</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='dirDatabase' />  <td>
+  </tr>
+</table>	
+	
+	
+<div class=divHeader>Optimization Processes And Execution</div>
+<table class='tbSection' id='tbPathControl'>
+
+  <tr> 
+       <td class='leftHeader'>Max Rows To Detect File Type</td>
+  	   <td class='rightTd'> <input  type="number"  class='inputValueShort'  id='limitMaxLinesScanFindingSourceType' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Limit Max Sources Numbers</td>
+  	   <td class='rightTd'>  
+  	      <table class='tbContainer' >
+			   <tr> <td><input type="checkbox" id="limitMaxSources" name="limitMaxSources" > <label for="limitMaxSources">Enabled</label><br></td></tr>
+			   <tr><td>
+					   <table>
+					     <tr>
+					       <td>To Be Considered In Library Scan</td>
+					       <td><input type="number" class='inputValueShort' id="limitMaxSourcesInput"     name="limitMaxSourcesInput"></td>
+					     </tr>
+					     <tr>
+					       <td>With Detected Type</td>
+					       <td><input type="number" class='inputValueShort' id="limitMaxSourcesToProcess" name="limitMaxSourcesToProcess"></td>
+					     </tr>
+					   </table>
+					</td>
+			   </tr>
+          </table> 
+       </td>	   	  	             	   
+  </tr>
+   <tr> 
+       <td class='leftHeader'>Limit Max Objects Numbers</td>
+  	   <td class='rightTd'>  
+  	      <table class='tbContainer' >
+			   <tr> <td><input type="checkbox" id="limitMaxObjects" name="limitMaxObjects" > <label for="limitMaxObjects">Enabled</label><br></td></tr>
+			   <tr><td>
+					   <table>
+					     <tr>
+					       <td>Input To Processes</td>
+					       <td><input type="number" class='inputValueShort'  id="limitMaxObjectsInput"     name="limitMaxObjectsInput"></td>
+					     </tr>
+					     <tr>
+					       <td>Managed</td>
+					       <td><input type="number" class='inputValueShort'  id="limitMaxObjectsToProcess" name="limitMaxObjectsToProcess"></td>
+					     </tr>
+					   </table>
+					</td>
+			   </tr>
+          </table> 
+       </td>	   	  	             	   
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Debug Threshold Memory gc() Activation</td>
+  	   <td class='rightTd'> <input  type="number"  class='inputValueShort'  id='debugThresholdMemoryGarbage' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Debug Garbage gc() After Sources Number Analysis</td>
+  	   <td class='rightTd'> <input  type="number"  class='inputValueShort'  id='debugSourcesDetectedFreqGarbage' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Debug</td>
+  	   <td class='rightTd'> <input  type="checkbox" id='debugActive'  name="debugActive"  />  
+  	                        <label for="debugActive">Debug Active</label>
+  	   <td>	   
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Log</td>
+  	   <td class='rightTd'> <input  type="checkbox" id='logVerbose' name='logVerbose'/>  
+  	                        <label for="logVerbose">Log Verbose</label>                  
+  	   <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Preferred Visit Method</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='preferredVisitMethod' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Preferred Caching Level</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='preferredCachingLevel' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Preferred Caching Support</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='preferredCachingSupport' />  <td>
+  </tr>
+</table>			
+	
+<div class=divHeader>Defaults</div>
+<table class='tbSection' id='tbDefaults'>
+
+  <tr> 
+       <td class='leftHeader'>Sources Analysis</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue     '  id='pilotDefaultSource' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>Processes </td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue     '  id='pilotDefaultProcess' />  <td>
+  </tr>
+  <tr> 
+       <td class='leftHeader'>User Exit Class</td>
+  	   <td class='rightTd'> <input  type="text"  class='inputValue'  id='userExitClass' />  <td>
+  </tr>
+</table>	
+	
+<script type="text/javascript">
+"use strict";
+const msgSaveOK="Configuration Succesfully Saved";
+const msgSaveKO="Errors Saving Configuration ";
+var userInp="amrita";         							// Replaced by storageSession variable
+var hostName = "";            							// Replaced by storageSession variable
+var baseUrl = 'http://localhost:8080/AmritaRest2/rest'; // Replaced by storageSession variable                     
+var urlUserPOST = 'saveUser'
+var winAnalyzer=null;         							// Analyzer reference
+var objConfig=null; 
+
+function init() {
+	if(document.readyState === 'loading') {
+	    document.addEventListener('DOMContentLoaded', afterLoaded);
+	} else {
+	    //The DOMContentLoaded event has already fired. Just run the code.
+	    winAnalyzer=window.opener;
+		objConfig=winAnalyzer.getConfig();
+	    afterLoaded();
+	}
+}
+
+function afterLoaded() {	  
+	populateHtmlFromObjConfig();
+	userInp = localStorage.getItem("user");		
+	hostName = localStorage.getItem("hostName");		
+	baseUrl = localStorage.getItem("baseUrl");
+	document.getElementById("dataBaseUrl").size=200;	  
+}
+
+function createRequest() {
+	var xmlhttp;
+	try {
+		xmlhttp = new XMLHttpRequest();
+	} catch (trymicrosoft) {
+		try {
+			xmlhttp = new ActiveXObject("MsXML2.XMLHTTP");
+		} catch (othermicrosoft) {
+			try {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (failed) {
+				xmlhttp = null;
+			}
+		}
+	}
+	if (xmlhttp == null)
+		alert("Error creating request object!");
+	return xmlhttp;
+}
+
+function onclick_btnReturn(clicked_id) {
+	winAnalyzer.restoreFromConfigurator("DIRECTIVES");
+} 
+
+function onclick_btnClear(clicked_id) {
+	clearAndInitializeAll();
+} 
+
+function onclick_btnSave(clicked_id) {
+	updateUserFromHtml();
+	updateObjConfigFromHtml();
+} 
+
+
+function msgSave(responseText, msgOk, msgKo) {
+	if (responseText.substr(0, 2) == 'OK') {
+		document.getElementById("divMsgSave").innerHTML=msgOk;
+		document.getElementById("divMsgSave").classList.remove("msgSaveKo"); 
+		document.getElementById("divMsgSave").classList.add("msgSaveOk"); 
+		return;
+	}
+	document.getElementById("divMsgSave").innerHTML=msgKo + responseText.substr(2);
+}
+
+
+//The layout will be re-built */
+function populateHtmlFromObjConfig() {		
+
+	// User Data
+	document.getElementById("user").value=userInp; 							 		         // Codice utente 
+	document.getElementById("companyCode").value=objConfig.companyCode; 							 // Codice societa 
+	document.getElementById("company").value=objConfig.company; 									 // Descrizione societa 
+//	document.getElementById("userType").value=objConfig.userType;            			     		 // Tipologia utente forward (T052)
+//	document.getElementById("userStatus").value=objConfig.userStatus;            	 				 // Stato utente forward (T051)
+	document.getElementById("language").value=objConfig.language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+	document.getElementById("pwd").value=objConfig.pwd;          								 	 // Password
+	document.getElementById("country").value=objConfig.country; 									 // Country IT, .. 
+	document.getElementById("mail").value=objConfig.mail; 											 // Mail principale  
+	document.getElementById("mailInfo").value=objConfig.mailInfo; 									 // Mail per info anomali  
+	document.getElementById("phone").value=objConfig.phone; 										 // Telefono di riferimento  
+	document.getElementById("referManager").value=objConfig.referManager; 							 // Riferimento manager 
+	document.getElementById("referTech").value=objConfig.referTech; 								 // Riferimento tecnico 
+	document.getElementById("analyzerEnabled").checked=false;
+	document.getElementById("viewerEnabled").checked=false;
+	document.getElementById("inspectorEnabled").checked=false;
+	document.getElementById("assesmentEnabled").checked=false;
+	if (objConfig.analyzerEnabled == 1) {document.getElementById("analyzerEnabled").checked=true}
+	if (objConfig.viewerEnabled == 1) {document.getElementById("viewerEnabled").checked=true}
+	if (objConfig.inspectorEnabled == 1) {document.getElementById("inspectorEnabled").checked=true}
+	if (objConfig.assesmentEnabled == 1) {document.getElementById("assesmentEnabled").checked=true}
+	document.getElementById("countLogin").value=objConfig.countLogin; 								 // Counter login effettuati       			
+	document.getElementById("dtActivation").value=objConfig.dtActivation;  							 // Data attivazione AAAAMMGG'
+	document.getElementById("tmActivation").value=objConfig.tmActivation;  						     // Ora  attivazione HHMMSSCC'
+	document.getElementById("dtExpiration").value=objConfig.dtExpiration;  							 // Data disattivazione AAAAMMGG'
+	document.getElementById("tmExpiration").value=objConfig.tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+// 	document.getElementById("dtFirstLogin").value=objConfig.dtFirstLogin;  							 // Data primo login AAAAMMGG'
+// 	document.getElementById("tmFirstLogin").value=objConfig.tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+// 	document.getElementById("dtLastLogin").value=objConfig.dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+// 	document.getElementById("tmLastLogin").value=objConfig.tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	// Directories relative a root o WEB-INF da file di configurazione generale
+    document.getElementById("pathConfigFile").value=objConfig.pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+    document.getElementById("pathRoot").value=objConfig.pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+    document.getElementById("pathUser").value=objConfig.pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+    document.getElementById("pathPilot").value=objConfig.pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+ 	
+	document.getElementById("dirResources").value=objConfig.dirResources;                            //Resource'
+	document.getElementById("dirWork").value=objConfig.dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+	document.getElementById("dirDatabase").value=objConfig.dirDatabase;                              // Database'		              
+	document.getElementById("dirJclInput").value=objConfig.dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+	document.getElementById("dirCobolSrcPgmInput").value=objConfig.dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+	document.getElementById("dirCobolSrcCopyInput").value=objConfig.dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+	document.getElementById("dirCobolPgm").value=objConfig.dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+	document.getElementById("dirCobolCopy").value=objConfig.dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+	document.getElementById("dirJcl").value=objConfig.dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcedocument.getElementById("X").value=objConfig. .jclIncludedocument.getElementById("X").value=objConfig. .jclProc)'		 
+	document.getElementById("dirSqlScript").value=objConfig.dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+	document.getElementById("dirCobolGraph").value=objConfig.dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+	document.getElementById("dirPilot").value=objConfig.dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+	document.getElementById("dirLog").value=objConfig.dirLog;                                  		 // Log
+	document.getElementById("dirOutput").value=objConfig.dirOutput;                              	 // Output per funzioni che producono text'
+
+	// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+	document.getElementById("limitMaxLinesScanFindingSourceType").value=objConfig.limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+	document.getElementById("limitMaxSources").checked=false;					                   	    // Abilitazione limitazione ai sources trattati'
+	if (objConfig.limitMaxSources == 1) {document.getElementById("limitMaxSources").checked=true;};
+	document.getElementById("limitMaxSources").value=objConfig. limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+	document.getElementById("limitMaxSourcesInput").value=objConfig.limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+	document.getElementById("limitMaxSourcesToProcess").value=objConfig.limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+	document.getElementById("limitMaxObjects").checked=false;					                   	    // Abilitazione limitazione agli oggetti processati'
+	if (objConfig.limitMaxSources == 1) {document.getElementById("limitMaxObjects").checked=true;};
+	document.getElementById("limitMaxObjectsInput").value=objConfig.limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+	document.getElementById("limitMaxObjectsToProcess").value=objConfig.limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+	document.getElementById("debugThresholdMemoryGarbage").value=objConfig.debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+	document.getElementById("debugSourcesDetectedFreqGarbage").value=objConfig.debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+	document.getElementById("debugActive").checked=false;
+	if (objConfig.debugActive == 1) {document.getElementById("debugActive").checked=true;};
+	document.getElementById("debugActive").value=objConfig.debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+	document.getElementById("logVerbose").checked=false;
+	if (objConfig.logVerbose == 1) {document.getElementById("logVerbose").checked=true;};
+	document.getElementById("preferredVisitMethod").value=objConfig.preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+	document.getElementById("preferredCachingLevel").value=objConfig.preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+	document.getElementById("preferredCachingSupport").value=objConfig.preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+	
+	//  Database
+	document.getElementById("dataBaseType").value=objConfig.dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+	document.getElementById("dataBaseName").value=objConfig.dataBaseName;                            // Nome database (DbAmrita)'
+	document.getElementById("dataBaseUser").value=objConfig.dataBaseUser;                            // User (GZEDDA)'
+	document.getElementById("dataBasePwd").value=objConfig.dataBasePwd;                              // Pwd (giampietro4)'
+	document.getElementById("dataBaseDriver").value=objConfig.dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+	document.getElementById("dataBaseAccessType").value=objConfig.dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+	document.getElementById("dataBaseUrl").value=objConfig.dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+	document.getElementById("dataBaseMaxConn").value=objConfig.dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+	document.getElementById("dataBaseCommitBlockUpdates").value=objConfig.dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+	document.getElementById("dataBaseLogAnySql").checked=false;
+	if (objConfig.dataBaseLogAnySql == 1) {document.getElementById("dataBaseLogAnySql").checked=true} // Log istruzioni Sql come messaggi informativi
+	
+	// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+	document.getElementById("pilotDefaultSource").value=objConfig.pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+	document.getElementById("pilotDefaultProcess").value=objConfig.pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+	document.getElementById("userExitClass").value=objConfig.userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+	// Ordinal
+//	document.getElementById("userTypeOrdinal").value=objConfig.userTypeOrdinal;            			  // Tipologia utente forward (T052)
+//	document.getElementById("userStatusOrdinal").value=objConfig.userStatusOrdinal;            	 	  // Stato utente forward (T051)
+		
+}
+
+//The object Config will be updated with current values */
+function updateObjConfigFromHtml() {		
+
+	// User Data
+	objConfig.user=document.getElementById("user").value; 							 		         // Codice utente 
+	objConfig.companyCode=document.getElementById("companyCode").value; 							 // Codice societa 
+	objConfig.company=document.getElementById("company").value; 									 // Descrizione societa 
+//	objConfig.userType=document.getElementById("userType").value;            			     		 // Tipologia utente forward (T052)
+//	objConfig.userStatusdocument.getElementById("userStatus").value;            	 				 // Stato utente forward (T051)
+	objConfig.language=document.getElementById("language").value;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+	objConfig.pwd=document.getElementById("pwd").value;          								 	 // Password
+	objConfig.country=document.getElementById("country").value; 									 // Country IT, .. 
+	objConfig.mail=document.getElementById("mail").value; 											 // Mail principale  
+	objConfig.mailInfo=document.getElementById("mailInfo").value; 									 // Mail per info anomali  
+	objConfig.phone=document.getElementById("phone").value; 										 // Telefono di riferimento  
+	objConfig.referManager=document.getElementById("referManager").value; 							 // Riferimento manager 
+	objConfig.referTech=document.getElementById("referTech").value; 								 // Riferimento tecnico 
+	objConfig.analyzerEnabled = 0;
+	objConfig.viewerEnabled = 0;
+	objConfig.inspectorEnabled = 0;
+	objConfig.assesmentEnabled = 0;
+	if (document.getElementById("analyzerEnabled").checked) {objConfig.analyzerEnabled = 1}
+	if (document.getElementById("viewerEnabled").checked) {objConfig.viewerEnabled = 1}
+	if (document.getElementById("inspectorEnabled").checked) {objConfig.inspectorEnabled = 1}
+	if (document.getElementById("assesmentEnabled").checked) {objConfig.assesmentEnabled = 1}
+	objConfig.countLogin=document.getElementById("countLogin").value; 								 // Counter login effettuati       			
+	objConfig.dtActivation=document.getElementById("dtActivation").value;  							 // Data attivazione AAAAMMGG'
+	objConfig.tmActivation=document.getElementById("tmActivation").value;  						     // Ora  attivazione HHMMSSCC'
+	objConfig.dtExpiration=document.getElementById("dtExpiration").value;  							 // Data disattivazione AAAAMMGG'
+	objConfig.tmExpiration=document.getElementById("tmExpiration").value;  							 // Ora  disattivazione HHMMSSCC'
+// 	objConfig.dtFirstLogin=document.getElementById("dtFirstLogin").value;  							 // Data primo login AAAAMMGG'
+// 	objConfig.tmFirstLogin=document.getElementById("tmFirstLogin").value;  							 // Ora  primo login HHMMSSCC	'
+// 	objConfig.dtLastLogindocument.getElementById("dtLastLogin").value; 							 	 // Data ultimo login AAAAMMGG'
+// 	objConfig.tmLastLogin=document.getElementById("tmLastLogin").value; 							 // Ora  ultimo login HHMMSSCC'	
+
+	// Directories relative a root o WEB-INF da file di configurazione generale
+    objConfig.pathConfigFile=document.getElementById("pathConfigFile").value;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+    objConfig.pathRoot=document.getElementById("pathRoot").value;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+    objConfig.pathUser=document.getElementById("pathUser").value;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+    objConfig.pathPilot=document.getElementById("pathPilot").value;                               	 // Phisical path to pilot directory ...users/{user}'
+ 	
+    objConfig.dirResources=document.getElementById("dirResources").value;                            //Resource'
+    objConfig.dirWork=document.getElementById("dirWork").value;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+    objConfig.dirDatabase=document.getElementById("dirDatabase").value;                              // Database'		              
+    objConfig.dirJclInput=document.getElementById("dirJclInput").value;                              // Jcl    in input al processo di analisi (.*) '       
+    objConfig.dirCobolSrcPgmInput=document.getElementById("dirCobolSrcPgmInput").value;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+    objConfig.dirCobolSrcCopyInput=document.getElementById("dirCobolSrcCopyInput").value;            // Copy   Cobol sorgenti in analisi		  (.*)'
+    objConfig.dirCobolPgm=document.getElementById("dirCobolPgm").value;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+    objConfig.dirCobolCopy=document.getElementById("dirCobolCopy").value;                            // Copy   Cobol codificati e serializzati (.copy)'	
+    objConfig.dirJcl=document.getElementById("dirJcl").value;                                  		 // Jcl codificati e serializzati (.jclSourcedocument.getElementById("X").value=objConfig. .jclIncludedocument.getElementById("X").value=objConfig. .jclProc)'		 
+    objConfig.dirSqlScript=document.getElementById("dirSqlScript").value;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+    objConfig.dirCobolGraph=document.getElementById("dirCobolGraph").value;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+    objConfig.dirPilot=document.getElementById("dirPilot").value;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+    objConfig.dirLog=document.getElementById("dirLog").value;                                  		 // Log
+    objConfig.dirOutput=document.getElementById("dirOutput").value;                              	 // Output per funzioni che producono text'
+
+	// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+	objConfig.limitMaxLinesScanFindingSourceType=document.getElementById("limitMaxLinesScanFindingSourceType").value;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+	objConfig.limitMaxSources=0;                    												 // Abilitazione limitazione ai sources trattati'
+	if (document.getElementById("limitMaxSources").checked) {objConfig.limitMaxSources = 1};
+	objConfig.limitMaxSourcesInput=document.getElementById("limitMaxSourcesInput").value;               // Numero massimo sorgenti da considerare in input'
+	objConfig.limitMaxSourcesToProcess=	document.getElementById("limitMaxSourcesToProcess").value;       	// Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+	objConfig.limitMaxObjects=0;                    											// Abilitazione limitazione ai sources trattati'
+	if (document.getElementById("limitMaxObjects").checked) {objConfig.limitMaxObjects = 1};
+	objConfig.limitMaxObjectsInput=document.getElementById("limitMaxObjectsInput").value;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+	objConfig.limitMaxObjectsToProcess=document.getElementById("limitMaxObjectsToProcess").value;       // Numero massimo oggetti in input da processare'
+	objConfig.debugThresholdMemoryGarbage=document.getElementById("debugThresholdMemoryGarbage").value; // Attivazione gc() se memoria disponibile <'
+	objConfig.debugSourcesDetectedFreqGarbage=document.getElementById("debugSourcesDetectedFreqGarbage").value; // gc() attivata ogni 200 sorgenti'
+	objConfig.debugActive=0;  
+	if (document.getElementById("debugActive").checked) {objConfig.debugActive = 1};
+	objConfig.logVerbose=0;  
+	if (document.getElementById("logVerbose").checked) {objConfig.logVerbose = 1};
+	objConfig.preferredVisitMethod=document.getElementById("preferredVisitMethod").value;            	// Metodo di visita predefinito (BACKWARD)'
+	objConfig.preferredCachingLevel=document.getElementById("preferredCachingLevel").value;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+	objConfig.preferredCachingSupport=document.getElementById("preferredCachingSupport").value;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+	
+	//  Database
+	objConfig.dataBaseType=document.getElementById("dataBaseType").value;                            	// Tipologia database MSACCESS/MYSQL'
+	objConfig.dataBaseName=document.getElementById("dataBaseName").value;                            	// Nome database (DbAmrita)'
+	objConfig.dataBaseUser=document.getElementById("dataBaseUser").value;                            	// User (GZEDDA)'
+	objConfig.dataBasePwd=document.getElementById("dataBasePwd").value;                              	// Pwd (giampietro4)'
+	objConfig.dataBaseDriver=document.getElementById("dataBaseDriver").value;                        	// Driver (com.mysql.cj.jdbc.Driver)'
+	objConfig.dataBaseAccessType=document.getElementById("dataBaseAccessType").value;               	// Accesso LOCAL/REMOTE'
+	objConfig.dataBaseUrl=document.getElementById("dataBaseUrl").value;                              	// jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+	objConfig.dataBaseMaxConn=document.getElementById("dataBaseMaxConn").value;                         // Numero massimo connessioni attive (1)'
+	objConfig.dataBaseCommitBlockUpdates=document.getElementById("dataBaseCommitBlockUpdates").value;   // Commit automatica a fine gruppo aggiornamenti (100)'
+	objConfig.dataBaseLogAnySql = 0;
+	if (document.getElementById("dataBaseLogAnySql").checked) {objConfig.dataBaseLogAnySql = 1}; 	// Log istruzioni Sql come messaggi informativi
+	
+	// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+	objConfig.pilotDefaultSource=document.getElementById("pilotDefaultSource").value;                 	// Pilota sorgenti (PilotDefaultSource.pilot)'
+	objConfig.pilotDefaultProcess=document.getElementById("pilotDefaultProcess").value;               	// Pilota processi (PilotDefaultProcess.pilot)'
+	objConfig.userExitClass=document.getElementById("userExitClass").value;                           	// Classe con exit applicative codificate (UserExit)'   
+
+	// Ordinal
+//	document.getElementById("userTypeOrdinal").value=objConfig.userTypeOrdinal;            			  // Tipologia utente forward (T052)
+//	document.getElementById("userStatusOrdinal").value=objConfig.userStatusOrdinal;            	 	  // Stato utente forward (T051)
+		
+}
+
+/* Send user data to server to be updated */
+function updateUserFromHtml() {
+	var url = objConfig.baseUrl + "/" + urlUserPOST + "/" + userInp;
+	var xmlhttp;
+	var urlEncodedData = ""; 
+	var urlEncodedDataPairs = [];
+	xmlhttp=createRequest();
+	
+	// Turn the data object into an array of URL-encoded key/value pairs.
+    urlEncodedDataPairs.push( encodeURIComponent( "user" ) 		  + '=' + document.getElementById("user").value ) ;
+    urlEncodedDataPairs.push( encodeURIComponent( "baseUrl" ) 	  + '=' + baseUrl ) ;
+	urlEncodedDataPairs.push( encodeURIComponent( "companyCode")  + '=' + document.getElementById("companyCode").value ) ;					 			// Codice societa 
+	urlEncodedDataPairs.push( encodeURIComponent( "company")      + '=' + document.getElementById("company").value ) ;							 		// Descrizione societa 
+//	urlEncodedDataPairs.push( encodeURIComponent( "userType")     + '=' + document.getElementById("userType").value ) ;           			     		// Tipologia utente forward (T052)
+//	urlEncodedDataPairs.push( encodeURIComponent( "userStatus")   + '=' + document.getElementById("userStatus").value ) ;            	 				// Stato utente forward (T051)
+	urlEncodedDataPairs.push( encodeURIComponent( "language")     + '=' + document.getElementById("language").value ) ;            					 	// Liguaggio in formato Locale ("en", "it", ... )
+	urlEncodedDataPairs.push( encodeURIComponent( "pwd") 	      + '=' + document.getElementById("pwd").value ) ;         								// Password
+	urlEncodedDataPairs.push( encodeURIComponent( "country")      + '=' + document.getElementById("country").value ) ;							 		// Country IT, .. 
+	urlEncodedDataPairs.push( encodeURIComponent( "mail") 		  + '=' + document.getElementById("mail").value ) ;									 	// Mail principale  
+	urlEncodedDataPairs.push( encodeURIComponent( "mailInfo") 	  + '=' + document.getElementById("mailInfo").value ) ;							 		// Mail per info anomali  
+	urlEncodedDataPairs.push( encodeURIComponent( "phone") 		  + '=' + document.getElementById("phone").value ) ;								 	// Telefono di riferimento  
+	urlEncodedDataPairs.push( encodeURIComponent( "referManager") + '=' + document.getElementById("referManager").value ) ;					 			// Riferimento manager 
+	urlEncodedDataPairs.push( encodeURIComponent( "referTech") 	  + '=' + document.getElementById("referTech").value ) ;					 			// Riferimento tecnico 
+	urlEncodedDataPairs.push( encodeURIComponent( "analyzerEnabled") 	  	+ '=' + document.getElementById("analyzerEnabled").checked ) ;			    //  
+	urlEncodedDataPairs.push( encodeURIComponent( "viewerEnabled") 	  		+ '=' + document.getElementById("viewerEnabled").checked ) ;					//  
+	urlEncodedDataPairs.push( encodeURIComponent( "inspectorEnabled") 	  	+ '=' + document.getElementById("inspectorEnabled").checked ) ;				//  
+	urlEncodedDataPairs.push( encodeURIComponent( "assesmentEnabled") 	  	+ '=' + document.getElementById("assesmentEnabled").checked ) ;				//  
+	urlEncodedDataPairs.push( encodeURIComponent( "countLogin")   			+ '=' + document.getElementById("countLogin").value ) ;						// Counter login effettuati       			
+	urlEncodedDataPairs.push( encodeURIComponent( "dtActivation") 			+ '=' + document.getElementById("dtActivation").value ) ;  					// Data attivazione AAAAMMGG'
+	urlEncodedDataPairs.push( encodeURIComponent( "tmActivation") 			+ '=' + document.getElementById("tmActivation").value ) ;  					// Ora  attivazione HHMMSSCC'
+	urlEncodedDataPairs.push( encodeURIComponent( "dtExpiration") 			+ '=' + document.getElementById("dtExpiration").value ) ;  					// Data disattivazione AAAAMMGG'
+	urlEncodedDataPairs.push( encodeURIComponent( "tmExpiration") 			+ '=' + document.getElementById("tmExpiration").value ) ;  					// Ora  disattivazione HHMMSSCC'
+// 	urlEncodedDataPairs.push( encodeURIComponent( "dtFirstLogin") 			+ '=' + document.getElementById("dtFirstLogin").value ) ;  					// Data primo login AAAAMMGG'
+//  urlEncodedDataPairs.push( encodeURIComponent( "tmFirstLogin")			+ '=' + document.getElementById("tmFirstLogi").value ) ;  					// Ora  primo login HHMMSSCC	'
+// 	urlEncodedDataPairs.push( encodeURIComponent( "dtLastLogin")  			+ '=' + document.getElementById("dtLastLogin").value ) ;					// Data ultimo login AAAAMMGG'
+// 	urlEncodedDataPairs.push( encodeURIComponent( "tmLastLogin")  			+ '=' + document.getElementById("tmLastLogin").value ) ; 					// Ora  ultimo login HHMMSSCC'	
+
+	// Directories relative a root o WEB-INF da file di configurazione generale
+    urlEncodedDataPairs.push( encodeURIComponent( "pathConfigFile") 		+ '=' + document.getElementById("pathConfigFile").value ) ;                  // NOT NULL COMMENT 'Path completo file di configurazione'
+    urlEncodedDataPairs.push( encodeURIComponent( "pathRoot")       		+ '=' + document.getElementById("pathRoot").value ) ;                        // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+    urlEncodedDataPairs.push( encodeURIComponent( "pathUser")       		+ '=' + document.getElementById("pathUser").value ) ;                        // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+    urlEncodedDataPairs.push( encodeURIComponent( "pathPilot")      		+ '=' + document.getElementById("pathPilot").value ) ;                       // Phisical path to pilot directory ...users/{user}'
+ 	
+    urlEncodedDataPairs.push( encodeURIComponent( "dirResources")   		+ '=' + document.getElementById("dirResources").value ) ;                    //Resource'
+    urlEncodedDataPairs.push( encodeURIComponent( "dirWork") 				+ '=' + document.getElementById("dirWork").value ) ;                         // NOT NULL COMMENT 'Working e temporaneo'		    
+    urlEncodedDataPairs.push( encodeURIComponent( "dirDatabase") 			+ '=' + document.getElementById("dirDatabase").value ) ;                     // Database'		              
+    urlEncodedDataPairs.push( encodeURIComponent( "dirJclInput") 		 	+ '=' + document.getElementById("dirJclInput").value ) ;                     // Jcl    in input al processo di analisi (.*) '       
+    urlEncodedDataPairs.push( encodeURIComponent( "dirCobolSrcPgmInput") 	+ '=' + document.getElementById("dirCobolSrcPgmInput").value ) ;             // Pgm    Cobol sorgenti in analisi		  (.*) '
+    urlEncodedDataPairs.push( encodeURIComponent( "dirCobolSrcCopyInput") 	+ '=' + document.getElementById("dirCobolSrcCopyInput").value ) ;            // Copy   Cobol sorgenti in analisi		  (.*)'
+    urlEncodedDataPairs.push( encodeURIComponent( "dirCobolPgm") 			+ '=' + document.getElementById("dirCobolPgm").value ) ;                     // Pgm    Cobol codificati e serializzati (.program)'			 
+    urlEncodedDataPairs.push( encodeURIComponent( "dirCobolCopy") 			+ '=' + document.getElementById("dirCobolCopy").value ) ;                    // Copy   Cobol codificati e serializzati (.copy)'	
+    urlEncodedDataPairs.push( encodeURIComponent( "dirJcl") 				+ '=' + document.getElementById("dirJcl").value ) ;                          // Jcl codificati e serializzati (.jclSourcedocument.getElementById("X").value=objConfig. .jclIncludedocument.getElementById("X").value=objConfig. .jclProc)'		 
+    urlEncodedDataPairs.push( encodeURIComponent( "dirSqlScript") 			+ '=' + document.getElementById("dirSqlScript").value ) ;                    // Script Sql codificati e serializzati   (.scriptSql)'			 
+    urlEncodedDataPairs.push( encodeURIComponent( "dirCobolGraph")			+ '=' + document.getElementById("dirCobolGraph").value ) ;                   // Grafi  Cobol codificati e serializzati (.graph)'	
+    urlEncodedDataPairs.push( encodeURIComponent( "dirPilot") 				+ '=' + document.getElementById("dirPilot").value ) ;                        // Pilot  sources e processi e filtri     (.pilot)'
+    urlEncodedDataPairs.push( encodeURIComponent( "dirLog") 				+ '=' + document.getElementById("dirLog").value ) ;                          // Log
+    urlEncodedDataPairs.push( encodeURIComponent( "dirOutput") 				+ '=' + document.getElementById("dirOutput").value ) ;                       // Output per funzioni che producono text'
+
+	// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxLinesScanFindingSourceType") + '=' + document.getElementById("limitMaxLinesScanFindingSourceType").value ) ;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxSources") 			+ '=' + document.getElementById("limitMaxSources").checked ) ;            // Abilitazione limitazione ai sources trattati'
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxSourcesInput") 		+ '=' + document.getElementById("limitMaxSourcesInput").value ) ;        // Numero massimo sorgenti da considerare in input'
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxSourcesToProcess") 	+ '=' + document.getElementById("limitMaxSourcesToProcess").value ) ;    // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxObjects") 			+ '=' + document.getElementById("limitMaxObjects").checked ) ;            // Abilitazione limitazione agli oggetti processati'
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxObjectsInput")	 	+ '=' + document.getElementById("limitMaxObjectsInput").value ) ;        // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+	urlEncodedDataPairs.push( encodeURIComponent( "limitMaxObjectsToProcess") 	+ '=' + document.getElementById("limitMaxObjectsToProcess").value ) ;    // Numero massimo oggetti in input da processare'
+	urlEncodedDataPairs.push( encodeURIComponent( "debugThresholdMemoryGarbage") + '=' + document.getElementById("debugThresholdMemoryGarbage").value ) ; // Attivazione gc() se memoria disponibile <'
+	urlEncodedDataPairs.push( encodeURIComponent( "debugSourcesDetectedFreqGarbage") + '=' + document.getElementById("debugSourcesDetectedFreqGarbage").value ) ; // gc() attivata ogni 200 sorgenti'
+	urlEncodedDataPairs.push( encodeURIComponent( "debugActive")				+ '=' + document.getElementById("debugActive").checked ) ;                 // Attivazione debug dove previsto (messaggi log di debug)'
+	urlEncodedDataPairs.push( encodeURIComponent( "logVerbose") 				+ '=' + document.getElementById("logVerbose").checked ) ;                  // Dettaglio log operazioni Sql e informative'
+	urlEncodedDataPairs.push( encodeURIComponent( "preferredVisitMethod")		+ '=' + document.getElementById("preferredVisitMethod").value ) ;        // Metodo di visita predefinito (BACKWARD)'
+	urlEncodedDataPairs.push( encodeURIComponent( "preferredCachingLevel") 		+ '=' + document.getElementById("preferredCachingLevel").value ) ;       // Livello di caching predefinito (CACHING_PATH_ALL)'
+	urlEncodedDataPairs.push( encodeURIComponent( "preferredCachingSupport") + '=' + document.getElementById("preferredCachingSupport").value ) ;      	 // Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+	//  Database
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseType") 			+ '=' + document.getElementById("dataBaseType").value ) ;                    // Tipologia database MSACCESS/MYSQL'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseName") 			+ '=' + document.getElementById("dataBaseName").value ) ;                    // Nome database (DbAmrita)'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseUser") 			+ '=' + document.getElementById("dataBaseUser").value ) ;                    // User (GZEDDA)'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBasePwd")			+ '=' + document.getElementById("dataBasePwd").value ) ;                     // Pwd (giampietro4)'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseDriver") 		+ '=' + document.getElementById("dataBaseDriver").value ) ;                  // Driver (com.mysql.cj.jdbc.Driver)'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseAccessType") 	+ '=' + document.getElementById("dataBaseAccessType").value ) ;              // Accesso LOCAL/REMOTE'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseUrl") 			+ '=' + document.getElementById("dataBaseUrl").value ) ;                     // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseMaxConn") 		+ '=' + document.getElementById("dataBaseMaxConn").value ) ;                 // Numero massimo connessioni attive (1)'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseCommitBlockUpdates") + '=' + document.getElementById("dataBaseCommitBlockUpdates").value ) ;  // Commit automatica a fine gruppo aggiornamenti (100)'
+	urlEncodedDataPairs.push( encodeURIComponent( "dataBaseLogAnySql") + '=' + document.getElementById("dataBaseLogAnySql").checked ) ;  // Log istruzioni Sql come messaggi informativi
+		
+	// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+	urlEncodedDataPairs.push( encodeURIComponent( "pilotDefaultSource") 	+ '=' + document.getElementById("pilotDefaultSource").value ) ;              // Pilota sorgenti (PilotDefaultSource.pilot)'
+	urlEncodedDataPairs.push( encodeURIComponent( "pilotDefaultProcess") 	+ '=' + document.getElementById("pilotDefaultProcess").value ) ;             // Pilota processi (PilotDefaultProcess.pilot)'
+	urlEncodedDataPairs.push( encodeURIComponent( "userExitClass") 			+ '=' + document.getElementById("userExitClass").value ) ;                   // Classe con exit applicative codificate (UserExit)'   
+
+		
+	// Combine the pairs into a single string and replace all %-encoded spaces to 
+	// the '+' character; matches the behaviour of browser form submissions.
+	urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+	
+	// Define what happens in case of error
+	xmlhttp.addEventListener( 'error', function(event) {alert( "Processing Error \n ResponseText=" + event.target.responseText);} );
+	
+	xmlhttp.open("POST", url, true);
+	xmlhttp.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+    xmlhttp.onprogress = function () {
+    	if (xmlhttp.status!=200){
+    	   alert("Error Loading page " + url + "\n" + xmlhttp.status);
+    	}   
+    };
+	xmlhttp.send(urlEncodedData);
+	xmlhttp.onreadystatechange = function() { 
+		if (xmlhttp.readyState==4) {
+			if (xmlhttp.status==200){
+				msgSave(xmlhttp.responseText, msgSaveOK, msgSaveKO);
+		    } else {
+		    	alert("Processing Error - Status=" + xmlhttp.status + "/n + Response=" + xmlhttp.responseText);
+			}		 
+			
+		}
+	};	
+}
+
+function clearAndInitializeAll() {
+	// User Data
+	document.getElementById("user").value=""; 							 		       
+	document.getElementById("companyCode").value=""; 							        
+	document.getElementById("company").value=""; 								 
+//	document.getElementById("userType").value="";            			     		 
+//	document.getElementById("userStatus").value="";            	 				 
+	document.getElementById("language").value="";            					  
+	document.getElementById("pwd").value="";          								  
+	document.getElementById("country").value=""; 									 
+	document.getElementById("mail").value=""; 											 
+	document.getElementById("mailInfo").value=""; 									 
+	document.getElementById("phone").value=""; 										  
+	document.getElementById("referManager").value=""; 							 
+	document.getElementById("referTech").value=""; 								 
+	document.getElementById("analyzerEnabled").checked=false;
+	document.getElementById("viewerEnabled").checked=false;
+	document.getElementById("inspectorEnabled").checked=false;
+	document.getElementById("assesmentEnabled").checked=false;
+	document.getElementById("countLogin").value="0";  			
+	document.getElementById("dtActivation").value=""; 
+	document.getElementById("tmActivation").value="";
+	document.getElementById("dtExpiration").value="";
+	document.getElementById("tmExpiration").value="";
+// 	document.getElementById("dtFirstLogin").value="";
+// 	document.getElementById("tmFirstLogin").value="";
+// 	document.getElementById("dtLastLogin").value="";
+// 	document.getElementById("tmLastLogin").value="";
+
+	// Directories relative a root o WEB-INF da file di configurazione generale
+    document.getElementById("pathConfigFile").value="";
+    document.getElementById("pathRoot").value="";
+    document.getElementById("pathUser").value="";
+    document.getElementById("pathPilot").value="";
+ 	
+	document.getElementById("dirResources").value="";
+	document.getElementById("dirWork").value="";
+	document.getElementById("dirDatabase").value="";
+	document.getElementById("dirJclInput").value="";   
+	document.getElementById("dirCobolSrcPgmInput").value="";
+	document.getElementById("dirCobolSrcCopyInput").value="";
+	document.getElementById("dirCobolPgm").value="";
+	document.getElementById("dirCobolCopy").value="";
+	document.getElementById("dirJcl").value="";
+	document.getElementById("dirSqlScript").value="";
+	document.getElementById("dirCobolGraph").value="";
+	document.getElementById("dirPilot").value="";
+	document.getElementById("dirLog").value="";
+	document.getElementById("dirOutput").value="";
+
+	// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+	document.getElementById("limitMaxLinesScanFindingSourceType").value="";
+	document.getElementById("limitMaxSources").checked=false;
+	document.getElementById("limitMaxSourcesInput").value="";
+	document.getElementById("limitMaxSourcesToProcess").value="";
+	document.getElementById("limitMaxObjects").checked=false;
+	document.getElementById("limitMaxObjectsInput").value="";
+	document.getElementById("limitMaxObjectsToProcess").value="";
+	document.getElementById("debugThresholdMemoryGarbage").value="";
+	document.getElementById("debugSourcesDetectedFreqGarbage").value="";
+	document.getElementById("debugActive").checked=false;
+	document.getElementById("logVerbose").checked=false;
+	document.getElementById("preferredVisitMethod").value="";
+	document.getElementById("preferredCachingLevel").value="";
+	document.getElementById("preferredCachingSupport").value="";
+	
+	//  Database
+	document.getElementById("dataBaseType").value="";
+	document.getElementById("dataBaseName").value="";
+	document.getElementById("dataBaseUser").value="";
+	document.getElementById("dataBasePwd").value="";
+	document.getElementById("dataBaseDriver").value="";
+	document.getElementById("dataBaseAccessType").value="";
+	document.getElementById("dataBaseUrl").value="";
+	document.getElementById("dataBaseMaxConn").value="";
+	document.getElementById("dataBaseCommitBlockUpdates").value="";
+	document.getElementById("dataBaseLogAnySql").checkbox=false;
+	
+	// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+	document.getElementById("pilotDefaultSource").value="";
+	document.getElementById("pilotDefaultProcess").value="";
+	document.getElementById("userExitClass").value="";
+	
+	}
+
+/**
+ * Coomon definitions for all pages
+ */
+//Defines Object configuration data available to all pages
+function Config( 
+		      user
+			 ,sys 
+			 ,subSys
+			 ,baseUrl
+			 
+             ,companyCode 
+             ,company 
+             ,userType  
+             ,userStatus  
+             ,language  
+             ,pwd  
+             ,country  
+             ,mail  
+             ,mailInfo  
+             ,phone  
+             ,referManager  
+             ,referTech  
+             ,analyzerEnabled  
+             ,viewerEnabled 
+             ,inspectorEnabled  
+             ,assesmentEnabled  
+             ,countLogin   			
+             ,dtActivation  
+             ,tmActivation  
+             ,dtExpiration  
+             ,tmExpiration  
+             ,dtFirstLogin  
+             ,tmFirstLogin  
+             ,dtLastLogin  
+             ,tmLastLogin  
+
+             ,pathConfigFile  
+             ,pathRoot  
+             ,pathUser  
+             ,pathPilot  
+	
+			 // Directories relative a root o WEB-INF da file di configurazione generale
+             ,dirResources  
+             ,dirWork  
+             ,dirDatabase       
+             ,dirJclInput  
+             ,dirCobolSrcPgmInput  
+             ,dirCobolSrcCopyInput  
+             ,dirCobolPgm  
+             ,dirCobolCopy  
+             ,dirJcl  
+             ,dirSqlScript  	 
+             ,dirCobolGraph  
+             ,dirPilot  
+             ,dirLog  
+             ,dirOutput  
+
+			 // Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+             ,limitMaxLinesScanFindingSourceType 
+             ,limitMaxSources  
+             ,limitMaxSourcesInput  
+             ,limitMaxSourcesToProcess  
+             ,limitMaxObjects  
+             ,limitMaxObjectsInput 
+             ,limitMaxObjectsToProcess 
+             ,debugThresholdMemoryGarbage  
+             ,debugSourcesDetectedFreqGarbage  
+             ,debugActive  
+             ,logVerbose  
+             ,preferredVisitMethod  
+             ,preferredCachingLevel  
+             ,preferredCachingSupport  
+
+			 //  Database
+             ,dataBaseType  
+             ,dataBaseName  
+             ,dataBaseUser  
+             ,dataBasePwd  
+             ,dataBaseDriver  
+             ,dataBaseAccessType  
+             ,dataBaseUrl  
+             ,dataBaseMaxConn  
+             ,dataBaseCommitBlockUpdates  
+             ,dataBaseLogAnySql 
+	
+			 // Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+             ,pilotDefaultSource  
+             ,pilotDefaultProcess  
+             ,userExitClass
+             
+             ,userTypeOrdinal 
+             ,userStatusOrdinal 
+				)  {
+	
+	    this.user = user;  
+	    this.sys = sys;  
+	    this.subSys = subSys; 
+	    this.baseUrl = baseUrl;
+	    
+		// User Data
+		this.companyCode = companyCode; 							 // Codice societa 
+		this.company = company; 									 // Descrizione societa 
+		this.userType = userType;            			     		 // Tipologia utente forward (T052)
+		this.userStatus = userStatus;            	 				 // Stato utente forward (T051)
+		this.language = language;            					 	 // Liguaggio in formato Locale ("en", "it", ... )
+		this.pwd = pwd;          								 	 // Password
+		this.country = country; 									 // Country IT, .. 
+		this.mail = mail; 											 // Mail principale  
+		this.mailInfo = mailInfo; 									 // Mail per info anomali  
+		this.phone = phone; 										 // Telefono di riferimento  
+		this.referManager = referManager; 							 // Riferimento manager 
+		this.referTech = referTech; 								 // Riferimento tecnico 
+		this.analyzerEnabled = analyzerEnabled; 					 // True user can view Analyzer 
+		this.viewerEnabled = viewerEnabled; 						 // True user can view Viewer 
+		this.inspectorEnabled = inspectorEnabled; 					 // True user can view Inspector 
+		this.assesmentEnabled = assesmentEnabled; 					 // True user can view Assesment 
+		this.countLogin =countLogin; 								 // Counter login effettuati       			
+		this.dtActivation = dtActivation;  							 // Data attivazione AAAAMMGG'
+		this.tmActivation = tmActivation;  						     // Ora  attivazione HHMMSSCC'
+		this.dtExpiration = dtExpiration;  							 // Data disattivazione AAAAMMGG'
+		this.tmExpiration = tmExpiration;  							 // Ora  disattivazione HHMMSSCC'
+		this.dtFirstLogin = dtFirstLogin;  							 // Data primo login AAAAMMGG'
+		this.tmFirstLogin = tmFirstLogin;  							 // Ora  primo login HHMMSSCC	'
+		this.dtLastLogin = dtLastLogin; 							 // Data ultimo login AAAAMMGG'
+		this.tmLastLogin = tmLastLogin; 							 // Ora  ultimo login HHMMSSCC'	
+
+	    this.pathConfigFile = pathConfigFile;                        // NOT NULL COMMENT 'Path completo file di configurazione'
+	    this.pathRoot = pathRoot;                                	 // NOT NULL COMMENT 'Phisical path to WEB-INF or application Installation'
+	    this.pathUser = pathUser;                                	 // NOT NULL COMMENT 'Phisical path to user  directory ...users/{user}'
+	    this.pathPilot = pathPilot;                               	 // Phisical path to pilot directory ...users/{user}'
+	 	
+		// Directories relative a root o WEB-INF da file di configurazione generale
+		this.dirResources = dirResources;                            //Resource'
+		this.dirWork = dirWork;                                 	 // NOT NULL COMMENT 'Working e temporaneo'		    
+		this.dirDatabase = dirDatabase;                              // Database'		              
+		this.dirJclInput = dirJclInput;                              // Jcl    in input al processo di analisi (.*) '       
+		this.dirCobolSrcPgmInput = dirCobolSrcPgmInput;              // Pgm    Cobol sorgenti in analisi		  (.*) '
+		this.dirCobolSrcCopyInput = dirCobolSrcCopyInput;            // Copy   Cobol sorgenti in analisi		  (.*)'
+		this.dirCobolPgm = dirCobolPgm;                              // Pgm    Cobol codificati e serializzati (.program)'			 
+		this.dirCobolCopy = dirCobolCopy;                            // Copy   Cobol codificati e serializzati (.copy)'	
+		this.dirJcl = dirJcl;                                  		 // Jcl codificati e serializzati (.jclSourcethis.X =  .jclIncludethis.X =  .jclProc)'		 
+		this.dirSqlScript = dirSqlScript;                            // Script Sql codificati e serializzati   (.scriptSql)'			 
+		this.dirCobolGraph = dirCobolGraph;                          // Grafi  Cobol codificati e serializzati (.graph)'	
+		this.dirPilot = dirPilot;                                	 // Pilot  sources e processi e filtri     (.pilot)'
+		this.dirLog = dirLog;                                  		 // Log
+		this.dirOutput = dirOutput;                              	 // Output per funzioni che producono text'
+
+		// Ottimizzazione processi ed elaborazioni, allocazione di arrays, collections, map
+		this.limitMaxLinesScanFindingSourceType = limitMaxLinesScanFindingSourceType;  // Numero massimo righe da analizzare per individuare il tipo sorgente (200)'
+		this.limitMaxSources =  limitMaxSources;                    	// Abilitazione limitazione ai sources trattati'
+		this.limitMaxSourcesInput = limitMaxSourcesInput;               // Numero massimo sorgenti da considerare in input'
+		this.limitMaxSourcesToProcess = limitMaxSourcesToProcess;       // Numero massimo sorgenti in input dei quali è stato intercettato il tipo'
+		this.limitMaxObjects =  limitMaxObjects;                   	 	// Abilitazione limitazione agli oggetti processati'
+		this.limitMaxObjectsInput = limitMaxObjectsInput;               // Numero massimo oggetti da considerare in input ai processi (filtrati)'
+		this.limitMaxObjectsToProcess = limitMaxObjectsToProcess;       // Numero massimo oggetti in input da processare'
+		this.debugThresholdMemoryGarbage = debugThresholdMemoryGarbage; // Attivazione gc() se memoria disponibile <'
+		this.debugSourcesDetectedFreqGarbage = debugSourcesDetectedFreqGarbage; // gc() attivata ogni 200 sorgenti'
+		this.debugActive = debugActive;                             	// Attivazione debug dove previsto (messaggi log di debug)'
+		this.logVerbose = logVerbose;                               	// Dettaglio log operazioni Sql e informative'
+		this.preferredVisitMethod = preferredVisitMethod;            	// Metodo di visita predefinito (BACKWARD)'
+		this.preferredCachingLevel = preferredCachingLevel;          	// Livello di caching predefinito (CACHING_PATH_ALL)'
+		this.preferredCachingSupport = preferredCachingSupport;      	// Tipo supporto java di cache (CACHING_ON_HASH_MAP, CACHING_ON_TREE_MAP)'
+		
+		//  Database
+		this.dataBaseType = dataBaseType;                            // Tipologia database MSACCESS/MYSQL'
+		this.dataBaseName = dataBaseName;                            // Nome database (DbAmrita)'
+		this.dataBaseUser = dataBaseUser;                            // User (GZEDDA)'
+		this.dataBasePwd = dataBasePwd;                              // Pwd (giampietro4)'
+		this.dataBaseDriver = dataBaseDriver;                        // Driver (com.mysql.cj.jdbc.Driver)'
+		this.dataBaseAccessType = dataBaseAccessType;                // Accesso LOCAL/REMOTE'
+		this.dataBaseUrl = dataBaseUrl;                              // jdbc:mysql://localhost:3306/Amrita?autoReconnect=true&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'		 	
+		this.dataBaseMaxConn = dataBaseMaxConn;                         // Numero massimo connessioni attive (1)'
+		this.dataBaseCommitBlockUpdates = dataBaseCommitBlockUpdates;   // Commit automatica a fine gruppo aggiornamenti (100)'
+		this.dataBaseLogAnySql = dataBaseLogAnySql;                 // Log istruzioni Sql come messaggi informativi'
+	    	
+		// Controllo analisi, identificazione oggetti analizzati/processati, piloti sources, filtri e processi'
+		this.pilotDefaultSource = pilotDefaultSource;                 // Pilota sorgenti (PilotDefaultSource.pilot)'
+		this.pilotDefaultProcess = pilotDefaultProcess;               // Pilota processi (PilotDefaultProcess.pilot)'
+		this.userExitClass = userExitClass;                           // Classe con exit applicative codificate (UserExit)'   
+
+		// Ordinal
+		this.userTypeOrdinal = userTypeOrdinal;            			  // Tipologia utente forward (T052)
+		this.userStatusOrdinal = userStatusOrdinal;            	 	  // Stato utente forward (T051)
+}
+
+</script>
+</body>
+</html>
+
+

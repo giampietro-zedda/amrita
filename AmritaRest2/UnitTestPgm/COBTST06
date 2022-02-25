@@ -1,0 +1,1807 @@
+      * R0110_AVOID_NOT_STD_PGM_NAME
+      * R0074_AVOID_LOW_DOCUMENTED_PGM_TITLE
+       IDENTIFICATION DIVISION.
+      * R0118_AVOID_PROGRAM_ID_UNEQUAL_FILE_NAME
+       PROGRAM-ID.     COBTSTXX.
+       AUTHOR.         ing. Giampietro Zedda.
+      *==============================================================
+      *  Descrizione	: Programma per Unit test esaustivo Metriche.
+      *                : e violazioni alle metriche
+      *  Scritto il    	: 24-10-2011
+      *  
+      *  Modificato il 	:  
+      *  Motivo        	:
+      *==============================================================       
+       
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+      * R0041_AVOID_INSTR_SELECT_FOR_CICS
+      * File con file status definito
+           SELECT OPTIONAL FSEQ01    ASSIGN TO DDFSEQ01
+              PASSWORD IS PWD6
+              FILE STATUS IS FILE-STATUS01.
+ 
+      * R0058_AVOID_SELECT_WITHOUT_FILE_STATUS
+           SELECT OPTIONAL FSEQ02    ASSIGN TO DDFSEQ02.
+ 
+      * R0053_AVOID_FILE_DEFINED_NOT_USED
+           SELECT OPTIONAL FILE01    ASSIGN TO DDFILE01.
+ 
+           SELECT OPTIONAL FILE02    ASSIGN TO DDFILE02.
+           SELECT OPTIONAL FILE03    ASSIGN TO DDFILE02.
+
+       DATA DIVISION.
+       FILE SECTION.
+      * R0042_AVOID_INSTR_FD_SD_FOR_CICS
+      * R0036_AVOID_BLOCK_N_RECORDS
+       FD  FSEQ01       RECORDING MODE F
+                        BLOCK CONTAINS 10 RECORDS.
+       01  REC-FSEQ01.
+      * R0079_AVOID_UNUSED_PGM_FIELD
+           05 DEP02  PIC 99 COMP-3.
+           05 FILLER PIC X(78).
+
+       FD  FSEQ02                        RECORDING F
+                                         BLOCK CONTAINS 0 RECORDS
+                                         LABEL RECORDS ARE STANDARD.
+       01  REC-FSEQ02.
+      * R0043_AVOID_BYNARY_FIELDS_NO_SYNC
+      * R0079_AVOID_UNUSED_PGM_FIELD
+           05 F2-BYNARY                  PIC 9(5) BINARY.
+           05 FILLER                     PIC X(70).
+      *
+       
+      * R0053_AVOID_FILE_DEFINED_NOT_USED
+       FD  FILE01                        RECORDING F
+                                         BLOCK CONTAINS 0 RECORDS
+                                         LABEL RECORDS ARE STANDARD.
+       01  REC-FILE01        PIC X(80).
+       
+       FD  FILE02                        RECORDING F
+                                         BLOCK CONTAINS 0 RECORDS
+                                         LABEL RECORDS ARE STANDARD.
+       01  REC-FILE02        PIC X(80).
+       
+       FD  FILE03                        RECORDING F
+                                         BLOCK CONTAINS 0 RECORDS
+                                         LABEL RECORDS ARE STANDARD.
+       01  REC-FILE03        PIC X(80).
+       
+       
+       WORKING-STORAGE SECTION.
+
+      * R0080_AVOID_DEAD_COPY_OR_SQL_INCLUDE       
+           COPY COPY01.
+           
+      * R0085_AVOID_UNINITIALIZED_COPY_FIELD  
+      * R0134_AVOID_UNINITIALIZED_CALL_PARAMETER_AREA_COPY    
+           COPY COPY03.
+           
+      * R0099_AVOID_NESTED_COPY       
+           COPY COPY04.
+       
+       01 FILLER.
+           05 SQLCODE-TO-TEST PIC S9(9) COMP-5 VALUE 0.
+           88 SQLCODE-OK VALUE 0.
+           
+      * Definizione ufficiale liv 01 Sqlca 
+           EXEC SQL INCLUDE SQLCA       END-EXEC.
+           
+       01 FIELDS.
+      * R0084_AVOID_UNINITIALIZED_PGM_DATA_FIELD
+      
+          05 FILE-STATUS01  PIC XX.
+          88 FILE-STATUS01-OK VALUE '00'.
+          05 FILE-STATUS-TO-TEST   PIC XX.
+          88 FILE-STATUS-OK VALUE '00'.
+          
+          05 FLDX01   PIC XX VALUE SPACE.
+          05 FLDX02   PIC X(5) VALUE SPACE.
+          05 FLDX03   PIC X(8) VALUE SPACE.
+      * R0105_AVOID_UNCLOSED_FIELD_DEF_BY_DOT
+          05 FLDN01   PIC 99 VALUE ZERO
+      * Bynary good sync
+          05 FLDN02   PIC 9(4) COMP VALUE 5 SYNC.
+      * Bynary good sync
+          05 FLDN03   PIC 9(4) SYNCRONIZED COMP  VALUE 0.
+          05 FLDN04   PIC 99  VALUE 0.
+          05 FLDN05   PIC 99  VALUE 0.
+      * R0043_AVOID_BYNARY_FIELDS_NO_SYNC
+          05 FLDN06   PIC 9(4) COMP  VALUE 0.
+          05 FLDN07   PIC 9(7) COMP-3  VALUE 0.
+          05 FLDN08   PIC 9(7) COMP-3  VALUE 0.
+      * R0084_AVOID_UNINITIALIZED_PGM_DATA_FIELD
+      
+       01 TB01-INDEX USAGE IS INDEX.
+       
+       01 C-COBTST09  PIC X(8)  VALUE 'COBTST09'.
+       
+  	   01 TB01 OCCURS 10 INDEXED BY TB01-INDEX.
+  	      05 TB01-ELEM.
+  	         07 TB01-FLD1  PIC X.
+      * R0079_AVOID_UNUSED_PGM_FIELD
+             07 TB01-FLD2  PIC X(5).
+       01 GRP01.
+          07 GRP-FLD01  PIC X  VALUE SPACE.
+          07 GRP-FLD02  PIC XX VALUE SPACE.
+          07 GRP-FLD03  PIC XX VALUE SPACE.
+       01 GRP02.
+          07 GRP-FLD01  PIC X  VALUE SPACE.
+          07 GRP-FLD02  PIC XX VALUE SPACE.
+          07 GRP-FLD03  PIC XX VALUE SPACE.
+
+      * R0122_AVOID_REDEFINES_CLAUSE
+       01 GRP02-RED REDEFINES GRP02 PIC X(5).
+ 
+      * R0095_AVOID_USE_OF_POINTERS
+       01 POINTER01 USAGE POINTER.
+
+      * Gestione chiamate Cics
+       01 FILLER.
+          05 IOAREA-CICS  PIC X(100).
+          05 EIBRESP-CICS PIC X(2).
+          88 EIBRESP-OK  VALUE '00'.
+       
+      * R0114_AVOID_NOT_STD_FIELD_NAME    
+       01 FIELD-NAME-NOT-STD PIC X.
+ 
+      * R0109_AVOID_NOT_STD_SIZE_FIELD_NAME    
+       01 I PIC X.
+  	    
+      * R0109_AVOID_NOT_STD_SIZE_FIELD_NAME    
+       01 IIIIIIIIIIIIIIIIIIIII26CRT PIC X.
+ 	
+      * Ioaree Sql
+       01 AREA-CUR1.
+          05 CUR1-FLD1   PIC X.
+          05 CUR1-FLD2   PIC X(5).
+ 	        
+      * Parametri call x ctrl initial
+       01 PARM1.
+          05 FILLER PIC X.
+          05 PARM11-NOT-INIT   PIC 99.
+          05 PARM11-INIT   PIC 9 VALUE 0.
+          05 PARM1-GRP.
+             07 PARM12-NOT-INIT   PIC X.
+             07 PARM12-INIT   PIC 9 VALUE 0.
+       01 PARM2 PIC X(10).
+       01 PARM3 PIC 9(5) VALUE 3.
+       
+  	    
+       LINKAGE SECTION.
+      * R0126_AVOID_LINKAGE_DATA_NOT_IN_COPYBOOK
+       01 LNK-AREA01.
+          05 LNKX01   PIC X(5).
+          
+      * Dfhcommarea Cics
+        01 DFHCOMMAREA                   PIC X(4096).
+ 
+      * R0126_AVOID_LINKAGE_DATA_NOT_IN_COPYBOOK      
+       01 LNK-AREA.
+      * R0125_AVOID_VALUE_CLAUSE_IN_LINKAGE
+          05 LNK01 PIC X VALUE SPACE.
+          05 LNK02 PIC 99.
+      
+          
+       PROCEDURE DIVISION.
+       MAIN-LABEL.
+           MOVE 1 TO FLDN01.
+      * Copy04 NO dead-code
+           MOVE 0 TO COPY04-INIZIO.
+           IF FLDN02 = 5
+      * R0064_AVOID_PERFORM_THRU
+              PERFORM S001-SECTION-NOT-STD THRU S001-EX
+           END-IF
+           
+           IF FLDN02 = 6
+              PERFORM S002-SECTION
+           END-IF
+ 
+       L001-LABEL.
+            IF FLDN02 = 3
+              PERFORM P001-PARAGRAPH-NOT-STD
+           END-IF
+           PERFORM S003-SECTION.
+           PERFORM S004-SECTION.
+           PERFORM S005-SECTION.
+           PERFORM S006-SECTION.
+           PERFORM S007-SECTION.
+           PERFORM S009-SECTION.
+           PERFORM S00A-SECTION THRU S00A-EX.
+           IF FLDN02 = 4
+      * R0064_AVOID_PERFORM_THRU
+              PERFORM P002-PARAGRAPH THRU P002-EX
+      * R0065_AVOID_PERFORM_THRU_PARAGRAPH_NOT_SINGLE
+              PERFORM P002-PARAGRAPH THRU P006-EX
+              PERFORM P003-PARAGRAPH 
+              PERFORM P004-PARAGRAPH 
+              PERFORM P005-PARAGRAPH 
+              PERFORM P006-PARAGRAPH 
+              PERFORM P007-PARAGRAPH UNTIL FLDN02 > 0
+              PERFORM P009-PARAGRAPH 
+              PERFORM P00C-PARAGRAPH 
+              PERFORM P00E-PARAGRAPH 
+              PERFORM P00H-PARAGRAPH 
+              PERFORM P00K-PARAGRAPH
+            END-IF
+           
+       L999-LABEL.
+           GOBACK.
+           
+      *------------------------------------------------- 
+      * Section OK
+      *
+      *  R0001_AVOID_GOTO_OUTSIDE_SECTION
+      *  R0002_AVOID_GOTO_BACK_SAME_SECTION
+      *  R0005_AVOID_GOTO_FWD_TO_END
+      *  R0006_AVOID_GOTO_FWD_NOT_TO_END
+      *  R0007_AVOID_RECURSIVE_PERFORM
+      *  R0026_AVOID_LABEL_UNREFERENCED
+      *  R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      *  R0052_AVOID_FILE_OPEN_NOT_CLOSED
+      *  R0054_AVOID_FILE_OPEN_NOT_USED
+      *  R0057_AVOID_READ_WITHOUT_AT_END
+      *  R0067_AVOID_IF_CLOSED_BY_DOT
+      *  R0077_AVOID_UNCHECKED_FILE_STATUS
+      *  R0081_AVOID_DEAD_CODE_UNREACHABLE
+      *  R0108_AVOID_NOT_STD_SIZE_LABEL
+      *  R0111_AVOID_NOT_STD_SECTION_NAME
+      *  R0113_AVOID_NOT_STD_LABEL_NAME
+      *  R0123_AVOID_SECTION_IN_PROCEDURE
+      *  R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *  R0131_AVOID_MAGIC_LITERAL_NUMERIC
+      *------------------------------------------------- 
+       S001-SECTION-NOT-STD SECTION. 
+       L002-LABEL.
+           OPEN INPUT FILE02.  
+           OPEN INPUT FILE03. 
+           READ FILE02. 
+           MOVE FLDX01 TO FLDX02.
+           CLOSE FILE02
+           IF FLDN02 = 4
+              GO TO  L999-LABEL.
+       L003-LABEL.
+           ADD 1 TO FLDN02 
+           IF FLDN02 > 5 
+              GO TO S001-EX.
+           IF FLDX01 EQUAL 'H'
+      * Recursive perform
+              PERFORM S001-SECTION-NOT-STD
+              GO TO L004-LABEL.
+              
+           MOVE "H" TO FLDX01.
+      * R0108_AVOID_NOT_STD_SIZE_LABEL
+       LL.
+           MOVE "J" TO FLDX02.
+      * R0108_AVOID_NOT_STD_SIZE_LABEL
+       L888-NAME-EXCEED-25-CHARACTERS.
+           GO TO L003-LABEL.
+           
+      * R0113_AVOID_NOT_STD_LABEL_NAME
+       LABEL-NOT-STD.
+          
+       L004-LABEL.
+           IF FLDN02 > 5 
+              GO TO S001-EX.
+           GO TO L003-LABEL.
+           
+      * Dead code non raggiungibile             
+           MOVE "D" TO FLDX01. 
+           MOVE 5 TO FLDN02.  
+       S001-EX.
+           EXIT.
+  
+  
+      *------------------------------------------------- 
+      * Section OK
+      *
+      *  R0016_AVOID_EMPTY_SECTION
+      *  R0015_AVOID_SECTION_UNREFERENCED
+      *  R0123_AVOID_SECTION_IN_PROCEDURE
+      *------------------------------------------------- 
+       S002-SECTION SECTION. 
+       S002-EX.
+           EXIT.
+  
+       S003-SECTION SECTION. 
+      * Section OK
+      *
+      * R0002_AVOID_GOTO_BACK_SAME_SECTION
+      * R0018_AVOID_UNDOCUMENTED_SECTION
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0027_AVOID_LABEL_REFERENCED_DUPLICATED
+      * R0067_AVOID_IF_CLOSED_BY_DOT
+      * R0108_AVOID_NOT_STD_SIZE_LABEL
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+       L006-LABEL-REFERENCED-DUPLICATED.
+       
+           MOVE "D" TO FLDX01. 
+           MOVE 5 TO FLDN02.
+       L005-PARAGRAPH.
+           MOVE "F" TO FLDX01.
+           
+      * Dynamic light
+           CALL C-COBTST09. 
+           MOVE 4 TO FLDN02.
+      * Row comm
+           IF FLDN02 > 5 
+              MOVE "D" TO FLDX01
+              MOVE 5 TO FLDN02
+              GO TO L006-LABEL-REFERENCED-DUPLICATED.
+       S003-EX.
+           EXIT.
+  
+      *------------------------------------------------- 
+      * Section OK
+      *
+      * R0001_AVOID_GOTO_OUTSIDE_SECTION
+      * R0027_AVOID_LABEL_REFERENCED_DUPLICATED
+      * R0046_AVOID_GOTO_PARAGRAPH
+      * R0047_AVOID_GOTO_FROM_OUTSIDE_TO_LABEL_INSIDE_SECTION
+      * R0106_AVOID_INSTR_START_BEFORE_AREA_A
+      * R0107_AVOID_LABEL_AT_COL_GREATER_8
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+      *------------------------------------------------- 
+       S004-SECTION SECTION. 
+       L006-LABEL-REFERENCED-DUPLICATED.
+      * Row comm
+           IF FLDN02 > 5 
+              MOVE "D" TO FLDX01
+              MOVE 5 TO FLDN02
+              GO TO L006-LABEL-REFERENCED-DUPLICATED.
+           IF FLDN02 LESS 3 
+              GO TO P005-PARAGRAPH.
+           IF FLDN02 LESS 3 
+              GO TO S008-I.
+              
+      * Instr before area A
+ MOVE 2 TO FLDN01.
+ 
+      * Label a col 10
+         LABXX-COL10.
+       S004-EX. EXIT.
+  
+      *------------------------------------------------- 
+      * Section OK
+      *
+      * R0017_AVOID_SECTION_WITH_NO_PARAGRAPH
+      * R0020_AVOID_LOW_SECTION_PERC_COMM_BY_INSTR
+      * R0021_AVOID_LOW_SECTION_PERC_COMM_BY_ROW
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0067_AVOID_IF_CLOSED_BY_DOT
+      * R0094_AVOID_GOBACK_NOT_IN_MAINLINE
+      * R0097_AVOID_SECTION_NOT_ENDED_BY_EXIT
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+     *------------------------------------------------- 
+       S005-SECTION SECTION.
+           MOVE "D" TO FLDX01. 
+           MOVE 5 TO FLDN02.
+           IF FLDN02 = 12
+              GOBACK.
+       S005-EX.
+  
+      *------------------------------------------------- 
+      * Section OK
+      *
+      * R0022_AVOID_HIGH_SECTION_INSTR_SIZE
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0028_AVOID_LABEL_UNREFERENCED_DUPLICATED
+      * R0108_AVOID_NOT_STD_SIZE_LABEL
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * Comm
+      * Violazione se + di 40 istruzioni
+      * Commenti X istruzione OK
+      * Commenti X riga OK
+      *------------------------------------------------- 
+       S006-SECTION SECTION. 
+      * Row comm 1
+      * Row comm 2
+      * Row comm 3
+      * Row comm 4
+      * Row comm 5
+      * Row comm 6
+      * Row comm 7    
+           MOVE "01" TO FLDX01. 
+           MOVE "02" TO FLDX01. 
+           MOVE "03" TO FLDX01. 
+           MOVE "04" TO FLDX01. 
+           MOVE "05" TO FLDX01.
+       L006-LABEL-UNREFERENCED-DUPLICATED. 
+           MOVE "06" TO FLDX01. 
+           MOVE "07" TO FLDX01. 
+           MOVE "08" TO FLDX01. 
+           MOVE "09" TO FLDX01. 
+           MOVE "10" TO FLDX01. 
+           MOVE "11" TO FLDX01. 
+           MOVE "12" TO FLDX01. 
+           MOVE "13" TO FLDX01. 
+           MOVE "14" TO FLDX01. 
+           MOVE "15" TO FLDX01. 
+           MOVE "16" TO FLDX01. 
+           MOVE "17" TO FLDX01. 
+           MOVE "18" TO FLDX01. 
+           MOVE "19" TO FLDX01. 
+           MOVE "20" TO FLDX01. 
+           MOVE "21" TO FLDX01. 
+           MOVE "22" TO FLDX01.
+           MOVE "23" TO FLDX01. 
+           MOVE "24" TO FLDX01. 
+           MOVE "25" TO FLDX01. 
+           MOVE "26" TO FLDX01. 
+           MOVE "27" TO FLDX01. 
+           MOVE "28" TO FLDX01. 
+           MOVE "29" TO FLDX01. 
+           MOVE "30" TO FLDX01. 
+           MOVE "31" TO FLDX01. 
+           MOVE "32" TO FLDX01. 
+           MOVE "33" TO FLDX01. 
+           MOVE "34" TO FLDX01. 
+           MOVE "35" TO FLDX01. 
+           MOVE "36" TO FLDX01. 
+           MOVE "37" TO FLDX01. 
+           MOVE "38" TO FLDX01. 
+           MOVE "39" TO FLDX01. 
+           MOVE "40" TO FLDX01. 
+           MOVE "41" TO FLDX01. 
+       S006-EX. EXIT.
+  
+      *------------------------------------------------- 
+      * Section
+      *
+      * R0002_AVOID_GOTO_BACK_SAME_SECTION
+      * R0005_AVOID_GOTO_FWD_TO_END
+      * R0021_AVOID_LOW_SECTION_PERC_COMM_BY_ROW
+      * R0022_AVOID_HIGH_SECTION_INSTR_SIZE
+      * R0023_AVOID_HIGH_MCBE_SECTION_COMPLEXITY
+      * R0024_AVOID_HIGH_PERFORM_INNER_INSTR_SIZE
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0028_AVOID_LABEL_UNREFERENCED_DUPLICATED
+      * R0029_AVOID_COMMIT_INSIDE_LOOP
+      * R0034_AVOID_ARITHMETIC_OPERAND_ZONED_NO_LOOP
+      * R0037_AVOID_CALL_STATIC
+      * R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      * R0108_AVOID_NOT_STD_SIZE_LABEL
+      * R0135_AVOID_COMPUTE_FOR_SIMPLE_OPERATIONS
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      * R0141_AVOID_SQL_USE
+      * Si contano tutti i predicati, anche quelli NON espliciti
+      * Si somma 1 per ogni AND OR
+      * Si somma 1 al conteggio finale
+      *------------------------------------------------- 
+       S007-SECTION SECTION. 
+   
+      * +1 (1)
+           IF FLDX01 = 'J'
+              MOVE 'P' TO FLDX01
+           END-IF
+      * +3 (4)
+           IF FLDX01 = 'J' OR FLDX01 = 'K' AND FLDX02 = 'M'
+              MOVE 'P' TO FLDX01
+           END-IF
+      * +4 (8)
+           EVALUATE TRUE
+             WHEN FLDX01 = 'J'
+                MOVE 'P' TO FLDX01
+             WHEN FLDX01 = 'K' OR FLDX01 = 'L' 
+                MOVE 'R' TO FLDX01
+              WHEN FLDX01 = 'D'
+                MOVE 'D' TO FLDX01
+              WHEN OTHER
+                MOVE 'X' TO FLDX01
+           END-EVALUATE
+      
+       L006-LABEL-UNREFERENCED-DUPLICATED. 
+         
+      * +2 (10)
+           PERFORM VARYING FLDN03 FROM 1 BY 1
+                     UNTIL FLDN03 > 5 AND FLDN02 NOT = 2
+      
+      * +1 (11)              
+              IF FLDX01 = 'J'
+                  MOVE 2 TO FLDN02
+              END-IF
+              
+              EXEC CICS SYNCPOINT END-EXEC
+              EXEC SQL COMMIT END-EXEC
+              COMMIT
+              MOVE "07" TO FLDX01 
+              MOVE "08" TO FLDX01 
+              MOVE "09" TO FLDX01 
+              MOVE "10" TO FLDX01 
+              MOVE "11" TO FLDX01 
+              MOVE "12" TO FLDX01 
+              MOVE "13" TO FLDX01 
+              MOVE "14" TO FLDX01 
+              MOVE "15" TO FLDX01 
+              MOVE "16" TO FLDX01 
+              MOVE "17" TO FLDX01 
+              MOVE "18" TO FLDX01 
+              MOVE "19" TO FLDX01 
+              MOVE "20" TO FLDX01 
+              MOVE "21" TO FLDX01 
+              MOVE "22" TO FLDX01 
+              MOVE "23" TO FLDX01 
+              MOVE "24" TO FLDX01 
+              MOVE "25" TO FLDX01 
+              MOVE "26" TO FLDX01 
+      * Superato il numero massimo inner instruction
+           END-PERFORM
+
+      * +3 (14)
+           GO TO L008-DEPON
+                 L009-DEPON
+                 L010-DEPON
+           DEPENDING ON FLDN03.
+ 
+       L008-DEPON.
+           MOVE "26" TO FLDX01.
+           GO TO S007-EX.
+           
+       L009-DEPON.
+           MOVE "27" TO FLDX01.
+           GO TO S007-EX.
+           
+       L010-DEPON.
+           MOVE "28" TO FLDX01.
+
+      * +2 (16)
+           READ  FSEQ01  INTO  REC-FSEQ01              
+             AT  END                                                   
+                 MOVE "26" TO FLDX01                             
+               NOT AT  END                                            
+                 MOVE "27" TO FLDX01                   
+           END-READ.                                                   
+      
+      * +1 (17)
+           read FSEQ01 NEXT RECORD INTO REC-FSEQ01
+               AT END GO TO L009-DEPON.
+               
+      * +1 (18)      
+           read FSEQ01 NOT AT END MOVE "27" TO FLDX01.    
+
+      * +2 (20)
+           read FSEQ01 RECORD INTO REC-FSEQ01 KEY IS FLDX02
+              INVALID KEY MOVE ZERO TO FLDN01     
+                  NOT INVALID KEY MOVE "27" TO FLDX01  
+           end-read
+      * +2 (22)
+           write REC-FSEQ01 BEFORE ADVANCING 3 Lines  
+                END-OF-PAGE  MOVE "27" TO FLDX01     
+                EOP MOVE "28" TO FLDX01.  
+      
+      * +2 (24)
+           rewrite REC-FSEQ01  
+                INVALID  MOVE "27" TO FLDX01   
+                NOT INVALID MOVE "28" TO FLDX01  
+           end-rewrite.     
+ 
+      * +1 (25)
+          call 'PGMCAL7' USING FLDX01
+            NOT    ON OVERFLOW MOVE "27" TO FLDX01
+          END-CALL        
+
+      * +1 (26)
+           call 'PGMCAL8' USING FLDX01
+             ON EXception MOVE "27" TO FLDX01.
+ 
+      * +2 (28)
+      * R0034_AVOID_ARITHMETIC_OPERAND_ZONED_NO_LOOP
+           COMPUTE FLDN03 = FLDN01 + 2
+                ON SIZE ERROR Move zeroes to FLDX03
+             NOT ON SIZE ERROR Move 2 to FLDN02
+           END-COMPUTE
+ 
+      * +1 (29) Limite superato
+        
+       S007-EX. EXIT.
+
+      *------------------------------------------------- 
+      * Section OK
+      *
+      * R0015_AVOID_SECTION_UNREFERENCED
+      * R0020_AVOID_LOW_SECTION_PERC_COMM_BY_INSTR
+      * R0021_AVOID_LOW_SECTION_PERC_COMM_BY_ROW
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0082_AVOID_DEAD_SECTION
+      * R0116_AVOID_NOT_STD_SECTION_THRU_NAME
+      * Comm
+      *------------------------------------------------- 
+       S008-SECTION SECTION.
+       S008-I.
+           MOVE "D" TO FLDX01. 
+           MOVE 5 TO FLDN02.
+       S008-EX-NOT-STD. EXIT.
+  
+      *------------------------------------------------- 
+      * Section OK
+      * 
+      * Violazioni sql
+      *
+      * R0005_AVOID_GOTO_FWD_TO_END
+      * R0017_AVOID_SECTION_WITH_NO_PARAGRAPH
+      * R0021_AVOID_LOW_SECTION_PERC_COMM_BY_ROW
+      * R0022_AVOID_HIGH_SECTION_INSTR_SIZE
+      * R0023_AVOID_HIGH_MCBE_SECTION_COMPLEXITY (21)
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+      * R0141_AVOID_SQL_USE
+      * R0140_AVOID_SQL_SELECT_STAR
+      * R0142_AVOID_SQL_OPEN_CURSOR_INSIDE_LOOP
+      * R0143_AVOID_SQL_UNCLOSED_CURSOR
+      * R0144_AVOID_SQL_DECLARED_AND_UNUSED_CURSOR
+      * R0145_AVOID_SQL_HIGH_WHERE_CONDITIONS_NUMBER
+      * R0146_AVOID_SQL_HIGH_TABLES_NUMBER
+      * R0147_AVOID_SQL_HIGH_SUBSELECT_NESTED_NUMBER
+      * R0148_AVOID_SQL_HIGH_TABLES_JOINED_NUMBER
+      * R0149_AVOID_SQL_DECLARE_CURSOR_WITH_NO_ORDER_BY
+      * R0150_AVOID_SQL_SELECT_WITH_UNION
+      * R0151_AVOID_SQL_SELECT_WITH_DISTINCT
+      * R0152_AVOID_SQL_SELECT_WITH_GROUP_BY
+      * R0153_AVOID_SQL_DYNAMIC
+      * R0154_AVOID_SQL_SELECT_WITH_NO_WHERE
+      * R0155_AVOID_SQL_DELETE_WITH_NO_WHERE
+      * R0156_AVOID_SQL_UPDATE_WITH_NO_WHERE
+      * R0157_AVOID_SQL_WHERE_WITH_LIKE_PREDICATE
+      * R0158_AVOID_SQL_WITH_DEPRECATED_SYNTAX
+      * R0159_AVOID_SQL_UNCHECKED_CODE
+      *------------------------------------------------- 
+       S009-SECTION SECTION.
+   
+      * Select *   
+           EXEC SQL SELECT * FROM TB01 WHERE COL1 = 5 END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Declare Cur1 with NO order by
+           EXEC SQL DECLARE CUR1 CURSOR FOR
+                 SELECT COL1 FROM TB01 WHERE COL1 = 10
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+      
+      * Declare Cur2
+           EXEC SQL DECLARE CUR2 CURSOR FOR
+                 SELECT COL1 FROM TB01 WHERE COL1 = 5
+                       ORDER BY COL1
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+      
+      * Declare Cur3
+           EXEC SQL DECLARE CUR3 CURSOR FOR
+                 SELECT COL1 FROM TB01 WHERE COL1 = 2
+                       ORDER BY COL1
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+      
+      * Open cursor inside loop 
+           PERFORM VARYING FLDN02 FROM 1 BY 1 UNTIL FLDN02 > 5
+                MOVE "D" TO FLDX01
+      * Open Cur1
+                EXEC SQL OPEN CURSOR CUR1 END-EXEC
+               
+      * Fetch cur1
+                EXEC SQL FETCH CUR1
+                  INTO :CUR1-FLD1,
+                       :CUR1-FLD2
+                END-EXEC
+                IF SQLCODE = 0
+                   GO TO S009-EX
+                END-IF
+      
+      * Close cur1
+            EXEC SQL CLOSE CUR1 END-EXEC 
+                
+           END-PERFORM
+       
+      * Open cursor inside loop paragraph
+           PERFORM P00N-PARAGRAPH VARYING FLDN02 FROM 1 BY 1 
+             UNTIL FLDN02 > 5
+             
+             
+      * Good Open/Fetch/Close cursor 
+           EXEC SQL OPEN CURSOR CUR2 FOR
+                  SELECT COL1 FROM TB01 WHERE COL1 = 10
+                               ORDER BY COL1
+           END-EXEC
+           EXEC SQL FETCH CUR2
+                  INTO :CUR1-FLD1,
+                       :CUR1-FLD2
+           END-EXEC.
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+           EXEC SQL CLOSE CUR2 END-EXEC.
+        
+      * Unclosed used cursor  
+           EXEC SQL OPEN CURSOR CUR3 END-EXEC.
+           EXEC SQL FETCH CUR3
+                  INTO :CUR1-FLD1,
+                       :CUR1-FLD2
+           END-EXEC.
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF.
+           
+      * Declared And Unused Cur4 Cursor
+           EXEC SQL DECLARE CUR4 CURSOR FOR
+                 SELECT COL1 FROM TB01 WHERE COL1 = 5
+                        ORDER BY COL1
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF.
+           
+      * High where conditions (> 10)  
+           EXEC SQL SELECT * FROM TB01 
+           WHERE COL1 = 1 
+              OR COL1 = 2
+              OR COL1 = 3
+              OR COL1 = 4
+              OR COL1 = 5
+              OR COL1 = 6
+              OR COL1 = 7
+              OR COL1 = 8
+              OR COL1 = 9
+              OR COL1 = 10
+              OR COL1 = 11
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+           
+      * High tables accessed (> 5)
+           EXEC SQL SELECT COL1 
+                     FROM TB01, TB02, TB03, TB04, TB05, TB06
+                    WHERE COL1 = 1 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+           
+      * High subquery nested (> 3)
+           EXEC SQL SELECT COL1 FROM TB00 A  
+               WHERE A.COL1 = 1 
+                      AND A.COL2 
+               IN (SELECT B.COL2 FROM TB01 B WHERE B.COL1 = A.COL1
+                      AND B.COL2 
+                 IN (SELECT C.COL2 FROM TB02 C WHERE C.COL1 = A.COL1
+                      AND C.COL2 
+                   IN (SELECT D.COL1 FROM TB03 D WHERE D.COL1 = A.COL1
+                      AND EXISTS
+                       (SELECT E.COL2 FROM TB04 E WHERE E.COL1 = A.COL1
+                  ))))
+                                                              
+                                         
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+           
+      * High tables joined (> 5)
+           EXEC SQL SELECT COL1 FROM TB00 C00 
+                     JOIN TB01 C01 
+                            ON C00.COL1 = C01.COL1
+                     JOIN TB02 C02
+                            ON C00.COL1 = C02.COL1
+                     JOIN TB03 C03
+                            ON C00.COL1 = C03.COL1
+                     JOIN TB04 C04
+                            ON C00.COL1 = C04.COL1
+                     JOIN TB05 C05
+                            ON C00.COL1 = C05.COL1
+                     JOIN TB06 C06
+                            ON C00.COL1 = C06.COL1
+                    WHERE COL1 = 1 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Select With UNION   
+           EXEC SQL 
+               SELECT COL1, COL2 FROM TB01 
+                  UNION 
+               SELECT COL1, COL2 FROM TB01 
+                 WHERE COL1 = 5 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Select With DISTINCT option   
+           EXEC SQL 
+               SELECT DISTINCT COL1, COL2 FROM TB01 
+                  WHERE COL1 = 5 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Select With Group By option   
+           EXEC SQL 
+               SELECT DISTINCT COL1, COL2 FROM TB01 
+                  WHERE COL1 = 5 
+               GROUP BY COL2
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Select With NO Where
+           EXEC SQL 
+               SELECT COL1, COL2 FROM TB01 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Delete With NO Where
+           EXEC SQL 
+               DELETE FROM TB01 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * UPDATE With NO Where
+           EXEC SQL UPDATE TB01  
+               SET COL2 = 'G'
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Select With Like Predicate
+           EXEC SQL 
+               SELECT COL1, COL2 FROM TB01 
+                  WHERE COL2 LIKE '%A' 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Select With deprecated syntax
+           EXEC SQL 
+               SELECT A. COL1, A.COL2 FROM TB01 A 
+                  WHERE COL2 LIKE '%A' 
+           END-EXEC
+           IF SQLCODE = 0
+              GO TO S009-EX
+           END-IF
+
+      * Dynamic prepare
+           EXEC SQL PREPARE SQL-STMT1 FROM :I1 END-EXEC
+           
+      * Dynamic Execution prepared statement 
+           EXEC SQL EXECUTE SQL-STMT1END-EXEC
+           
+      * Dynamic prepare & Execution statement 
+           EXEC SQL EXECUTE IMMEDIATE :STR-DELETE END-EXEC
+     
+           
+       S009-EX. EXIT.
+  
+
+      * Section OK
+      * R0016_AVOID_EMPTY_SECTION
+      * R0019_AVOID_LOW_DOCUMENTED_SECTION
+      * R0123_AVOID_SECTION_IN_PROCEDURE
+       S00A-SECTION SECTION.
+       S00A-EX. EXIT.
+              
+      *-------------------------------------------------
+      * Paragrafo OK
+      *
+      * R0003_AVOID_GOTO_OUTSIDE_PARAGRAPH
+      * R0004_AVOID_GOTO_BACK_SAME_PARAGRAPH
+      * R0046_AVOID_GOTO_PARAGRAPH
+      * R0067_AVOID_IF_CLOSED_BY_DOT
+      * R0096_AVOID_PARAGRAPH_NOT_ENDED_BY_EXIT 
+      * R0108_AVOID_NOT_STD_SIZE_LABEL
+      * R0112_AVOID_NOT_STD_PARAGRAPH_NAME
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+      *-------------------------------------------------
+       P001-PARAGRAPH-NOT-STD.
+           MOVE FLDX01 TO FLDX02.
+           IF FLDN02 = 4
+              GO TO  L999-LABEL.
+           IF FLDN02 = 4
+             GO TO P001-PARAGRAPH-NOT-STD.
+  
+      *------------------------------------
+      * Paragrafo OK
+      *
+      * R0008_AVOID_EMPTY_PARAGRAPH
+      * R0011_AVOID_LOW_PARAGRAPH_PERC_COMM_BY_INSTR
+      * R0012_AVOID_LOW_PARAGRAPH_PERC_COMM_BY_ROW
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      *------------------------------------
+       P002-PARAGRAPH.
+       P002-EX. EXIT.
+  
+       P003-PARAGRAPH.
+      * Paragrafo OK
+      * R0009_AVOID_UNDOCUMENTED_PARAGRAPH
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+       P003-EX. EXIT.
+ 
+      *------------------------------------
+      * Paragrafo OK
+      *
+      * R0013_AVOID_HIGH_PARAGRAPH_INSTR_SIZE
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0115_AVOID_NOT_STD_PARAGRAPH_THRU_NAME
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      *------------------------------------
+       P004-PARAGRAPH.
+      * Row comm 1
+      * Row comm 2
+      * Row comm 3
+      * Row comm 4
+      * Row comm 5
+      * Row comm 6
+      * Row comm 7    
+           MOVE "01" TO FLDX01. 
+           MOVE "02" TO FLDX01. 
+           MOVE "03" TO FLDX01. 
+           MOVE "04" TO FLDX01. 
+           MOVE "05" TO FLDX01.
+           MOVE "06" TO FLDX01. 
+           MOVE "07" TO FLDX01. 
+           MOVE "08" TO FLDX01. 
+           MOVE "09" TO FLDX01. 
+           MOVE "10" TO FLDX01. 
+           MOVE "11" TO FLDX01. 
+           MOVE "12" TO FLDX01. 
+           MOVE "13" TO FLDX01. 
+           MOVE "14" TO FLDX01. 
+           MOVE "15" TO FLDX01. 
+           MOVE "16" TO FLDX01. 
+           MOVE "17" TO FLDX01. 
+           MOVE "18" TO FLDX01. 
+           MOVE "19" TO FLDX01. 
+           MOVE "20" TO FLDX01. 
+           MOVE "21" TO FLDX01. 
+           MOVE "22" TO FLDX01.
+           MOVE "23" TO FLDX01. 
+           MOVE "24" TO FLDX01. 
+           MOVE "25" TO FLDX01. 
+           MOVE "26" TO FLDX01. 
+           MOVE "27" TO FLDX01. 
+           MOVE "28" TO FLDX01. 
+           MOVE "29" TO FLDX01. 
+           MOVE "30" TO FLDX01. 
+           MOVE "31" TO FLDX01. 
+           MOVE "32" TO FLDX01. 
+           MOVE "33" TO FLDX01. 
+           MOVE "34" TO FLDX01. 
+           MOVE "35" TO FLDX01. 
+           MOVE "36" TO FLDX01. 
+           MOVE "37" TO FLDX01. 
+           MOVE "38" TO FLDX01. 
+           MOVE "39" TO FLDX01. 
+           MOVE "40" TO FLDX01. 
+           MOVE "41" TO FLDX01. 
+       P004-EX-NOT-STD. EXIT.
+  
+      *------------------------------------
+      * Paragrafo OK
+      *
+      * R0003_AVOID_GOTO_OUTSIDE_PARAGRAPH
+      * R0013_AVOID_HIGH_PARAGRAPH_INSTR_SIZE
+      * R0014_AVOID_HIGH_MCBE_PARAGRAPH_COMPLEXITY
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0037_AVOID_CALL_STATIC
+      * R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      * R0057_AVOID_READ_WITHOUT_AT_END
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *------------------------------------
+       P005-PARAGRAPH.
+        
+      * +1
+           IF FLDX01 = 'J'
+              MOVE 'P' TO FLDX01
+           END-IF
+           
+      * +3 (4)
+           IF FLDX01 = 'J' OR FLDX01 = 'K' AND FLDX02 = 'M'
+              MOVE 'P' TO FLDX01
+           END-IF
+           
+      * +5 (9)
+           EVALUATE TRUE
+             WHEN FLDX01 = 'J'
+                MOVE 'P' TO FLDX01
+             WHEN FLDX01 = 'K' OR FLDX01 = 'L' 
+                MOVE 'R' TO FLDX01
+             WHEN FLDX01 = 'D'
+                MOVE 'D' TO FLDX01
+             WHEN FLDX01 = 'E'
+                MOVE 'E' TO FLDX01
+             WHEN OTHER
+                MOVE 'X' TO FLDX01
+           END-EVALUATE
+         
+      * +2 (11)
+           PERFORM VARYING FLDN03 FROM 1 BY 1
+                     UNTIL FLDN03 > 5 AND FLDN02 NOT = 2
+      
+      * +1 (12)              
+              IF FLDX01 = 'J'
+                  MOVE 2 TO FLDN02
+              END-IF
+           END-PERFORM
+
+      * +2 (14)
+           READ  FILE02  INTO  REC-FILE02              
+             AT  END                                                   
+                 MOVE "26" TO FLDX01                             
+               NOT AT  END                                            
+                 MOVE "27" TO FLDX01                   
+           END-READ.                                                   
+      
+      * +1 (15)
+           read FILE02 NEXT RECORD INTO REC-FILE02
+               AT END GO TO L009-DEPON.
+               
+      * +2 (17)
+           read FILE02 RECORD INTO REC-FILE02 KEY IS FLDX02
+              INVALID KEY MOVE ZERO TO FLDN02     
+                  NOT INVALID KEY MOVE "27" TO FLDX01  
+           end-read
+           
+      * +2 (19)
+           write REC-FILE02 BEFORE ADVANCING 3 Lines  
+                END-OF-PAGE  MOVE "27" TO FLDX01     
+                EOP MOVE "28" TO FLDX01.  
+      
+      * +1 (20)
+          call 'PGMCAL7' USING FLDX02
+            NOT    ON OVERFLOW MOVE "27" TO FLDX01
+          END-CALL 
+          
+      * +1 (21) limite superato
+                 
+       P005-EX. EXIT.  
+
+  
+      *------------------------------------
+      * Paragrafo OK
+      *
+      * R0013_AVOID_HIGH_PARAGRAPH_INSTR_SIZE
+      * R0014_AVOID_HIGH_MCBE_PARAGRAPH_COMPLEXITY (22)
+      * R0025_AVOID_HIGH_LEVEL_NESTING_IF
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0067_AVOID_IF_CLOSED_BY_DOT
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *------------------------------------
+       P006-PARAGRAPH.
+     
+      * Superamento limite di 1  
+           IF FLDX01 > '0'
+              IF FLDX01 > '1'
+                 IF FLDX01 > '2'
+                    IF FLDX01 > '3'
+                       IF FLDX01 > '4'
+                          MOVE "28" TO FLDX01.  
+
+      * Superamento limite di 1  
+           IF FLDX01 > '0'
+              IF FLDX01 > '1'
+                 MOVE "28" TO FLDX01
+              ELSE
+                 IF FLDX01 > '2'
+                    IF FLDX01 > '3'
+                       IF FLDX01 > '4'
+                          MOVE "28" TO FLDX01.  
+        
+        
+      * Superamento limite di 1  
+           IF FLDX01 > '0'
+              IF FLDX02 = 'A'
+                 MOVE "12" TO FLDX01   
+              ELSE
+                 MOVE "13" TO FLDX01  
+              END-IF   
+              IF FLDX01 > '1'
+                 IF FLDX01 > '2'
+                    IF FLDX01 > '3'
+                       IF FLDX01 > '4'
+                          MOVE "28" TO FLDX01
+                       END-IF
+                    END-IF
+                 END-IF
+              END-IF
+           END-IF        
+        
+      * Superamento limite di 1  
+           IF FLDX01 > '0'
+              IF FLDX01 > '1'
+                 IF FLDX01 > '2'
+                    IF FLDX01 > '3'
+                       IF FLDX01 > '4'
+                          MOVE "28" TO FLDX01
+                       ELSE
+                       MOVE "29" TO FLDX01
+                    ELSE
+                    MOVE "30" TO FLDX01
+                 ELSE
+                 MOVE "31" TO FLDX01
+              ELSE
+              MOVE "32" TO FLDX01
+           ELSE
+           MOVE "33" TO FLDX01.        
+        
+       P006-EX. EXIT.
+  
+      *------------------------------------
+      * Paragrafo richiamato in loop OK
+      *
+      * Test violazioni in loop, anche indiretto
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0029_AVOID_COMMIT_INSIDE_LOOP
+      * R0030_AVOID_FILE_OPEN_CLOSE_INSIDE_LOOP
+      * R0031_AVOID_INDEXING_NO_USAGE_INDEX_INSIDE_LOOP
+      * R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      * R0064_AVOID_PERFORM_THRU
+      * R0077_AVOID_UNCHECKED_FILE_STATUS
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0141_AVOID_SQL_USE
+      *------------------------------------
+       P007-PARAGRAPH.
+       
+      * Commit nei vari ambienti
+           MOVE "32" TO FLDX01.
+           EXEC CICS SYNCPOINT END-EXEC
+           MOVE "33" TO FLDX01.
+           EXEC SQL COMMIT END-EXEC
+           MOVE "34" TO FLDX01.
+           COMMIT.
+      
+      * Commit in paragrafo richiamato (sempre in loop)
+           PERFORM P008-PARAGRAPH THRU P008-EX.
+ 
+      * File open in P008 
+      * Vietate al cics         
+           READ FSEQ01
+           CLOSE FSEQ01
+      
+      * Indexed good   
+           MOVE TB01-FLD1(TB01-INDEX) TO FLDX01
+          
+      * Indexed NO good   
+           MOVE TB01-FLD1(FLDN01) TO FLDX01
+          
+           
+       P007-EX. EXIT.
+  
+  
+      *---------------------------------------------
+      * Paragrafo richiamato da paragrafo in loop OK
+      *
+      * Test violazioni in loop, anche indiretto
+      * R0029_AVOID_COMMIT_INSIDE_LOOP
+      * R0030_AVOID_FILE_OPEN_CLOSE_INSIDE_LOOP
+      * R0032_AVOID_ARITHMETIC_OPERAND_ZONED_INSIDE_LOOP
+      * R0039_AVOID_FILE_OPEN_SINGLE
+      * R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0135_AVOID_COMPUTE_FOR_SIMPLE_OPERATIONS
+      * R0141_AVOID_SQL_USE
+      *----------------------------------------------
+       P008-PARAGRAPH.
+       
+      * Commit nei vari ambienti
+           MOVE "32" TO FLDX01.
+           EXEC CICS SYNCPOINT END-EXEC
+           MOVE "33" TO FLDX01.
+           EXEC SQL COMMIT END-EXEC
+           MOVE "34" TO FLDX01.
+           COMMIT.
+           
+      * Close/Read nel chiamante 
+      * Vietata al Cics    
+           OPEN INPUT FSEQ01
+            
+      * Compute good con campi packed
+           COMPUTE FLDN06 = FLDN07 + FLDN08.
+       
+      * Compute NO good con campi zoned
+           COMPUTE FLDN01 = FLDN04 + FLDN05.
+           
+               
+       P008-EX. EXIT.
+  
+  
+      *------------------------------------------
+      * Paragrafo NON in loop OK  
+      *
+      * Test violazioni NON in loop 
+      * R0033_AVOID_INDEXING_NO_USAGE_INDEX_NO_LOOP
+      * R0034_AVOID_ARITHMETIC_OPERAND_ZONED_NO_LOOP
+      * R0035_AVOID_PERFORM_VARYING_K_ZONED  
+      * R0039_AVOID_FILE_OPEN_SINGLE
+      * R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      * R0044_AVOID_MERGE_STATEMENT
+      * R0045_AVOID_ALTER_STATEMENT
+      * R0052_AVOID_FILE_OPEN_NOT_CLOSED
+      * R0054_AVOID_FILE_OPEN_NOT_USED
+      * R0055_AVOID_DISPLAY_UPON_CONSOLE
+      * R0081_AVOID_DEAD_CODE_UNREACHABLE
+      * R0117_AVOID_STOP_RUN_NOT_IN_MAINLINE
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0135_AVOID_COMPUTE_FOR_SIMPLE_OPERATIONS
+      * R0138_AVOID_SORT_STATEMENT
+      *-------------------------------------------
+       P009-PARAGRAPH.
+
+      * Indexed good   
+           MOVE TB01-FLD1(TB01-INDEX) TO FLDX01.
+          
+      * Indexed NO good   
+           MOVE TB01-FLD1(FLDN01) TO FLDX01.
+          
+      * Compute good con campi packed
+           COMPUTE FLDN06 = FLDN07 + FLDN08.
+       
+      * Compute NO good con campi zoned
+           COMPUTE FLDN01 = FLDN04 + FLDN05.
+           
+      * K zoned     
+           PERFORM P00A-PARAGRAPH FLDN04 TIMES.
+           
+      * Open singole
+           OPEN FSEQ01.
+           OPEN FSEQ02.
+           
+      * Alter statement
+           ALTER P00B-ALTER TO L007-LABEL.
+           
+           
+      * Sort vietata al Cics
+           SORT FSEQ01  ASCENDING  FLDX01 
+                      DESCENDING FLDX02
+              USING FSEQ01 
+              GIVING  FSEQ01    
+ 
+      * Merge vietata al Cics
+           MERGE FILE02 ON ASCENDING KEY FLDX01
+                       ON DESCENDING KEY FLDX02
+               COLLATING SEQUENCE IS ALPHABET1
+               USING FSEQ01, FSEQ02    
+               GIVING FSEQ01 FSEQ02    
+      * Delete vietata al Cics
+           DELETE REC-FSEQ01.
+           
+      * Display vietata al Cics
+           DISPLAY 'DA NON FARE'.
+ 
+      * Display su console
+           DISPLAY 'DA NON FARE' UPON CONSOLE.
+           
+      * Accept vietata al Cics
+           ACCEPT FLDX01.
+
+      * Stop vietata al Cics, non in mainline
+           STOP.
+           
+       P009-EX. EXIT.
+    
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0037_AVOID_CALL_STATIC
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE 
+      * R0132_AVOID_UNINITIALIZED_CALL_PARAMETER_DEFINED_INSIDE_COPY
+      * R0133_AVOID_UNINITIALIZED_CALL_PARAMETER_DEFINED_INSIDE_PGM
+      *-------------------------------------------
+       P00A-PARAGRAPH.
+      * Static call
+           CALL 'COBTST16'.
+      
+      * Ok initialized parm defined inside copy
+           CALL 'COBTST17' USING X-COPY03-CAMPO2.
+           
+      * R0132_AVOID_UNINITIALIZED_CALL_PARAMETER_DEFINED_INSIDE_COPY
+           CALL 'COBTST17' USING X-COPY03-CAMPO1.
+           
+      * Ok initialized parm defined inside pgm
+           CALL 'COBTST17' USING PARM3.
+      
+      * R0133_AVOID_UNINITIALIZED_CALL_PARAMETER_DEFINED_INSIDE_PGM     
+           CALL 'COBTST17' USING PARM1, PARM2, PARM3.
+           
+       P00A-EX. EXIT.
+      
+      * Paragrafo per gestione Alter
+       P00B-ALTER. GO TO L006-LABEL-REFERENCED-DUPLICATED.
+
+      *------------------------------------------
+      * Paragrafo OK  
+      *
+      * R0013_AVOID_HIGH_PARAGRAPH_INSTR_SIZE
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0059_AVOID_EVALUATE_WITHOUT_WHEN_OTHER
+      * R0061_AVOID_MOVE_REFERENCE_MODIFICATION
+      * R0062_AVOID_CORRESPONDING_OPTION
+      * R0063_AVOID_MOVE_TRUNCATED
+      * R0067_AVOID_IF_CLOSED_BY_DOT
+      * R0066_AVOID_EVALUATE_CLOSED_BY_DOT
+      * R0070_AVOID_NEXT_SENTENCE
+      * R0092_AVOID_UNCHECKED_ALPHA_TO_NUM_MOVE
+      * R0104_AVOID_SOURCE_ROW_TABSET
+      * R0119_AVOID_HIGH_CONDITIONS_NUMBER
+      * R0121_AVOID_INITIALIZE_STATEMENT
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0129_AVOID_EVALUATE_WHEN_WITH_LOGIC_CONDITIONAL
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC  
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC      
+      * R0136_AVOID_IF_TRUE_EMPTY
+      * R0137_AVOID_IF_ELSE_EMPTY
+      *-------------------------------------------
+       P00C-PARAGRAPH.
+      
+      * Missing OTHER 
+           EVALUATE TRUE
+             WHEN FLDX01 = 'J'
+                MOVE 'P' TO FLDX01
+             WHEN FLDX01 = 'K' OR FLDX01 = 'L' 
+                MOVE 'R' TO FLDX01
+            END-EVALUATE
+            
+      * Reference modification     
+            MOVE '2' TO FLDX03(2:1)
+            MOVE FLDX03(2:1) TO FLDX01.
+      
+      * Move Corresponding   
+            MOVE CORR GRP01 TO GRP02.   
+
+      * Move truncated
+            MOVE FLDX02 TO FLDX01.
+      
+      * If non chiusa da END-IF
+            IF FLDN01 = 1
+               MOVE 'P' TO FLDX01.
+            
+      * Evaluate non chiusa da END-EVALUATE
+           EVALUATE TRUE
+             WHEN FLDX01 = 'J'
+                MOVE 'P' TO FLDX01
+             WHEN FLDX01 = 'K' OR FLDX01 = 'L' 
+                MOVE 'R' TO FLDX01.
+       
+      * If non chiusa da END-IF
+           IF FLDN01 = 1
+              NEXT SENTENCE
+           ELSE
+              MOVE 'P' TO FLDX01.
+              
+      * Troppe condizioni  (> 5)
+           IF FLDN01 = 1
+           OR FLDN01 = 2
+           OR FLDN01 = 3
+           OR FLDN01 = 4
+           OR FLDN01 = 5
+           OR FLDN01 = 6
+              MOVE 'P' TO FLDX01
+           END-IF.
+           
+      * Initialize
+           INITIALIZE FLDX02
+           
+      * Good test before Move
+           IF FLDX01 IS NUMERIC
+              MOVE FLDX01 TO FLDN01
+           END-IF
+           
+      * Test numeric Missing
+           MOVE FLDX01 TO FLDN01.
+
+      * If in when 
+           EVALUATE TRUE
+             WHEN FLDX01 = 'J'
+                IF FLDX02 = 'LL'
+                   MOVE 2 TO FLDN01
+                END-IF
+             WHEN OTHER
+                MOVE FLDX01 TO FLDX02
+           END-EVALUATE.
+       
+      * If true empty
+           IF FLDX01 = 'J'
+      * Empty
+           ELSE
+              MOVE 2 TO FLDN01
+           END-IF
+                  
+      * If false empty
+           IF FLDX01 = 'J'
+              MOVE 2 TO FLDN01
+           ELSE
+      * Empty
+           END-IF
+           
+      * Tab in riga successiva
+			MOVE 2 TO FLDN01     
+       P00C-EX. EXIT.
+  
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * R0008_AVOID_EMPTY_PARAGRAPH
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0083_AVOID_DEAD_PARAGRAPH
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      *-------------------------------------------
+       P00D-PARAGRAPH.
+       P00D-EX. EXIT.
+
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Istruzioni Cics vietate e check
+      * 
+      * R0005_AVOID_GOTO_FWD_TO_END
+      * R0048_AVOID_CICS_HANDLE_ABEND
+      * R0049_AVOID_CICS_HANDLE_CONDITION
+      * R0050_AVOID_CICS_HANDLE_AID
+      * R0051_AVOID_CICS_IGNORE_CONDITION
+      * R0078_AVOID_UNCHECKED_CICS_OPERATION
+      * R0093_AVOID_CICS_COMMAREA_AND_LENGTH_MISSING
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *-------------------------------------------
+       P00E-PARAGRAPH.
+      
+      * Missing length
+           EXEC CICS LINK PROGRAM('COBTST07') 
+               COMMAREA(DFHCOMMAREA)
+           END-EXEC       
+      
+      * Handle
+           EXEC CICS HANDLE ABEND LABEL(L999-LABEL) END-EXEC.
+           EXEC CICS HANDLE CONDITION ERROR(L999-LABEL) END-EXEC.
+           EXEC CICS HANDLE AID CLEAR END-EXEC.
+           EXEC CICS IGNORE CONDITION DUPREC END-EXEC.
+       
+      * Good Cics operation Checked, test immediato
+           EXEC CICS READ FILE('TST06F01') INTO(IOAREA-CICS) END-EXEC.
+           IF EIBRESP = '00'
+              GO TO P00E-EX
+           END-IF
+           
+      * Good Cics operation Checked, test immediato su campo RESP
+           EXEC CICS READ FILE('TST06F01') INTO(IOAREA-CICS) 
+                RESP(EIBRESP-CICS) 
+           END-EXEC.
+           IF EIBRESP-CICS = '00'
+              GO TO P00E-EX
+           END-IF
+           
+      * Good Cics operation Checked, test immediato indiretto su campo RESP
+           EXEC CICS READ FILE('TST06F01') INTO(IOAREA-CICS) 
+                RESP(EIBRESP-CICS) 
+           END-EXEC.
+           IF EIBRESP-OK
+              GO TO P00E-EX
+           END-IF
+           
+      * Good Cics operation Checked, test immediato preceduto da assegnazioni
+           EXEC CICS READ FILE('TST06F02') INTO(IOAREA-CICS) END-EXEC.
+           MOVE 2 TO FLDN01   
+           MOVE 3 TO FLDN03   
+           IF EIBRESP = '00'
+              GO TO P00E-EX
+           END-IF
+           
+      * Good Cics operation Checked, test indiretto preceduto da assegnazioni
+           EXEC CICS READ FILE('TST06F03') INTO(IOAREA-CICS) END-EXEC.
+           MOVE 2 TO FLDN01 
+           MOVE EIBRESP TO EIBRESP-CICS.
+           MOVE 3 TO FLDN03 
+      * Test indiretto su livello 88  
+           IF EIBRESP-OK 
+              GO TO P00E-EX
+           END-IF
+           
+      * Good Cics operation Checked, test differito in paragrafo 
+           EXEC CICS READ FILE('TST06F04') INTO(IOAREA-CICS) END-EXEC.
+           PERFORM P00F-PARAGRAPH
+
+      * Good Cics operation Checked, test indiretto sul liv 88 differito in paragrafo 
+           EXEC CICS READ FILE('TST06F05') INTO(IOAREA-CICS) END-EXEC.
+           MOVE 2 TO FLDN01 
+           MOVE EIBRESP TO EIBRESP-CICS.
+           PERFORM P00G-PARAGRAPH
+
+      * Cics operation UnChecked
+           EXEC CICS READ FILE('TST06F06') INTO(IOAREA-CICS) END-EXEC.
+            
+       P00E-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Test diretto EIBRESP Cics come prima operazione
+      * 
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *-------------------------------------------
+       P00F-PARAGRAPH.
+           IF EIBRESP NOT = '00'
+              MOVE 0 TO TALLY
+              DIVIDE TALLY INTO TALLY
+           END-IF
+       P00F-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Test indiretto EIBRESP Cics come prima operazione
+      * 
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      *-------------------------------------------
+       P00G-PARAGRAPH.
+       
+      * Test indiretto su livello 88
+           IF EIBRESP-OK
+              MOVE 0 TO TALLY
+              DIVIDE TALLY INTO TALLY 
+           END-IF
+       P00G-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Unchecked operations dopo read/write/rewrite/delete
+      * 
+      * R0005_AVOID_GOTO_FWD_TO_END
+      * R0040_AVOID_INSTR_FORBIDDEN_FOR_CICS
+      * R0077_AVOID_UNCHECKED_FILE_STATUS
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *-------------------------------------------
+       P00H-PARAGRAPH.
+      
+      * Good Read operation Checked, test immediato
+           READ FSEQ01
+           IF FILE-STATUS01 = '00'
+              GO TO P00H-EX
+           END-IF
+           
+      * Good Write operation Checked, test immediato indiretto su campo RESP
+           WRITE REC-FSEQ01
+           IF FILE-STATUS01-OK
+              GO TO P00H-EX
+           END-IF
+           
+      * Good Rewrite operation Checked, test immediato preceduto da assegnazioni
+           REWRITE REC-FSEQ01
+           MOVE 2 TO FLDN01   
+           MOVE 3 TO FLDN03   
+           IF FILE-STATUS01 = '00'
+              GO TO P00H-EX
+           END-IF
+           
+      * Good delete operation Checked, test indiretto preceduto da assegnazioni
+           DELETE REC-FSEQ01
+           MOVE 2 TO FLDN01 
+           MOVE FILE-STATUS01 TO FILE-STATUS-TO-TEST
+           MOVE 3 TO FLDN03 
+      * Test indiretto su livello 88  
+           IF FILE-STATUS-OK 
+              GO TO P00H-EX
+           END-IF
+           
+      * Good Read operation Checked, test differito in paragrafo 
+           READ FSEQ01
+           PERFORM P00I-PARAGRAPH
+
+      * Good Read operation Checked, test indiretto differito in paragrafo 
+           READ FSEQ01
+           MOVE 2 TO FLDN01 
+           MOVE FILE-STATUS01 TO FILE-STATUS-TO-TEST
+           PERFORM P00J-PARAGRAPH
+
+      * Read operation UnChecked
+           READ FSEQ01
+           
+      * Write operation UnChecked
+           WRITE REC-FSEQ01
+           
+      * Rewrite operation UnChecked
+           REWRITE REC-FSEQ01
+           
+      * Delete operation UnChecked
+           REWRITE REC-FSEQ01
+       P00H-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Test diretto FILE-STATUS come prima operazione
+      *
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *-------------------------------------------
+       P00I-PARAGRAPH.
+           IF FILE-STATUS01 NOT = '00'
+              MOVE 0 TO TALLY
+              DIVIDE TALLY INTO TALLY
+           END-IF
+       P00I-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Test indiretto EIBRESP Cics come prima operazione
+      * 
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      *-------------------------------------------
+       P00J-PARAGRAPH.
+       
+      * Test indiretto su livello 88
+           IF EIBRESP-OK
+              MOVE 0 TO TALLY
+              DIVIDE TALLY INTO TALLY
+           END-IF
+       P00J-EX. EXIT.
+
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Unchecked operations dopo Exec Sql
+      * 
+      * R0005_AVOID_GOTO_FWD_TO_END
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+      * R0141_AVOID_SQL_USE
+      * R0159_AVOID_UNCHECKED_SQL_CODE
+      *-------------------------------------------
+       P00K-PARAGRAPH.
+      
+      * Good Select operation Checked, test immediato
+           EXEC SQL SELECT COL1, COL2 FROM TB01 WHERE COL1 = 5 END-EXEC
+           IF SQLCODE = 0
+              GO TO P00K-EX
+           END-IF
+           
+      * Good Select operation Checked, test immediato preceduto da assegnazioni
+           EXEC SQL SELECT COL1, COL2 FROM TB01 WHERE COL1 = 5 END-EXEC
+           MOVE 2 TO FLDN01   
+           MOVE 3 TO FLDN03   
+           IF SQLCODE = 0
+              GO TO P00K-EX
+           END-IF
+           
+      * Good Select operation Checked, test indiretto preceduto da assegnazioni
+           EXEC SQL SELECT COL1, COL2 FROM TB01 WHERE COL1 = 5 END-EXEC
+           MOVE 2 TO FLDN01 
+           MOVE SQLCODE TO SQLCODE-TO-TEST
+           MOVE 3 TO FLDN03 
+      * Test indiretto su livello 88  
+           IF SQLCODE-OK
+              GO TO P00K-EX
+           END-IF
+           
+      * Good Select operation Checked, test differito in paragrafo 
+           EXEC SQL SELECT COL1, COL2 FROM TB01 WHERE COL1 = 5 END-EXEC
+           PERFORM P00L-PARAGRAPH
+
+      * Good Select operation Checked, test indiretto differito in paragrafo 
+           EXEC SQL SELECT COL1, COL2 FROM TB01 WHERE COL1 = 5 END-EXEC
+           MOVE 2 TO FLDN01 
+           MOVE SQLCODE TO SQLCODE-TO-TEST
+           PERFORM P00M-PARAGRAPH
+
+      * UnChecked Select operation
+           EXEC SQL SELECT COL1, COL2 FROM TB01 WHERE COL1 = 5 END-EXEC
+           
+      * UnChecked Insert operation 
+           EXEC SQL INSERT INTO TB01 (COL1, COL2)
+           VALUES (1, 7) END-EXEC
+           
+      * UnChecked Update operation
+           EXEC SQL UPDATE TB01
+               SET COL2 = 'G'
+                WHERE COL1 = 5 
+           END-EXEC
+           
+      * UnChecked Delete operation
+           EXEC SQL DELETE FROM TB01 WHERE COL1 = 5 END-EXEC
+       P00K-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Test diretto SQLCODE come prima operazione
+      * 
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0130_AVOID_MAGIC_LITERAL_ALPHANUMERIC
+      *-------------------------------------------
+       P00L-PARAGRAPH.
+           IF SQLCODE NOT = '00'
+              MOVE 0 TO TALLY
+              DIVIDE TALLY INTO TALLY
+           END-IF
+       P00L-EX. EXIT.
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * Test indiretto SQLCODE come prima operazione
+      * 
+      * R0026_AVOID_LABEL_UNREFERENCED
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      *-------------------------------------------
+       P00M-PARAGRAPH.
+       
+      * Test indiretto su livello 88
+           IF SQLCODE-OK
+              MOVE 0 TO TALLY
+              DIVIDE TALLY INTO TALLY
+           END-IF
+       P00M-EX. EXIT.
+
+
+      *------------------------------------------
+      * Paragrafo OK
+      *
+      * R0005_AVOID_GOTO_FWD_TO_END
+      * R0124_AVOID_PARAGRAPH_IN_PROCEDURE
+      * R0131_AVOID_MAGIC_LITERAL_NUMERIC
+      * R0141_AVOID_SQL_USE
+      * R0142_AVOID_SQL_OPEN_CURSOR_INSIDE_LOOP
+      *-------------------------------------------
+       P00N-PARAGRAPH.
+       
+           MOVE "D" TO FLDX01
+           EXEC SQL OPEN CURSOR CUR1 END-EXEC
+           IF SQLCODE = 0
+              GO TO P00N-EX
+           END-IF
+ 
+      * Fetch cur1
+           EXEC SQL FETCH CUR1
+              INTO :CUR1-FLD1,
+                   :CUR1-FLD2
+           END-EXEC.
+           IF SQLCODE = 0
+               GO TO P00N-EX
+           END-IF
+      
+      * Close cur1
+           EXEC SQL CLOSE CUR1 END-EXEC.
+       
+       P00N-EX. EXIT.
+
+      * R0120_AVOID_COPY_INSIDE_PROCEDURE_DIVISION
+           COPY COPYPR02.

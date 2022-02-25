@@ -1,0 +1,16 @@
+//ICV5GDS@ PROC AP=,
+//             WAITTIME=120,
+//             PDAYONLY=NO,
+//             WTIFDOWN=NO,
+//             BATFORCE=NO,
+//             ERRORIGN=NO,
+//             SBLOPROC='N/A',
+//             COMMCICS='N/A',
+//             COMMBATC='='
+//*****************************************************
+//*    ICV5CIC@
+//*****************************************************
+//DUMMY    EXEC PGM=IEFBR14,
+//      PARM=('&COMMCICS,&PDAYONLY,&WAITTIME,&WTIFDOWN,&BATFORCE',
+//           '&ERRORIGN,&SBLOPROC,&COMMBATC,&AP')
+//         PEND
